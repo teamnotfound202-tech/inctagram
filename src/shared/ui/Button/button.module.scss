@@ -1,0 +1,101 @@
+@use '@/shared/styles/variables' as *;
+
+.defaultBtn {
+  border-radius: 2px;
+  padding: 4px 22px;
+  cursor: pointer;
+  line-height: 1.5;
+  background: $accent-500;
+  border: 2px solid transparent;
+  transition: 0.25s;
+  &:hover{
+    background: $accent-100;
+  }
+  &:active{
+    background: $accent-700;
+  }
+  &:focus {
+    border-color:$accent-700;
+  }
+  &:disabled {
+    background: $accent-900;
+    color: $light-900;
+  }
+}
+
+
+.grayBtn{
+  background: $dark-300;
+  color: $light-100;
+  transition: 0.25s;
+  &:hover{
+    background: $dark-100;
+  }
+  &:active{
+    background: $dark-400;
+  }
+  &:focus {
+    border-color:$accent-300;
+  }
+  &:disabled {
+    background: $dark-500;
+    color: $light-900;
+  }
+}
+
+.transparentBtn{
+  background: none;
+  border: 1px solid $accent-500;
+  color: $accent-500;
+  transition: 0.25s;
+  &:hover{
+    border-color: $accent-100;
+    color: $accent-100;
+    background: none;
+  }
+  &:active{
+    border-color: $accent-500;
+    background: none;
+  }
+  &:focus {
+    border-color:$accent-700;
+    color: $accent-700;
+    background: none;
+  }
+  &:disabled {
+    border-color: $accent-900;
+    color: $accent-900;
+    background: none;
+  }
+}
+
+.linkBtn{
+  border: 2px solid transparent;
+  background: none;
+  color: $accent-500;
+  transition: 0.25s;
+  &:hover{
+    border-color: $accent-100;
+    color: $accent-100;
+    background: none;
+  }
+  &:active{
+    border-color: $accent-500;
+    background: none;
+  }
+  &:focus {
+    border:2px solid $accent-700;
+    color: $accent-700;
+    background: none;
+  }
+  &:disabled {
+    border-color: $accent-900;
+    color: $accent-900;
+    background: none;
+  }
+}
+
+.fullWidth{
+width: 100%;
+}
+
