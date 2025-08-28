@@ -3,6 +3,7 @@ import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import {useState} from 'react'
+import {TextArea} from "@/shared/ui/TextArea/TextArea";
 
 
 export default function Home() {
@@ -27,6 +28,11 @@ export default function Home() {
               <CustomCheckbox id={'ca2'} />
               <CustomCheckbox id={'ca3'} disabled={true} checked={true} />
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
+          </div>
+          <div>
+              <TextArea title={'my text'} placeholder={'my text'}/>
+              <TextArea title={'my text'} error={'error'} placeholder={'my text'}/>
+              <TextArea title={'my text'} disabled={true} placeholder={'my text'}/>
           </div>
       </main>
     </div>
