@@ -1,5 +1,6 @@
 
 import {Button} from "@/shared/ui/Button/Button";
+import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 
 
@@ -19,7 +20,12 @@ export default function Home() {
                   </a>
               </Button>
           </div>
-
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+              <CustomCheckbox text={'my checkbox'} id={'ca1'}/>
+              <CustomCheckbox id={'ca2'} />
+              <CustomCheckbox id={'ca3'} disabled={true} checked={true}/>
+              <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
+          </div>
       </main>
     </div>
   );
