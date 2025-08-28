@@ -1,12 +1,14 @@
 'use client';
 import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
-import { ArrowRightIcon } from '@radix-ui/react-icons';
+import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {useState} from 'react'
+import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
 
 
 export default function Home() {
     const [isChecked, setIsChecked] = useState(false)
+
   return (
     <div>
       <main>
@@ -28,6 +30,7 @@ export default function Home() {
               <CustomCheckbox id={'ca3'} disabled={true} checked={true} />
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
           </div>
+          <TestCustomTabs/>
       </main>
     </div>
   );
