@@ -10,19 +10,23 @@ type Props = {
     id: string
     disabled?: boolean
     checked?: boolean
+    onChangeAction?: (value: boolean) => void
 }
 
-export const CustomCheckbox = ({text, id, disabled, checked=false}: Props) => {
-    const [isChecked, setIsChecked] = useState(checked)
+export const CustomCheckbox = ({text, id, disabled, checked=false,onChangeAction}: Props) => {
+    const [isChecked, setIsChecked] = useState(checked);
 
-    useEffect(() => {
-        setIsChecked(checked)
-    }, [checked]);
+    const onChangeHandler = () => {
+        setIsChecked(prevState => !prevState)
+        if (onChangeAction) {
+            onChangeAction(isChecked)
+        }
+    }
 
     return (
         <div className={s.checkboxWrapper}>
             <div className={s.checkboxInner}>
-                <Checkbox.Root className={s.checkboxRoot} defaultChecked={isChecked} id={id} disabled={disabled}>
+                <Checkbox.Root className={s.checkboxRoot} checked={isChecked}  onCheckedChange={onChangeHandler} id={id} disabled={disabled}>
                     <Checkbox.Indicator className={s.checkboxIndicator}>
                         <CheckboxIcon/>
                     </Checkbox.Indicator>
