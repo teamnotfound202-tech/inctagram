@@ -1,33 +1,23 @@
-import { ReactNode } from 'react';
+import {ComponentProps, ReactNode} from 'react';
 import clsx from 'clsx';
 import s from './button.module.scss';
+import {ButtonVariant} from "@/shared/ui/Button/type";
+import {Slot} from "@radix-ui/react-slot";
 
 type Props = {
+    asChild?: boolean;
     children: ReactNode;
-    variant?: string;
-    isDisabled?: boolean;
-    onClick?: () => void;
+    variant?: ButtonVariant;
     fullWidth?: boolean;
-};
+}  & ComponentProps<'button'>
 
-export const Button = ({ children, variant, isDisabled, onClick, fullWidth }: Props) => {
-    const buttonClassName = clsx(
-        s.defaultBtn,
-        {
-            [s.grayBtn]: variant === 'grayBtn',
-            [s.transparentBtn]: variant === 'transparentBtn',
-            [s.linkBtn]: variant === 'linkBtn',
-            [s.fullWidth]: fullWidth,
-        },
-    );
-
+export const Button = ({ children, variant = 'primary',fullWidth, asChild, ...props }: Props) => {
+    const buttonClassName = clsx(s.button, s[variant], fullWidth && s.fullWidth);
+    const Component = asChild ? Slot : 'button';
     return (
-        <button
-            className={buttonClassName}
-            disabled={isDisabled}
-            onClick={onClick}
-        >
+        <Component{...props} className={buttonClassName}>
             {children}
-        </button>
+        </Component>
+
     );
 };

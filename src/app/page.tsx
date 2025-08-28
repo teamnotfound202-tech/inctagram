@@ -1,15 +1,23 @@
-import styles from "./page.module.css";
+
 import {Button} from "@/shared/ui/Button/Button";
+import { ArrowRightIcon } from '@radix-ui/react-icons';
+
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
+    <div>
+      <main>
           <div>
               <Button>Button</Button>
-              <Button  variant={'grayBtn'} fullWidth={true}>Button</Button>
-              <Button variant={'transparentBtn'}>Button</Button>
-              <Button variant={'linkBtn'}>Button</Button>
+              <Button  variant={'secondary'}>Button</Button>
+              <Button variant={'outline'}>Button</Button>
+              <Button variant={'text'}>Button</Button>
+              <Button asChild variant={'text'}>
+                  <a href="/signup">
+                      Зарегистрироваться
+                      <ArrowRightIcon/>
+                  </a>
+              </Button>
           </div>
 
       </main>

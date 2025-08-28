@@ -1,13 +1,17 @@
 @use '@/shared/styles/variables' as *;
 
-.defaultBtn {
+.button {
   border-radius: 2px;
   padding: 4px 22px;
   cursor: pointer;
   line-height: 1.5;
-  background: $accent-500;
-  border: 2px solid transparent;
   transition: 0.25s;
+  border: 2px solid transparent;
+}
+
+.primary {
+  background: $accent-500;
+
   &:hover{
     background: $accent-100;
   }
@@ -20,14 +24,14 @@
   &:disabled {
     background: $accent-900;
     color: $light-900;
+    cursor: not-allowed;
   }
 }
 
 
-.grayBtn{
+.secondary {
   background: $dark-300;
   color: $light-100;
-  transition: 0.25s;
   &:hover{
     background: $dark-100;
   }
@@ -40,14 +44,14 @@
   &:disabled {
     background: $dark-500;
     color: $light-900;
+    cursor: not-allowed;
   }
 }
 
-.transparentBtn{
+.outline {
   background: none;
-  border: 1px solid $accent-500;
+  border: 2px solid $accent-500;
   color: $accent-500;
-  transition: 0.25s;
   &:hover{
     border-color: $accent-100;
     color: $accent-100;
@@ -66,14 +70,14 @@
     border-color: $accent-900;
     color: $accent-900;
     background: none;
+    cursor: not-allowed;
   }
 }
 
-.linkBtn{
+.text {
   border: 2px solid transparent;
   background: none;
   color: $accent-500;
-  transition: 0.25s;
   &:hover{
     border-color: $accent-100;
     color: $accent-100;
@@ -92,6 +96,7 @@
     border-color: $accent-900;
     color: $accent-900;
     background: none;
+    cursor: not-allowed;
   }
 }
 
