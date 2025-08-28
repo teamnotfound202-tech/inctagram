@@ -1,0 +1,136 @@
+.select {
+  position: relative;
+  width: 400px;
+}
+
+.trigger {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1;
+  gap: 8px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:hover {
+    border-color: #94a3b8;
+    background-color: #f8fafc;
+  }
+
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  &[data-placeholder] {
+    color: #94a3b8;
+  }
+
+  &.error {
+    border-color: #ef4444;
+
+    &:focus {
+      outline-color: #ef4444;
+    }
+  }
+
+  &.disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+
+    &:hover {
+      border-color: #e2e8f0;
+      background-color: #f1f5f9;
+    }
+  }
+}
+
+.icon {
+  color: #64748b;
+  transition: transform 0.2s ease;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.content {
+  overflow: hidden;
+  color: #0d0d0d;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  z-index: 1000;
+  animation-duration: 0.2s;
+  animation-timing-function: ease;
+  cursor: pointer;
+  min-width: 400px;
+  max-height: 300px;
+
+  &[data-state="open"] {
+    animation-name: slideUp;
+  }
+
+  &[data-state="closed"] {
+    animation-name: slideDown;
+  }
+}
+
+.viewport {
+  padding: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.errorMessage {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.placeholder {
+  color: #94a3b8;
+}
