@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter} from "next/font/google";
 import "./globals.css";
+import "@radix-ui/themes/styles.css";
+import {Theme} from "@radix-ui/themes";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
+      <Theme appearance={'dark'}>
         {children}
+      </Theme>
       </body>
     </html>
   );
