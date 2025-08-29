@@ -11,7 +11,8 @@
     width: 24px;
     height: 24px;
   }
-  color: $light-700;
+   color: inherit;
+
 }
 
 .datePicker {
@@ -24,13 +25,39 @@
   border-radius: 2px;
   background-color: $dark-500;
   color: $light-100;
-  line-height: 24px;
+   line-height: 24px;
   font-size: 16px;
   font-weight: 400;
   position: relative;
   cursor: pointer;
 align-items: center;
+  // Стили для состояния error
+  &.error {
+    color:$danger-500;
+    border-color: $danger-500 !important;
+
+    &:focus {
+      outline: 2px solid $danger-300 !important;
+    }
+  }
+  &.disabled {
+    border-color: $dark-300;
+    color: $dark-300;
+    cursor: not-allowed;
+  pointer-events: none;
+    .iconContainer {
+      color: $light-100;
+    }
+  }
 }
+
+// Дополнительно можно добавить текст ошибки
+.errorMessage {
+  color: $danger-500;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
 
 .datePicker:focus {
   outline: 2px solid $accent-700;
@@ -270,7 +297,7 @@ opacity: .4;
 }
 
 /* Today Styles */
-.rdpToday {
+.rdpToday button{
   color: $accent-500;
 
 }
@@ -300,27 +327,4 @@ opacity: .4;
 .rdpRange_end:not(.rdpRange_start) {
   border-radius: 0 18px 18px 0;
       background-color: $accent-900;
-}
-.rdpRoot {
-  .rdp-day_weekend {
-    .rdpDay_button {
-      color: #ff0000;
-
-      &:hover {
-        color: #ffffff;
-        background-color: #ff0000;
-      }
-    }
-
-    // Стили для различных состояний
-    &.rdpDay_selected .rdpDay_button {
-      color: #ffffff;
-      background-color: #ff0000;
-    }
-
-    &.rdpToday .rdpDay_button {
-      color: #ff0000;
-      border: 1px solid #ff0000;
-    }
-  }
 }
