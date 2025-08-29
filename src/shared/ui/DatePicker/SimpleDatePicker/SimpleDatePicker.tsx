@@ -43,7 +43,7 @@ export const SimpleDatePicker = ({
             <div className={s.text}>{label}</div>
             <Popover.Root  onOpenChange={handleOpen}>
                 <Popover.Trigger asChild >
-                    <div className={clsx(s.datePicker, { [s.error]: error },{ [s.disabled]: disabled })}>
+                    <div tabIndex={0} className={clsx(s.datePicker, { [s.error]: error },{ [s.disabled]: disabled })}>
                         <div>{value ? formatDate(value) : formatDate(new Date())}</div>
                         {!opened ? <CalendarOutline/> :<CalendarOpened /> }
                     </div>

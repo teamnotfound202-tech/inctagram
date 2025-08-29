@@ -6,13 +6,13 @@
   line-height: 24px;
   color: $light-900;
 }
+
 .iconContainer {
   svg {
     width: 24px;
     height: 24px;
   }
-   color: inherit;
-
+  color: inherit;
 }
 
 .datePicker {
@@ -25,42 +25,55 @@
   border-radius: 2px;
   background-color: $dark-500;
   color: $light-100;
-   line-height: 24px;
+  line-height: 24px;
   font-size: 16px;
   font-weight: 400;
   position: relative;
   cursor: pointer;
-align-items: center;
-  // Стили для состояния error
+  align-items: center;
+
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border: 2px solid $accent-700 !important;
+  }
+
+
   &.error {
-    color:$danger-500;
+    color: $danger-500;
     border-color: $danger-500 !important;
 
-    &:focus {
-      outline: 2px solid $danger-300 !important;
+    &:focus,
+    &:focus-visible {
+      border: 2px solid $danger-300 !important;
     }
   }
+
+
   &.disabled {
     border-color: $dark-300;
     color: $dark-300;
     cursor: not-allowed;
-  pointer-events: none;
+    pointer-events: none;
+
+
+    &:focus,
+    &:focus-visible {
+      border: 1px solid $dark-300 !important;
+      outline: none !important;
+    }
+
     .iconContainer {
       color: $light-100;
     }
   }
 }
 
-// Дополнительно можно добавить текст ошибки
 .errorMessage {
   color: $danger-500;
   font-size: 12px;
   margin-top: 4px;
-}
-
-
-.datePicker:focus {
-  outline: 2px solid $accent-700;
 }
 
 .wrapperCalendar {
@@ -77,51 +90,49 @@ align-items: center;
   box-sizing: border-box;
 }
 
-/* DayPicker Root */
+
 .rdpRoot {
   position: relative;
   box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
-.rdpRoot * {
-  box-sizing: border-box;
-}
 
-/* Day Styles */
 .rdpDay {
   width: 36px;
   height: 36px;
   text-align: center;
-
   border-radius: 100%;
   border: none;
-color: $light-100;
+  color: $light-100;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   cursor: pointer;
 
-}
+  &:hover {
+    background-color: $accent-700;
+  }
 
-.rdpDay:hover {
-  background-color: $accent-700;
-}
+  &:active {
+    background-color: $accent-900;
+  }
 
-.rdpDay:active {
-  background-color: $accent-900;
-}
+  &:focus {
+    background-color: inherit;
+    border: 2px solid $accent-300;
+  }
 
-.rdpDay:focus {
-  background-color: inherit;
-  border: 2px solid $accent-300;
-}
+  &.rdpDay_selected {
+    background-color: $accent-900;
 
-.rdpDay_selected {
-  background-color: $accent-900;
-}
-
-.rdpDay_selected:focus {
-  border: 2px solid $accent-300;
+    &:focus {
+      border: 2px solid $accent-300;
+    }
+  }
 }
 
 .rdpDay_button {
@@ -132,7 +143,7 @@ color: $light-100;
   border: none;
 }
 
-/* DayPicker Navigation */
+
 .rdpNav {
   position: absolute;
   inset-block-start: 0;
@@ -152,17 +163,23 @@ color: $light-100;
   background-color: $dark-100;
   border: none;
   cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: $light-100;
+  }
+
+  &:disabled {
+    cursor: revert;
+    opacity: 0.5;
+  }
 }
 
-.rdpButton_next svg,
-.rdpButton_previous svg {
-  width: 20px;
-  height: 20px;
- fill: $light-100;
 
-}
-.rdp-day_weekend{
-  & button{
+.rdp-day_weekend {
+  // Стили для кнопки внутри выходного дня
+  .rdpDay_button {
     color: $danger-500 !important;
   }
 
@@ -178,40 +195,34 @@ color: $light-100;
 
   &.rdp-day_selected {
     background-color: $danger-500 !important;
-    color: white !important;
+
+    .rdpDay_button {
+      color: white !important;
+    }
   }
 }
-.rdpButton_next:disabled,
-.rdpButton_previous:disabled {
-  cursor: revert;
-  opacity: 0.5;
-}
 
-/* Caption */
+
 .rdpCaption_label {
   display: flex;
   align-items: center;
   padding: 8px 6px;
   min-height: 36px;
   color: $light-100;
-
   font-weight: 700;
   line-height: 24px;
 }
 
-/* Month Styles */
+
 .rdpMonths {
   display: flex;
   flex-wrap: wrap;
   max-width: fit-content;
-
 }
 
-/* Weekday Styles */
 
 .rdpWeekdays {
   color: $light-900;
-
 }
 
 .rdpWeekday {
@@ -220,59 +231,19 @@ color: $light-100;
   text-align: center;
   width: 36px;
   height: 40px;
-
 }
 
-/* Week Styles */
-
-.rdpWeek :nth-child(6):not(.rdpOutside, .rdpToday) button,
-.rdpWeek :nth-child(7):not(.rdpOutside, .rdpToday) button {
-  color: $danger-500!important;
-}
-.rdp {
-  // Суббота (6-й день в неделе)
-  .rdp-day:nth-child(6) {
-    color: #ff0000!important;
-
-    // Для исключения дней вне месяца
-    &:not(.rdp-day_outside) {
-      color: #ff0000!important;
-    }
-
-    // Для сегодняшнего дня
-    &.rdp-day_today {
-      color: #ff0000!important;
-      font-weight: bold;
-    }
-  }
-
-  // Воскресенье (7-й день в неделе)
-  .rdp-day:nth-child(7) {
-    color: #ff0000!important;
-
-    &:not(.rdp-day_outside)  {
-      color: #ff0000!important;
-    }
-
-    &.rdp-day_today {
-      color: #ff0000!important;
-      font-weight: bold;
-    }
-  }
-
-  // Для выбранных выходных дней
-  .rdp-day_selected {
-    &.rdp-day:nth-child(6),
-    &.rdp-day:nth-child(7) {
-      background-color: #ff0000!important;
-      color: white !important;
-    }
+/* Week Styles - суббота и воскресенье */
+.rdpWeek {
+  :nth-child(6):not(.rdpOutside, .rdpToday) button,
+  :nth-child(7):not(.rdpOutside, .rdpToday) button {
+    color: $danger-500 !important;
   }
 }
+
 .rdpOutside {
-color: $light-900;
-opacity: .4;
-
+  color: $light-900;
+  opacity: .4;
 }
 
 /* Dropdowns */
@@ -290,22 +261,24 @@ opacity: .4;
   position: relative;
   display: inline-flex;
   align-items: center;
-}
 
-.rdpDropdown_root svg {
-  fill: $light-100;
+  svg {
+    fill: $light-100;
+  }
 }
 
 /* Today Styles */
-.rdpToday button{
-  color: $accent-500;
+.rdpToday {
+  .rdpDay_button {
+    color: $accent-500;
+  }
 
-}
-
-.rdpToday.rdpDay_selected {
-  color: $light-100;
-  font-weight: 700;
-
+  &.rdpDay_selected {
+    .rdpDay_button {
+      color: $light-100;
+      font-weight: 700;
+    }
+  }
 }
 
 /* Disabled */
@@ -326,5 +299,5 @@ opacity: .4;
 
 .rdpRange_end:not(.rdpRange_start) {
   border-radius: 0 18px 18px 0;
-      background-color: $accent-900;
+  background-color: $accent-900;
 }

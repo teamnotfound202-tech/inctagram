@@ -1,6 +1,7 @@
 'use client'
 import {useState} from "react";
 import {SimpleDatePicker} from "@/shared/ui/DatePicker/SimpleDatePicker/SimpleDatePicker";
+import {RangeDatePicker} from "@/shared/ui/DatePicker/RangeDatePicker/RangeDatePicker";
 
 export default function Home() {
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
@@ -13,9 +14,9 @@ export default function Home() {
                     Date Range Picker
                 </h1>
 
-                <SimpleDatePicker
+                <RangeDatePicker/>
+                <SimpleDatePicker/>
 
-                />
 
                 {(startDate && endDate) && (
                     <div className="mt-4 p-3 bg-blue-50 rounded-md">
