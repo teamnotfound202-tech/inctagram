@@ -134,8 +134,11 @@ color: $light-100;
  fill: $light-100;
 
 }
-.rdp-day_weekend {
-  color: $danger-500 !important;
+.rdp-day_weekend{
+  & button{
+    color: $danger-500 !important;
+  }
+
 
   &:not(.rdp-day_outside) {
     color: $danger-500 !important;
@@ -195,10 +198,9 @@ color: $light-100;
 
 /* Week Styles */
 
-.rdpWeek :nth-child(6):not(.rdpOutside, .rdpToday),
-.rdpWeek :nth-child(7):not(.rdpOutside, .rdpToday) {
+.rdpWeek :nth-child(6):not(.rdpOutside, .rdpToday) button,
+.rdpWeek :nth-child(7):not(.rdpOutside, .rdpToday) button {
   color: $danger-500!important;
-
 }
 .rdp {
   // Суббота (6-й день в неделе)
@@ -298,4 +300,27 @@ opacity: .4;
 .rdpRange_end:not(.rdpRange_start) {
   border-radius: 0 18px 18px 0;
       background-color: $accent-900;
+}
+.rdpRoot {
+  .rdp-day_weekend {
+    .rdpDay_button {
+      color: #ff0000;
+
+      &:hover {
+        color: #ffffff;
+        background-color: #ff0000;
+      }
+    }
+
+    // Стили для различных состояний
+    &.rdpDay_selected .rdpDay_button {
+      color: #ffffff;
+      background-color: #ff0000;
+    }
+
+    &.rdpToday .rdpDay_button {
+      color: #ff0000;
+      border: 1px solid #ff0000;
+    }
+  }
 }
