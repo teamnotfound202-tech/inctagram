@@ -1,10 +1,10 @@
 'use client';
 import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
+import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import {useState} from 'react'
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
-
 
 export default function Home() {
     const [isChecked, setIsChecked] = useState(false)
@@ -31,6 +31,9 @@ export default function Home() {
           </div>
           <div>
               <Sidebar/>
+          </div>
+          <div>
+              <RadioButtons/>
           </div>
       </main>
     </div>
