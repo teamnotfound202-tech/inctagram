@@ -23,4 +23,5 @@ export const sharedDatePickerClassNames = {
     week: s.rdpWeek,
     outside: s.rdpOutside,
     today: s.rdpToday,
+    weekend: s.rdpDay_weekend
 } as const;

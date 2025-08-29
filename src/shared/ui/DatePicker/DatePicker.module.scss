@@ -14,240 +14,11 @@
   color: $light-700;
 }
 
-/*.datePicker {
-  width: 262px;
-  min-height: 36px;
-  padding: 6px 12px;
-  display: inline-flex;
-  justify-content: space-between;
-  border: 1px solid $dark-300;
-  border-radius: 2px;
-  background-color: $dark-500;
-  color: $light-100;
-  line-height: 24px;
-  font-size: 16px;
-  font-weight: 400;
-  position: relative;
-  cursor: pointer;
-
-  &:focus {
-    outline: 2px solid $accent-700;
-  }
-}
-
-.wrapperCalendar {
-  position: absolute;
-  left: -131px;
-  top: -3px;
-  width: 300px;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: center;
-  background-color: $dark-500;
-  border: 1px solid $dark-300;
-  border-radius: 2px;
-  box-sizing: border-box;
-}
-
-// DayPicker Root
-.rdp {
-  &Root {
-    position: relative;
-    box-sizing: border-box;
-
-    * {
-      box-sizing: border-box;
-    }
-  }
-
-  // Day Styles
-  .rdpDay {
-    width: 36px;
-    height: 36px;
-    text-align: center;
-    background-color: inherit;
-    border-radius: 100%;
-    border: none;
-    color: $light-100;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $accent-700;
-    }
-
-    &:active {
-      background-color: $accent-900;
-    }
-
-    &:focus {
-      background-color: inherit;
-      border: 2px solid $accent-300;
-    }
-
-    &_selected {
-      background-color: $accent-900;
-
-      &:focus {
-        border: 2px solid $accent-300;
-      }
-    }
-
-    &_button {
-      width: 36px;
-      height: 36px;
-      display: inline-block;
-    }
-  }
-
-  // DayPicker Navigation
-  &Nav {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-end: 0;
-    display: flex;
-    align-items: center;
-  }
-
-  &Button {
-    &_next,
-    &_previous {
-      width: 36px;
-      height: 36px;
-      border-radius: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: $dark-100;
-      border: none;
-      cursor: pointer;
-
-      svg {
-        width: 20px;
-        height: 20px;
-        fill: $light-100;
-      }
-
-      &:disabled {
-        cursor: revert;
-        opacity: 0.5;
-      }
-    }
-  }
-
-  // Caption
-  &Caption {
-    &_label {
-      display: flex;
-      align-items: center;
-      padding: 8px 6px;
-      min-height: 36px;
-      color: $light-100;
-      font-weight: 700;
-      line-height: 24px;
-    }
-  }
-
-  // Month Styles
-  &Months {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: fit-content;
-  }
-
-  // Weekday Styles
-  &Weekdays {
-    color: $light-900;
-  }
-
-  &Weekday {
-    font-weight: 400;
-    line-height: 24px;
-    text-align: center;
-    width: 36px;
-    height: 40px;
-  }
-
-  // Week Styles
-  &Week {
-    :nth-child(6):not(.rdpOutside, .rdpToday),
-    :nth-child(7):not(.rdpOutside, .rdpToday) {
-      color: $danger-300;
-    }
-  }
-
-  &Outside {
-    color: $light-900;
-  }
-
-  // Dropdowns
-  &Dropdown {
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: 0;
-    opacity: 0;
-    appearance: none;
-    cursor: pointer;
-    width: 100%;
-
-    &_root {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-
-      svg {
-        fill: $light-100;
-      }
-    }
-  }
-
-  // Today Styles
-  &Today {
-    color: $accent-500;
-
-    &.rdpDay_selected {
-      color: $light-100;
-      font-weight: 700;
-    }
-  }
-
-  // Disabled
-  &Disabled {
-    opacity: 0.5;
-  }
-
-  // Range Styles
-  &Range {
-    &_start:not(.rdpRange_end) {
-      border-radius: 18px 0 0 18px;
-      background-color: $accent-900;
-    }
-
-    &_middle {
-      border-radius: 0;
-      background-color: $accent-900;
-    }
-
-    &_end:not(.rdpRange_start) {
-      border-radius: 0 18px 18px 0;
-      background-color: $accent-900;
-    }
-  }
-}
-.text {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  color: $light-900;
-}*/
-
 .datePicker {
   width: 262px;
   min-height: 36px;
   padding: 6px 12px;
-  display: inline-flex;
+  display: flex;
   justify-content: space-between;
   border: 1px solid $dark-300;
   border-radius: 2px;
@@ -258,7 +29,7 @@
   font-weight: 400;
   position: relative;
   cursor: pointer;
-
+align-items: center;
 }
 
 .datePicker:focus {
@@ -363,7 +134,23 @@ color: $light-100;
  fill: $light-100;
 
 }
+.rdp-day_weekend {
+  color: $danger-500 !important;
 
+  &:not(.rdp-day_outside) {
+    color: $danger-500 !important;
+  }
+
+  &.rdp-day_today {
+    color: $danger-500 !important;
+    font-weight: bold;
+  }
+
+  &.rdp-day_selected {
+    background-color: $danger-500 !important;
+    color: white !important;
+  }
+}
 .rdpButton_next:disabled,
 .rdpButton_previous:disabled {
   cursor: revert;
@@ -410,11 +197,49 @@ color: $light-100;
 
 .rdpWeek :nth-child(6):not(.rdpOutside, .rdpToday),
 .rdpWeek :nth-child(7):not(.rdpOutside, .rdpToday) {
-  color: $danger-500;
-
+  color: $danger-500!important;
 
 }
+.rdp {
+  // Суббота (6-й день в неделе)
+  .rdp-day:nth-child(6) {
+    color: #ff0000!important;
 
+    // Для исключения дней вне месяца
+    &:not(.rdp-day_outside) {
+      color: #ff0000!important;
+    }
+
+    // Для сегодняшнего дня
+    &.rdp-day_today {
+      color: #ff0000!important;
+      font-weight: bold;
+    }
+  }
+
+  // Воскресенье (7-й день в неделе)
+  .rdp-day:nth-child(7) {
+    color: #ff0000!important;
+
+    &:not(.rdp-day_outside)  {
+      color: #ff0000!important;
+    }
+
+    &.rdp-day_today {
+      color: #ff0000!important;
+      font-weight: bold;
+    }
+  }
+
+  // Для выбранных выходных дней
+  .rdp-day_selected {
+    &.rdp-day:nth-child(6),
+    &.rdp-day:nth-child(7) {
+      background-color: #ff0000!important;
+      color: white !important;
+    }
+  }
+}
 .rdpOutside {
 color: $light-900;
 opacity: .4;
