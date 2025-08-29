@@ -1,8 +1,6 @@
 import React, {ReactNode} from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
 import styles from './CustomTabs.module.scss';
-import clsx from "clsx";
-import {TabVariant} from "@/shared/ui/Tab/type";
 
 interface TabItem {
     value: string;
@@ -20,7 +18,6 @@ interface TabsProps {
     className?: string;
     orientation?: 'horizontal' | 'vertical';
     activationMode?: 'automatic' | 'manual';
-    variant?: TabVariant;
 }
 
 export const CustomTabs: React.FC<TabsProps> = ({
@@ -32,9 +29,7 @@ export const CustomTabs: React.FC<TabsProps> = ({
                                                     className = '',
                                                     orientation = 'horizontal',
                                                     activationMode = 'automatic',
-                                                    variant = 'primary'
                                                 }) => {
-    const TabsTriggerClassName = clsx(styles.Trigger, styles[variant]);
     return (
         <Tabs.Root
             className={`${styles.Root} ${className}`}
@@ -48,10 +43,9 @@ export const CustomTabs: React.FC<TabsProps> = ({
                 {tabs.map((tab) => (
                     <Tabs.Trigger
                         key={tab.value}
-                        className={TabsTriggerClassName}
+                        className={styles.Trigger}
                         value={tab.value}
                         disabled={tab.disabled}
-
                     >
                         {tab.icon && <span className={styles.Icon}>{tab.icon}</span>}
                         {tab.label}

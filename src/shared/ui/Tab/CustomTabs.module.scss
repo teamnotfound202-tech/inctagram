@@ -16,19 +16,17 @@
   align-items: center;
   gap: 8px;
 
-  border-radius: 2px;
   padding: 6px 24px;
   cursor: pointer;
   line-height: 1.5;
   transition: 0.25s;
+  color: $dark-100;
+  border-radius: 2px;
   border-bottom: 2px solid transparent;
+  border-bottom-color: $dark-100;
 
   &:hover {
     background: rgba($accent-900, 0.15);
-  }
-
-  &[data-state='active'] {
-    background: rgba($accent-100, 0.15);
   }
 
   &:focus {
@@ -36,31 +34,23 @@
     outline: 2px solid $accent-700;
   }
 
-  &[data-disabled] {
+  &:active {
+    background: rgba($accent-100, 0.15);
+  }
+
+  &:disabled {
     background: none;
     opacity: 0.5;
     cursor: not-allowed;
   }
-}
-
-.primary {
-  color: $accent-500;
 
   &[data-state='active'] {
+    color: $accent-500;
     border-bottom-color: $accent-500;
-  }
-}
 
-.secondary {
-  color: $dark-100;
-
-  &[data-state='active'] {
-    border-bottom-color: $dark-100;
-  }
-
-  &[data-disabled] {
-    color: $dark-300;
-    border-bottom-color: $dark-300;
+    &:disabled {
+      background: none;
+    }
   }
 }
 
@@ -71,7 +61,6 @@
   width: 16px;
   height: 16px;
 }
-
 
 @keyframes fadeIn {
   from {
