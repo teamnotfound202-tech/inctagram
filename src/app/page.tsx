@@ -5,6 +5,7 @@ import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import {useState} from 'react'
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
+import {Card} from "@/shared/ui/Cards/Cards";
 
 export default function Home() {
     const [isChecked, setIsChecked] = useState(false)
@@ -35,6 +36,9 @@ export default function Home() {
           <div>
               <RadioButtons/>
           </div>
+          <Card style={{
+              maxWidth:'300px'
+          }}>sdfhksdffksfjdf</Card>
       </main>
     </div>
   );
