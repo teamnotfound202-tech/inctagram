@@ -2,9 +2,11 @@
 import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
 import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
-import { ArrowRightIcon } from '@radix-ui/react-icons';
+import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {useState} from 'react'
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
+import ToolTip from "@/shared/ui/tooltip/Tooltip";
+
 
 export default function Home() {
     const [isChecked, setIsChecked] = useState(false)
@@ -35,6 +37,15 @@ export default function Home() {
           <div>
               <RadioButtons/>
           </div>
+          <div>
+              <ToolTip title={'Активное и неактивное состояние таба показано в колонке Default. Колонки Active, Hover, Focus и Disabled отображают поведение элемента при наличии соответствующего'}>
+                  <button style={{
+                      backgroundColor: 'red',
+                      color: 'white',
+                  }}>Hover me</button>
+              </ToolTip>
+          </div>
+
       </main>
     </div>
   );
