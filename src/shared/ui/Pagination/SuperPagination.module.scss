@@ -1,0 +1,101 @@
+@import '../../styles/variables.scss';
+
+.pagination {
+    display: flex;
+
+    // Стили для MUI Pagination
+    :global(.MuiPagination-ul) {
+        display: flex;
+        align-items: flex-end; // Выравниваем элементы по нижнему краю
+        height: 100%;
+    }
+
+    :global(.MuiPaginationItem-root) {
+        color: white !important;
+        background-color: transparent !important;;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif !important;
+        font-size: 14px !important;
+        min-width: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 2px;
+
+        &:focus {
+            background: none !important;
+            border-color: $accent-700 !important;
+        }
+
+        &:hover {
+            background-color: $dark-500!important;
+            border-color: $dark-500 !important;
+            color: white !important;
+        }
+
+        &.Mui-disabled {
+            opacity: 0.5 !important;
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+    }
+
+    // Отдельный селектор для выбранного элемента с высокой специфичностью
+    :global(.MuiPaginationItem-root.Mui-selected) {
+        color: black !important;
+        background-color: white !important;
+        border-color: white !important;
+        font-weight: 600 !important;
+
+        &:hover {
+            background-color: white !important;
+            border-color: white !important;
+            color: black !important;
+        }
+    }
+
+    // Специально для многоточия - опускаем вниз
+    :global(.MuiPaginationItem-ellipsis) {
+        color: white !important;
+        border: none !important;
+        background-color: transparent !important;
+        min-width: 24px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: flex-end !important; // Опускаем текст вниз
+        justify-content: center !important;
+        padding-bottom: 4px !important; // Добавляем отступ снизу
+        font-size: 16px !important;
+        line-height: 1 !important;
+    }
+
+    // Кнопки стрелок
+    :global(.MuiPaginationItem-previousNext) {
+        border: none !important;
+        color: white !important;
+        background-color: transparent !important;
+        min-width: 32px !important;
+        height: 32px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background-color: $dark-500 !important;
+            color: white !important;
+        }
+
+        &.Mui-disabled {
+            opacity: 0.5;
+            color: rgba(255, 255, 255, 0.5) !important;
+            background-color: transparent !important;
+        }
+    }
+}
+
+.text1 {
+    // Стили для текста "показать"
+}
+
+.text2 {
+    // Стили для текста "строк в таблице"
+}

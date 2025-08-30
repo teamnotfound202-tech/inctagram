@@ -4,6 +4,7 @@ import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import {useState} from 'react'
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
+import SuperPagination from "@/shared/ui/Pagination/SuperPagination";
 
 
 export default function Home() {
@@ -30,8 +31,12 @@ export default function Home() {
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
           </div>
           <div>
+              <SuperPagination page={5} onChange={()=>{}} totalCount={20} itemsCountForPage={4}/>
+          </div>
+          <div>
               <Sidebar/>
           </div>
+
       </main>
     </div>
   );
