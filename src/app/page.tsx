@@ -3,6 +3,7 @@ import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import {useState} from 'react'
+import {AlertsProvider, AlertToast} from "@/shared/ui/Alerts/Alerts";
 
 
 export default function Home() {
@@ -28,6 +29,23 @@ export default function Home() {
               <CustomCheckbox id={'ca3'} disabled={true} checked={true} />
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
           </div>
+
+          <div>
+              <AlertsProvider position="top-right">
+                  {/* Покажем две нотификации сразу в открытом состоянии */}
+                  <AlertToast
+                      variant="error"
+                      title="Error!"
+                      description="Server is not available"
+                  />
+                  <AlertToast
+                      variant="success"
+                      description="Your settings are saved"
+                  />
+              </AlertsProvider>
+          </div>
+
+
       </main>
     </div>
   );
