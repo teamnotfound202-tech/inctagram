@@ -2,6 +2,7 @@ import React from 'react'
 import SuperSelect from './SuperSelect/SuperSelect'
 import {Pagination} from '@mui/material'
 import s from './SuperPagination.module.scss'
+import CustomSelect from "@/shared/ui/Pagination/CustomSelect/CustomSelect";
 
 export type SuperPaginationPropsType = {
     id?: string
@@ -43,22 +44,34 @@ const SuperPagination: React.FC<SuperPaginationPropsType> = (
             />
 
             <span className={s.text1}>
-                показать
+                Show
             </span>
 
-            <SuperSelect
+            {/*<SuperSelect
                 id={id + '-pagination-select'}
                 value={itemsCountForPage}
                 options={[
-                    {id: 4, value: 4},
-                    {id: 7, value: 7},
                     {id: 10, value: 10},
+                    {id: 20, value: 20},
+                    {id: 30, value: 30},
+                    {id: 50, value: 50},
+                    {id: 100, value: 100},
                 ]}
                 onChange={onChangeSelect}
-            />
+            />*/}
+
+            <CustomSelect value={itemsCountForPage}
+                          options={[
+                {value: 10, label: '10'},
+                {value: 20, label: '20'},
+                {value: 30, label: '30'},
+                {value: 50, label: '50'},
+                {value: 100, label: '100'},
+            ]}
+                          onChange={onChangeSelect}/>
 
             <span className={s.text2}>
-                строк в таблице
+                on page
             </span>
         </div>
     )

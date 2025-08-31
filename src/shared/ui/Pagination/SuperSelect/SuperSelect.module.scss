@@ -1,18 +1,31 @@
+@import '../../../styles/variables.scss';
+
 .select {
-    border: 1px solid #c2c2c2;
-    border-radius: 2px;
-    width: 180px;
-    height: 24px;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    color: #000;
+  border: 1px solid $dark-300;
+  border-radius: 2px;
+  padding: 0 2px 0 6px;
+  width: 52px;
+  height: 24px;
+  color: $light-100;
+  background-color: $dark-500;
 }
 
 .select:focus {
-    border: 1px solid #000;
+  border: 1px solid $dark-300;
+  border-radius: 2px;
 }
 
+.option {
+  &:hover {
+    background-color: $dark-100;
+  }
+}
 
-.option:hover {
+.select .option {
+  padding: 10px;
+  background-color: white;
+
+  &hover {
+   color: red;
+  }
 }

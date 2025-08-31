@@ -31,7 +31,7 @@ export default function Home() {
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
           </div>
           <div>
-              <SuperPagination page={5} onChange={()=>{}} totalCount={20} itemsCountForPage={4}/>
+              <SuperPagination page={5} onChange={()=>{}} totalCount={20} itemsCountForPage={10}/>
           </div>
           <div>
               <Sidebar/>

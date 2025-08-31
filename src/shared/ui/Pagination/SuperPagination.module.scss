@@ -2,16 +2,19 @@
 
 .pagination {
     display: flex;
+    align-items: center;
 
     // Стили для MUI Pagination
     :global(.MuiPagination-ul) {
         display: flex;
         align-items: flex-end; // Выравниваем элементы по нижнему краю
         height: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
     }
 
     :global(.MuiPaginationItem-root) {
-        color: white !important;
+        color: $light-100 !important;
         background-color: transparent !important;;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif !important;
         font-size: 14px !important;
@@ -30,32 +33,32 @@
         &:hover {
             background-color: $dark-500!important;
             border-color: $dark-500 !important;
-            color: white !important;
+            color: $light-100 !important;
         }
 
         &.Mui-disabled {
             opacity: 0.5 !important;
-            color: rgba(255, 255, 255, 0.5) !important;
+            color:$dark-100 !important;
         }
     }
 
     // Отдельный селектор для выбранного элемента с высокой специфичностью
     :global(.MuiPaginationItem-root.Mui-selected) {
-        color: black !important;
-        background-color: white !important;
-        border-color: white !important;
+        color: $dark-900 !important;
+        background-color: $light-100 !important;
+        border-color: $light-100 !important;
         font-weight: 600 !important;
 
         &:hover {
-            background-color: white !important;
-            border-color: white !important;
-            color: black !important;
+            background-color: $light-100 !important;
+            border-color: $light-100 !important;
+            color: $dark-900 !important;
         }
     }
 
     // Специально для многоточия - опускаем вниз
     :global(.MuiPaginationItem-ellipsis) {
-        color: white !important;
+        color: $light-100 !important;
         border: none !important;
         background-color: transparent !important;
         min-width: 24px !important;
@@ -71,7 +74,7 @@
     // Кнопки стрелок
     :global(.MuiPaginationItem-previousNext) {
         border: none !important;
-        color: white !important;
+        color: $light-100 !important;
         background-color: transparent !important;
         min-width: 32px !important;
         height: 32px !important;
@@ -81,21 +84,23 @@
 
         &:hover {
             background-color: $dark-500 !important;
-            color: white !important;
+            color: $light-100 !important;
         }
 
         &.Mui-disabled {
             opacity: 0.5;
-            color: rgba(255, 255, 255, 0.5) !important;
+            color: $dark-100 !important;
             background-color: transparent !important;
         }
     }
 }
 
 .text1 {
-    // Стили для текста "показать"
+    // Стили для текста "Show"
+    margin-right: 5px;
 }
 
 .text2 {
     // Стили для текста "строк в таблице"
+    margin-left: 5px;
 }
