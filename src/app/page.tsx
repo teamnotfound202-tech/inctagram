@@ -2,7 +2,7 @@
 import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
 import {ArrowRightIcon} from '@radix-ui/react-icons';
-import {useState} from 'react'
+import {useCallback, useState} from 'react'
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
 import SuperPagination from "@/shared/ui/Pagination/SuperPagination";
 
@@ -10,6 +10,12 @@ import SuperPagination from "@/shared/ui/Pagination/SuperPagination";
 export default function Home() {
     const [isChecked, setIsChecked] = useState(false)
     const [page, setPage] = useState(1)         //моковые страницы, после теста - удалить
+    const [itemsCount, setItemsCount] = useState(10)         //моковые страницы, после теста - удалить
+
+    const superPaginationChangeHandler = useCallback((page: number, itemsCount: number) => {
+        setPage(page)
+        setItemsCount(itemsCount)
+    }, [])                                                  //моковый коллбэк, после теста - удалить
 
     return (
         <div>
@@ -33,7 +39,7 @@ export default function Home() {
                     <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
                 </div>
                 <div>
-                    <SuperPagination page={page} onChange={setPage} totalCount={220} itemsCount={10}/>
+                    <SuperPagination page={page} onChange={superPaginationChangeHandler} totalCount={220} itemsCount={itemsCount}/>
                 </div>
                 <div>
                     <Sidebar/>

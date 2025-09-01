@@ -13,25 +13,30 @@ export type SuperPaginationPropsType = {
 
 const SuperPagination: React.FC<SuperPaginationPropsType> = (
     {
-        page, itemsCount, totalCount, onChange, id = 'hw15',
+        page, itemsCount, totalCount, onChange,
     }
 ) => {
 
-    const lastPage = Math.trunc(totalCount / itemsCount) +  //берем целое от деления
+    const findLastPage = (totalCount: number, itemsCount: number)=>{
+        return Math.trunc(totalCount / itemsCount) +  //берем целое от деления
         ((totalCount % itemsCount > 0) ? 1 : 0)                     // если есть остаток, то добавляем еще одну страницу
+    }
+
+    const lastPage = findLastPage(totalCount, itemsCount)
 
     const onChangeCallback = (event: any, page: number) => {
         onChange(page, itemsCount)
     }
 
     const onChangeSelect = (value: any) => {
-        onChange(page, value)
+        const pagePosition = page <= findLastPage(totalCount, value) ? page : 1 //Если количество странц больше, чем нужно
+                                                                                        //установить указатель на 1 страницу
+        onChange(pagePosition, value)
     }
 
     return (
         <div className={s.pagination}>
             <Pagination
-                id={id + '-pagination'}
                 variant="outlined"
                 shape="rounded"
                 siblingCount={1}
