@@ -1,11 +1,21 @@
 import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
-import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {SimpleDatePicker} from "@/shared/ui/DatePicker/SimpleDatePicker/SimpleDatePicker";
 import {CalendarOutline} from "@/shared/ui/DatePicker/icons/CalendarOutline";
+import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
+import {Sidebar} from '@/widgets/Sidebar/Sidebar';
+import {ArrowRightIcon} from '@radix-ui/react-icons';
+import {useState} from 'react'
+
+import {TextArea} from "@/shared/ui/TextArea/TextArea";
+
+import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
+
 
 
 export default function Home() {
+  const [isChecked, setIsChecked] = useState(false)
+
   return (
     <div>
       <main>
@@ -29,6 +39,21 @@ export default function Home() {
 <SimpleDatePicker />
               <CalendarOutline/>
           </div>
+
+          <div>
+              <TextArea title={'my text'} placeholder={'my text'}/>
+              <TextArea title={'my text'} error={'error'} placeholder={'my text'}/>
+              <TextArea title={'my text'} disabled={true} placeholder={'my text'}/>
+          </div>
+
+          <TestCustomTabs/>
+        <div>
+              <Sidebar/>
+          </div>
+          <div>
+              <RadioButtons/>
+          </div>
+
       </main>
     </div>
   );
