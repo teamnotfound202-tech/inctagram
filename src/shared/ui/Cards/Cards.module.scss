@@ -1,0 +1,8 @@
+@use '@/shared/styles/variables' as *;
+.card {
+  min-width: 100px;
+  min-height: 100px;
+  background-color:$dark-300 ;
+  border: 1px solid $dark-300 ;
+  border-radius: 2px;
+}
