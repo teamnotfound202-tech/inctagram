@@ -9,6 +9,8 @@ import SuperPagination from "@/shared/ui/Pagination/SuperPagination";
 
 export default function Home() {
     const [isChecked, setIsChecked] = useState(false)
+    const [page, setPage] = useState(1)
+
   return (
     <div>
       <main>
@@ -31,7 +33,7 @@ export default function Home() {
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
           </div>
           <div>
-              <SuperPagination page={5} onChange={()=>{}} totalCount={20} itemsCountForPage={10}/>
+              <SuperPagination page={page} onChange={setPage} totalCount={220} itemsCountForPageFromProp={10}/>
           </div>
           <div>
               <Sidebar/>
