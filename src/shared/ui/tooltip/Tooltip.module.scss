@@ -1,0 +1,78 @@
+@use "@/shared/styles/variables.scss" as *;
+
+.Content {
+    border-radius: 4px;
+    max-width: 481px;
+    padding: 15px 10px;
+    font-size: 16px;
+    line-height: 24px;
+    border: 1px solid $neutral-dark-100;
+color:$neutral-dark-900;
+    background-color: $neutral-dark-50;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+    user-select: none;
+    animation-timing-function: ease-in-out;
+    will-change: transform, opacity;
+    &[data-state="delayed-open"][data-side="top"] {
+        animation-name: slideDownAndFade;
+    }
+    &[data-state="delayed-open"][data-side="right"] {
+        animation-name: slideLeftAndFade;
+    }
+    &[data-state="delayed-open"][data-side="bottom"] {
+        animation-name: slideUpAndFade;
+    }
+    &[data-state="delayed-open"][data-side="left"] {
+        animation-name: slideRightAndFade;
+    }
+}
+.Content span:first-child {
+    font-weight: 500;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+@keyframes slideUpAndFade {
+    from {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideRightAndFade {
+    from {
+        opacity: 0;
+        transform: translateX(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideDownAndFade {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeftAndFade {
+    from {
+        opacity: 0;
+        transform: translateX(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

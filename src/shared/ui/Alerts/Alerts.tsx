@@ -3,7 +3,7 @@
 import React from 'react';
 import * as Toast from '@radix-ui/react-toast'; //для всплывающих подсказок
 import s from './Alerts.module.scss';
-import {AlertsIcon} from "@/shared/ui/Alerts/AlertsIcon/AlertsIcon";
+import {CloseIcon} from "@/shared/ui/Alerts/CloseIcon/CloseIcon";
 
 export type AlertVariant = 'success' | 'error';
 
@@ -48,7 +48,7 @@ export function AlertToast({title, description, variant = 'success', duration = 
 
             {closable && (//если есть крестик для закрытия, то показать его
                 <Toast.Close className={s.close} aria-label="Close">
-                    <AlertsIcon/>
+                    <CloseIcon/>
                 </Toast.Close>
             )}
         </Toast.Root>

@@ -1,0 +1,54 @@
+@use "@/shared/styles/variables.scss" as *;
+
+.sidebarItem {
+  display: inline-block;
+  max-width: fit-content;
+  margin-bottom: 24px;
+  &:nth-child(5) {
+   margin-bottom: 60px;
+  }
+  &:nth-child(7) {
+    margin-bottom: 180px;
+  }
+  &:last-child {
+    margin-bottom: 0;
+  }
+  &:hover .sidebarItemLink,
+  &:hover .icon {
+  color: $accent-500;
+  }
+
+  &:active .sidebarItemLink,
+  &:active .icon {
+    color: $accent-100;
+  }
+  &.disabled {
+    cursor: not-allowed;
+    & .sidebarItemLink,
+    & .icon {
+      color: $dark-100;
+      pointer-events: none;
+    }
+  }
+}
+
+
+.sidebarItemLink {
+  color: $light-100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  outline: none;
+  border: 2px solid transparent;
+  padding-right: 7px;
+  &:focus {
+    border: 2px solid $accent-700;
+    border-radius: 2px;
+  }
+}
+
+.icon {
+  color: $light-100;
+  width: 24px;
+  height: 24px;
+}

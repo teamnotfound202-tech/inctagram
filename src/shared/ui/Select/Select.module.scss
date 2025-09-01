@@ -1,0 +1,172 @@
+@use "@/shared/styles/variables" as *;
+
+.select {
+  position: relative;
+  width: 400px;
+}
+
+.trigger {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1;
+  gap: 8px;
+  background-color: $dark-900;
+  border: 1px solid $light-900;
+  color: $light-100;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:hover {
+    border-color: $light-100;
+    background-color: $dark-900;
+    color: $light-900;
+  }
+
+  &:focus {
+    outline: 2px solid $accent-500;
+    border: none;
+    outline-offset: 2px;
+    color: $light-900;
+  }
+
+  &[data-placeholder] {
+    color: $light-900;
+  }
+
+  &.error {
+    border-color: $danger-500;
+
+    &:focus {
+      outline: 2px solid $accent-500;
+    }
+  }
+
+  &.disabled {
+    border-color: $light-900;
+    background-color: $dark-900;
+    color: $light-900;
+    cursor: not-allowed;
+
+    &:hover {
+      border-color: $light-900;
+      background-color: $dark-900;
+      color: $light-900;
+    }
+  }
+}
+
+.trigger[data-state="open"]{
+  border: 1px solid $light-100;
+}
+
+.icon {
+  color: $light-100;
+  transition: transform 0.2s ease;
+}
+
+.trigger[data-state="open"] .icon {
+  transform: rotate(180deg);
+}
+
+.content {
+  overflow: hidden;
+  border: 1px solid $light-100;
+  border-top: none;
+  background-color: $dark-900;
+  color: $light-900;
+  z-index: 1000;
+  animation-duration: 0.2s;
+  animation-timing-function: ease;
+  cursor: pointer;
+  min-width: 400px;
+  max-height: 300px;
+
+  &:hover {
+    //border-color: $light-100;
+    background-color: $dark-900;
+    color: $light-900;
+  }
+
+
+  &[data-state="open"] {
+    animation-name: slideUp;
+  }
+
+  &[data-state="closed"] {
+    animation-name: slideDown;
+  }
+}
+
+.viewport {
+  padding: 4px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: $light-900;
+  margin-bottom: 6px;
+}
+
+.errorMessage {
+  color: $danger-500;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.placeholder {
+  color: $light-900;
+}
+
+.item {
+  font-size: 14px;
+  line-height: 1;
+  color: $light-100;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  border: none;
+  margin: 2px 0;
+
+  &[data-highlighted] {
+    outline: none;
+    background-color: $dark-300;
+    color: $accent-500;
+  }}

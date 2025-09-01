@@ -1,18 +1,29 @@
-'use client';
+'use client'
+
 import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
-import { ArrowRightIcon } from '@radix-ui/react-icons';
+import {SimpleDatePicker} from "@/shared/ui/DatePicker/SimpleDatePicker/SimpleDatePicker";
+import {CalendarOutline} from "@/shared/ui/DatePicker/icons/CalendarOutline";
+import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
+import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {useState} from 'react'
+import ToolTip from "@/shared/ui/tooltip/Tooltip";
+import {Sidebar} from '@/widgets/Sidebar/Sidebar';
+import {Card} from "@/shared/ui/Cards/Cards";
 import {AlertsProvider, AlertToast} from "@/shared/ui/Alerts/Alerts";
 import {ScrollBox} from "@/shared/ui/Scroll/Scroll";
-
+import {TextArea} from "@/shared/ui/TextArea/TextArea";
+import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
+import SelectBox from "@/shared/ui/Select/Select";
 
 
 export default function Home() {
-    const [isChecked, setIsChecked] = useState(false)
+
+  const [isChecked, setIsChecked] = useState(false)
+
   return (
     <div>
-      <main>
+      <main style={{padding: '20px', maxWidth: '800px', margin: '0 auto'}}>
           <div>
               <Button>Button</Button>
               <Button  variant={'secondary'}>Button</Button>
@@ -26,12 +37,19 @@ export default function Home() {
               </Button>
           </div>
           <div style={{display: 'flex', flexDirection: 'column'}}>
-              <CustomCheckbox text={'my checkbox'} id={'ca1'} checked={isChecked} onChangeAction={setIsChecked}/>
+              <CustomCheckbox text={'my checkbox'} id={'ca1'}/>
               <CustomCheckbox id={'ca2'} />
-              <CustomCheckbox id={'ca3'} disabled={true} checked={true} />
+              <CustomCheckbox id={'ca3'} disabled={true} checked={true}/>
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
+<SimpleDatePicker />
+              <CalendarOutline/>
           </div>
 
+          <div>
+              <TextArea title={'my text'} placeholder={'my text'}/>
+              <TextArea title={'my text'} error={'error'} placeholder={'my text'}/>
+              <TextArea title={'my text'} disabled={true} placeholder={'my text'}/>
+          </div>
           <div>
               <AlertsProvider position="top-right">
                   {/* Покажем две нотификации сразу в открытом состоянии */}
@@ -46,6 +64,37 @@ export default function Home() {
                   />
               </AlertsProvider>
           </div>
+          <TestCustomTabs/>
+        <div>
+              <Sidebar/>
+          </div>
+          <div>
+              <RadioButtons/>
+          </div>
+          <div>
+              <ToolTip title={'Активное и неактивное состояние таба показано в колонке Default. Колонки Active, Hover, Focus и Disabled отображают поведение элемента при наличии соответствующего'}>
+                  <button style={{
+                      backgroundColor: 'red',
+                      color: 'white',
+                  }}>Hover me</button>
+              </ToolTip>
+          </div>
+          <Card style={{
+              maxWidth:'300px'
+          }}>sdfhksdffksfjdf</Card>
+        
+         {/* Селекты*/}
+                <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+                    {/* Простой селект с defaultValue */}
+                    <SelectBox
+                        options={[{value: 'option1', label: 'Select Box 1'},
+                            {value: 'option2', label: 'Select Box 2'},
+                            {value: 'option3', label: 'Select Box 3'}]}
+                        defaultValue="option1"
+                        onValueChange={(value) => console.log('Simple selected:', value)}
+                        placeholder="Select Box"
+                        label="Простой селект"
+                    />
 
           <div style={{padding:24, display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:24 }}>
               {/*Вертикальный скролл */}
@@ -82,8 +131,27 @@ export default function Home() {
                   </ScrollBox>
               </div>
           </div>
-
-
+                    {/* Обязательный селект */}
+                    <SelectBox
+                        options={[{value: 'option1', label: 'Select Box 1'},
+                            {value: 'option2', label: 'Select Box 2'},
+                            {value: 'option3', label: 'Select Box 3'}]}
+                        onValueChange={(value) => console.log('Required selected:', value)}
+                        placeholder="Выберите обязательную опцию"
+                        label="Обязательный селект"
+                        required
+                    />
+                    {/* Отключенный селект */}
+                    <SelectBox
+                        options={[{value: 'option1', label: 'Select Box 1'},
+                            {value: 'option2', label: 'Select Box 2'},
+                            {value: 'option3', label: 'Select Box 3'}]}
+                        defaultValue="option2"
+                        placeholder="Выберите опцию"
+                        label="Отключенный селект"
+                        disabled
+                  />
+                </div>
       </main>
     </div>
   );

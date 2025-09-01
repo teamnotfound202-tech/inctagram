@@ -1,0 +1,303 @@
+@use '@/shared/styles/variables' as *;
+
+.text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  color: $light-900;
+}
+
+.iconContainer {
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+  color: inherit;
+}
+
+.datePicker {
+  width: 262px;
+  min-height: 36px;
+  padding: 6px 12px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid $dark-300;
+  border-radius: 2px;
+  background-color: $dark-500;
+  color: $light-100;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
+  position: relative;
+  cursor: pointer;
+  align-items: center;
+
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border: 2px solid $accent-700 !important;
+  }
+
+
+  &.error {
+    color: $danger-500;
+    border-color: $danger-500 !important;
+
+    &:focus,
+    &:focus-visible {
+      border: 2px solid $danger-300 !important;
+    }
+  }
+
+
+  &.disabled {
+    border-color: $dark-300;
+    color: $dark-300;
+    cursor: not-allowed;
+    pointer-events: none;
+
+
+    &:focus,
+    &:focus-visible {
+      border: 1px solid $dark-300 !important;
+      outline: none !important;
+    }
+
+    .iconContainer {
+      color: $light-100;
+    }
+  }
+}
+
+.errorMessage {
+  color: $danger-500;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.wrapperCalendar {
+  position: absolute;
+  left: -131px;
+  top: -3px;
+  width: 300px;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: center;
+  background-color: $dark-500;
+  border: 1px solid $dark-500;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+
+.rdpRoot {
+  position: relative;
+  box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+
+.rdpDay {
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  border-radius: 100%;
+  border: none;
+  color: $light-100;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $accent-700;
+  }
+
+  &:active {
+    background-color: $accent-900;
+  }
+
+  &:focus {
+    background-color: inherit;
+    border: 2px solid $accent-300;
+  }
+
+  &.rdpDay_selected {
+    background-color: $accent-900;
+
+    &:focus {
+      border: 2px solid $accent-300;
+    }
+  }
+}
+
+.rdpDay_button {
+  width: 36px;
+  height: 36px;
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+}
+
+
+.rdpNav {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  display: flex;
+  align-items: center;
+}
+
+.rdpButton_next,
+.rdpButton_previous {
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $dark-100;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: $light-100;
+  }
+
+  &:disabled {
+    cursor: revert;
+    opacity: 0.5;
+  }
+}
+
+
+.rdp-day_weekend {
+  // Стили для кнопки внутри выходного дня
+  .rdpDay_button {
+    color: $danger-500 !important;
+  }
+
+
+  &:not(.rdp-day_outside) {
+    color: $danger-500 !important;
+  }
+
+  &.rdp-day_today {
+    color: $danger-500 !important;
+    font-weight: bold;
+  }
+
+  &.rdp-day_selected {
+    background-color: $danger-500 !important;
+
+    .rdpDay_button {
+      color: white !important;
+    }
+  }
+}
+
+
+.rdpCaption_label {
+  display: flex;
+  align-items: center;
+  padding: 8px 6px;
+  min-height: 36px;
+  color: $light-100;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+
+.rdpMonths {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: fit-content;
+}
+
+
+.rdpWeekdays {
+  color: $light-900;
+}
+
+.rdpWeekday {
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+  width: 36px;
+  height: 40px;
+}
+
+/* Week Styles - суббота и воскресенье */
+.rdpWeek {
+  :nth-child(6):not(.rdpOutside, .rdpToday) button,
+  :nth-child(7):not(.rdpOutside, .rdpToday) button {
+    color: $danger-500 !important;
+  }
+}
+
+.rdpOutside {
+  color: $light-900;
+  opacity: .4;
+}
+
+/* Dropdowns */
+.rdpDropdown {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  opacity: 0;
+  appearance: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.rdpDropdown_root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  svg {
+    fill: $light-100;
+  }
+}
+
+/* Today Styles */
+.rdpToday {
+  .rdpDay_button {
+    color: $accent-500;
+  }
+
+  &.rdpDay_selected {
+    .rdpDay_button {
+      color: $light-100;
+      font-weight: 700;
+    }
+  }
+}
+
+/* Disabled */
+.rdpDisabled {
+  opacity: 0.5;
+}
+
+/* Range Styles */
+.rdpRange_start:not(.rdpRange_end) {
+  border-radius: 18px 0 0 18px;
+  background-color: $accent-900;
+}
+
+.rdpRange_middle {
+  border-radius: 0;
+  background-color: $accent-900;
+}
+
+.rdpRange_end:not(.rdpRange_start) {
+  border-radius: 0 18px 18px 0;
+  background-color: $accent-900;
+}
