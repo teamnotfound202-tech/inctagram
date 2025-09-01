@@ -5,14 +5,16 @@ import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
 import {SimpleDatePicker} from "@/shared/ui/DatePicker/SimpleDatePicker/SimpleDatePicker";
 import {CalendarOutline} from "@/shared/ui/DatePicker/icons/CalendarOutline";
 import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
-import {Sidebar} from '@/widgets/Sidebar/Sidebar';
-import {Card} from "@/shared/ui/Cards/Cards";
 import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {useState} from 'react'
+import ToolTip from "@/shared/ui/tooltip/Tooltip";
+import {Sidebar} from '@/widgets/Sidebar/Sidebar';
+import {Card} from "@/shared/ui/Cards/Cards";
 import {AlertsProvider, AlertToast} from "@/shared/ui/Alerts/Alerts";
 import {TextArea} from "@/shared/ui/TextArea/TextArea";
 import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
 import SelectBox from "@/shared/ui/Select/Select";
+
 
 export default function Home() {
 
@@ -68,7 +70,14 @@ export default function Home() {
           <div>
               <RadioButtons/>
           </div>
-
+          <div>
+              <ToolTip title={'Активное и неактивное состояние таба показано в колонке Default. Колонки Active, Hover, Focus и Disabled отображают поведение элемента при наличии соответствующего'}>
+                  <button style={{
+                      backgroundColor: 'red',
+                      color: 'white',
+                  }}>Hover me</button>
+              </ToolTip>
+          </div>
           <Card style={{
               maxWidth:'300px'
           }}>sdfhksdffksfjdf</Card>
