@@ -9,6 +9,7 @@ import {Sidebar} from '@/widgets/Sidebar/Sidebar';
 import {Card} from "@/shared/ui/Cards/Cards";
 import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {useState} from 'react'
+import {AlertsProvider, AlertToast} from "@/shared/ui/Alerts/Alerts";
 import {TextArea} from "@/shared/ui/TextArea/TextArea";
 import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
 import SelectBox from "@/shared/ui/Select/Select";
@@ -46,7 +47,20 @@ export default function Home() {
               <TextArea title={'my text'} error={'error'} placeholder={'my text'}/>
               <TextArea title={'my text'} disabled={true} placeholder={'my text'}/>
           </div>
-
+          <div>
+              <AlertsProvider position="top-right">
+                  {/* Покажем две нотификации сразу в открытом состоянии */}
+                  <AlertToast
+                      variant="error"
+                      title="Error!"
+                      description="Server is not available"
+                  />
+                  <AlertToast
+                      variant="success"
+                      description="Your settings are saved"
+                  />
+              </AlertsProvider>
+          </div>
           <TestCustomTabs/>
         <div>
               <Sidebar/>
