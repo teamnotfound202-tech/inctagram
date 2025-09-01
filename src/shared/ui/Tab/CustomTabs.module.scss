@@ -1,0 +1,94 @@
+@use '@/shared/styles/variables' as *;
+
+.Root {
+  width: 100%;
+}
+
+.List {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.Trigger {
+  all: unset;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 24px;
+  cursor: pointer;
+  line-height: 1.5;
+  transition: 0.25s;
+  color: $dark-100;
+  border-radius: 2px;
+  border-bottom: 2px solid transparent;
+  border-bottom-color: $dark-100;
+
+  &:hover {
+    background: rgba($accent-900, 0.15);
+  }
+
+  &:focus {
+    background: none;
+    outline: 2px solid $accent-700;
+  }
+
+  &:active {
+    background: rgba($accent-100, 0.15);
+  }
+
+  &:disabled {
+    background: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &[data-state='active'] {
+    color: $accent-500;
+    border-bottom-color: $accent-500;
+
+    &:disabled {
+      background: none;
+    }
+  }
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.Content {
+  outline: none;
+  animation: fadeIn 0.2s ease;
+
+  &[data-state='inactive'] {
+    animation: fadeOut 0.1s ease;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
