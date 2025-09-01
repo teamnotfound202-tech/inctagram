@@ -6,7 +6,11 @@ import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
 import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {useState} from 'react'
+
+import {TextArea} from "@/shared/ui/TextArea/TextArea";
+
 import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
+
 
 
 export default function Home() {
@@ -32,6 +36,12 @@ export default function Home() {
               <CustomCheckbox id={'ca2'} />
               <CustomCheckbox id={'ca3'} disabled={true} checked={true} />
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
+          </div>
+
+          <div>
+              <TextArea title={'my text'} placeholder={'my text'}/>
+              <TextArea title={'my text'} error={'error'} placeholder={'my text'}/>
+              <TextArea title={'my text'} disabled={true} placeholder={'my text'}/>
           </div>
 
           <TestCustomTabs/>
