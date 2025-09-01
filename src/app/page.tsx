@@ -1,9 +1,7 @@
 'use client'
 
 
-import {Button} from "@/shared/ui/Button/Button";
-import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
-import {ArrowRightIcon} from '@radix-ui/react-icons';
+
 import SelectBox from "@/shared/ui/Select/Select";
 
 export default function Home() {
