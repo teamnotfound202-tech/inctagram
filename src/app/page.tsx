@@ -1,4 +1,3 @@
-
 'use client'
 
 import {Button} from "@/shared/ui/Button/Button";
@@ -7,16 +6,11 @@ import {SimpleDatePicker} from "@/shared/ui/DatePicker/SimpleDatePicker/SimpleDa
 import {CalendarOutline} from "@/shared/ui/DatePicker/icons/CalendarOutline";
 import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
+import {Card} from "@/shared/ui/Cards/Cards";
 import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {useState} from 'react'
-
 import {TextArea} from "@/shared/ui/TextArea/TextArea";
-
 import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
-
-
-
-
 import SelectBox from "@/shared/ui/Select/Select";
 
 export default function Home() {
@@ -60,6 +54,10 @@ export default function Home() {
           <div>
               <RadioButtons/>
           </div>
+
+          <Card style={{
+              maxWidth:'300px'
+          }}>sdfhksdffksfjdf</Card>
         
          {/* Селекты*/}
                 <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
