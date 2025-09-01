@@ -10,25 +10,6 @@ export default function Home() {
     return (
         <div>
             <main style={{padding: '20px', maxWidth: '800px', margin: '0 auto'}}>
-                <div style={{marginBottom: '30px'}}>
-                    <Button>Button</Button>
-                    <Button variant={'secondary'}>Button</Button>
-                    <Button variant={'outline'}>Button</Button>
-                    <Button variant={'text'}>Button</Button>
-                    <Button asChild variant={'text'}>
-                        <a href="/signup">
-                            Зарегистрироваться
-                            <ArrowRightIcon/>
-                        </a>
-                    </Button>
-                </div>
-
-                <div style={{display: 'flex', flexDirection: 'column', marginBottom: '30px', gap: '10px'}}>
-                    <CustomCheckbox text={'my checkbox'} id={'ca1'}/>
-                    <CustomCheckbox id={'ca2'}/>
-                    <CustomCheckbox id={'ca3'} disabled={true} checked={true}/>
-                    <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
-                </div>
 
                 {/* Селекты*/}
                 <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>

@@ -3,14 +3,12 @@ import styles from './Select.module.scss';
 import SelectOptionList, {SelectOption} from "@/shared/ui/Select/SelectOptionsList";
 
 export interface SelectBoxProps {
-    // Основные пропсы
     options: SelectOption[];
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
     placeholder?: string;
 
-    // Дополнительные настройки
     label?: string;
     error?: string;
     disabled?: boolean;
@@ -37,10 +35,8 @@ const SelectBox: React.FC<SelectBoxProps> = ({
                                                  id
                                              }) => {
 
-    // Внутреннее состояние для неконтролируемого режима
     const [internalValue, setInternalValue] = useState(defaultValue);
-    
-    // Определяем, контролируемый ли компонент
+
     const isControlled = value !== undefined;
     const currentValue = isControlled ? value : internalValue;
 
@@ -53,14 +49,13 @@ const SelectBox: React.FC<SelectBoxProps> = ({
         onValueChange?.(newValue);
     };
 
-    // Синхронизация с внешним value при изменении
+
     useEffect(() => {
         if (isControlled && value !== internalValue) {
             setInternalValue(value);
         }
     }, [value, isControlled, internalValue]);
 
-    // Определяем ошибку для обязательного поля
     const displayError = error || (required && !currentValue ? "Поле обязательно для заполнения" : undefined);
 
     return (
