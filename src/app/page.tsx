@@ -6,7 +6,7 @@ import {SimpleDatePicker} from "@/shared/ui/DatePicker/SimpleDatePicker/SimpleDa
 import {CalendarOutline} from "@/shared/ui/DatePicker/icons/CalendarOutline";
 import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
 import {ArrowRightIcon} from '@radix-ui/react-icons';
-import {useState} from 'react'
+import {useCallback, useState} from 'react'
 import ToolTip from "@/shared/ui/tooltip/Tooltip";
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
 import {Card} from "@/shared/ui/Cards/Cards";
@@ -15,11 +15,20 @@ import {ScrollBox} from "@/shared/ui/Scroll/Scroll";
 import {TextArea} from "@/shared/ui/TextArea/TextArea";
 import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
 import SelectBox from "@/shared/ui/Select/Select";
+import SuperPagination from "@/shared/ui/Pagination/SuperPagination";
 
 
 export default function Home() {
 
   const [isChecked, setIsChecked] = useState(false)
+  const [page, setPage] = useState(1)         //моковые страницы, после теста - удалить
+    const [itemsCount, setItemsCount] = useState(10)         //моковые страницы, после теста - удалить
+
+    const superPaginationChangeHandler = useCallback((page: number, itemsCount: number) => {
+        setPage(page)
+        setItemsCount(itemsCount)
+    }, [])                                                  //моковый коллбэк, после теста - удалить
+
 
   return (
     <div>
@@ -64,7 +73,12 @@ export default function Home() {
                   />
               </AlertsProvider>
           </div>
+          {/* Табы*/}
           <TestCustomTabs/>
+          {/* Пагинация*/}
+         <div>
+                    <SuperPagination page={page} onChange={superPaginationChangeHandler} totalCount={220} itemsCount={itemsCount}/>
+        </div>
         <div>
               <Sidebar/>
           </div>
