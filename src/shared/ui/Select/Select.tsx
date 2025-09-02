@@ -19,7 +19,7 @@ export interface SelectBoxProps {
     id?: string;
 }
 
-const SelectBox: React.FC<SelectBoxProps> = ({
+export const SelectBox: React.FC<SelectBoxProps> = ({
                                                  options,
                                                  value,
                                                  defaultValue = '',
@@ -95,4 +95,3 @@ const SelectBox: React.FC<SelectBoxProps> = ({
     );
 };
 
-export default SelectBox;
