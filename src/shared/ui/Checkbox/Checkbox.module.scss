@@ -36,11 +36,9 @@
 }
 
 
-.iconContainer {
-  svg {
-    width: 14px;
-    height: 14px;
-  }
+.checkboxIcon {
+  width: 14px;
+  height: 14px;
   color: $dark-900;
 }
 
@@ -52,8 +50,8 @@
   position: relative;
   &[data-disabled] {
     background: $light-900;
-    .iconContainer {
-      color: $light-100
+    .checkboxIcon {
+      color: $light-700;
     }
   }
 }
@@ -81,7 +79,7 @@
 }
 
 .checkboxRoot[data-state="checked"] {
-  &.iconContainer {
+  &.checkboxIcon {
     color: $light-100;
   }
 }
