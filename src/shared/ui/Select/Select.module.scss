@@ -2,11 +2,9 @@
 
 .select {
   position: relative;
-  width: 400px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  //overflow-y: hidden;
 }
 
 .trigger {
@@ -24,7 +22,6 @@
   color: $light-100;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 100%;
   box-sizing: border-box;
 
   &:hover {
@@ -90,7 +87,6 @@
   //animation-duration: 0.2s;
   //animation-timing-function: ease;
   cursor: pointer;
-  min-width: 400px;
   max-height: 300px;
 
   &:hover {

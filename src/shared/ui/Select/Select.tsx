@@ -32,7 +32,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                                                  className = '',
                                                  triggerClassName = '',
                                                  name,
-                                                 id
+                                                 id,
                                              }) => {
 
     const [internalValue, setInternalValue] = useState(defaultValue);

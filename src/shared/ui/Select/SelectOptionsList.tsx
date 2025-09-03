@@ -24,7 +24,7 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
                                                                onValueChange,
                                                                placeholder = "Выберите опцию",
                                                                className = '',
-                                                               disabled = false
+                                                               disabled = false,
                                                            }) => {
 
     return (
