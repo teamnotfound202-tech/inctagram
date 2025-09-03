@@ -19,7 +19,6 @@ import {Header} from "@/widgets/Header/Header";
 import {SelectBox} from "@/shared/ui/Select/Select";
 import FlagRussia from "@/shared/ui/Select/icon/FlagRussia.svg"
 import FlagEngland from "@/shared/ui/Select/icon/FlagEngland.svg"
-import s from '@/shared/ui/Select/Select.module.scss'
 
 export default function Home() {
 
