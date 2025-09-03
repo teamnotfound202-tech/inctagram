@@ -3,7 +3,7 @@
 import { Checkbox } from "radix-ui";
 import {useEffect, useState} from 'react';
 import s from './Checkbox.module.scss'
-import {CheckboxIcon} from './CheckboxIcon/CheckboxIcon'
+import CheckboxIcon from './icons/checkIcon.svg'
 
 type Props = {
     text?: string
@@ -28,7 +28,7 @@ export const CustomCheckbox = ({text, id, disabled, checked=false,onChangeAction
             <div className={s.checkboxInner}>
                 <Checkbox.Root className={s.checkboxRoot} checked={isChecked}  onCheckedChange={onChangeHandler} id={id} disabled={disabled}>
                     <Checkbox.Indicator className={s.checkboxIndicator}>
-                        <CheckboxIcon/>
+                        <CheckboxIcon className={s.checkboxIcon}/>
                     </Checkbox.Indicator>
                 </Checkbox.Root>
                 <div className={s.circle}/>

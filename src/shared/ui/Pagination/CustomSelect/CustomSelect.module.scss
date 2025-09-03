@@ -1,0 +1,81 @@
+@import '../../../styles/variables.scss';
+
+.container {
+  position: relative;
+  min-width: 50px;
+}
+
+.header {
+  border: 1px solid $dark-300;
+  border-radius: 2px;
+  background-color: $dark-500;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.2s ease;
+  padding: 6px 2px 6px 6px;
+  width: 52px;
+  height: 24px;
+  color: $light-100;
+
+
+  &:hover {
+    border-color: $accent-500;
+  }
+}
+
+.container.open .header {
+  border-color: $dark-300;
+  box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.25);
+}
+
+.selectedValue {
+  // Стили для выбранного значения
+}
+
+.arrow {
+  transition: transform 0.2s ease;
+  transform: translateY(-3px);
+}
+
+.container.open .arrow {
+  transform: rotate(180deg) translateY(-3px);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: $dark-500;
+  border: 1px solid $dark-300;
+  color: $light-100;
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+
+  z-index: 1000;
+  max-height: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.option {
+  padding: 0 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: $light-100;
+  line-height: 171%;
+
+  &:hover {
+    background-color: $dark-100;
+    color: $light-100;
+  }
+
+  &.selected {
+    color: $light-100;
+  }
+}
+
+.iconContainer {
+  padding: 6px 6px;
+}
