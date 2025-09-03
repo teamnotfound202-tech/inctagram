@@ -6,6 +6,10 @@ import {SimpleDatePicker} from "@/shared/ui/DatePicker/SimpleDatePicker/SimpleDa
 import {CalendarOutline} from "@/shared/ui/DatePicker/icons/CalendarOutline";
 import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
 import {ArrowRightIcon} from '@radix-ui/react-icons';
+import {useState} from 'react'
+import {TextArea} from "@/shared/ui/TextArea/TextArea";
+import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
+import SelectBox from "@/shared/ui/Select/Select";
 import {useCallback, useState} from 'react'
 import ToolTip from "@/shared/ui/tooltip/Tooltip";
 import {Sidebar} from '@/widgets/Sidebar/Sidebar';
@@ -17,7 +21,6 @@ import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
 import {SelectBox} from "@/shared/ui/Select/Select";
 import SuperPagination from "@/shared/ui/Pagination/SuperPagination";
 import {Header} from "@/widgets/Header/Header";
-
 
 export default function Home() {
 
@@ -33,6 +36,7 @@ export default function Home() {
 
   return (
     <div>
+
       <main style={{padding: '20px', maxWidth: '1280px', margin: '0 auto'}}>
           <div style={{marginBottom: '30px'}}>
               <Header isLogin={true} notification={11}/>
@@ -150,39 +154,43 @@ export default function Home() {
 
         
          {/* Селекты*/}
-                <div style={{display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid white', padding: '10px'}}>
-                    {/* Простой селект с defaultValue */}
-                    <SelectBox
-                        options={[{value: 'option1', label: 'Select Box 1'},
-                            {value: 'option2', label: 'Select Box 2'},
-                            {value: 'option3', label: 'Select Box 3'}]}
-                        defaultValue="option1"
-                        onValueChange={(value) => console.log('Simple selected:', value)}
-                        placeholder="Select Box"
-                        label="Простой селект"
-                    />
 
-                    {/* Обязательный селект */}
-                    <SelectBox
-                        options={[{value: 'option1', label: 'Select Box 1'},
-                            {value: 'option2', label: 'Select Box 2'},
-                            {value: 'option3', label: 'Select Box 3'}]}
-                        onValueChange={(value) => console.log('Required selected:', value)}
-                        placeholder="Выберите обязательную опцию"
-                        label="Обязательный селект"
-                        required
-                    />
-                    {/* Отключенный селект */}
-                    <SelectBox
-                        options={[{value: 'option1', label: 'Select Box 1'},
-                            {value: 'option2', label: 'Select Box 2'},
-                            {value: 'option3', label: 'Select Box 3'}]}
-                        defaultValue="option2"
-                        placeholder="Выберите опцию"
-                        label="Отключенный селект"
-                        disabled
-                  />
-                </div>
+<div>
+    <div style={{border:'1px solid white',padding:'10px',display: 'flex', flexDirection: 'column', gap: '20px'}}>
+        {/* Простой селект с defaultValue */}
+        <SelectBox
+            options={[{value: 'option1', label: 'Select Box 1'},
+                {value: 'option2', label: 'Select Box 2'},
+                {value: 'option3', label: 'Select Box 3'}]}
+            defaultValue="option1"
+            onValueChange={(value) => console.log('Simple selected:', value)}
+            placeholder="Select Box"
+            label="Простой селект"
+        />
+
+        {/* Обязательный селект */}
+        <SelectBox
+            options={[{value: 'option1', label: 'Select Box 1'},
+                {value: 'option2', label: 'Select Box 2'},
+                {value: 'option3', label: 'Select Box 3'}]}
+            onValueChange={(value) => console.log('Required selected:', value)}
+            placeholder="Выберите обязательную опцию"
+            label="Обязательный селект"
+            required={false}
+        />
+
+        {/* Отключенный селект */}
+        <SelectBox
+            options={[{value: 'option1', label: 'Select Box 1'},
+                {value: 'option2', label: 'Select Box 2'},
+                {value: 'option3', label: 'Select Box 3'}]}
+            defaultValue="option2"
+            placeholder="Выберите опцию"
+            label="Отключенный селект"
+            disabled
+        />
+    </div>
+</div>
       </main>
     </div>
   );

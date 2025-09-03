@@ -61,7 +61,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     return (
         <div className={`${styles.select} ${className}`}>
             {label && (
-                <label htmlFor={selectId} className={styles.label}>
+                <label className={styles.label}>
                     {label}
                     {required && <span style={{ color: '#ef4444' }}>*</span>}
                 </label>
