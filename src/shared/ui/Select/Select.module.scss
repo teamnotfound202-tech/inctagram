@@ -3,6 +3,10 @@
 .select {
   position: relative;
   width: 400px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  //overflow-y: hidden;
 }
 
 .trigger {
@@ -16,6 +20,7 @@
   gap: 8px;
   background-color: $dark-900;
   border: 1px solid $light-900;
+  outline: 2px solid transparent;
   color: $light-100;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -30,8 +35,8 @@
 
   &:focus {
     outline: 2px solid $accent-500;
-    border: none;
-    outline-offset: 2px;
+    border: 1px solid transparent;
+    //outline-offset: 2px;
     color: $light-900;
   }
 
@@ -75,14 +80,15 @@
 }
 
 .content {
+  position: absolute;
   overflow: hidden;
   border: 1px solid $light-100;
-  border-top: none;
+  //border-top: none;
   background-color: $dark-900;
   color: $light-900;
-  z-index: 1000;
-  animation-duration: 0.2s;
-  animation-timing-function: ease;
+  //z-index: 1000;
+  //animation-duration: 0.2s;
+  //animation-timing-function: ease;
   cursor: pointer;
   min-width: 400px;
   max-height: 300px;
@@ -109,27 +115,27 @@
   overflow-y: auto;
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-}
+//@keyframes slideUp {
+//  from {
+//    opacity: 0;
+//    transform: translateY(-8px);
+//  }
+//  to {
+//    opacity: 1;
+//    transform: translateY(0);
+//  }
+//}
+//
+//@keyframes slideDown {
+//  from {
+//    opacity: 1;
+//    transform: translateY(0);
+//  }
+//  to {
+//    opacity: 0;
+//    transform: translateY(-8px);
+//  }
+//}
 
 .label {
   display: block;

@@ -38,7 +38,11 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
             </Select.Trigger>
 
             <Select.Portal>
-                <Select.Content className={styles.content} position="popper" sideOffset={4}>
+                <Select.Content 
+                    className={styles.content} 
+                    position="popper"
+                    sideOffset={1}
+                >
                     <Select.Viewport className={styles.viewport}>
                         {options.map((option) => (
                             <SelectItem
