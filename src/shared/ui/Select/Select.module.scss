@@ -115,27 +115,27 @@
   overflow-y: auto;
 }
 
-//@keyframes slideUp {
-//  from {
-//    opacity: 0;
-//    transform: translateY(-8px);
-//  }
-//  to {
-//    opacity: 1;
-//    transform: translateY(0);
-//  }
-//}
-//
-//@keyframes slideDown {
-//  from {
-//    opacity: 1;
-//    transform: translateY(0);
-//  }
-//  to {
-//    opacity: 0;
-//    transform: translateY(-8px);
-//  }
-//}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
 
 .label {
   display: block;
@@ -176,3 +176,14 @@
     background-color: $dark-300;
     color: $accent-500;
   }}
+
+.itemContent{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  svg{
+    width: 24px;
+    height: 24px;
+  }
+}
+

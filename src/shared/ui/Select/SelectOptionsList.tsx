@@ -6,6 +6,7 @@ export interface SelectOption {
     value: string;
     label: string;
     disabled?: boolean;
+    icon?: React.ReactNode;
 }
 
 interface SelectOptionListProps {
@@ -25,21 +26,22 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
                                                                className = '',
                                                                disabled = false
                                                            }) => {
+
     return (
         <Select.Root value={value} onValueChange={onValueChange} disabled={disabled}>
             <Select.Trigger
                 className={`${styles.trigger} ${className}`}
                 aria-label="Выбор опции"
             >
-                <Select.Value placeholder={placeholder} />
+                <Select.Value placeholder={placeholder}/>
                 <Select.Icon className={styles.icon}>
-                    <ChevronDownIcon />
+                    <ChevronDownIcon/>
                 </Select.Icon>
             </Select.Trigger>
 
             <Select.Portal>
-                <Select.Content 
-                    className={styles.content} 
+                <Select.Content
+                    className={styles.content}
                     position="popper"
                     sideOffset={1}
                 >
@@ -50,6 +52,7 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
                                 value={option.value}
                                 disabled={option.disabled}
                             >
+                                {option.icon}
                                 {option.label}
                             </SelectItem>
                         ))}
@@ -69,7 +72,7 @@ interface SelectItemProps {
 }
 
 const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
-    ({ children, value, disabled, className = '', ...props }, forwardedRef) => {
+    ({children, value, disabled, className = '', ...props}, forwardedRef) => {
         return (
             <Select.Item
                 value={value}
@@ -78,7 +81,11 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
                 {...props}
                 ref={forwardedRef}
             >
-                <Select.ItemText>{children}</Select.ItemText>
+                <Select.ItemText>
+                    <div className={styles.itemContent}>
+                        {children}
+                    </div>
+                </Select.ItemText>
             </Select.Item>
         );
     }
