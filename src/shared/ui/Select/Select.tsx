@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import styles from './Select.module.scss';
 import SelectOptionList, {SelectOption} from "@/shared/ui/Select/SelectOptionsList";
+import clsx from "clsx";
 
-export interface SelectBoxProps {
+export type SelectBoxProps = {
     options: SelectOption[];
     value?: string;
     defaultValue?: string;
@@ -15,8 +16,12 @@ export interface SelectBoxProps {
     required?: boolean;
     className?: string;
     triggerClassName?: string;
-    name?: string;
+    name: string;
     id?: string;
+    type?: 'default' | 'lang'
+    
+    // Настройки размеров
+    fullWidth?: boolean
 }
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
@@ -33,35 +38,44 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                                                  triggerClassName = '',
                                                  name,
                                                  id,
+    fullWidth = true,
+                                                        type = 'default'
+
                                              }) => {
 
     const [internalValue, setInternalValue] = useState(defaultValue);
+    const currentValue = value !== undefined ? value : internalValue;
 
-    const isControlled = value !== undefined;
-    const currentValue = isControlled ? value : internalValue;
-
-    const selectId = id || name || `select-${Math.random().toString(36).substr(2, 9)}`;
-
-    const handleValueChange = (newValue: string) => {
-        if (!isControlled) {
+    const handleValueChange = useCallback((newValue: string) => {
+        if (value === undefined) {
             setInternalValue(newValue);
         }
         onValueChange?.(newValue);
-    };
+    }, [value, onValueChange]);
 
-
-    useEffect(() => {
-        if (isControlled && value !== internalValue) {
-            setInternalValue(value);
-        }
-    }, [value, isControlled, internalValue]);
+    const selectId = id || name;
 
     const displayError = error || (required && !currentValue ? "Поле обязательно для заполнения" : undefined);
 
+    // стили для ширины
+    // const selectStyles: React.CSSProperties = {
+    //     // width: typeof width === 'number' ? `${width}px` : width,
+    //
+    // };
+
+    const triggerId = selectId ? `${selectId}-trigger` : undefined;
+    const labelId = selectId ? `${selectId}-label` : undefined;
+
     return (
-        <div className={`${styles.select} ${className}`}>
+        <div className={clsx(
+            styles.selectContainer,
+            className,
+            { [styles.fullWidth]: fullWidth }
+        )}>
             {label && (
-                <label className={styles.label}>
+                <label className={styles.label}
+                       id={labelId}
+                       htmlFor={triggerId}>
                     {label}
                     {required && <span style={{ color: '#ef4444' }}>*</span>}
                 </label>
@@ -69,11 +83,19 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
             <SelectOptionList
                 options={options}
+                id={triggerId}
+                aria-labelledby={labelId}
                 value={currentValue}
                 onValueChange={handleValueChange}
                 placeholder={placeholder}
                 disabled={disabled}
-                className={`${triggerClassName} ${displayError ? styles.error : ''} ${disabled ? styles.disabled : ''}`}
+                className={clsx(
+                    triggerClassName,
+                    { [styles.error]: displayError },
+                    { [styles.disabled]: disabled }
+                )}
+                fullWidth={fullWidth}
+                type={type}
             />
 
             {displayError && (

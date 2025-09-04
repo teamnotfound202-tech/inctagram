@@ -19,6 +19,7 @@ import {Header} from "@/widgets/Header/Header";
 import {SelectBox} from "@/shared/ui/Select/Select";
 import FlagRussia from "@/shared/ui/Select/icon/FlagRussia.svg"
 import FlagEngland from "@/shared/ui/Select/icon/FlagEngland.svg"
+import '@/shared/ui/Select/Select.module.scss'
 
 export default function Home() {
 
@@ -107,7 +108,7 @@ export default function Home() {
                 </div>
                 <div style={{marginBottom: '30px', border: '1px solid white', padding: '10px'}}>
                     <ToolTip
-                        title={'Активное и неактивное состояние таба показано в колонке Default. Колонки Active, Hover, Focus и Disabled отображают поведение элемента при наличии соответствующего'}>
+                        title={'Активное и неактивное состояние таба показано в колонке Default.Колонки Active, Hover, Focus и Disabled отображают поведение элемента при наличии соответствующего'}>
                         <button style={{
                             backgroundColor: 'red',
                             color: 'white',
@@ -188,7 +189,7 @@ export default function Home() {
                                     great pleasure. To take a trivial example, which of us ever undertakes laborious
                                     physical exercise, except to obtain some advantage from it? But who has any right to
                                     find fault with a man who chooses to enjoy a pleasure that has no annoying
-                                    consequences, or one who avoids a pain that produces no resultant pleasure?"
+                                    consequences, or one who avoids a pain that produces no resultant pleasure?&quot;
 
                                 </div>
                             </ScrollBox>
@@ -207,36 +208,55 @@ export default function Home() {
                         flexDirection: 'column',
                         gap: '20px'
                     }}>
-                        {/* Простой селект с defaultValue */}
                         <SelectBox
-                            options={[{value: 'option1', icon:<FlagRussia/>,label: 'Select Box 1'},
-                                {value: 'option2', label: 'Select Box 2', icon:<FlagEngland/>}]}
+                            name={'Select1'}
+                            type={'lang'}
+                            options={[
+                                {value: 'option1', icon: <FlagRussia/>, label: 'Russian'},
+                                {value: 'option2', icon: <FlagEngland/>, label: 'English'}
+                            ]}
                             defaultValue="option1"
-                            onValueChange={(value) => console.log('Simple selected:', value)}
-                            placeholder="Select Box"
-                            label="Простой селект"
+                            onValueChange={(value) => console.log('Selected:', value)}
+                            placeholder="Select language"
+                            label="Язык"
+                            id="language-select"
+                            fullWidth={false}
                         />
 
-                        {/* Обязательный селект */}
                         <SelectBox
+                            name={'Select2'}
                             options={[{value: 'option1', label: 'Select Box 1'},
                                 {value: 'option2', label: 'Select Box 2'},
                                 {value: 'option3', label: 'Select Box 3'}]}
-                            onValueChange={(value) => console.log('Required selected:', value)}
-                            placeholder="Выберите обязательную опцию"
-                            label="Обязательный селект"
+                            onValueChange={(value) => value}
+                            label="селект 2"
+                            id="select1-select"
                             required={false}
                         />
 
-                        {/* Отключенный селект */}
-                        <SelectBox
+                        {/* Отключенный селект с шириной 100% */}
+                        <SelectBox name={'Select3'}
                             options={[{value: 'option1', label: 'Select Box 1'},
                                 {value: 'option2', label: 'Select Box 2'},
                                 {value: 'option3', label: 'Select Box 3'}]}
                             defaultValue="option2"
-                            placeholder="Выберите опцию"
-                            label="Отключенный селект"
+                            label="селект 3"
+                            id="select2-select"
                             disabled
+                        />
+
+                        {/* Селект с минимальной и максимальной шириной */}
+                        <SelectBox name={'Select4'}
+                            options={[{value: 'option1', label: 'Select Box 1'},
+                                {value: 'option2', label: 'Select Box 2'},
+                                {value: 'option3', label: 'Select Box 3'}]}
+                            defaultValue="option1"
+                            onValueChange={(value) => value}
+                            label="Гибкий селект"
+                            id="select3-select"
+                            fullWidth={false}
+                            // className={styles.customSelect}
+                            className="customSelect"
                         />
                     </div>
                 </div>
