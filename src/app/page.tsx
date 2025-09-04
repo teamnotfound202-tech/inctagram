@@ -19,6 +19,7 @@ import {Header} from "@/widgets/Header/Header";
 import {SelectBox} from "@/shared/ui/Select/Select";
 import FlagRussia from "@/shared/ui/Select/icon/FlagRussia.svg"
 import FlagEngland from "@/shared/ui/Select/icon/FlagEngland.svg"
+import '@/shared/ui/Select/Select.module.scss'
 
 export default function Home() {
 
@@ -208,47 +209,54 @@ export default function Home() {
                         gap: '20px'
                     }}>
                         <SelectBox
-                            options={[{value: 'option1', icon:<FlagRussia/>,label: 'Russian'},
-                                {value: 'option2', label: 'England', icon:<FlagEngland/>}]}
+                            name={'Select1'}
+                            type={'lang'}
+                            options={[
+                                {value: 'option1', icon: <FlagRussia/>, label: 'Russian'},
+                                {value: 'option2', icon: <FlagEngland/>, label: 'English'}
+                            ]}
                             defaultValue="option1"
-                            onValueChange={(value) => console.log('Simple selected:', value)}
-                            placeholder="Select Box"
-                            label="селект 1"
-                            width={163}
+                            onValueChange={(value) => console.log('Selected:', value)}
+                            placeholder="Select language"
+                            label="Язык"
+                            id="language-select"
+                            fullWidth={false}
                         />
 
                         <SelectBox
+                            name={'Select2'}
                             options={[{value: 'option1', label: 'Select Box 1'},
                                 {value: 'option2', label: 'Select Box 2'},
                                 {value: 'option3', label: 'Select Box 3'}]}
-                            onValueChange={(value) => console.log('Required selected:', value)}
+                            onValueChange={(value) => value}
                             label="селект 2"
-                            width="210px"
+                            id="select1-select"
                             required={false}
                         />
 
                         {/* Отключенный селект с шириной 100% */}
-                        <SelectBox
+                        <SelectBox name={'Select3'}
                             options={[{value: 'option1', label: 'Select Box 1'},
                                 {value: 'option2', label: 'Select Box 2'},
                                 {value: 'option3', label: 'Select Box 3'}]}
                             defaultValue="option2"
                             label="селект 3"
-                            width="100%"
+                            id="select2-select"
                             disabled
                         />
 
                         {/* Селект с минимальной и максимальной шириной */}
-                        <SelectBox
+                        <SelectBox name={'Select4'}
                             options={[{value: 'option1', label: 'Select Box 1'},
                                 {value: 'option2', label: 'Select Box 2'},
                                 {value: 'option3', label: 'Select Box 3'}]}
-                            defaultValue=" "
-                            onValueChange={(value) => console.log('Flexible selected:', value)}
+                            defaultValue="option1"
+                            onValueChange={(value) => value}
                             label="Гибкий селект"
-                            minWidth={150}
-                            maxWidth={400}
-                            width="50%"
+                            id="select3-select"
+                            fullWidth={false}
+                            // className={styles.customSelect}
+                            className="customSelect"
                         />
                     </div>
                 </div>
