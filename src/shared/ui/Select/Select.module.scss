@@ -2,6 +2,7 @@
 
 .select {
   position: relative;
+  width: 100%;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -23,6 +24,8 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-sizing: border-box;
+  width: 100%;
+  height: 36px;
 
   &:hover {
     border-color: $light-100;
@@ -33,7 +36,6 @@
   &:focus {
     outline: 2px solid $accent-500;
     border: 1px solid transparent;
-    //outline-offset: 2px;
     color: $light-900;
   }
 
@@ -77,17 +79,17 @@
 }
 
 .content {
-  position: absolute;
   overflow: hidden;
   border: 1px solid $light-100;
-  //border-top: none;
   background-color: $dark-900;
   color: $light-900;
-  //z-index: 1000;
-  //animation-duration: 0.2s;
-  //animation-timing-function: ease;
+  z-index: 1000;
+  animation-duration: 0.2s;
+  animation-timing-function: ease;
   cursor: pointer;
+  width: var(--radix-select-trigger-width);
   max-height: 300px;
+  box-sizing: border-box;
 
   &:hover {
     //border-color: $light-100;

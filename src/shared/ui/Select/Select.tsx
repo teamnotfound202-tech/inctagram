@@ -17,6 +17,11 @@ export interface SelectBoxProps {
     triggerClassName?: string;
     name?: string;
     id?: string;
+    
+    // Настройки размеров
+    width?: string | number;
+    minWidth?: string | number;
+    maxWidth?: string | number;
 }
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
@@ -33,6 +38,9 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                                                  triggerClassName = '',
                                                  name,
                                                  id,
+                                                 width,
+                                                 minWidth,
+                                                 maxWidth
                                              }) => {
 
     const [internalValue, setInternalValue] = useState(defaultValue);
@@ -58,8 +66,15 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
     const displayError = error || (required && !currentValue ? "Поле обязательно для заполнения" : undefined);
 
+    // стили для ширины
+    const selectStyles: React.CSSProperties = {
+        width: typeof width === 'number' ? `${width}px` : width,
+        minWidth: typeof minWidth === 'number' ? `${minWidth}px` : minWidth,
+        maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
+    };
+
     return (
-        <div className={`${styles.select} ${className}`}>
+        <div className={`${styles.select} ${className}`} style={selectStyles}>
             {label && (
                 <label className={styles.label}>
                     {label}
