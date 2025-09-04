@@ -4,14 +4,17 @@
   display: inline-flex;
   gap: 8px;
   align-items: center;
+  cursor: pointer;
 }
 
 .checkboxInner {
   position: relative;
   z-index: 2;
+  cursor: pointer;
 }
 
 .label {
+  cursor: pointer;
   color: $light-500;
 }
 
@@ -36,15 +39,14 @@
 }
 
 
-.iconContainer {
-  svg {
-    width: 14px;
-    height: 14px;
-  }
+.checkboxIcon {
+  width: 14px;
+  height: 14px;
   color: $dark-900;
 }
 
 .checkboxIndicator {
+  cursor: pointer;
   display: block;
   width: 100%;
   height: 100%;
@@ -52,8 +54,8 @@
   position: relative;
   &[data-disabled] {
     background: $light-900;
-    .iconContainer {
-      color: $light-100
+    .checkboxIcon {
+      color: $light-700;
     }
   }
 }
@@ -81,7 +83,7 @@
 }
 
 .checkboxRoot[data-state="checked"] {
-  &.iconContainer {
+  &.checkboxIcon {
     color: $light-100;
   }
 }
