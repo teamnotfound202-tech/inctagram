@@ -20,7 +20,7 @@ type DatePickerRangeProps = {
     onDateChange?: (date: DateRange) => void;
     label?: string;
     error?: boolean
-    disabled?: boolean
+    disabled?: boolean;
 } & Omit<DayPickerProps, "mode" | "selected" | "onSelect">;
 
 export const RangeDatePicker = ({

@@ -17,7 +17,6 @@ export type DatePickerSingleProps = {
     onDateChange?: (date: Date) => void;
     label?: string;
     error?:boolean
-    disabled?:boolean
 } & Omit<DayPickerProps, "mode" | "selected" | "onSelect">;
 
 export const SimpleDatePicker = ({
