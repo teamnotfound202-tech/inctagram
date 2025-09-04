@@ -2,9 +2,11 @@
 
 .select {
   position: relative;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  display: inline-block;
+
+  &.fullWidth {
+    width: 100%;
+  }
 }
 
 .trigger {
@@ -23,6 +25,16 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-sizing: border-box;
+  height: 36px;
+  min-width: 210px;
+
+  &.selectLang{
+    min-width: 163px;
+  }
+
+  &.fullWidth {
+    width: 100%;
+  }
 
   &:hover {
     border-color: $light-100;
@@ -33,7 +45,6 @@
   &:focus {
     outline: 2px solid $accent-500;
     border: 1px solid transparent;
-    //outline-offset: 2px;
     color: $light-900;
   }
 
@@ -77,20 +88,19 @@
 }
 
 .content {
-  position: absolute;
   overflow: hidden;
   border: 1px solid $light-100;
-  //border-top: none;
   background-color: $dark-900;
   color: $light-900;
-  //z-index: 1000;
-  //animation-duration: 0.2s;
-  //animation-timing-function: ease;
+  z-index: 1000;
+  animation-duration: 0.2s;
+  animation-timing-function: ease;
   cursor: pointer;
+  width: var(--radix-select-trigger-width);
   max-height: 300px;
+  box-sizing: border-box;
 
   &:hover {
-    //border-color: $light-100;
     background-color: $dark-900;
     color: $light-900;
   }
@@ -155,7 +165,6 @@
   font-size: 14px;
   line-height: 1;
   color: $light-100;
-  border-radius: 4px;
   display: flex;
   align-items: center;
   height: 32px;
@@ -183,3 +192,10 @@
   }
 }
 
+.fullWidth{
+  width: 100%;
+}
+
+.customSelect{
+  background-color: #fff;
+}

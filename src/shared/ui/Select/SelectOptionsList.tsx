@@ -1,21 +1,29 @@
 import React from 'react';
 import * as Select from '@radix-ui/react-select';
 import styles from './Select.module.scss';
+import ChevronDownIconUpDown from './icon/ChevronDownIconUpDown.svg'
+import clsx from "clsx";
 
-export interface SelectOption {
+export type SelectOption = {
     value: string;
     label: string;
     disabled?: boolean;
     icon?: React.ReactNode;
 }
 
-interface SelectOptionListProps {
+export type SelectOptionListProps ={
     options: SelectOption[];
     value?: string;
     onValueChange?: (value: string) => void;
     placeholder?: string;
     className?: string;
     disabled?: boolean;
+    id?: string;
+    'aria-labelledby'?: string;
+
+    fullWidth?: boolean;
+
+    type: 'default' | 'lang'
 }
 
 const SelectOptionList: React.FC<SelectOptionListProps> = ({
@@ -25,17 +33,30 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
                                                                placeholder = "Выберите опцию",
                                                                className = '',
                                                                disabled = false,
+                                                               id,
+                                                               'aria-labelledby': ariaLabelledBy,
+
+                                                               fullWidth = true,
+                                                               type = 'default'
                                                            }) => {
 
     return (
         <Select.Root value={value} onValueChange={onValueChange} disabled={disabled}>
             <Select.Trigger
-                className={`${styles.trigger} ${className}`}
-                aria-label="Выбор опции"
+                className={clsx(
+                    styles.trigger,
+                    className,
+                    { [styles.fullWidth]: fullWidth,
+                    [styles.selectLang] : type=== 'lang'
+                    },
+
+                )}
+                id={id}
+                aria-labelledby={ariaLabelledBy}
             >
                 <Select.Value placeholder={placeholder}/>
                 <Select.Icon className={styles.icon}>
-                    <ChevronDownIcon/>
+                    <ChevronDownIconUpDown/>
                 </Select.Icon>
             </Select.Trigger>
 
@@ -64,7 +85,7 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
 };
 
 // Компонент для отдельного элемента списка
-interface SelectItemProps {
+export type SelectItemProps = {
     children: React.ReactNode;
     value: string;
     disabled?: boolean;
@@ -77,7 +98,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
             <Select.Item
                 value={value}
                 disabled={disabled}
-                className={`${styles.item} ${className}`}
+                className={clsx(styles.item, className)}
                 {...props}
                 ref={forwardedRef}
             >
@@ -92,24 +113,5 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
 );
 
 SelectItem.displayName = 'SelectItem';
-
-// Иконка стрелки вниз
-const ChevronDownIcon: React.FC = () => (
-    <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <path
-            d="M4 6L8 10L12 6"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        />
-    </svg>
-);
 
 export default SelectOptionList;

@@ -19,12 +19,12 @@ import {Header} from "@/widgets/Header/Header";
 import {SelectBox} from "@/shared/ui/Select/Select";
 import FlagRussia from "@/shared/ui/Select/icon/FlagRussia.svg"
 import FlagEngland from "@/shared/ui/Select/icon/FlagEngland.svg"
-import {RangeDatePicker} from "@/shared/ui/DatePicker/RangeDatePicker/RangeDatePicker";
+import '@/shared/ui/Select/Select.module.scss'
 
 export default function Home() {
 
-  const [isChecked, setIsChecked] = useState(false)
-  const [page, setPage] = useState(1)         //моковые страницы, после теста - удалить
+    const [isChecked, setIsChecked] = useState(false)
+    const [page, setPage] = useState(1)         //моковые страницы, после теста - удалить
     const [itemsCount, setItemsCount] = useState(10)         //моковые страницы, после теста - удалить
 
     const superPaginationChangeHandler = useCallback((page: number, itemsCount: number) => {
@@ -68,8 +68,7 @@ export default function Home() {
                     <CustomCheckbox id={'ca3'} disabled={true} checked={true}/>
                     <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
                     <SimpleDatePicker/>
-                    <RangeDatePicker/>
-
+                    <CalendarOutline/>
                 </div>
 
                 <div style={{marginBottom: '30px', border: '1px solid white', padding: '10px'}}>
