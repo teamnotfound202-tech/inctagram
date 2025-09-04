@@ -11,7 +11,7 @@ const values = [
     {
         id: 'r2',
         text: 'RadioGroup2',
-        disabled: false
+        disabled: true
     },
 ]
 
