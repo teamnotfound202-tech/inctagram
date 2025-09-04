@@ -29,7 +29,7 @@ export const SimpleDatePicker = ({
                                  }: DatePickerSingleProps) => {
     const [opened,setIsOpened]=useState(false)
     const [error,setError]=useState(false);
-    const [disabled,setIsDisabled]=useState(true);
+    const [disabled,setIsDisabled]=useState(false);
     const handleOpen = () => {
         setIsOpened(prev=>!prev);
     }
