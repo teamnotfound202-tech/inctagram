@@ -1,15 +1,15 @@
 import {
     baseApi,
     type RequestBodyLogin,
-    type RequestBodyRegistration,
     type RequestBodyRegistrationConformation,
     type ResponsesLogin, type ResponsesMe
 } from '@/shared/api';
+import type {RegistrationData} from '@/shared/api/types';
 
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        registration: builder.mutation<void, RequestBodyRegistration>({
+        registration: builder.mutation<void, RegistrationData>({
             query: (body) => ({ method: "post", url: "auth/registration", body }),
         }),
         registrationConfirmation: builder.mutation<void, RequestBodyRegistrationConformation>({
@@ -26,3 +26,5 @@ export const authApi = baseApi.injectEndpoints({
         }),
     }),
 })
+
+export const {useRegistrationMutation} = authApi

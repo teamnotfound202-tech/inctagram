@@ -9,13 +9,13 @@ export type ResponsesTypeError = {
     "error": "string"
 }
 
-export type RequestBodyRegistration = {
+export type RegistrationData = {
     "userName": string,
     "email": string,
     "password": string
 }
 
-export type RequestBodyLogin = Omit<RequestBodyRegistration, 'userName'>
+export type RequestBodyLogin = Omit<RegistrationData, 'userName'>
 
 export type ResponsesLogin = {
     "accessToken": string

@@ -18,4 +18,9 @@ button {
 }
 a {
   text-decoration: none;
+  all: unset;
+}
+
+.main {
+    margin: 0 auto;
 }
