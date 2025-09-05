@@ -1,6 +1,9 @@
 import { Button } from '@/shared/ui/Button/Button';
 import s from './Header.module.scss';
 import NotificationIcon from '@/widgets/Header/icons/notification.svg';
+import {SelectBox} from "@/shared/ui/Select/Select";
+import FlagRussia from '@/shared/ui/Select/icon/FlagRussia.svg'
+import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
 
 type Props = {
     isLogin: boolean;
@@ -13,7 +16,7 @@ export const Header = ({ isLogin, notification }: Props) => {
 
             <a className={s.headerTitle} href={'/'}>Inctagram</a>
 
-            <div>
+
                 {isLogin ? (
                     <div className={s.headerGroupContainer}>
 
@@ -21,23 +24,34 @@ export const Header = ({ isLogin, notification }: Props) => {
                             <NotificationIcon />
                             { notification!== 0 && <span className={s.notoficationCount}>{notification}</span>}
                         </button>
-
-                        <select style={{width: '163px', height:'36px', backgroundColor: 'transparent'}}>
-                            <option>Пункт 1</option>
-                            <option>Пункт 2</option>
-                        </select>
+                        <SelectBox
+                            options={[
+                            {value:'option1', icon:<FlagRussia/>, label:'Russia'},
+                            {value:'option2', icon:<FlagEngland/>, label:'England'},
+                        ]}
+                            name={'select1'}
+                            type={'lang'}
+                            defaultValue={'option2'}
+                            fullWidth={false}
+                        />
                     </div>
                 ) : (
                     <div className={s.buttonGroupLogin}>
-                        <select style={{width: '163px', height:'36px', backgroundColor: 'transparent'}}>
-                            <option>Пункт 1</option>
-                            <option>Пункт 2</option>
-                        </select>
+                        <SelectBox
+                            options={[
+                                {value:'option1', icon:<FlagRussia/>, label:'Russia'},
+                                {value:'option2', icon:<FlagEngland/>, label:'England'},
+                            ]}
+                            name={'select1'}
+                            type={'lang'}
+                            defaultValue={'option2'}
+                            fullWidth={false}
+                        />
                         <Button variant={'text'}>Log in</Button>
                         <Button>Sign up</Button>
                     </div>
                 )}
-            </div>
+
         </header>
     );
 };
