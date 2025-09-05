@@ -49,6 +49,7 @@
   background-color: $danger-500;
 }
 .buttonGroupLogin{
+  display: flex;
 
   &>*:nth-child(1){
     margin-right: 36px;
