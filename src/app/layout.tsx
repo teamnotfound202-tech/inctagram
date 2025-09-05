@@ -1,4 +1,5 @@
 import {StoreWrapper} from '@/shared/lib/store/StoreWrapper';
+import {Header} from '@/widgets/Header/Header';
 import type { Metadata } from "next";
 import { Inter} from "next/font/google";
 import "./globals.css";
@@ -26,7 +27,10 @@ export default function RootLayout({
       <body className={inter.variable}>
       <Theme appearance={'dark'}>
           <StoreWrapper>
-            {children}
+              <Header isLogin={false} notification={0}/>
+              <main className={'main'}>
+                {children}
+              </main>
           </StoreWrapper>
       </Theme>
       </body>

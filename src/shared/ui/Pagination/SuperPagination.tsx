@@ -11,7 +11,7 @@ export type SuperPaginationPropsType = {
     onChange: (page: number, count: number) => void
 }
 
-const SuperPagination: React.FC<SuperPaginationPropsType> = (
+export const SuperPagination: React.FC<SuperPaginationPropsType> = (
     {
         page, itemsCount, totalCount, onChange,
     }
@@ -66,4 +66,4 @@ const SuperPagination: React.FC<SuperPaginationPropsType> = (
         </div>
     )
 }
-export default SuperPagination
+

@@ -1,4 +1,6 @@
+'use client'
 import { Button } from '@/shared/ui/Button/Button';
+import Link from 'next/link';
 import s from './Header.module.scss';
 import NotificationIcon from '@/widgets/Header/icons/notification.svg';
 import {SelectBox} from "@/shared/ui/Select/Select";
@@ -47,8 +49,12 @@ export const Header = ({ isLogin, notification }: Props) => {
                             defaultValue={'option2'}
                             fullWidth={false}
                         />
-                        <Button variant={'text'}>Log in</Button>
-                        <Button>Sign up</Button>
+                        <Button variant={'text'} asChild>
+                            <Link href={'/auth/login'}>Log in</Link>
+                        </Button>
+                        <Button asChild>
+                            <Link href={'/auth/register'}>Sign up</Link>
+                        </Button>
                     </div>
                 )}
 
