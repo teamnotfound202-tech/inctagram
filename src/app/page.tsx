@@ -1,6 +1,9 @@
 'use client';
 import {Button} from "@/shared/ui/Button/Button";
 import {CustomCheckbox} from '@/shared/ui/Checkbox/Checkbox';
+
+import {RadioButtons} from '@/shared/ui/RadioButtons/RadioButtons';
+import {Sidebar} from '@/widgets/Sidebar/Sidebar';
 import {ArrowRightIcon} from '@radix-ui/react-icons';
 import {useState} from 'react'
 import {TestCustomTabs} from "@/shared/ui/Tab/TestCustomTabs";
@@ -30,7 +33,15 @@ export default function Home() {
               <CustomCheckbox id={'ca3'} disabled={true} checked={true} />
               <CustomCheckbox id={'ca4'} disabled={true} checked={false} text={'custom check'}/>
           </div>
+
           <TestCustomTabs/>
+        <div>
+              <Sidebar/>
+          </div>
+          <div>
+              <RadioButtons/>
+          </div>
+
       </main>
     </div>
   );
