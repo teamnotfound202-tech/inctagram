@@ -16,12 +16,16 @@ type Props = {
 export const CustomCheckbox = ({text, id, disabled, checked=false,onChangeAction}: Props) => {
     const [isChecked, setIsChecked] = useState(checked);
 
-    const onChangeHandler = () => {
-        setIsChecked(prevState => !prevState)
+    useEffect(() => {
+        setIsChecked(checked);
+    }, [checked]);
+
+    const onChangeHandler = (value: boolean) => {
+        setIsChecked(value);
         if (onChangeAction) {
-            onChangeAction(isChecked)
+            onChangeAction(value); // пробрасываем новое значение наружу
         }
-    }
+    };
 
     return (
         <div className={s.checkboxWrapper}>
