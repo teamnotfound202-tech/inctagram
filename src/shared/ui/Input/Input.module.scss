@@ -2,6 +2,8 @@
 
 .Root{
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   &:has(input:not(:disabled)):active .searchIcon {
     transition: 0.25s;
@@ -21,6 +23,10 @@
   &:has(input:disabled) ::placeholder {
     color: $dark-100;
   }
+  & input{
+    flex: 1;
+
+  }
 }
 
 .inputLabel{
@@ -33,7 +39,7 @@
 
 .Input {
   all: unset;
-  width: 100%;
+
   padding: 6px 12px;
 
   border: 1px solid $dark-100;
@@ -83,7 +89,7 @@
   all: unset;
   color: inherit;
   position: absolute;
-  right: -12px;
+  right: 12px;
   bottom: 7px;
   width: 24px;
   height: 24px;
@@ -102,6 +108,7 @@
   position: absolute;
   color: $danger-500;
   font-size: 14px;
+  bottom: -19px;
 }
 
 .inputError{

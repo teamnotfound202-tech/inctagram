@@ -1,0 +1,87 @@
+@use '@/shared/styles/variables' as *;
+
+.containerForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $dark-500;
+  width: 380px;
+  padding: 24px;
+}
+.registrationFormTitle {
+  text-align: center;
+  margin-bottom: 13px;
+}
+.oAuthIconContainer{
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+}
+//.form{
+//  width: 100%;
+//  display: flex;
+//  flex-direction: column;
+//  > * + * {
+//    margin-top: 24px;
+//  }
+//  > .checkBoxContainer {
+//    margin-top: 12px;
+//  }
+//  > .checkBoxContainer + * {
+//    margin-top: 12px;
+//  }
+//}
+
+.form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.form > div:not(:last-child) {
+  margin-bottom: 24px;
+}
+.form > div > div{
+  margin-bottom: 0;
+}
+.form > div:nth-child(4) {
+  margin-bottom: 12px;
+}
+
+.form > div:nth-child(5) {
+  margin-bottom: 12px;
+}
+
+.checkBoxContainer {
+  padding: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+}
+
+.checkBoxLabel{
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-100;
+}
+
+.loginSpan{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  margin-top: 18px;
+  margin-bottom: 6px;
+}
+.checkBoxErrorText{
+  position: absolute;
+  left: 14px;
+  bottom: -13px;
+  color: $danger-500;
+  font-size: 14px;
+}
+
+
