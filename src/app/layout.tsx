@@ -1,3 +1,4 @@
+import {StoreWrapper} from '@/shared/lib/store/StoreWrapper';
 import type { Metadata } from "next";
 import { Inter} from "next/font/google";
 import "./globals.css";
@@ -24,9 +25,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.variable}>
       <Theme appearance={'dark'}>
-
-              {children}
-
+          <StoreWrapper>
+            {children}
+          </StoreWrapper>
       </Theme>
       </body>
     </html>
