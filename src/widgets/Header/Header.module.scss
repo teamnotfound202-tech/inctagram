@@ -8,6 +8,7 @@
   justify-content: space-between;
   padding: 12px 60px;
   border-bottom: 1px solid $dark-100;
+  z-index: 10;
 }
 
 .headerTitle {
@@ -32,7 +33,7 @@
   margin-right: 45px;
 }
 
-.notoficationCount{
+.notificationCount{
   position: absolute;
   bottom: 15px;
   right: -2px;
