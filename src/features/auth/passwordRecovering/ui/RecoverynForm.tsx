@@ -102,7 +102,7 @@ export const RecoverynForm = () => {
                     <Link href={'/'}> Forgot Password</Link></span>
                 </div>
                 <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Loading..." : "Sign Шт"}
+                    {isSubmitting ? "Loading..." : "Sign In"}
                 </Button>
             </form>
             <span className={s.loginSpan}>Do you have an account?</span>
