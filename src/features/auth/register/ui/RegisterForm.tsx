@@ -120,7 +120,7 @@ export const RegisterForm = () => {
                         control={control}
                         name="agree"
                         rules={{required: "You must agree to the terms"}}
-                        render={({ field }) => (
+                        render={({field}) => (
                             <CustomCheckbox
                                 id="privatePolicy"
                                 checked={field.value}
@@ -130,9 +130,9 @@ export const RegisterForm = () => {
                     />
                     <span className={s.checkBoxLabel}>
                     I agree to the
-                    <Link href={'/'}> Terms of Service </Link>
+                    <Link href={'/terms-of-service'}> Terms of Service </Link>
                      and
-                    <Link href={'/'}> Privacy Policy</Link>
+                    <Link href={'/privacy-policy'}> Privacy Policy</Link>
                     </span>
 
                     {errors.agree && <span className={s.checkBoxErrorText}>{errors.agree.message}</span>}

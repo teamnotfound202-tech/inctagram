@@ -1,0 +1,49 @@
+@use "@/shared/styles/variables" as *;
+
+.wrapper {
+  padding: 0 160px;
+  color: $light-100;
+  p {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 171%;
+    text-align: center;
+    padding-bottom: 10px;
+  }
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.title{
+  margin: 23px 0 20px 0;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 180%;
+}
+
+.btn {
+  margin-top: 24px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0;
+  border: none;
+  color: $light-100;
+  background: transparent;
+
+  .iconWrapper {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+  }
+  &:hover{
+    color: $accent-700;
+  }
+}
