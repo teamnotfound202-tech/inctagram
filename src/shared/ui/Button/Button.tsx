@@ -9,13 +9,14 @@ type Props = {
     children: ReactNode;
     variant?: ButtonVariant;
     fullWidth?: boolean;
+    className?: string
 }  & ComponentProps<'button'>
 
-export const Button = ({ children, variant = 'primary',fullWidth, asChild, ...props }: Props) => {
-    const buttonClassName = clsx(s.button, s[variant], fullWidth && s.fullWidth);
+export const Button = ({ children, variant = 'primary',fullWidth, asChild, className,  ...props }: Props) => {
+    const buttonClassName = clsx(s.button, s[variant], fullWidth && s.fullWidth, className && className);
     const Component = asChild ? Slot : 'button';
     return (
-        <Component{...props} className={buttonClassName}>
+        <Component {...props} className={buttonClassName}>
             {children}
         </Component>
 

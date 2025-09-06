@@ -1,8 +1,12 @@
 'use client'
 import {useRegistrationMutation} from '@/features/auth/api/authApi';
 import type {RegistrationData} from '@/shared/api';
+import {Path} from '@/shared/config';
 import {Input} from "@/shared/ui/Input/Input";
 import {Button} from "@/shared/ui/Button/Button";
+import {Modal} from '@/shared/ui/Modal/Modal';
+
+import {useEffect, useState} from 'react';
 import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
 import s from './Register-Form.module.scss'
 import IconGoogleRegistration from './icons/iconGoogleRegistration.svg'
@@ -22,6 +26,7 @@ type RegisterFormValues = {
 export const RegisterForm = () => {
     const {register, handleSubmit, formState: {errors, isSubmitting}, watch, control} = useForm<RegisterFormValues>();
     const [credentials] = useRegistrationMutation()
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const values: RegistrationData = {
@@ -34,14 +39,16 @@ export const RegisterForm = () => {
             .then(res => {
                 console.log('Super');
                 console.log(res);
+                setIsModalOpen(true)
             })
             .catch(err => {
                 console.log(err);
             })
     };
-    console.log(errors);
 
+    const handleModalClose = () => setIsModalOpen(false)
     const passwordValue = watch("password");
+    const emailValue = watch("email")
 
     return (
         <div className={s.containerForm}>
@@ -137,20 +144,116 @@ export const RegisterForm = () => {
 
                     {errors.agree && <span className={s.checkBoxErrorText}>{errors.agree.message}</span>}
                 </div>
+                <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
+                    <Input
+                        id={'username'}
+                        autoComplete="username"
+                        type="text"
+                        label="Username"
+                        placeholder="Enter your username"
+                        error={errors.username?.message}
+                        {...register("username", {
+                            required: "Enter your username",
+                            minLength: {value: 6, message: "Minimum number of characters 6"},
+                            maxLength: {value: 30, message: "Maximum number of characters 30"},
+                            pattern: {
+                                value: /^[A-Za-z0-9_-]+$/,
+                                message: "You can only use letters, numbers, _ and -",
+                            },
+                        })}
+                    />
+
+                    <Input
+                        id={'email'}
+                        autoComplete="email"
+                        type="email"
+                        label="Email"
+                        placeholder="Enter your email"
+                        error={errors.email?.message}
+                        {...register("email", {
+                            required: "Enter your email",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Invalid email format",
+                            },
+                        })}
+                    />
+
+                    <Input
+                        id={'password'}
+                        type="password"
+                        label="Password"
+                        placeholder="Enter your password"
+                        error={errors.password?.message}
+                        {...register("password", {
+                            required: "Enter your password",
+                            minLength: {
+                                value: 6,
+                                message: "Password must be longer than 5 characters",
+                            },
+                            pattern: {
+                                value: /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!"#$%&'()*+,-.\/:;<=>?@[\]^_`{|}~])[A-Za-z0-9!"#$%&'()*+,-.\/:;<=>?@[\]^_`{|}~]+$/,
+                                message: "The password must not contain special characters.",
+                            },
+                        })}
+                    />
+
+                    <Input
+                        id={'confirmPassword'}
+                        type="password"
+                        label="Password confirmation"
+                        placeholder="Repeat your password"
+                        error={errors.confirmPassword?.message}
+                        {...register("confirmPassword", {
+                            required: "Repeat password",
+                            validate: (value) =>
+                                value === passwordValue || "Passwords must match",
+                        })}
+                    />
+
+                    <div className={s.checkBoxContainer}>
+                        <Controller
+                            control={control}
+                            name="agree"
+                            rules={{required: "You must agree to the terms"}}
+                            render={({ field }) => (
+                                <CustomCheckbox
+                                    id={'privatePolicy'}
+                                    checked={field.value}
+                                    onChangeAction={field.onChange}
+                                />
+                            )}
+                        />
+                        <span className={s.checkBoxLabel}>
+                        I agree to the
+                        <Link href={Path.TermsOfService}> Terms of Service </Link>
+                         and
+                        <Link href={Path.PrivatePolicy}> Privacy Policy</Link>
+                        </span>
+
+                        {errors.agree && <span className={s.checkBoxErrorText}>{errors.agree.message}</span>}
+                    </div>
 
 
-                <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Loading..." : "Sign Up"}
+                    <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Loading..." : "Sign Up"}
+                    </Button>
+                </form>
+
+                <span className={s.loginSpan}>Do you have an account?</span>
+                <Button asChild variant={'text'} fullWidth>
+                    <a href={Path.SignIn}>
+                        Sign In
+                    </a>
                 </Button>
-            </form>
 
-            <span className={s.loginSpan}>Do you have an account?</span>
-            <Button asChild variant={'text'} fullWidth>
-                <a href={'/'}>
-                    Sign In
-                </a>
-            </Button>
-
-        </div>
+            </div>
+            {isModalOpen && (
+                <Modal title={'Email sent'} onClick={handleModalClose}>
+                    <p style={{maxWidth: '330px'}}>We have sent a link to confirm your email to {emailValue}</p>
+                    <Button type={'button'} onClick={handleModalClose}>OK</Button>
+                </Modal>
+            )}
+        </>
     );
 };

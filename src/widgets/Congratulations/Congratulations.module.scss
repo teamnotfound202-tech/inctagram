@@ -1,0 +1,39 @@
+@use '@/shared/styles/variables' as *;
+
+.congratulationsWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 95px;
+  text-align: center;
+  color: $light-100;
+}
+
+
+.congratulationsTitle {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.8;
+  margin-bottom: 19px;
+}
+
+.congratulationsText {
+  font-weight: 400;
+  font-size: 16px;
+  color: $light-100;
+  margin-bottom: 54px;
+}
+
+.congratulationsBtn {
+  max-width: 182px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 72px;
+}
+
+.congratulationsIcon {
+  max-width: 432px;
+  width: 100%;
+  height: 300px;
+}
