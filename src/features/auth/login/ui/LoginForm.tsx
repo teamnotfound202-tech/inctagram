@@ -101,7 +101,7 @@ export const LoginForm = ({setFormType}:IProps) => {
                     <Button className={s.forgotBtn} onClick={()=>setFormType(true)} > Forgot Password</Button>
                 </div>
                 <Button type="submit" disabled={disabled}>
-                    {isSubmitting ? "Loading..." : "Sign Шт"}
+                    {isSubmitting ? "Loading..." : "Sign In"}
                 </Button>
             </form>
             <span className={s.loginSpan}>Do you have an account?</span>
