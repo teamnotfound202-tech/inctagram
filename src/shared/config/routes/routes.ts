@@ -3,5 +3,6 @@ export const Path = {
     SignUp: '/auth/register',
     SignIn: '/auth/login',
     PrivatePolicy: '/privacy-policy',
-    TermsOfService: '/terms-of-service'
+    TermsOfService: '/terms-of-service',
+
 }

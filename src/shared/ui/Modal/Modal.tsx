@@ -1,3 +1,4 @@
+
 import type {ReactNode} from 'react';
 import CloseBtnIcon from './icons/close.svg'
 import s from './Modal.module.scss'
