@@ -1,6 +1,9 @@
-import {Controller, useForm} from "react-hook-form";
+'use client'
+import {useRegistrationMutation} from '@/features/auth/api/authApi';
+import type {RegistrationData} from '@/shared/api';
 import {Input} from "@/shared/ui/Input/Input";
 import {Button} from "@/shared/ui/Button/Button";
+import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
 import s from './Register-Form.module.scss'
 import IconGoogleRegistration from './icons/iconGoogleRegistration.svg'
 import GitHubIconRegistration from './icons/gitHubIconRegistration.svg'
@@ -18,11 +21,23 @@ type RegisterFormValues = {
 
 export const RegisterForm = () => {
     const {register, handleSubmit, formState: {errors, isSubmitting}, watch, control} = useForm<RegisterFormValues>();
+    const [credentials] = useRegistrationMutation()
 
-    const onSubmit = async (data: RegisterFormValues) => {
-        console.log("Отправка на сервер...", data);
-        await new Promise(res => setTimeout(res, 1000));
-        alert(`Вы вошли как ${data.email}`);
+    const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
+        const values: RegistrationData = {
+            userName: data.username,
+            email: data.email,
+            password: data.password,
+        }
+        credentials(values)
+            .unwrap()
+            .then(res => {
+                console.log('Super');
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     };
     console.log(errors);
 
@@ -77,11 +92,11 @@ export const RegisterForm = () => {
                     {...register("password", {
                         required: "Enter your password",
                         minLength: {
-                            value: 4,
-                            message: "Password must be longer than 3 characters",
+                            value: 6,
+                            message: "Password must be longer than 5 characters",
                         },
                         pattern: {
-                            value: /^[A-Za-z0-9]+$/,
+                            value: /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!"#$%&'()*+,-.\/:;<=>?@[\]^_`{|}~])[A-Za-z0-9!"#$%&'()*+,-.\/:;<=>?@[\]^_`{|}~]+$/,
                             message: "The password must not contain special characters.",
                         },
                     })}

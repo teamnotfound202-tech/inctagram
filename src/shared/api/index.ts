@@ -1,9 +1,9 @@
-export {baseApi} from './base'
+export {baseApi} from './baseApi'
 export type {
-    RequestBodyRegistration,
     RequestBodyRegistrationConformation,
     ResponsesTypeError,
     RequestBodyLogin,
     ResponsesLogin,
-    ResponsesMe
+    ResponsesMe,
+    RegistrationData
 } from './types'

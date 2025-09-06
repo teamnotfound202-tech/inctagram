@@ -3,7 +3,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const baseApi = createApi({
     reducerPath: "inctagramApi",
-    tagTypes: [""],
     baseQuery: async (args, api, extraOptions) => {
         const result = await fetchBaseQuery({
             baseUrl: 'https://connectpix.site/api/v1/',
@@ -16,3 +15,4 @@ export const baseApi = createApi({
     },
     endpoints: () => ({}),
 })
+export type baseApi = typeof baseApi

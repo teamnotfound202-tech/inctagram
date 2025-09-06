@@ -7,7 +7,7 @@ type Props = {
     title:string|null
 }
 
-export const ToolTip = ({children,title}:Props) => {
+export const TooltipCustom = ({children,title}:Props) => {
     return (
         <Tooltip.Provider>
             <Tooltip.Root>
@@ -25,5 +25,3 @@ export const ToolTip = ({children,title}:Props) => {
         </Tooltip.Provider>
     );
 };
-
-export default ToolTip;

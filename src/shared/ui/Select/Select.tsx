@@ -1,4 +1,5 @@
 'use client'
+
 import React, {useState, useCallback} from 'react';
 import styles from './Select.module.scss';
 import SelectOptionList, {SelectOption} from "@/shared/ui/Select/SelectOptionsList";
@@ -39,9 +40,8 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                                                  triggerClassName = '',
                                                  name,
                                                  id,
-    fullWidth = true,
-                                                        type = 'default'
-
+                                                 fullWidth = true,
+                                                 type = 'default'
                                              }) => {
 
     const [internalValue, setInternalValue] = useState(defaultValue);
