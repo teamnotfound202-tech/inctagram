@@ -19,25 +19,25 @@ type InputProps = {
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     name?: string;
+    className?: string;
+    autoComplete?: string;
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ placeholder, type, id, label, error, isDisabled, value, onChange, onBlur, name }, ref) => {
+    ({ placeholder, type, id, label, error, isDisabled, value, onChange, onBlur, name, className, autoComplete }, ref) => {
 
         const classNameInput = clsx(s.Input, { [s.inputError]: error });
         const classNameLabel = clsx(s.inputLabel, isDisabled && s.labelDisabled)
-
         if (type === "password") {
             return (
                 <PasswordToggleField.Root>
-                    <div className={s.Root}>
+                    <div className={clsx(s.Root, className ? className : null)}>
                         {label && <Label htmlFor={id} className={classNameLabel}> {label} </Label>}
                         <PasswordToggleField.Input
                             id={id}
                             placeholder={placeholder}
                             className={classNameInput}
                             disabled={isDisabled}
-
                             ref={ref}
                             value={value}
                             onChange={onChange}
@@ -54,7 +54,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         }
 
         return (
-            <div className={s.Root}>
+            <div className={clsx(s.Root, className ? className : null)}>
                 {label && <Label htmlFor={id} className={classNameLabel}>{label}</Label>}
                 <TextField.Root
                     id={id}
@@ -62,7 +62,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     placeholder={placeholder}
                     className={classNameInput}
                     disabled={isDisabled}
-
+                    autoComplete={autoComplete}
                     ref={ref}
                     value={value}
                     onChange={onChange}
