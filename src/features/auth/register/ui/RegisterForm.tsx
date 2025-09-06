@@ -8,9 +8,9 @@ import {Modal} from '@/shared/ui/Modal/Modal';
 
 import {useEffect, useState} from 'react';
 import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
-import s from './Register-Form.module.scss'
-import IconGoogleRegistration from './icons/iconGoogleRegistration.svg'
-import GitHubIconRegistration from './icons/gitHubIconRegistration.svg'
+import s from '../../styles/Register-Form.module.scss'
+import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg'
+import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 import {CustomCheckbox} from "@/shared/ui/Checkbox/Checkbox";
 import Link from "next/link";
 

@@ -3,9 +3,9 @@
 import {Input} from "@/shared/ui/Input/Input";
 import {Button} from "@/shared/ui/Button/Button";
 import {type SubmitHandler, useForm} from 'react-hook-form';
-import s from '../../register/ui/Register-Form.module.scss'
-import IconGoogleRegistration from '../../register/ui/icons/iconGoogleRegistration.svg'
-import GitHubIconRegistration from '../../register/ui/icons/gitHubIconRegistration.svg'
+import s from '../../styles/Register-Form.module.scss'
+import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg'
+import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 import Link from "next/link";
 import {useLoginMutation} from "@/features/auth/api/authApi";
 
