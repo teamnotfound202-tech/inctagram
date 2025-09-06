@@ -67,6 +67,8 @@
   font-size: 12px;
   line-height: 133%;
   color: $light-100;
+  display: flex;
+  gap: 4px;
 }
 
 .loginSpan{
@@ -76,6 +78,13 @@
   margin-top: 18px;
   margin-bottom: 6px;
 }
+
+.registerCheckbox {
+  div > button{
+    cursor: pointer;
+  }
+}
+
 .checkBoxErrorText{
   position: absolute;
   left: 14px;
@@ -84,4 +93,17 @@
   font-size: 14px;
 }
 
+.linkForm {
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: $accent-300;
+  cursor: pointer;
+}
 
+
+.formBtn {
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+  text-align: center;
+}

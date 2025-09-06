@@ -24,7 +24,7 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
 
                         <button className={s.buttonNotification}>
                             <NotificationIcon />
-                            { notification!== 0 && <span className={s.notoficationCount}>{notification}</span>}
+                            { notification!== 0 && <span className={s.notificationCount}>{notification}</span>}
                         </button>
                         <SelectBox
                             options={[
