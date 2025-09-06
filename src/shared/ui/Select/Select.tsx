@@ -1,3 +1,4 @@
+'use client'
 import React, {useState, useCallback} from 'react';
 import styles from './Select.module.scss';
 import SelectOptionList, {SelectOption} from "@/shared/ui/Select/SelectOptionsList";

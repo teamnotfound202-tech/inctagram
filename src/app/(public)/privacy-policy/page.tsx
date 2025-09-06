@@ -1,11 +1,12 @@
 "use client";
 
-import {PrivacyPolicy} from "@/pages/agreements";
+
+import {PrivacyPolicy} from "@/shared/lib/components/agreements/ui";
 
 const PrivacyPolicyPage = () => {
     return (
         <>
-            <PrivacyPolicy />
+            <PrivacyPolicy/>
         </>
     );
 };

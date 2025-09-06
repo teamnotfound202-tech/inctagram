@@ -2,8 +2,8 @@
 
 import {Header} from "@/widgets/Header/Header";
 import {RegisterForm} from "@/features/auth/register";
-import {PrivacyPolicy} from "@/pages/agreements/ui/privacy-policy/PrivacyPolicy";
-import {TermsOfService} from "@/pages/agreements/ui/terms-of-service/TermsOfService";
+import {PrivacyPolicy} from "@/shared/lib/components/agreements/ui/privacy-policy/PrivacyPolicy";
+import {TermsOfService} from "@/shared/lib/components/agreements/ui/terms-of-service/TermsOfService";
 
 export default function Home() {
 
