@@ -11,20 +11,28 @@ import {useLoginMutation} from "@/features/auth/api/authApi";
 import {Path} from "@/shared/config";
 import {useId} from "react";
 import {RequestBodyLogin} from "@/shared/api";
-import {validatePassword} from "@/features/auth/model";
-import {responseCodes} from "@/shared/config/responseCode/responseCode";
+import {isSuccessResponse, validatePassword} from "@/features/auth/model";
 import {ACCESS_TOKEN} from "@/shared/lib";
+import {useRouter} from "next/navigation";
 
 interface IProps {
     setFormType: (type: boolean) => void;
 }
 
 
-
-export const LoginForm = ({setFormType}:IProps) => {
-    const {register, handleSubmit, formState: {errors, isSubmitting}, reset, trigger} = useForm<RequestBodyLogin>({
-        mode: 'onBlur', // ← Валидация при потере фокуса
-        reValidateMode: 'onBlur', // ← Повторная валидация тоже при blur
+export const LoginForm = ({setFormType}: IProps) => {
+    const router = useRouter()
+    const {
+        register,
+        handleSubmit,
+        formState: {errors, isSubmitting},
+        clearErrors,
+        reset,
+        watch,
+        trigger
+    } = useForm<RequestBodyLogin>({
+            mode: 'onChange', // ← Валидация при потере фокуса
+            //reValidateMode: 'onBlur', // ← Повторная валидация тоже при blur
         }
     );
     const [login] = useLoginMutation()
@@ -35,21 +43,29 @@ export const LoginForm = ({setFormType}:IProps) => {
             email: data.email,
             password: data.password,
         }
+
         try {
             const res = await login(values).unwrap();
-
-            if (res.statusCode === responseCodes.success) {
+            if (isSuccessResponse(res)) {
                 localStorage.setItem(ACCESS_TOKEN, res.accessToken);
+                router.replace(Path.Profile)
                 reset();
+            } else {
+
+                reset({password: ''});
             }
+
         } catch (error) {
             console.error("Login error:", error);
             reset({password: ''});
         }
     };
 
-    const error = errors.email?.message||errors.password?.message
+    const error = errors.email?.message || errors.password?.message
     const disabled = isSubmitting || !!error
+
+
+    // Автоматически очищаем ошибку при вводе
 
     const handleEmailBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
         // Сохраняем native onBlur из register
@@ -98,7 +114,7 @@ export const LoginForm = ({setFormType}:IProps) => {
                     })}
                 />
                 <div className={s.fogrotBtnContainer}>
-                    <Button className={s.forgotBtn} onClick={()=>setFormType(true)} > Forgot Password</Button>
+                    <Button className={s.forgotBtn} onClick={() => setFormType(true)}> Forgot Password</Button>
                 </div>
                 <Button type="submit" disabled={disabled}>
                     {isSubmitting ? "Loading..." : "Sign In"}

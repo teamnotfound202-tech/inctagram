@@ -6,6 +6,7 @@ import NotificationIcon from '@/widgets/Header/icons/notification.svg';
 import {SelectBox} from "@/shared/ui/Select/Select";
 import FlagRussia from '@/shared/ui/Select/icon/FlagRussia.svg'
 import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
+import {Path} from "@/shared/config";
 
 type Props = {
     isLogin: boolean;
@@ -62,10 +63,10 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
                             fullWidth={false}
                         />
                         <Button variant={'text'} asChild>
-                            <Link href={'/auth/login'}>Log in</Link>
+                            <Link href={Path.SignIn}>Log in</Link>
                         </Button>
                         <Button asChild>
-                            <Link href={'/auth/register'}>Sign up</Link>
+                            <Link href={Path.SignUp}>Sign up</Link>
                         </Button>
                     </div>
                 }

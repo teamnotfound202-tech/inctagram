@@ -4,5 +4,5 @@ export const Path = {
     SignIn: '/auth/login',
     PrivatePolicy: '/privacy-policy',
     TermsOfService: '/terms-of-service',
-
+Profile: '/profile',
 }

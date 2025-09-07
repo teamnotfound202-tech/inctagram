@@ -1,6 +1,7 @@
 'use client'
 import { useRouter } from "next/navigation"
 import {type ReactNode, useEffect, useState} from 'react';
+import {Path} from "@/shared/config";
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
     const router = useRouter()
@@ -9,7 +10,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     useEffect(() => {
         const token = sessionStorage.getItem("accessToken")
         if (!token) {
-            router.replace("/login")
+            router.replace(Path.SignIn)
         } else {
             setIsChecking(false)
         }
