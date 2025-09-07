@@ -2,7 +2,7 @@ import {
     baseApi,
     type RequestBodyLogin,
     type RequestBodyRegistrationConformation,
-    type ResponsesLogin, type ResponsesMe
+    type ResponsesLogin, type ResponsesMe, ResponsesTypeError
 } from '@/shared/api';
 import type {RegistrationData} from '@/shared/api/types';
 
@@ -10,16 +10,20 @@ import type {RegistrationData} from '@/shared/api/types';
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         registration: builder.mutation<void, RegistrationData>({
-            query: (body) => ({ method: "post", url: "auth/registration", body }),
+            query: (body) => ({method: "post", url: "auth/registration", body}),
         }),
         registrationConfirmation: builder.mutation<void, RequestBodyRegistrationConformation>({
-            query: (body) => ({ method: "post", url: "auth/registration-confirmation", body }),
+            query: (body) => ({method: "post", url: "auth/registration-confirmation", body}),
         }),
-        login: builder.mutation<ResponsesLogin, RequestBodyLogin>({
-            query: () => ({ method: "post", url: "auth/login" }),
+        login: builder.mutation<ResponsesLogin | ResponsesTypeError, RequestBodyLogin>({
+            query: (args) => ({
+                url: `auth/login`,
+                method: 'POST',
+                body: args
+            }),
         }),
         logout: builder.mutation<void, void>({
-            query: () => ({ method: "post", url: "auth/logout" }),
+            query: () => ({method: "post", url: "auth/logout"}),
         }),
         me: builder.query<ResponsesMe, void>({
             query: () => "auth/me",
@@ -27,4 +31,4 @@ export const authApi = baseApi.injectEndpoints({
     }),
 })
 
-export const {useRegistrationMutation,useLoginMutation} = authApi
+export const {useRegistrationMutation, useLoginMutation} = authApi

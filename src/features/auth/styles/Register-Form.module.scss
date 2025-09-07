@@ -1,4 +1,4 @@
-@use '@/shared/styles/variables' as *;
+@use '../../../shared/styles/variables' as *;
 
 .containerForm{
   display: flex;
@@ -38,8 +38,11 @@
   flex-direction: column;
 }
 
-.form > div:not(:last-child) {
-  margin-bottom: 24px;
+.form {
+
+  & > div:not(:last-child):not(.fogrotBtnContainer) {
+    margin-bottom: 24px;
+  }
 }
 .form > div > div{
   margin-bottom: 0;
@@ -106,4 +109,22 @@
   max-width: 100%;
   width: 100%;
   text-align: center;
+}
+.forgotBtn{
+  background-color: transparent;
+  border: none;
+  color: $light-900;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 170%;
+  padding: 0;
+}
+.forgotBtn:hover{
+  background-color: transparent;
+}
+.fogrotBtnContainer{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
 }
