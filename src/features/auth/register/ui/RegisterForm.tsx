@@ -5,6 +5,7 @@ import {Path} from '@/shared/config';
 import {Input} from "@/shared/ui/Input/Input";
 import {Button} from "@/shared/ui/Button/Button";
 import {Modal} from '@/shared/ui/Modal/Modal';
+import {useRouter} from 'next/navigation';
 
 import {useState} from 'react';
 import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
@@ -38,6 +39,7 @@ export const RegisterForm = () => {
     const [credentials] = useRegistrationMutation()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [emailValue, setEmailValue] = useState('')
+    const router = useRouter()
 
     const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const values: RegistrationData = {
@@ -58,7 +60,9 @@ export const RegisterForm = () => {
             })
     };
 
-    const handleModalClose = () => setIsModalOpen(false)
+    const handleModalClose = () => {
+        router.push(Path.SignIn)
+    }
     const passwordValue = watch("password");
     const agreeValue = watch("agree");
 
