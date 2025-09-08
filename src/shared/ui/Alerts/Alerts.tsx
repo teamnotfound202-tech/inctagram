@@ -12,7 +12,7 @@ type AlertsProviderProps = {
     position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';//где появится сообщение на экране
 };
 
-export function AlertsProvider({children, position = 'top-right'}: AlertsProviderProps) {
+export function AlertsProvider({children, position = 'bottom-left'}: AlertsProviderProps) {
     const viewportClass = `${s.viewport} ${s[position.replace('-', '')]}`//к классу viewport добавляет класс с позицией
 
     return (
@@ -34,7 +34,7 @@ type AlertToastProps = {
     className?: string;
 };
 
-export function AlertToast({title, description, variant = 'success', duration = 4000, open,
+export function AlertToast({title, description, variant = 'success', duration = 4000000, open,
                                onOpenChange, closable = true, className,}: AlertToastProps) {
 
     const alertClass = `${s.root} ${s[variant]} ${className ? className : ''}`;// к классу root добавляем класс варианта сообщения и если есть тот класс, что пропсами передали
