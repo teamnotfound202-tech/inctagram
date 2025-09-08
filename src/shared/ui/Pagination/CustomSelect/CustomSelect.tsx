@@ -1,3 +1,4 @@
+'use client';
 import React, {useEffect, useRef, useState} from 'react';
 import s from './CustomSelect.module.scss';
 import {ArrowIcon} from "@/shared/ui/Pagination/CustomSelect/icons/ArrowIcon";

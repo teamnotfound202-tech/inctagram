@@ -1,8 +1,10 @@
 export const Path = {
     Home: '/',
-    SignUp: '/auth/register',
-    SignIn: '/auth/login',
+    SignUp: '/register',
+    SignIn: '/login',
     PrivatePolicy: '/privacy-policy',
     TermsOfService: '/terms-of-service',
-Profile: '/profile',
+    Profile: '/profile',
+    Success: '/success',
+    Resend: '/resend-code'
 }
