@@ -47,7 +47,7 @@ export const LoginForm = ({setFormType}: IProps) => {
         try {
             const res = await login(values).unwrap();
             if (isSuccessResponse(res)) {
-                localStorage.setItem(ACCESS_TOKEN, res.accessToken);
+                sessionStorage.setItem(ACCESS_TOKEN, res.accessToken);
                 router.replace(Path.Profile)
                 reset();
             } else {
