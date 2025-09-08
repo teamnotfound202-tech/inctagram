@@ -4,7 +4,7 @@ import {
     type RequestBodyRegistrationConformation,
     type ResponsesLogin, type ResponsesMe, ResponsesTypeError
 } from '@/shared/api';
-import type {RegistrationData, RequestBodyResending} from '@/shared/api/types';
+import {RegistrationData, RequestBodyGoogleLogin, RequestBodyResending, ResponseGoogleLogin} from '@/shared/api/types';
 
 
 export const authApi = baseApi.injectEndpoints({
@@ -18,7 +18,7 @@ export const authApi = baseApi.injectEndpoints({
         registrationEmailResending: builder.mutation<void, RequestBodyResending>({
             query: (body) => ({method: "post", url: "auth/registration-email-resending", body}),
         }),
-        login: builder.mutation<ResponsesLogin | ResponsesTypeError, RequestBodyLogin>({
+        login: builder.mutation<ResponsesLogin | ResponsesTypeError, RequestBodyLogin>({    //TODO: нужно ли ставить тип ResponsesTypeError?
             query: (args) => ({
                 url: `auth/login`,
                 method: 'POST',
@@ -31,6 +31,13 @@ export const authApi = baseApi.injectEndpoints({
         me: builder.query<ResponsesMe, void>({
             query: () => "auth/me",
         }),
+        googleLogin: builder.mutation<ResponseGoogleLogin, RequestBodyGoogleLogin>({    //TODO: нужно ли ставить тип ResponsesTypeError?
+            query: (args) => ({
+                url: `auth/google/login`,
+                method: 'POST',
+                body: args
+            }),
+        }),
     }),
 })
 
@@ -38,5 +45,6 @@ export const {
     useRegistrationMutation,
     useLoginMutation,
     useRegistrationConfirmationMutation,
-    useRegistrationEmailResendingMutation
+    useRegistrationEmailResendingMutation,
+    useGoogleLoginMutation,
 } = authApi
