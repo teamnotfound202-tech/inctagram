@@ -2,7 +2,7 @@
 import {RegisterForm} from '@/features/auth/register';
 import {Container, FormWrapper} from '@/shared/ui';
 import {Congratulations} from '@/widgets/Congratulations/Congratulations';
-import {Verification} from '@/widgets/Verification/Verification';
+import {VerificationLinkExpired} from '@/widgets/VerificationLinkExpired/VerificationLinkExpired';
 
 export default function Page() {
 

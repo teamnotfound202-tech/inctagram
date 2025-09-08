@@ -1,15 +1,15 @@
 "use client";
 
+import {Path} from '@/shared/config';
 import s from '../../styles/styleAgreements.module.scss'
 import ArrowBack from '@/shared/lib/components/agreements/icon/ArrowBack.svg'
-import {PATH} from "@/shared/lib/constants/path";
 import {useRouter} from "next/navigation";
 
 export const TermsOfService = () => {
     const router = useRouter();
     return (
         <div className={s.wrapper}>
-            <button className={s.btn} onClick={() => router.push(PATH.home)}>
+            <button className={s.btn} onClick={() => router.push(Path.SignUp)}>
                 <div className={s.iconWrapper}>
                     <ArrowBack/>
                 </div>

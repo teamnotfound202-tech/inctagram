@@ -12,10 +12,12 @@ export type ResponsesTypeError = {
 export type RegistrationData = {
     "userName": string,
     "email": string,
-    "password": string
+    "password": string,
+    "baseUrl": string
 }
 
 export type RequestBodyLogin = Omit<RegistrationData, 'userName'>
+export type RequestBodyResending = Omit<RegistrationData, 'userName' | 'password'>
 
 export type ResponsesLogin = {
     "accessToken": string
@@ -29,5 +31,5 @@ export type ResponsesMe = {
 }
 
 export type RequestBodyRegistrationConformation = {
-    "confirmationCode": boolean
+    "confirmationCode": string
 }

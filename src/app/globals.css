@@ -25,10 +25,11 @@ a {
 }
 
 .main {
-    margin: 0 auto;
-    position: relative;
+  margin: 0 auto;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding-top: 60px;
 }

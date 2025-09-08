@@ -6,7 +6,7 @@ import {Input} from "@/shared/ui/Input/Input";
 import {Button} from "@/shared/ui/Button/Button";
 import {Modal} from '@/shared/ui/Modal/Modal';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
 import s from '../../styles/Register-Form.module.scss'
 import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg'
@@ -24,22 +24,34 @@ type RegisterFormValues = {
 };
 
 export const RegisterForm = () => {
-    const {register, handleSubmit, formState: {errors, isSubmitting}, watch, control} = useForm<RegisterFormValues>();
+    const {
+        register,
+        handleSubmit,
+        formState: {errors, isValid},
+        watch,
+        control,
+        reset
+    } = useForm<RegisterFormValues>({
+        mode: 'onBlur'
+    });
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
     const [credentials] = useRegistrationMutation()
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [emailValue, setEmailValue] = useState('')
 
     const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const values: RegistrationData = {
             userName: data.username,
             email: data.email,
             password: data.password,
+            baseUrl: baseUrl + '/verify-email'
         }
         credentials(values)
             .unwrap()
-            .then(res => {
-                console.log('Super');
-                console.log(res);
-                setIsModalOpen(true)
+            .then(() => {
+                setIsModalOpen(true);
+                setEmailValue(values.email)
+                reset()
             })
             .catch(err => {
                 console.log(err);
@@ -48,7 +60,7 @@ export const RegisterForm = () => {
 
     const handleModalClose = () => setIsModalOpen(false)
     const passwordValue = watch("password");
-    const emailValue = watch("email")
+    const agreeValue = watch("agree");
 
     return (
         <>
@@ -150,8 +162,8 @@ export const RegisterForm = () => {
                     </div>
 
 
-                    <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Loading..." : "Sign Up"}
+                    <Button type="submit" disabled={!isValid && !agreeValue}>
+                        Sign Up
                     </Button>
                 </form>
 

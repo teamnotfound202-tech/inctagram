@@ -4,7 +4,7 @@ import {
     type RequestBodyRegistrationConformation,
     type ResponsesLogin, type ResponsesMe, ResponsesTypeError
 } from '@/shared/api';
-import type {RegistrationData} from '@/shared/api/types';
+import type {RegistrationData, RequestBodyResending} from '@/shared/api/types';
 
 
 export const authApi = baseApi.injectEndpoints({
@@ -14,6 +14,9 @@ export const authApi = baseApi.injectEndpoints({
         }),
         registrationConfirmation: builder.mutation<void, RequestBodyRegistrationConformation>({
             query: (body) => ({method: "post", url: "auth/registration-confirmation", body}),
+        }),
+        registrationEmailResending: builder.mutation<void, RequestBodyResending>({
+            query: (body) => ({method: "post", url: "auth/registration-email-resending", body}),
         }),
         login: builder.mutation<ResponsesLogin | ResponsesTypeError, RequestBodyLogin>({
             query: (args) => ({
@@ -31,4 +34,9 @@ export const authApi = baseApi.injectEndpoints({
     }),
 })
 
-export const {useRegistrationMutation, useLoginMutation} = authApi
+export const {
+    useRegistrationMutation,
+    useLoginMutation,
+    useRegistrationConfirmationMutation,
+    useRegistrationEmailResendingMutation
+} = authApi

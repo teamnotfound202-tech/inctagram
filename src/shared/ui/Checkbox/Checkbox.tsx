@@ -1,8 +1,7 @@
 'use client';
-
 import clsx from 'clsx';
 import { Checkbox } from "radix-ui";
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './Checkbox.module.scss'
 import CheckboxIcon from './icons/checkIcon.svg'
 
