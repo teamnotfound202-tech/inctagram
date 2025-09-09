@@ -2,6 +2,7 @@
 import {useRegistrationMutation} from '@/features/auth/api/authApi';
 import type {RegistrationData} from '@/shared/api';
 import {Path} from '@/shared/config';
+import {AlertsProvider, AlertToast} from '@/shared/ui/Alerts/Alerts';
 import {Input} from "@/shared/ui/Input/Input";
 import {Button} from "@/shared/ui/Button/Button";
 import {Modal} from '@/shared/ui/Modal/Modal';
@@ -9,6 +10,7 @@ import {useRouter} from 'next/navigation';
 
 import {useState} from 'react';
 import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
+import {Toaster} from 'sonner';
 import s from '../../styles/Register-Form.module.scss'
 import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg'
 import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
@@ -29,7 +31,7 @@ export const RegisterForm = () => {
     const {
         register,
         handleSubmit,
-        formState: {errors, isValid},
+        formState: {errors, isValid, isSubmitting},
         watch,
         control,
         reset
