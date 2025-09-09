@@ -30,7 +30,7 @@ export const RegisterForm = () => {
     const {
         register,
         handleSubmit,
-        formState: {errors, isValid},
+        formState: {errors, isValid, isSubmitting},
         watch,
         control,
         reset

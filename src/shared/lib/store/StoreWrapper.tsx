@@ -1,6 +1,6 @@
 'use client';
 
-import {store} from '@/shared/lib';
+import {store} from '@/shared/lib/store/store';
 import type {ReactNode} from 'react';
 import {Provider} from 'react-redux';
 

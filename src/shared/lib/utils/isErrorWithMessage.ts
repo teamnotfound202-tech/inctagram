@@ -1,8 +1,17 @@
-export function isErrorWithMessage(error: unknown): error is {message: string} {
+export function isErrorWithMessage(errorObj: unknown): errorObj is {
+    statusCode: number,
+    messages: Array<{message: string, field:string}>,
+    error: string
+} {
     return (
-        typeof error === "object" && // Проверяем, что error – это объект
-        error !== null && // Убеждаемся, что это не null
-        "message" in error && // Проверяем, что у объекта есть свойство 'message'
-        (error as { message: string }).message === 'string'
+        typeof errorObj === "object" && // Проверяем, что error – это объект
+        errorObj !== null && // Убеждаемся, что это не null
+        "statusCode" in errorObj &&
+        typeof (errorObj.statusCode) === 'number' &&
+        "messages" in errorObj && // Проверяем, что у объекта есть свойство 'messages'
+         Array.isArray(errorObj.messages) &&
+            errorObj.messages.length > 0 &&
+            typeof (errorObj.messages[0].message) === 'string' &&
+            typeof (errorObj.messages[0].field) === 'string'
     )
 }
