@@ -12,7 +12,5 @@ export default function Page() {
                 <RegisterForm/>
             </FormWrapper>
         </Container>
-        {/*<Congratulations/>*/}
-        {/*<Verification/>*/}
     </>
 }
