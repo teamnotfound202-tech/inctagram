@@ -17,12 +17,10 @@ import {useRouter} from "next/navigation";
 import {useAppDispatch} from "@/shared/lib/hooks/hooks";
 import {loginTC} from "@/shared/api/appSlice";
 
-interface IProps {
-    setFormType: (type: boolean) => void;
-}
 
 
-export const LoginForm = ({setFormType}: IProps) => {
+
+export const LoginForm = () => {
     const router = useRouter()
     const dispatch =useAppDispatch()
     const {
@@ -116,7 +114,7 @@ export const LoginForm = ({setFormType}: IProps) => {
                     })}
                 />
                 <div className={s.fogrotBtnContainer}>
-                    <Button className={s.forgotBtn} onClick={() => setFormType(true)}> Forgot Password</Button>
+                    <Button className={s.forgotBtn} onClick={() => router.replace('/')}> Forgot Password</Button>
                 </div>
                 <Button type="submit" disabled={disabled}>
                     {isSubmitting ? "Loading..." : "Sign In"}
