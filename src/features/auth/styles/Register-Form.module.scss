@@ -17,20 +17,9 @@
   flex-direction: row;
   gap: 60px;
 }
-//.form{
-//  width: 100%;
-//  display: flex;
-//  flex-direction: column;
-//  > * + * {
-//    margin-top: 24px;
-//  }
-//  > .checkBoxContainer {
-//    margin-top: 12px;
-//  }
-//  > .checkBoxContainer + * {
-//    margin-top: 12px;
-//  }
-//}
+.authorizationLink {
+  cursor: pointer;
+}
 
 .form {
   display: flex;
