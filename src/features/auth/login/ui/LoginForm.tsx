@@ -58,7 +58,7 @@ export const LoginForm = ({setFormType}: IProps) => {
                 reset({password: ''});
             }
         } catch (error) {
-            console.error("Login error:", error);
+            console.log("Login error:", error);
             reset({password: ''});
         }
     };
