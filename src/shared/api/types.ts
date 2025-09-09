@@ -16,7 +16,7 @@ export type RegistrationData = {
     "baseUrl": string
 }
 
-export type RequestBodyLogin = Omit<RegistrationData, 'userName'>
+export type RequestBodyLogin = Omit<RegistrationData, 'userName' | 'baseUrl'>
 export type RequestBodyResending = Omit<RegistrationData, 'userName' | 'password'>
 
 export type ResponsesLogin = {

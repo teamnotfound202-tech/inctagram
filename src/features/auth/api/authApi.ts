@@ -38,5 +38,5 @@ export const {
     useRegistrationMutation,
     useLoginMutation,
     useRegistrationConfirmationMutation,
-    useRegistrationEmailResendingMutation
+        useRegistrationEmailResendingMutation
 } = authApi
