@@ -1,12 +1,14 @@
 import {AlertsProvider, AlertToast} from '@/shared/ui/Alerts/Alerts';
 import type {BaseQueryFn} from '@reduxjs/toolkit/query';
 import {fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { toast } from 'sonner';
+import {toast} from 'sonner';
+import {ResponsesLogin} from "@/shared/api/types";
+import {ACCESS_TOKEN} from "@/shared/lib";
 
 export const startBaseQuery = fetchBaseQuery({
     baseUrl: 'https://connectpix.site/api/v1/',
     prepareHeaders: (headers) => {
-        const accessToken = sessionStorage.getItem('accessToken')
+        const accessToken = sessionStorage.getItem(ACCESS_TOKEN)
         if (accessToken) {
             headers.set('Authorization', `Bearer ${accessToken}`)
         }
@@ -34,18 +36,18 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
             )
 
             if (refreshResult.data) {
-                const { accessToken } = refreshResult.data as any
-                sessionStorage.setItem("accessToken", accessToken)
+                const { accessToken } = refreshResult.data as ResponsesLogin
+                sessionStorage.setItem(ACCESS_TOKEN, accessToken)
 
                 // 🔄 повторяем исходный запрос
                 result = await startBaseQuery(args, api, extraOptions)
             } else {
                 // refresh не удался → разлогиниваем
-                sessionStorage.removeItem("accessToken")
+                sessionStorage.removeItem(ACCESS_TOKEN)
 
                 toast.error("Сессия истекла. Войдите снова.")
                 if (typeof window !== "undefined") {
-                    window.location.href = "/login"
+                    window.location.href = '/pagePublic'
                 }
                 return result
             }

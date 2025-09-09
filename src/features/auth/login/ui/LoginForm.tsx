@@ -14,6 +14,8 @@ import {RequestBodyLogin} from "@/shared/api";
 import {isSuccessResponse, validatePassword} from "@/features/auth/model";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
+import {useAppDispatch} from "@/shared/lib/hooks/hooks";
+import {loginTC} from "@/shared/api/appSlice";
 
 interface IProps {
     setFormType: (type: boolean) => void;
@@ -22,13 +24,14 @@ interface IProps {
 
 export const LoginForm = ({setFormType}: IProps) => {
     const router = useRouter()
+    const dispatch =useAppDispatch()
     const {
         register,
         handleSubmit,
         formState: {errors, isSubmitting},
-        clearErrors,
+
         reset,
-        watch,
+
         trigger
     } = useForm<RequestBodyLogin>({
             mode: 'onChange', // ← Валидация при потере фокуса
@@ -48,13 +51,12 @@ export const LoginForm = ({setFormType}: IProps) => {
             const res = await login(values).unwrap();
             if (isSuccessResponse(res)) {
                 sessionStorage.setItem(ACCESS_TOKEN, res.accessToken);
+                dispatch(loginTC({isLoggedIn:true}))
                 router.replace(Path.Profile)
                 reset();
             } else {
-
                 reset({password: ''});
             }
-
         } catch (error) {
             console.error("Login error:", error);
             reset({password: ''});

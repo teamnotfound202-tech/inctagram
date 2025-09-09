@@ -1,11 +1,11 @@
 import {
-    baseApi,
+
     type RequestBodyLogin,
     type RequestBodyRegistrationConformation,
     type ResponsesLogin, type ResponsesMe, ResponsesTypeError
 } from '@/shared/api';
 import type {RegistrationData, RequestBodyResending} from '@/shared/api/types';
-
+import {baseApi} from "@/shared/api/baseApi"
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -39,4 +39,5 @@ export const {
     useLoginMutation,
     useRegistrationConfirmationMutation,
         useRegistrationEmailResendingMutation
+    ,useMeQuery
 } = authApi

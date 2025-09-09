@@ -1,3 +1,4 @@
+
 import {StoreWrapper} from '@/shared/lib/store/StoreWrapper';
 import {Header} from '@/widgets/Header/Header';
 import type { Metadata } from "next";

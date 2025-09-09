@@ -1,7 +1,5 @@
 import {baseQueryWithReAuth} from '@/shared/api/baseQueryWithReauth';
-import { ACCESS_TOKEN } from '@/shared/lib/constants/constants';
-import {handleError} from '@/shared/lib/utils';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {createApi} from '@reduxjs/toolkit/query/react';
 
 
 export const baseApi = createApi({
