@@ -1,6 +1,6 @@
 'use client'
 import {useRouter, useSearchParams} from 'next/navigation';
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense, useEffect} from 'react';
 import {useGoogleLoginMutation} from "@/features/auth/api/authApi";
 import {ACCESS_TOKEN} from "@/shared/lib";
 
@@ -44,7 +44,7 @@ function CallbackContent() {
 
             {code && (
                 <div style={{marginTop: '20px'}}>
-                    <h3>✅ Успешно получен код авторизации!</h3>
+                    <h3>✅ Успешно получен код авторизации! Перенаправление...</h3>
                 </div>
             )}
 
