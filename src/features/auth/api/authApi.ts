@@ -18,7 +18,7 @@ export const authApi = baseApi.injectEndpoints({
         registrationEmailResending: builder.mutation<void, RequestBodyResending>({
             query: (body) => ({method: "post", url: "auth/registration-email-resending", body}),
         }),
-        login: builder.mutation<ResponsesLogin | ResponsesTypeError, RequestBodyLogin>({    //TODO: нужно ли ставить тип ResponsesTypeError?
+        login: builder.mutation<ResponsesLogin | ResponsesTypeError, RequestBodyLogin>({
             query: (args) => ({
                 url: `auth/login`,
                 method: 'POST',
@@ -31,7 +31,7 @@ export const authApi = baseApi.injectEndpoints({
         me: builder.query<ResponsesMe, void>({
             query: () => "auth/me",
         }),
-        googleLogin: builder.mutation<ResponseGoogleLogin, RequestBodyGoogleLogin>({    //TODO: нужно ли ставить тип ResponsesTypeError?
+        googleLogin: builder.mutation<ResponseGoogleLogin, RequestBodyGoogleLogin>({
             query: (args) => ({
                 url: `auth/google/login`,
                 method: 'POST',

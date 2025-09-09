@@ -73,7 +73,6 @@ export const RegisterForm = () => {
             <h1 className={s.registrationFormTitle}>Sign Up</h1>
             <div className={s.oAuthIconContainer}>
                 <GoogleAuthCodeFlowButton/>
-                <a href={'https://www.google.com'}><IconGoogleRegistration/></a>
                 <a href={'https://github.com/'}><GitHubIconRegistration/></a>
             </div>
                 <form onSubmit={handleSubmit(onSubmit)} className={s.form}>

@@ -1,1 +1,1 @@
-export const ACCESS_TOKEN = 'auth-token'        //TODO: может заменить на 'ACCESS_TOKEN', чтобы не путаться
+export const ACCESS_TOKEN = 'auth-token'
