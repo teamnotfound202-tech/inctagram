@@ -17,7 +17,6 @@ export const startBaseQuery = fetchBaseQuery({
 })
 
 
-
 export const baseQueryWithReAuth: BaseQueryFn = async (
     args,
     api,
@@ -26,36 +25,40 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
     let result = await startBaseQuery(args, api, extraOptions)
 
     if (result.error && result.error.status === 401) {
-            const refreshResult = await startBaseQuery(
-                {
-                    url: "/auth/update-tokens",
-                    method: "POST",
-                },
-                api,
-                extraOptions
-            )
+        const oldToken = sessionStorage.getItem(ACCESS_TOKEN)
+        const refreshResult = await startBaseQuery(
+            {
+                url: "/auth/update-tokens",
+                method: "POST",
+            },
+            api,
+            extraOptions
+        )
 
-            if (refreshResult.data) {
-                const { accessToken } = refreshResult.data as ResponsesLogin
-                sessionStorage.setItem(ACCESS_TOKEN, accessToken)
+        if (refreshResult.data) {
+            const {accessToken} = refreshResult.data as ResponsesLogin
+            sessionStorage.setItem(ACCESS_TOKEN, accessToken)
 
-                // 🔄 повторяем исходный запрос
-                result = await startBaseQuery(args, api, extraOptions)
-            } else {
-                // refresh не удался → разлогиниваем
-                sessionStorage.removeItem(ACCESS_TOKEN)
+            // 🔄 повторяем исходный запрос
+            result = await startBaseQuery(args, api, extraOptions)
+        } else {
+            // refresh не удался → разлогиниваем
+            sessionStorage.removeItem(ACCESS_TOKEN)
 
+            if (oldToken) {
                 toast.error("Сессия истекла. Войдите снова.")
-                if (typeof window !== "undefined") {
+              /*  if (typeof window !== "undefined") {
                     window.location.href = '/pagePublic'
-                }
-                return result
+                }*/
             }
+
+            return result
+        }
     }
 
     // === глобальная обработка других ошибок ===
     if (result.error) {
-        console.log('res errr' , result.error)
+        console.log('res errr', result.error)
         const status = result.error.status
 
         switch (status) {
@@ -75,7 +78,7 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
                 toast.error("Нет доступа")
                 break
             case 404:
-                toast.custom(() =>(
+                toast.custom(() => (
                     <AlertsProvider position="bottom-left">
                         <AlertToast variant="error"
                                     title="Error!"

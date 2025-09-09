@@ -7,6 +7,10 @@ import {SelectBox} from "@/shared/ui/Select/Select";
 import FlagRussia from '@/shared/ui/Select/icon/FlagRussia.svg'
 import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
 import {Path} from "@/shared/config";
+import {useAppDispatch, useAppSelector} from "@/shared/lib/hooks/hooks";
+import {loginTC, selectIsLoggedIn} from "@/shared/api/appSlice";
+import {ACCESS_TOKEN} from "@/shared/lib";
+import {useEffect, useState} from "react";
 
 type Props = {
     isLogin: boolean;
@@ -15,6 +19,17 @@ type Props = {
 };
 
 export const Header = ({ isLogin, notification, agreement }: Props) => {
+    const [isLoggined, setIsLoggedIn] = useState(false);
+const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
+const dispatch = useAppDispatch();
+    useEffect(() => {
+        const token = sessionStorage.getItem(ACCESS_TOKEN);
+        setIsLoggedIn(!!token);
+    }, [loginedWithSignIn]);
+    const signUpHandle = ()=>{
+        dispatch(loginTC({isLoggedIn: false}));
+        sessionStorage.removeItem(ACCESS_TOKEN);
+    }
     return (
         <header className={s.header}>
 
@@ -62,10 +77,11 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
                             defaultValue={'option2'}
                             fullWidth={false}
                         />
-                        <Button variant={'text'} asChild>
-                            <Link href={Path.SignIn}>Log in</Link>
-                        </Button>
-                        <Button asChild>
+                            {!isLoggined &&  <Button variant={'text'} asChild>
+                                <Link href={Path.SignIn}>Log in</Link>
+                            </Button>}
+
+                        <Button onClick={signUpHandle} asChild>
                             <Link href={Path.SignUp}>Sign up</Link>
                         </Button>
                     </div>

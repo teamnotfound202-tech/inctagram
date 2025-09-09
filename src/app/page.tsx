@@ -13,17 +13,25 @@ export default function Page() {
     useEffect(() => {
         if (!isLoading) {
             const hasToken = sessionStorage.getItem(ACCESS_TOKEN)
+
             const isAuthenticated = !!data?.userId
+
             if ((hasToken || isAuthenticated) && pathname === '/') {
+
                 router.replace(Path.Profile)
+
+            } else if(!isAuthenticated){
+                router.replace('/pagePublic')
             }
-            router.replace('/pagePublic')
+          //  router.replace('/pagePublic')
         }
     }, [data, isLoading, pathname, router])
 
 
     return (
+
         <div>
+
             {isLoading && <div>Загрузка...</div>}
         </div>
     )
