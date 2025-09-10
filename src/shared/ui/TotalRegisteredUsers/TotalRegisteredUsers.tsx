@@ -3,7 +3,7 @@ import s from './TotalRegisteredUsers.module.scss'
 type Props = {
     totalCount: number
 }
-export const TotalRegisteredUsers = ({totalCount}: Props) => {
+export const TotalRegisteredUsers = ({totalCount = 0}: Props) => {
     const formatted = String(totalCount).padStart(6, '0')
     const digits = formatted.split('')
     return (

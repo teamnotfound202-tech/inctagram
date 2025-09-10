@@ -6,7 +6,7 @@ import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import {Theme} from "@radix-ui/themes";
 import {Toaster} from 'sonner';
-import {AlertsProvider} from "@/shared/ui";
+import {AlertsProvider, Container} from "@/shared/ui";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,11 +30,11 @@ export default function RootLayout({
       <Theme appearance={'dark'}>
               <StoreWrapper>
                   <AlertsProvider>
-                      <Header isLogin={false} notification={0}/>
-                      <main className={'main'}>
-                        {children}
-                        <Toaster />
-                      </main>
+                          <Header isLogin={false} notification={0}/>
+                          <main className={'main'}>
+                              {children}
+                              <Toaster />
+                          </main>
                   </AlertsProvider>
               </StoreWrapper>
       </Theme>

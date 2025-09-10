@@ -20,7 +20,7 @@ const sidebarElements1: SideBarElement[] = [
     {
         text: 'Feed',
         link: '#',
-        isDisabled: true
+        isDisabled: false
     },
     {
         text: 'Create',

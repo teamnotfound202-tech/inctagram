@@ -3,12 +3,14 @@
 .header{
   position: fixed;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 60px;
   border-bottom: 1px solid $dark-100;
   z-index: 10;
+}
+.headerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
 }
 
 .headerTitle {
