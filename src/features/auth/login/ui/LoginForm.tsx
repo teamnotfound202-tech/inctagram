@@ -55,8 +55,8 @@ export const LoginForm = () => {
             } else {
                 reset({password: ''});
             }
-        } catch (error) {
-            console.log("Login error:", error);
+        } catch {
+
             reset({password: ''});
         }
     };
