@@ -126,7 +126,6 @@ export const LoginForm = () => {
                     Sign Up
                 </a>
             </Button>
-
         </div>
     );
 };
