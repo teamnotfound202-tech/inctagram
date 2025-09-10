@@ -18,7 +18,7 @@ export const authApi = baseApi.injectEndpoints({
         registrationEmailResending: builder.mutation<void, RequestBodyResending>({
             query: (body) => ({method: "post", url: "auth/registration-email-resending", body}),
         }),
-        login: builder.mutation<ResponsesLogin | ResponsesTypeError, RequestBodyLogin>({
+        login: builder.mutation<ResponsesLogin, RequestBodyLogin>({
             query: (args) => ({
                 url: `auth/login`,
                 method: 'POST',
