@@ -1,4 +1,5 @@
 'use client'
+import dynamic from 'next/dynamic'
 import {useRouter, useSearchParams} from 'next/navigation';
 import {Suspense, useEffect, useState} from 'react';
 import {useGoogleLoginMutation} from "@/features/auth/api/authApi";
@@ -30,7 +31,6 @@ function CallbackContent() {
                 }
 
                 setTimeout(() => router.push('/profile'), 1000)
-
             } catch (err) {
                 console.error('Ошибка авторизации:', err)
                 setError('Ошибка авторизации. Перенаправление на страницу входа...')
@@ -61,10 +61,16 @@ function CallbackContent() {
     );
 }
 
+// Disable SSR for this component
+const AuthCallbackNoSSR = dynamic(() => Promise.resolve(CallbackContent), {
+    ssr: false,
+    loading: () => <div>Loading...</div>
+})
+
 export default function AuthCallback() {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <CallbackContent/>
+            <AuthCallbackNoSSR />
         </Suspense>
     );
 }
