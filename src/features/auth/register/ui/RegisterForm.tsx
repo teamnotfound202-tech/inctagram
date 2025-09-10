@@ -12,7 +12,8 @@ import s from '../../styles/Register-Form.module.scss'
 import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 import {CustomCheckbox} from "@/shared/ui/Checkbox/Checkbox";
 import Link from "next/link";
-import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/googleOAuth";
+import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
+import GitHubAuthButton from "@/features/auth/GitHubAuthButton/ui/GitHubAuthButton";
 
 
 type RegisterFormValues = {
@@ -71,7 +72,7 @@ export const RegisterForm = () => {
             <h1 className={s.registrationFormTitle}>Sign Up</h1>
             <div className={s.oAuthIconContainer}>
                 <GoogleAuthCodeFlowButton/>
-                <a href={'https://github.com/'}><GitHubIconRegistration/></a>
+                <GitHubAuthButton/>
             </div>
                 <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
                     <Input
