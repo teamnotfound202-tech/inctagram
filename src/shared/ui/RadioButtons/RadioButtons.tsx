@@ -15,12 +15,6 @@ const values = [
     },
 ]
 
-export type RadioType = {
-    id: string
-    text: string
-    disabled: boolean
-}
-
 export const RadioButtons = () => {
     return (
         <>
