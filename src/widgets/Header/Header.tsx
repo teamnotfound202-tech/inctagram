@@ -10,7 +10,7 @@ import {Path} from "@/shared/config";
 import {useAppDispatch, useAppSelector} from "@/shared/lib/hooks/hooks";
 import {loginTC, selectIsLoggedIn} from "@/shared/api/appSlice";
 import {ACCESS_TOKEN} from "@/shared/lib";
-import {useEffect, useState} from "react";
+import {useLayoutEffect, useState} from "react";
 
 type Props = {
     isLogin: boolean;
@@ -21,8 +21,9 @@ type Props = {
 export const Header = ({isLogin, notification, agreement}: Props) => {
     const [isLoggined, setIsLoggedIn] = useState(false);
     const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
+
     const dispatch = useAppDispatch();
-    useEffect(() => {
+    useLayoutEffect(() => {
         const token = localStorage.getItem(ACCESS_TOKEN);
         setIsLoggedIn(!!token);
     }, [loginedWithSignIn]);
@@ -30,6 +31,7 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
         dispatch(loginTC({isLoggedIn: false}));
         localStorage.removeItem(ACCESS_TOKEN);
     }
+
     return (
         <header className={s.header}>
 
@@ -86,6 +88,7 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
                         </Button>
                     </div>
             }
+
 
         </header>
     );
