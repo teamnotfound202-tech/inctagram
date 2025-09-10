@@ -1,4 +1,4 @@
-import type {BaseQueryFn, FetchBaseQueryError, FetchBaseQueryMeta, QueryReturnValue} from '@reduxjs/toolkit/query';
+import type {BaseQueryFn} from '@reduxjs/toolkit/query';
 import {fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {toast} from 'sonner';
 import {ACCESS_TOKEN} from "@/shared/lib";
@@ -9,7 +9,7 @@ import {handleError} from "@/shared/lib/utils";
 export const startBaseQuery = fetchBaseQuery({
     baseUrl: 'https://connectpix.site/api/v1/',
     prepareHeaders: (headers) => {
-        const accessToken = sessionStorage.getItem('accessToken')
+        const accessToken = sessionStorage.getItem(ACCESS_TOKEN)
         if (accessToken) {
             headers.set('Authorization', `Bearer ${accessToken}`)
         }
@@ -49,7 +49,7 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
             if (oldToken) {
                 toast.error("Сессия истекла. Войдите снова.")
               /*  if (typeof window !== "undefined") {
-                    window.location.href = '/pagePublic'
+                    window.location.href = '/public'
                 }*/
             }
 

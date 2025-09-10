@@ -1,9 +1,10 @@
 'use client'
 import {useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
-import {useMeQuery} from "@/features/auth/api/authApi";
+
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {Path} from "@/shared/config";
+import {useMeQuery} from "@/features/auth/api/authApi";
 
 export default function Page() {
     const router = useRouter()
@@ -12,7 +13,7 @@ export default function Page() {
 
     useEffect(() => {
         if (!isLoading) {
-            const hasToken = sessionStorage.getItem(ACCESS_TOKEN)
+            const hasToken = localStorage.getItem(ACCESS_TOKEN)
 
             const isAuthenticated = !!data?.userId
 
@@ -21,7 +22,7 @@ export default function Page() {
                 router.replace(Path.Profile)
 
             } else if(!isAuthenticated){
-                router.replace('/pagePublic')
+                router.replace(Path.Public)
             }
 
         }
@@ -31,7 +32,6 @@ export default function Page() {
     return (
 
         <div>
-
             {isLoading && <div>Загрузка...</div>}
         </div>
     )

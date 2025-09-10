@@ -9,7 +9,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     const [isChecking, setIsChecking] = useState(true)
 
     useEffect(() => {
-        const token = sessionStorage.getItem("accessToken")
+        const token = localStorage.getItem(ACCESS_TOKEN)
         if (!token) {
             router.replace(Path.SignIn)
         } else {
