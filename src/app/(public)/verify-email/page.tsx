@@ -1,29 +1,10 @@
-'use client';
-import {useRegistrationConfirmationMutation} from '@/features/auth/api/authApi';
-import {Path} from '@/shared/config';
-import {useRouter, useSearchParams} from 'next/navigation';
-import {useEffect} from 'react';
+import EmailVerificationHandler from '@/widgets/EmailVerificationHandler/EmailVerificationHandler';
+import {Suspense} from 'react';
 
 export default function Page() {
-    const searchParams = useSearchParams()
-    const [verify] = useRegistrationConfirmationMutation()
-    const router = useRouter()
-
-
-    useEffect(() => {
-        const code = searchParams.get('code')
-        if (code) {
-            verify({confirmationCode: code })
-                .unwrap()
-                .then(() => {
-                    router.push(Path.Success)
-                })
-                .catch(err => {
-                    router.push(Path.Resend)
-                })
-        }
-    },[searchParams, verify, router])
-
-
-    return <></>
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+         <EmailVerificationHandler/>
+        </Suspense>
+        )
 }

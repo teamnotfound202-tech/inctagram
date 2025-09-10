@@ -17,7 +17,7 @@ type CustomSelectProps = {
 
 const CustomSelect: React.FC<CustomSelectProps> = ({options, value, onChange, placeholder = "Select..."}) => {
     const [isOpen, setIsOpen] = useState(false);
-    const selectRef = useRef<any | null>(null);
+    const selectRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
