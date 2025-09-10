@@ -9,12 +9,10 @@ import {useRouter} from 'next/navigation';
 import {useState} from 'react';
 import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
 import s from '../../styles/Register-Form.module.scss'
-import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 import {CustomCheckbox} from "@/shared/ui/Checkbox/Checkbox";
 import Link from "next/link";
 import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
-import GitHubAuthButton from "@/features/auth/GitHubAuthButton/ui/GitHubAuthButton";
-
+import GitHubAuthButton from "@/features/auth/gitHubOAuth/ui/GitHubAuthButton";
 
 type RegisterFormValues = {
     username: string;

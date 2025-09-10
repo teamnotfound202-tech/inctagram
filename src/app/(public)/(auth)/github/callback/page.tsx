@@ -21,38 +21,6 @@ function CallbackContent() {
         setTimeout(() => router.push('/profile'), 1000)
     }, [accessToken, router]);
 
-    /*useEffect(() => {
-        if (!code) {
-            setError('Код авторизации не найден в URL')
-            setTimeout(() => router.push('/login'), 2000)
-            return
-        }
-
-        const handleGoogleCallback = async (): Promise<void> => {
-            try {
-                const response = await googleLogin({
-                    code,
-                    redirectUrl: process.env.NEXT_PUBLIC_REDIRECT_URL!
-                }).unwrap()
-
-                if (response.accessToken) {
-                    sessionStorage.setItem(ACCESS_TOKEN, response.accessToken)
-                }
-
-                setTimeout(() => router.push('/profile'), 1000)
-            } catch (err) {
-                console.error('Ошибка авторизации:', err)
-                setError('Ошибка авторизации. Перенаправление на страницу входа...')
-                setTimeout(() => router.push('/login'), 2000)
-            }
-        }
-
-        handleGoogleCallback()
-    }, [code, googleLogin, router])
-
-
-*/
-
     if (error) {
         return (
             <div style={{padding: '20px'}}>

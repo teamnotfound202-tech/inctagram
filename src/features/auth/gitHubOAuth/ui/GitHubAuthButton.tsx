@@ -1,4 +1,4 @@
-import s from "@/features/auth/GitHubAuthButton/ui/GitHubAuthButton.module.scss";
+import s from "@/features/auth/gitHubOAuth/ui/GitHubAuthButton.module.scss";
 import GitHubIconRegistration from "@/features/auth/styles/icons/gitHubIconRegistration.svg";
 import {Button} from "@/shared/ui";
 
