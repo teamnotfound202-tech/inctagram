@@ -7,7 +7,7 @@ import "@radix-ui/themes/styles.css";
 import {Theme} from "@radix-ui/themes";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import {Toaster} from 'sonner';
-import {AlertsProvider} from "@/shared/ui";
+import {AlertsProvider, Container} from "@/shared/ui";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,23 +25,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-        <body className={inter.variable}>
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-            <Theme appearance={'dark'}>
-                <StoreWrapper>
-                    <AlertsProvider>
-                        <Header isLogin={false} notification={0}/>
-                        <main className={'main'}>
-                            {children}
-                            <Toaster />
-                        </main>
-                    </AlertsProvider>
-                </StoreWrapper>
-            </Theme>
-        </GoogleOAuthProvider>
-        </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className={inter.variable}>
+      <Theme appearance={'dark'}>
+              <StoreWrapper>
+                  <AlertsProvider>
+                          <Header isLogin={false} notification={0}/>
+                          <main className={'main'}>
+                              {children}
+                              <Toaster />
+                          </main>
+                  </AlertsProvider>
+              </StoreWrapper>
+      </Theme>
+      </body>
+    </html>
+  );
 }

@@ -2,8 +2,10 @@
 
 .sidebarItem {
   display: inline-block;
+  min-width: 220px;
   max-width: fit-content;
   margin-bottom: 24px;
+  cursor: pointer;
   &:nth-child(5) {
    margin-bottom: 60px;
   }
@@ -31,7 +33,6 @@
     }
   }
 }
-
 
 .sidebarItemLink {
   color: $light-100;

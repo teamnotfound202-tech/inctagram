@@ -1,9 +1,5 @@
-import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/googleOAuth";
-
+import {HomePage} from "@/widgets/HomePage/HomePage";
 
 export default function Page() {
-    return <>
-    </>
+    return <HomePage/>
 }
-
-

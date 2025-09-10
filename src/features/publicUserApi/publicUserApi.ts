@@ -4,10 +4,10 @@ import {baseApi} from '@/shared/api';
 
 export const publicUserApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getPublicUsers: builder.query<GetPublicUsers, void>({
-            query: () => "/api/v1/public-user",
+        getTotalRegisteredUsers: builder.query<GetPublicUsers, void>({
+            query: () => "/public-user",
         }),
     }),
 })
 
-export const {useGetPublicUsersQuery} = publicUserApi
+export const {useGetTotalRegisteredUsersQuery} = publicUserApi

@@ -7,7 +7,6 @@ export const handleError = (result: QueryReturnValue<unknown, FetchBaseQueryErro
     if (result.error) {
         const status = result.error.status
 
-        console.log('ResultError', result.error.data)
         switch (status) {
             case "FETCH_ERROR":
             case "PARSING_ERROR":
