@@ -4,7 +4,14 @@ import {
     type RequestBodyRegistrationConformation,
     type ResponsesLogin, type ResponsesMe, ResponsesTypeError
 } from '@/shared/api';
-import {RegistrationData, RequestBodyGoogleLogin, RequestBodyResending, ResponseGoogleLogin} from '@/shared/api/types';
+import {
+    RegistrationData,
+    RequestBodyGoogleLogin,
+    RequestBodyResending,
+    ResponseGoogleLogin,
+    RequestCreateNewPassword,
+    RequestRecoveryPassword, RequestResendRecoveryPassword
+} from '@/shared/api/types';
 
 
 export const authApi = baseApi.injectEndpoints({
@@ -38,6 +45,36 @@ export const authApi = baseApi.injectEndpoints({
                 body: args
             }),
         }),
+        recoveryPassword: builder.mutation<void, RequestRecoveryPassword>(
+            {
+                query: body => ({
+                    url: '/auth/password-recovery',
+                    method: 'POST',
+                    body,
+                }),
+            }
+        ),
+        createNewPassword: builder.mutation<void, RequestCreateNewPassword>({
+            query: body => ({
+                url: '/auth/new-password',
+                method: 'POST',
+                body,
+            }),
+        }),
+        resendRecoveryPassword: builder.mutation<void, RequestResendRecoveryPassword>({
+            query: body => ({
+                url: '/auth/password-recovery-resending',
+                method: 'POST',
+                body,
+            }),
+        }),
+        checkRecoveryCode: builder.mutation<void, { recoveryCode: string }>({
+            query: body => ({
+                url: '/auth/check-recovery-code',
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
 })
 
@@ -47,4 +84,8 @@ export const {
     useRegistrationConfirmationMutation,
     useRegistrationEmailResendingMutation,
     useGoogleLoginMutation,
+    useRecoveryPasswordMutation,
+    useCreateNewPasswordMutation,
+    useResendRecoveryPasswordMutation,
+    useCheckRecoveryCodeMutation
 } = authApi

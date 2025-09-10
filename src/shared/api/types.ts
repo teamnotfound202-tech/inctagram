@@ -13,7 +13,7 @@ export type RegistrationData = {
     "userName": string,
     "email": string,
     "password": string,
-    "baseUrl": string
+    "baseUrl"?: string
 }
 
 export type RequestBodyLogin = Omit<RegistrationData, 'userName'>
@@ -41,3 +41,7 @@ export type ResponsesMe = {
 export type RequestBodyRegistrationConformation = {
     "confirmationCode": string
 }
+
+export type RequestRecoveryPassword = { email: string; baseUrl: string; recaptcha: string }
+export type RequestCreateNewPassword = { newPassword: string; recoveryCode: string }
+export type RequestResendRecoveryPassword = { email: string; baseUrl: string }

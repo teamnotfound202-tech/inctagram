@@ -1,0 +1,17 @@
+@use '@/shared/styles/variables' as *;
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 380px;
+  padding: 24px;
+}
+.title {
+  text-align: center;
+  margin-bottom: 13px;
+}
+
+.content {
+  width: 100%;
+}

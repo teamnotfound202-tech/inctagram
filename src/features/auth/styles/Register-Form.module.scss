@@ -108,6 +108,7 @@
   font-weight: 400;
   line-height: 170%;
   padding: 0;
+  cursor: pointer;
 }
 .forgotBtn:hover{
   background-color: transparent;
@@ -116,4 +117,41 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: 12px;
+}
+
+
+
+.instruction {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+
+  color: $light-900;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 170%;
+}
+.textFields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.text {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+.captchaBlock {
+  margin-bottom: 20px;
+}
+//.transparentBackground {
+//  background-color: transparent;
+//
+
+.recaptcha-container {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 4px;
+  line-height: 0; /* Важно! */
 }

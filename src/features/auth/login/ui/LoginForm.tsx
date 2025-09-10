@@ -14,13 +14,12 @@ import {RequestBodyLogin} from "@/shared/api";
 import {isSuccessResponse, validatePassword} from "@/features/auth/model";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
-
-interface IProps {
-    setFormType: (type: boolean) => void;
-}
+import Link from "next/link";
 
 
-export const LoginForm = ({setFormType}: IProps) => {
+
+
+export const LoginForm = () => {
     const router = useRouter()
     const {
         register,
@@ -114,7 +113,7 @@ export const LoginForm = ({setFormType}: IProps) => {
                     })}
                 />
                 <div className={s.fogrotBtnContainer}>
-                    <Button className={s.forgotBtn} onClick={() => setFormType(true)}> Forgot Password</Button>
+                    <Link href={Path.PasswordRecovery} className={s.forgotBtn}>Forgot Password</Link>
                 </div>
                 <Button type="submit" disabled={disabled}>
                     {isSubmitting ? "Loading..." : "Sign In"}
