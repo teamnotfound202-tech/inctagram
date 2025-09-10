@@ -23,7 +23,7 @@ export default function Page() {
             } else if(!isAuthenticated){
                 router.replace('/pagePublic')
             }
-          //  router.replace('/pagePublic')
+
         }
     }, [data, isLoading, pathname, router])
 
