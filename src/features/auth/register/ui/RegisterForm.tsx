@@ -166,7 +166,7 @@ export const RegisterForm = () => {
                     </div>
 
 
-                    <Button type="submit" disabled={!isValid && !agreeValue}>
+                    <Button type="submit" disabled={!isValid || !agreeValue}>
                         Sign Up
                     </Button>
                 </form>
