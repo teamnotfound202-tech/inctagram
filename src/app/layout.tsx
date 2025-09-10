@@ -28,17 +28,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
-      <Theme appearance={'dark'}>
-              <StoreWrapper>
-                  <AlertsProvider>
-                          <Header isLogin={false} notification={0}/>
-                          <main className={'main'}>
-                              {children}
-                              <Toaster />
-                          </main>
-                  </AlertsProvider>
-              </StoreWrapper>
-      </Theme>
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+          <Theme appearance={'dark'}>
+                  <StoreWrapper>
+                      <AlertsProvider>
+                              <Header isLogin={false} notification={0}/>
+                              <main className={'main'}>
+                                  {children}
+                                  <Toaster />
+                              </main>
+                      </AlertsProvider>
+                  </StoreWrapper>
+          </Theme>
+      </GoogleOAuthProvider>
       </body>
     </html>
   );
