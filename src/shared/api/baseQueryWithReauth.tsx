@@ -9,7 +9,7 @@ import {handleError} from "@/shared/lib/utils";
 export const startBaseQuery = fetchBaseQuery({
     baseUrl: 'https://connectpix.site/api/v1/',
     prepareHeaders: (headers) => {
-        const accessToken = sessionStorage.getItem(ACCESS_TOKEN)
+        const accessToken = localStorage.getItem(ACCESS_TOKEN)
         if (accessToken) {
             headers.set('Authorization', `Bearer ${accessToken}`)
         }
@@ -26,7 +26,7 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
     let result = await startBaseQuery(args, api, extraOptions)
 
     if (result.error && result.error.status === 401) {
-        const oldToken = sessionStorage.getItem(ACCESS_TOKEN)
+        const oldToken = localStorage.getItem(ACCESS_TOKEN)
         const refreshResult = await startBaseQuery(
             {
                 url: "/auth/update-tokens",
@@ -38,13 +38,13 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
 
         if (refreshResult.data) {
             const {accessToken} = refreshResult.data as ResponsesLogin
-            sessionStorage.setItem(ACCESS_TOKEN, accessToken)
+            localStorage.setItem(ACCESS_TOKEN, accessToken)
 
             // 🔄 повторяем исходный запрос
             result = await startBaseQuery(args, api, extraOptions)
         } else {
             // refresh не удался → разлогиниваем
-            sessionStorage.removeItem(ACCESS_TOKEN)
+            localStorage.removeItem(ACCESS_TOKEN)
 
             if (oldToken) {
                 toast.error("Сессия истекла. Войдите снова.")
