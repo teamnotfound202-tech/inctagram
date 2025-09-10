@@ -9,7 +9,6 @@ import {useRouter} from 'next/navigation';
 import {useState} from 'react';
 import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
 import s from '../../styles/Register-Form.module.scss'
-import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg'
 import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 import {CustomCheckbox} from "@/shared/ui/Checkbox/Checkbox";
 import Link from "next/link";
@@ -166,7 +165,7 @@ export const RegisterForm = () => {
                     </div>
 
 
-                    <Button type="submit" disabled={!isValid && !agreeValue}>
+                    <Button type="submit" disabled={!isValid || !agreeValue}>
                         Sign Up
                     </Button>
                 </form>
