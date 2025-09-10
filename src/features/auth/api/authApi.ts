@@ -48,5 +48,6 @@ export const {
     useRegistrationConfirmationMutation,
     useRegistrationEmailResendingMutation,
     useMeQuery,
-    useLogoutMutation
+    useLogoutMutation,
+    useGoogleLoginMutation
 } = authApi

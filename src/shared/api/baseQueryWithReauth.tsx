@@ -8,6 +8,7 @@ import {handleError} from "@/shared/lib/utils";
 
 export const startBaseQuery = fetchBaseQuery({
     baseUrl: 'https://connectpix.site/api/v1/',
+    credentials: 'include',
     prepareHeaders: (headers) => {
         const accessToken = localStorage.getItem(ACCESS_TOKEN)
         if (accessToken) {

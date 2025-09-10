@@ -11,6 +11,7 @@ import {useAppDispatch, useAppSelector} from "@/shared/lib/hooks/hooks";
 import {loginTC, selectIsLoggedIn} from "@/shared/api/appSlice";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useLayoutEffect, useState} from "react";
+import {useLogoutMutation} from "@/features/auth/api/authApi";
 
 type Props = {
     isLogin: boolean;
@@ -21,7 +22,7 @@ type Props = {
 export const Header = ({isLogin, notification, agreement}: Props) => {
     const [isLoggined, setIsLoggedIn] = useState(false);
     const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
-
+const [logout] = useLogoutMutation()
     const dispatch = useAppDispatch();
     useLayoutEffect(() => {
         const token = localStorage.getItem(ACCESS_TOKEN);
