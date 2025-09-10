@@ -3,9 +3,8 @@ import s from './Sidebar.module.scss'
 import {useState} from "react";
 import {Modal} from "@/shared/ui/Modal/Modal";
 import {Button} from "@/shared/ui";
-import {useLogoutMutation, useMeQuery} from "@/features/auth/api/authApi";
+import {useLogoutMutation, useMeQuery} from '@/features/auth/api/authApi';
 import {useRouter} from "next/navigation";
-import {ACCESS_TOKEN} from "@/shared/lib";
 
 export type Text = 'Feed'
     | 'Create'
@@ -17,7 +16,7 @@ export type Text = 'Feed'
     | 'Log Out'
 
 export const Sidebar = () => {
-    // const {data} = useMeQuery()
+    const {data} = useMeQuery()
     const [logout] = useLogoutMutation()
 
     const router = useRouter();
@@ -93,7 +92,7 @@ export const Sidebar = () => {
             {isModalOpen && (
                 <Modal title={'Log Out'} onClick={handleModelClose}>
 
-                    <p className={s.contentTextModal}>Are you really want to log out of your account <span>{}</span></p>
+                    <p className={s.contentTextModal}>Are you really want to log out of your account <span>{data?.email}</span></p>
                     <div className={s.buttonWrapper}>
                         <Button variant={'outline'} onClick={handleLogout}>Yes</Button>
                         <Button onClick={handleModelClose}>No</Button>
