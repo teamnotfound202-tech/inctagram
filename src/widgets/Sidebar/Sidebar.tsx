@@ -1,5 +1,11 @@
 import {SidebarItem} from '@/widgets/Sidebar/SidebarItem/SidebarItem';
 import s from './Sidebar.module.scss'
+import {useState} from "react";
+import {Modal} from "@/shared/ui/Modal/Modal";
+import {Button} from "@/shared/ui";
+import {useLogoutMutation, useMeQuery} from "@/features/auth/api/authApi";
+import {useRouter} from "next/navigation";
+import {ACCESS_TOKEN} from "@/shared/lib";
 
 export type Text = 'Feed'
     | 'Create'
@@ -11,7 +17,28 @@ export type Text = 'Feed'
     | 'Log Out'
 
 export const Sidebar = () => {
-    const handleLogOut = () => alert('Log out')
+    // const {data} = useMeQuery()
+    const [logout] = useLogoutMutation()
+
+    const router = useRouter();
+    const [isModalOpen, setModalOpen] = useState(false)
+    const handleModelOpen = () => setModalOpen(true)
+    const handleModelClose = () => setModalOpen(false)
+    const handleLogout = () => {
+        logout()
+            .unwrap()
+            .then((res) => {
+                console.log(res)
+            router.push('/login')
+        }).catch((err) => {
+            console.log(err)
+        })
+
+    }
+
+
+
+
     return (
         <ul className={s.sidebar}>
             <SidebarItem
@@ -61,8 +88,18 @@ export const Sidebar = () => {
                 text={'Log Out'}
                 link={''}
                 isDisabled={false}
-                onClickAction={handleLogOut}
+                onClickAction={handleModelOpen}
             />
+            {isModalOpen && (
+                <Modal title={'Log Out'} onClick={handleModelClose}>
+
+                    <p className={s.contentTextModal}>Are you really want to log out of your account <span>{}</span></p>
+                    <div className={s.buttonWrapper}>
+                        <Button variant={'outline'} onClick={handleLogout}>Yes</Button>
+                        <Button onClick={handleModelClose}>No</Button>
+                    </div>
+                </Modal>
+            )}
         </ul>
     )
 }

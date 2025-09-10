@@ -51,7 +51,7 @@ export const RegisterForm = () => {
             .unwrap()
             .then(() => {
                 setIsModalOpen(true);
-                setEmailValue(values.email)
+                setEmailValue(values.email);
                 reset()
             })
             .catch(err => {

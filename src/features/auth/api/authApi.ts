@@ -26,7 +26,7 @@ export const authApi = baseApi.injectEndpoints({
             }),
         }),
         logout: builder.mutation<void, void>({
-            query: () => ({method: "post", url: "auth/logout"}),
+            query: () => ({method: "post", url: "auth/logout"})
         }),
         me: builder.query<ResponsesMe, void>({
             query: () => "auth/me",
@@ -47,4 +47,6 @@ export const {
     useRegistrationConfirmationMutation,
     useRegistrationEmailResendingMutation,
     useGoogleLoginMutation,
+    useMeQuery,
+    useLogoutMutation,
 } = authApi
