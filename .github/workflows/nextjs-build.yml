@@ -1,0 +1,36 @@
+name: Build Next.js App
+
+on:
+  push:
+    branches: [ main, dev, fix-page ]  # Добавляем все нужные ветки
+  pull_request:
+    branches: [ main, dev ]  # Запускаем на PR в эти ветки
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js application
+        env:
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
+          NEXT_PUBLIC_REDIRECT_URL: ${{ secrets.NEXT_PUBLIC_REDIRECT_URL }}
+          NODE_ENV: production
+        run: |
+          echo "Building from branch: ${{ github.ref }}"
+          npm run build
+
+      - name: Run tests
+        run: npm test
