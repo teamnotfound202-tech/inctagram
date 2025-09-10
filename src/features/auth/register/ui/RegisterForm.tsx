@@ -9,7 +9,6 @@ import {useRouter} from 'next/navigation';
 import {useState} from 'react';
 import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
 import s from '../../styles/Register-Form.module.scss'
-import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg'
 import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 import {CustomCheckbox} from "@/shared/ui/Checkbox/Checkbox";
 import Link from "next/link";
@@ -52,7 +51,7 @@ export const RegisterForm = () => {
             .unwrap()
             .then(() => {
                 setIsModalOpen(true);
-                setEmailValue(values.email)
+                setEmailValue(values.email);
                 reset()
             })
             .catch(err => {

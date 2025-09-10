@@ -37,12 +37,12 @@ export const baseQueryWithReAuth: BaseQueryFn = async (args, api, extraOptions) 
                 result = await startBaseQuery(args, api, extraOptions)
             } else {
                 // refresh не удался → разлогиниваем
-                localStorage.removeItem(ACCESS_TOKEN)
+                // localStorage.removeItem(ACCESS_TOKEN)
 
                 toast.error("Сессия истекла. Войдите снова.")
-                if (typeof window !== "undefined") {
-                    window.location.href = "/login"
-                }
+                // if (typeof window !== "undefined") {
+                //     window.location.href = "/login"
+                // }
                 return result
             }
     }
