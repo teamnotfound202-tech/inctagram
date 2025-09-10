@@ -26,9 +26,7 @@ export const LoginForm = ({setFormType}: IProps) => {
         register,
         handleSubmit,
         formState: {errors, isSubmitting},
-        clearErrors,
         reset,
-        watch,
         trigger
     } = useForm<RequestBodyLogin>({
             mode: 'onChange', // ← Валидация при потере фокуса
@@ -51,12 +49,10 @@ export const LoginForm = ({setFormType}: IProps) => {
                 router.replace(Path.Profile)
                 reset();
             } else {
-
                 reset({password: ''});
             }
 
         } catch (error) {
-            console.error("Login error:", error);
             reset({password: ''});
         }
     };
