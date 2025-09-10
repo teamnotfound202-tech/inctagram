@@ -13,6 +13,7 @@ import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegis
 import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 import {CustomCheckbox} from "@/shared/ui/Checkbox/Checkbox";
 import Link from "next/link";
+import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/googleOAuth";
 
 
 type RegisterFormValues = {
@@ -70,8 +71,8 @@ export const RegisterForm = () => {
         <div className={s.containerForm}>
             <h1 className={s.registrationFormTitle}>Sign Up</h1>
             <div className={s.oAuthIconContainer}>
-                <a href={'https://www.google.com'} className={s.authorizationLink}><IconGoogleRegistration/></a>
-                <a href={'https://github.com/'} className={s.authorizationLink}><GitHubIconRegistration/></a>
+                <GoogleAuthCodeFlowButton/>
+                <a href={'https://github.com/'}><GitHubIconRegistration/></a>
             </div>
                 <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
                     <Input
@@ -165,7 +166,7 @@ export const RegisterForm = () => {
                     </div>
 
 
-                    <Button type="submit" disabled={!isValid || !agreeValue}>
+                    <Button type="submit" disabled={!isValid && !agreeValue}>
                         Sign Up
                     </Button>
                 </form>

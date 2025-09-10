@@ -5,6 +5,7 @@ import { Inter} from "next/font/google";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import {Theme} from "@radix-ui/themes";
+import {GoogleOAuthProvider} from "@react-oauth/google";
 import {Toaster} from 'sonner';
 import {AlertsProvider, Container} from "@/shared/ui";
 
