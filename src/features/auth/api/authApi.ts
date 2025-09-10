@@ -2,7 +2,8 @@ import {
     baseApi,
     type RequestBodyLogin,
     type RequestBodyRegistrationConformation,
-    type ResponsesLogin, type ResponsesMe, ResponsesTypeError
+    type ResponsesLogin,
+    type ResponsesMe
 } from '@/shared/api';
 import {RegistrationData, RequestBodyGoogleLogin, RequestBodyResending, ResponseGoogleLogin} from '@/shared/api/types';
 
@@ -33,7 +34,7 @@ export const authApi = baseApi.injectEndpoints({
         }),
         googleLogin: builder.mutation<ResponseGoogleLogin, RequestBodyGoogleLogin>({
             query: (args) => ({
-                url: `auth/google/login`,
+                url: 'auth/google/login',
                 method: 'POST',
                 body: args
             }),
