@@ -8,6 +8,17 @@ const nextConfig: NextConfig = {
         });
         return config;
     },
+    // Добавить конфигурацию для turbopack
+    experimental: {
+        turbo: {
+            rules: {
+                '*.svg': {
+                    loaders: ['@svgr/webpack'],
+                    as: '*.js',
+                },
+            },
+        },
+    },
 };
 
 export default nextConfig;
