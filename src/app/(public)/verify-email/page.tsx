@@ -13,14 +13,12 @@ export default function Page() {
     useEffect(() => {
         const code = searchParams.get('code')
         if (code) {
-            console.log({confirmationCode: code});
             verify({confirmationCode: code })
                 .unwrap()
                 .then(() => {
                     router.push(Path.Success)
                 })
                 .catch(err => {
-                    console.log('Error', err);
                     router.push(Path.Resend)
                 })
         }

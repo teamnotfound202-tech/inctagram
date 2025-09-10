@@ -18,9 +18,17 @@ export type RegistrationData = {
 
 export type RequestBodyLogin = Omit<RegistrationData, 'userName' | 'baseUrl'>
 export type RequestBodyResending = Omit<RegistrationData, 'userName' | 'password'>
+export type RequestBodyGoogleLogin = {
+    "redirectUrl": string,
+    "code": string
+}
 
 export type ResponsesLogin = {
     "accessToken": string
+}
+export type ResponseGoogleLogin = {
+    "accessToken": string,
+    "email": string
 }
 
 export type ResponsesMe = {
