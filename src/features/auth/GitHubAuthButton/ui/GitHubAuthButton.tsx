@@ -1,10 +1,10 @@
-import s from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton.module.scss";
+import s from "@/features/auth/GitHubAuthButton/ui/GitHubAuthButton.module.scss";
 import GitHubIconRegistration from "@/features/auth/styles/icons/gitHubIconRegistration.svg";
 import {Button} from "@/shared/ui";
 
 export default function GitHubAuthButton() {
     const loginHandler = () => {
-        // Просто перенаправляем на эндпоинт бэкенда
+        // Перенаправляем на эндпоинт бэкенда
         window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/github/login?redirect_url=${process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URL}`;
     };
 

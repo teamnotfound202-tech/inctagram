@@ -9,9 +9,6 @@ function CallbackContent() {
     const params = useSearchParams()
     const accessToken = params.get('accessToken')
     const [error, setError] = useState<string | null>(null)
-    if (accessToken) {
-        localStorage.setItem(ACCESS_TOKEN, accessToken)
-    }
 
     useEffect(() => {
         if (!accessToken) {

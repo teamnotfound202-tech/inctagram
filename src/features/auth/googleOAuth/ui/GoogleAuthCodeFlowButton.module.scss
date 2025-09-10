@@ -1,7 +1,12 @@
-.gitHubAuthButton {
+.googleAuthButton {
   padding: 0;
   height: 36px;
   border: none;
+
+  &:hover, &:active, &:focus {
+    border-color: transparent;
+    background: none;
+  }
 }
 
 

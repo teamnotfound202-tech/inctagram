@@ -4,6 +4,7 @@ import {useRouter, useSearchParams} from 'next/navigation';
 import {Suspense, useEffect, useState} from 'react';
 import {useGoogleLoginMutation} from "@/features/auth/api/authApi";
 import {ACCESS_TOKEN} from "@/shared/lib";
+//TODO: исправить пути в env или уточнить у бэка
 
 function CallbackContent() {
     const router = useRouter();
