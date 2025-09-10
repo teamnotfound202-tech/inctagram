@@ -1,6 +1,6 @@
 'use client'
 import {useRouter, useSearchParams} from 'next/navigation';
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense, useEffect} from 'react';
 import {useGoogleLoginMutation} from "@/features/auth/api/authApi";
 import {ACCESS_TOKEN} from "@/shared/lib";
 
