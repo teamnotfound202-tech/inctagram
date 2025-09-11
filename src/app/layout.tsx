@@ -25,22 +25,39 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+    const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+
+    if (!googleClientId) {
+        console.error('NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set');
+    }
+
   return (
     <html lang="en">
       <body className={inter.variable}>
-      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-          <Theme appearance={'dark'}>
+      {googleClientId ? (
+          <GoogleOAuthProvider clientId={googleClientId}>
+              <Theme appearance={'dark'}>
                   <StoreWrapper>
                       <AlertsProvider>
-                              <Header isLogin={false} notification={0}/>
-                              <main className={'main'}>
-                                  {children}
-                                  <Toaster />
-                              </main>
+                          <Header isLogin={false} notification={0}/>
+                          <main className={'main'}>
+                              {children}
+                              <Toaster />
+                          </main>
                       </AlertsProvider>
                   </StoreWrapper>
-          </Theme>
-      </GoogleOAuthProvider>
+              </Theme>
+          </GoogleOAuthProvider>
+      ) : (
+          <div>
+              {process.env.NODE_ENV === 'development' && (
+                  <div style={{color: 'red'}}>
+                      Warning: NEXT_PUBLIC_GOOGLE_CLIENT_ID not set
+                  </div>
+              )}
+              {children}
+          </div>
+      )}
       </body>
     </html>
   );
