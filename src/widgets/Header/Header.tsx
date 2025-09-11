@@ -88,7 +88,8 @@ const dispatch = useAppDispatch();
                         </Button>
                     </div>
                 }
-
+                </div>
+            </Container>
         </header>
     );
 };

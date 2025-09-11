@@ -9,7 +9,7 @@ import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegis
 
 import {useLoginMutation} from "@/features/auth/api/authApi";
 import {Path} from "@/shared/config";
-import {useId} from "react";
+import {useEffect, useId, useState} from "react";
 import {RequestBodyLogin} from "@/shared/api";
 import {isSuccessResponse, validatePassword} from "@/features/auth/model";
 import {ACCESS_TOKEN} from "@/shared/lib";
@@ -48,7 +48,7 @@ export const LoginForm = () => {
         try {
             const res = await login(values).unwrap();
             if (isSuccessResponse(res)) {
-                localStorageStorage.setItem(ACCESS_TOKEN, res.accessToken);
+                localStorage.setItem(ACCESS_TOKEN, res.accessToken);
                 dispatch(loginTC({isLoggedIn:true}))
                 router.replace(Path.Profile)
                 reset();

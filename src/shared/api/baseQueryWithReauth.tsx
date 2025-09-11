@@ -18,26 +18,20 @@ export const startBaseQuery = fetchBaseQuery({
 })
 
 
-export const baseQueryWithReAuth: BaseQueryFn = async (
-    args,
-    api,
-    extraOptions
-) => {
+
+export const baseQueryWithReAuth: BaseQueryFn = async (args, api, extraOptions) => {
     let result = await startBaseQuery(args, api, extraOptions)
 
     if (result.error && result.error.status === 401) {
-        const oldToken = localStorage.getItem(ACCESS_TOKEN)
+
         const refreshResult = await startBaseQuery(
-            {
-                url: "/auth/update-tokens",
-                method: "POST",
-            },
+            {url: "/auth/update-tokens",method: "POST"},
             api,
             extraOptions
         )
 
         if (refreshResult.data) {
-            const {accessToken} = refreshResult.data as ResponsesLogin
+            const { accessToken } = refreshResult.data as ResponsesLogin
             localStorage.setItem(ACCESS_TOKEN, accessToken)
 
             // 🔄 повторяем исходный запрос
@@ -46,8 +40,10 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
             // refresh не удался → разлогиниваем
             localStorage.removeItem(ACCESS_TOKEN)
 
-            if (oldToken) {
-                toast.error("Сессия истекла. Войдите снова.")
+            toast.error("Сессия истекла. Войдите снова.")
+            if (typeof window !== "undefined") {
+                window.location.href = "/login"
+            }
             return result
         }
     }

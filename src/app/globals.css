@@ -33,3 +33,24 @@ a {
   flex-direction: column;
   padding-top: 60px;
 }
+
+/* Глобальное выравнивание инпутов */
+[data-radix-text-field-input],
+[data-radix-password-field-input] {
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 6px 12px;
+    border: 1px solid;
+    border-radius: 2px;
+    box-sizing: border-box;
+    width: 100%;
+    background: transparent;
+}
+
+/* Убедитесь, что контейнеры имеют одинаковые размеры */
+[data-radix-text-field-root],
+[data-radix-password-field-root] {
+    width: 100%;
+    position: relative;
+}

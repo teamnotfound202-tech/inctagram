@@ -7,14 +7,15 @@ import {Sidebar} from "@/widgets/Sidebar/Sidebar";
 
 export const HomePage = () => {
 
-    const {data} = useGetTotalRegisteredUsersQuery()
+    const {data: totalCountUser} = useGetTotalRegisteredUsersQuery()
+
 
     return (
         <Container className={s.container}>
             <div className={s.homePageWrapper}>
                 <Sidebar/>
                 <div className={s.homePageContent}>
-                    {data && <TotalRegisteredUsers totalCount={data.totalCount} />}
+                    {totalCountUser && <TotalRegisteredUsers totalCount={totalCountUser.totalCount} />}
                 </div>
             </div>
         </Container>
