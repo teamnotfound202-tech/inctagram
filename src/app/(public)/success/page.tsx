@@ -1,5 +1,6 @@
-import {Congratulations} from '@/widgets/Congratulations/Congratulations';
+'use client';
+import { Congratulations } from '@/widgets/Congratulations/Congratulations';
 
 export default function Page() {
-    return <Congratulations/>
+  return <Congratulations />;
 }

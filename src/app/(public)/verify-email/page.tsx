@@ -1,3 +1,4 @@
+'use client';
 import EmailVerificationHandler from '@/widgets/EmailVerificationHandler/EmailVerificationHandler';
 import {Suspense} from 'react';
 
