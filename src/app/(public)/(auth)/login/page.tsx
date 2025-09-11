@@ -12,7 +12,7 @@ const formChangerHandler = (type:boolean)=>{
     return <>
         <Container>
             <FormWrapper>
-                {!forgotPassword ? <LoginForm setFormType={formChangerHandler}/>: <RecoverynForm/>}
+                {!forgotPassword ? <LoginForm />: <RecoverynForm/>}
             </FormWrapper>
         </Container>
     </>

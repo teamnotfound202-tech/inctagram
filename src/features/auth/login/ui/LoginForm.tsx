@@ -1,15 +1,20 @@
 'use client'
 
-import {Input} from "@/shared/ui/Input/Input";
-import {Button} from "@/shared/ui/Button/Button";
-import {type SubmitHandler, useForm} from 'react-hook-form';
 
 import s from '../../styles/Register-Form.module.scss'
-import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 import {zodResolver} from "@hookform/resolvers/zod"
+import { Input } from '@/shared/ui/Input/Input';
+import { Button } from '@/shared/ui/Button/Button';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import s from '../../styles/Register-Form.module.scss';
+import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg';
+import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg';
+
 import {useLoginMutation} from "@/features/auth/api/authApi";
 import {Path} from "@/shared/config";
-import {useId} from "react";
+import {useEffect, useId, useState} from "react";
+import {RequestBodyLogin} from "@/shared/api";
+import {isSuccessResponse, validatePassword} from "@/features/auth/model";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
 import {useAppDispatch} from "@/shared/lib/hooks/hooks";
@@ -18,10 +23,11 @@ import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/googleOAuth
 import {LoginFormData, loginSchema} from "@/shared/lib/shemas/loginShema";
 
 
+
+
 export const LoginForm = () => {
     const router = useRouter()
-    const dispatch = useAppDispatch()
-
+    const dispatch =useAppDispatch()
     const {
         register,
         handleSubmit,
@@ -32,12 +38,20 @@ export const LoginForm = () => {
         resolver: zodResolver(loginSchema), // Добавляем zod resolver
         mode: 'onChange',
     });
+    const [mounted, setMounted] = useState(false);
 
     const [login] = useLoginMutation()
     const emailId = useId();
     const passwordId = useId();
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    const onSubmit: SubmitHandler<RequestBodyLogin> = async (data) => {
+        const values: RequestBodyLogin = {
+            email: data.email,
+            password: data.password,
+        }
 
-    const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
         try {
             const res = await login(data).unwrap();
 

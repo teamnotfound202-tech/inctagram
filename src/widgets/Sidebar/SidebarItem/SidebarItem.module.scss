@@ -2,8 +2,11 @@
 
 .sidebarItem {
   display: inline-block;
+  min-width: 220px;
   max-width: fit-content;
   margin-bottom: 24px;
+  cursor: pointer;
+  padding: 0;
   &:nth-child(5) {
    margin-bottom: 60px;
   }
@@ -32,15 +35,19 @@
   }
 }
 
-
 .sidebarItemLink {
+  background-color: transparent;
   color: $light-100;
   display: flex;
   align-items: center;
   gap: 12px;
   outline: none;
   border: 2px solid transparent;
-  padding-right: 7px;
+  padding: 0 7px 0 0;
+  &:hover {
+    background-color: transparent;
+    transition: none;
+  }
   &:focus {
     border: 2px solid $accent-700;
     border-radius: 2px;

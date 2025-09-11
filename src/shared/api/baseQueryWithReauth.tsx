@@ -10,7 +10,7 @@ export const startBaseQuery = fetchBaseQuery({
     baseUrl: 'https://connectpix.site/api/v1/',
     credentials: 'include',
     prepareHeaders: (headers) => {
-        const accessToken = localStorage.getItem(ACCESS_TOKEN)
+        const accessToken = sessionStorage.getItem(ACCESS_TOKEN)
         if (accessToken) {
             headers.set('Authorization', `Bearer ${accessToken}`)
         }
@@ -27,12 +27,9 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
     let result = await startBaseQuery(args, api, extraOptions)
 
     if (result.error && result.error.status === 401) {
-        const oldToken = localStorage.getItem(ACCESS_TOKEN)
+
         const refreshResult = await startBaseQuery(
-            {
-                url: "/auth/update-tokens",
-                method: "POST",
-            },
+            {url: "/auth/update-tokens",method: "POST"},
             api,
             extraOptions
         )
@@ -47,13 +44,10 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
             // refresh не удался → разлогиниваем
             localStorage.removeItem(ACCESS_TOKEN)
 
-            if (oldToken) {
-                toast.error("Сессия истекла. Войдите снова.")
-              /*  if (typeof window !== "undefined") {
-                    window.location.href = '/public'
-                }*/
+            toast.error("Сессия истекла. Войдите снова.")
+            if (typeof window !== "undefined") {
+                window.location.href = "/login"
             }
-
             return result
         }
     }
@@ -62,4 +56,3 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
            handleError(result)
     return result
 }
-

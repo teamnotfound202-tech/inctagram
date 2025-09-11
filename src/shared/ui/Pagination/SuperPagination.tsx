@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {type ChangeEvent} from 'react';
 import {Pagination} from '@mui/material'
 import s from './SuperPagination.module.scss'
 import CustomSelect from "@/shared/ui/Pagination/CustomSelect/CustomSelect";
@@ -24,14 +24,15 @@ export const SuperPagination: React.FC<SuperPaginationPropsType> = (
 
     const lastPage = findLastPage(totalCount, itemsCount)
 
-    const onChangeCallback = (event: any, page: number) => {
+    const onChangeCallback = (event: ChangeEvent<unknown>, page: number) => {
         onChange(page, itemsCount)
     }
 
-    const onChangeSelect = (value: any) => {
-        const pagePosition = page <= findLastPage(totalCount, value) ? page : 1 //Если количество странц больше, чем нужно
+    const onChangeSelect = (value: string | number) => {
+        const numericValue = typeof value === 'string' ? parseInt(value, 10) : value
+        const pagePosition = page <= findLastPage(totalCount, numericValue) ? page : 1 //Если количество странц больше, чем нужно
                                                                                         //установить указатель на 1 страницу
-        onChange(pagePosition, value)
+        onChange(pagePosition, numericValue)
     }
 
     return (

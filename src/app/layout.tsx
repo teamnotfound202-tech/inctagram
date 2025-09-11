@@ -1,14 +1,13 @@
-
-import {StoreWrapper} from '@/shared/lib/store/StoreWrapper';
-import {Header} from '@/widgets/Header/Header';
-import type { Metadata } from "next";
-import { Inter} from "next/font/google";
-import "./globals.css";
-import "@radix-ui/themes/styles.css";
-import {Theme} from "@radix-ui/themes";
-import {GoogleOAuthProvider} from "@react-oauth/google";
-import {Toaster} from 'sonner';
-import {AlertsProvider} from "@/shared/ui";
+import { StoreWrapper } from '@/shared/lib/store/StoreWrapper';
+import { Header } from '@/widgets/Header/Header';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import '@radix-ui/themes/styles.css';
+import { Theme } from '@radix-ui/themes';
+import { Toaster } from 'sonner';
+import { AlertsProvider } from '@/shared/ui';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,27 +21,34 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-        <body className={inter.variable}>
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-            <Theme appearance={'dark'}>
-                <StoreWrapper>
-                    <AlertsProvider>
-                        <Header isLogin={false} notification={0}/>
-                        <main className={'main'}>
-                            {children}
-                            <Toaster />
-                        </main>
-                    </AlertsProvider>
-                </StoreWrapper>
-            </Theme>
+  const googleClientId =
+    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'fallback-client-id';
+
+  if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+    console.error('NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set');
+  }
+
+  return (
+    <html lang="en">
+      <body className={inter.variable}>
+        <GoogleOAuthProvider clientId={googleClientId}>
+          <Theme appearance={'dark'}>
+            <StoreWrapper>
+              <AlertsProvider>
+                <Header isLogin={false} notification={0} />
+                <main className={'main'}>
+                  {children}
+                  <Toaster />
+                </main>
+              </AlertsProvider>
+            </StoreWrapper>
+          </Theme>
         </GoogleOAuthProvider>
-        </body>
-        </html>
-    );
+      </body>
+    </html>
+  );
 }

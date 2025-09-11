@@ -1,12 +1,17 @@
 import {
-
+    baseApi,
     type RequestBodyLogin,
     type RequestBodyRegistrationConformation,
-    type ResponsesLogin, type ResponsesMe,
+    type ResponsesLogin,
+    type ResponsesMe
 } from '@/shared/api';
-import {baseApi} from "@/shared/api/baseApi"
-import {RegistrationData, RequestBodyGoogleLogin, RequestBodyResending, ResponseGoogleLogin} from '@/shared/api/types';
-
+import type {
+    RegistrationData,
+    RequestBodyGoogleLogin,
+    RequestBodyResending,
+    ResponseGoogleLogin
+} from '@/shared/api/types';
+// import {baseApi} from "@/shared/api/baseApi"
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -34,7 +39,7 @@ export const authApi = baseApi.injectEndpoints({
         }),
         googleLogin: builder.mutation<ResponseGoogleLogin, RequestBodyGoogleLogin>({
             query: (args) => ({
-                url: `auth/google/login`,
+                url: 'auth/google/login',
                 method: 'POST',
                 body: args
             }),
@@ -47,7 +52,7 @@ export const {
     useLoginMutation,
     useRegistrationConfirmationMutation,
     useRegistrationEmailResendingMutation,
+    useGoogleLoginMutation,
     useMeQuery,
     useLogoutMutation,
-    useGoogleLoginMutation
 } = authApi

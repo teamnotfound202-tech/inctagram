@@ -7,36 +7,35 @@ import {SelectBox} from "@/shared/ui/Select/Select";
 import FlagRussia from '@/shared/ui/Select/icon/FlagRussia.svg'
 import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
 import {Path} from "@/shared/config";
+import {Container} from "@/shared/ui";
 import {useAppDispatch, useAppSelector} from "@/shared/lib/hooks/hooks";
 import {loginTC, selectIsLoggedIn} from "@/shared/api/appSlice";
 import {ACCESS_TOKEN} from "@/shared/lib";
-import {useLayoutEffect, useState} from "react";
-import {useLogoutMutation} from "@/features/auth/api/authApi";
+import {useEffect, useState} from "react";
 
 type Props = {
     isLogin: boolean;
     notification: number;
-    agreement?: boolean;
+    agreement?:boolean;
 };
 
 export const Header = ({isLogin, notification, agreement}: Props) => {
     const [isLoggined, setIsLoggedIn] = useState(false);
-    const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
-const [logout] = useLogoutMutation()
-    const dispatch = useAppDispatch();
-    useLayoutEffect(() => {
-        const token = localStorage.getItem(ACCESS_TOKEN);
+const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
+const dispatch = useAppDispatch();
+    useEffect(() => {
+        const token = sessionStorage.getItem(ACCESS_TOKEN);
         setIsLoggedIn(!!token);
     }, [loginedWithSignIn]);
     const signUpHandle = () => {
         dispatch(loginTC({isLoggedIn: false}));
         localStorage.removeItem(ACCESS_TOKEN);
     }
-
     return (
         <header className={s.header}>
-
-            <a className={s.headerTitle} href={'/'}>Inctagram</a>
+            <Container>
+                <div className={s.headerWrapper}>
+                    <a className={s.headerTitle} href={'/'}>Inctagram</a>
 
             {isLoggined
                 ? <div className={s.headerGroupContainer}>
@@ -69,28 +68,28 @@ const [logout] = useLogoutMutation()
                             fullWidth={false}
                         />
                     </div>
-                    : <div className={s.buttonGroupLogin}>
+                        : <div className={s.buttonGroupLogin}>
                         <SelectBox
                             options={[
-                                {value: 'option1', icon: <FlagRussia/>, label: 'Russia'},
-                                {value: 'option2', icon: <FlagEngland/>, label: 'England'},
+                                {value:'option1', icon:<FlagRussia/>, label:'Russia'},
+                                {value:'option2', icon:<FlagEngland/>, label:'England'},
                             ]}
                             name={'select1'}
                             type={'lang'}
                             defaultValue={'option2'}
                             fullWidth={false}
                         />
-                        {!isLoggined && <Button variant={'text'} asChild>
-                            <Link href={Path.SignIn}>Log in</Link>
-                        </Button>}
+                            {!isLoggined &&  <Button variant={'text'} asChild>
+                                <Link href={Path.SignIn}>Log in</Link>
+                            </Button>}
 
                         <Button onClick={signUpHandle} asChild>
                             <Link href={Path.SignUp}>Sign up</Link>
                         </Button>
                     </div>
-            }
-
-
+                }
+                </div>
+            </Container>
         </header>
     );
 };
