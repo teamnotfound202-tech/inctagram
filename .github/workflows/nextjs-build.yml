@@ -2,9 +2,9 @@ name: Build Next.js App
 
 on:
   push:
-    branches: [ main, dev, fix-page ]  # Добавляем все нужные ветки
+    branches: [ main ]  # Добавляем все нужные ветки
   pull_request:
-    branches: [ main, dev ]  # Запускаем на PR в эти ветки
+    branches: [ main ]  # Запускаем на PR в эти ветки
 
 jobs:
   build:
