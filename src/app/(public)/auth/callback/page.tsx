@@ -10,6 +10,7 @@ function CallbackContent() {
     const code = params.get('code');
     const [error, setError] = useState<string | null>(null);
     const [mounted, setMounted] = useState(false);
+    const [googleLogin] = useGoogleLoginMutation()
 
 
     useEffect(() => {
@@ -104,9 +105,9 @@ const AuthCallbackNoSSR = dynamic(() => Promise.resolve(CallbackContent), {
 */
 
 export default function AuthCallback() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <CallbackContent />
-    </Suspense>
-  );
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <CallbackContent/>
+        </Suspense>
+    );
 }
