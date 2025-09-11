@@ -28,7 +28,7 @@ function CallbackContent() {
                 }).unwrap()
 
                 if (response.accessToken) {
-                    sessionStorage.setItem(ACCESS_TOKEN, response.accessToken)
+                    localStorage.setItem(ACCESS_TOKEN, response.accessToken)
                 }
 
                 setTimeout(() => router.push('/profile'), 1000)
