@@ -22,28 +22,41 @@ export const VerificationLinkExpired = () => {
     reset
   } = useForm<VerificationFormValues>();
   const [mounted, setMounted] = useState(false);
-  const [resendingEmail] = useRegistrationEmailResendingMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [emailValue, setEmailValue] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
-  const [emailValue, setEmailValue] = useState('');
-  const router = useRouter();
 
-  const onSubmit: SubmitHandler<VerificationFormValues> = (data: {
+  const onSubmit: SubmitHandler<VerificationFormValues> = async (data: {
     email: string;
   }) => {
+    if (!mounted) return;
+
     const newData = {
       email: data.email,
       baseUrl: baseUrl + '/verify-email'
     };
-    resendingEmail(newData).then(() => {
+
+    try {
+      // Динамически импортируем store и API
+      const { store } = await import('@/shared/lib/store/store');
+      const { authApi } = await import('@/features/auth/api/authApi');
+
+      // Выполняем мутацию через store dispatch
+      await store.dispatch(
+        authApi.endpoints.registrationEmailResending.initiate(newData)
+      );
+
       setIsModalOpen(true);
       setEmailValue(newData.email);
       reset();
       router.push(Path.SignIn);
-    });
+    } catch (error) {
+      console.error('Error resending email:', error);
+    }
   };
 
   const handleModalClose = () => setIsModalOpen(false);
