@@ -27,31 +27,6 @@ function CallbackContent() {
 
         const handleGoogleCallback = async (): Promise<void> => {
             try {
-
-                /* // Динамически импортируем store и API
-                 const { store } = await import('@/shared/lib/store/store');
-                 const { authApi } = await import('@/features/auth/api/authApi');
-
-                 // Выполняем мутацию через store dispatch
-                 const result = await store.dispatch(
-                     authApi.endpoints.googleLogin.initiate({
-                         code,
-                         redirectUrl: process.env.NEXT_PUBLIC_REDIRECT_URL!
-                     })
-                 );
-                  if ('data' in result && result.data?.accessToken) {
-           sessionStorage.setItem(ACCESS_TOKEN, result.data.accessToken);
-           setTimeout(() => router.push('/profile'), 1000);
-         } else {
-           throw new Error('No access token received');
-         }
-       } catch (err) {
-         console.error('Ошибка авторизации:', err);
-         setError('Ошибка авторизации. Перенаправление на страницу входа...');
-         setTimeout(() => router.push('/login'), 2000);
-       }
-                 */
-
                 const response = await googleLogin({
                     code,
                     redirectUrl: process.env.NEXT_PUBLIC_REDIRECT_URL!
@@ -95,14 +70,6 @@ function CallbackContent() {
         </div>
     );
 }
-
-// Disable SSR for this component
-/*
-const AuthCallbackNoSSR = dynamic(() => Promise.resolve(CallbackContent), {
-    ssr: false,
-    loading: () => <div>Loading...</div>
-})
-*/
 
 export default function AuthCallback() {
     return (
