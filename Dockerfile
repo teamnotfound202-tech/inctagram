@@ -10,6 +10,13 @@ RUN npm install
 FROM node:20.11-alpine as builder
 WORKDIR /app
 COPY . .
+# Аргументы (приходят во время docker build)
+ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
+ARG NEXT_PUBLIC_GOOGLE_REDIRECT_URI
+
+# Превращаем их в переменные окружения
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_CLIENT_ID
+ENV NEXT_PUBLIC_GOOGLE_REDIRECT_URI=$NEXT_PUBLIC_GOOGLE_REDIRECT_URI
 COPY --from=dependencies /app/node_modules ./node_modules
 RUN npm run build:production
 
