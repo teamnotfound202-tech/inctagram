@@ -7,57 +7,59 @@ import s from '../../styles/Register-Form.module.scss';
 import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg';
 import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg';
 
-import { useLoginMutation } from '@/features/auth/api/authApi';
-import { Path } from '@/shared/config';
-import { useId, useState, useEffect } from 'react';
-import { RequestBodyLogin } from '@/shared/api';
-import { isSuccessResponse, validatePassword } from '@/features/auth/model';
-import { ACCESS_TOKEN } from '@/shared/lib';
-import { useRouter } from 'next/navigation';
+import {useLoginMutation} from "@/features/auth/api/authApi";
+import {Path} from "@/shared/config";
+import {useId} from "react";
+import {RequestBodyLogin} from "@/shared/api";
+import {isSuccessResponse, validatePassword} from "@/features/auth/model";
+import {ACCESS_TOKEN} from "@/shared/lib";
+import {useRouter} from "next/navigation";
+import {useAppDispatch} from "@/shared/lib/hooks/hooks";
+import {loginTC} from "@/shared/api/appSlice";
 
-interface IProps {
-  setFormType: (type: boolean) => void;
-}
 
-export const LoginForm = ({ setFormType }: IProps) => {
-  const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-    trigger
-  } = useForm<RequestBodyLogin>({
-    mode: 'onChange' // ← Валидация при потере фокуса
-    //reValidateMode: 'onBlur', // ← Повторная валидация тоже при blur
-  });
-  const [mounted, setMounted] = useState(false);
-  const [login] = useLoginMutation();
-  const emailId = useId();
+export const LoginForm = () => {
+    const router = useRouter()
+    const dispatch =useAppDispatch()
+    const {
+        register,
+        handleSubmit,
+        formState: {errors, isSubmitting},
+        reset,
+        trigger
+    } = useForm<RequestBodyLogin>({
+            mode: 'onChange', // ← Валидация при потере фокуса
+            //reValidateMode: 'onBlur', // ← Повторная валидация тоже при blur
+        }
+    );
+    const [mounted, setMounted] = useState(false);
+    const [login] = useLoginMutation()
+    const emailId = useId();
+    const passwordId = useId();
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    const onSubmit: SubmitHandler<RequestBodyLogin> = async (data) => {
+        const values: RequestBodyLogin = {
+            email: data.email,
+            password: data.password,
+        }
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  const passwordId = useId();
-  const onSubmit: SubmitHandler<RequestBodyLogin> = async (data) => {
-    const values: RequestBodyLogin = {
-      email: data.email,
-      password: data.password
+        try {
+            const res = await login(values).unwrap();
+            if (isSuccessResponse(res)) {
+                localStorageStorage.setItem(ACCESS_TOKEN, res.accessToken);
+                dispatch(loginTC({isLoggedIn:true}))
+                router.replace(Path.Profile)
+                reset();
+            } else {
+                reset({password: ''});
+            }
+        } catch {
+
+            reset({password: ''});
+        }
     };
-
-    try {
-      const res = await login(values).unwrap();
-      if (isSuccessResponse(res)) {
-        localStorage.setItem(ACCESS_TOKEN, res.accessToken);
-        router.replace(Path.Profile);
-        reset();
-      } else {
-        reset({ password: '' });
-      }
-    } catch (error) {
-      reset({ password: '' });
-    }
-  };
 
   const error = errors.email?.message || errors.password?.message;
   const disabled = isSubmitting || !!error;
@@ -104,31 +106,30 @@ export const LoginForm = ({ setFormType }: IProps) => {
           onBlur={handleEmailBlur}
         />
 
-        <Input
-          id={'password' + passwordId}
-          type='password'
-          label='Password'
-          placeholder='Enter your password'
-          error={errors.password?.message}
-          {...register('password', {
-            required: 'Enter your password',
-            validate: validatePassword
-          })}
-        />
-        <div className={s.fogrotBtnContainer}>
-          <Button className={s.forgotBtn} onClick={() => setFormType(true)}>
-            {' '}
-            Forgot Password
-          </Button>
+                <Input
+                    id={'password' + passwordId}
+                    type="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                    error={errors.password?.message}
+                    {...register("password", {
+                        required: "Enter your password",
+                        validate: validatePassword
+                    })}
+                />
+                <div className={s.fogrotBtnContainer}>
+                    <Button className={s.forgotBtn} onClick={() => router.replace('/')}> Forgot Password</Button>
+                </div>
+                <Button type="submit" disabled={disabled}>
+                    {isSubmitting ? "Loading..." : "Sign In"}
+                </Button>
+            </form>
+            <span className={s.loginSpan}>Do you have an account?</span>
+            <Button asChild variant={'text'} fullWidth>
+                <a href={Path.SignUp}>
+                    Sign Up
+                </a>
+            </Button>
         </div>
-        <Button type='submit' disabled={disabled}>
-          {isSubmitting ? 'Loading...' : 'Sign In'}
-        </Button>
-      </form>
-      <span className={s.loginSpan}>Do you have an account?</span>
-      <Button asChild variant={'text'} fullWidth>
-        <a href={Path.SignUp}>Sign Up</a>
-      </Button>
-    </div>
-  );
+    );
 };

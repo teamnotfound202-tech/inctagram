@@ -17,6 +17,10 @@
   flex-direction: row;
   gap: 60px;
 }
+.oAuthIconContainer a {
+  cursor: pointer;
+}
+
 .authorizationLink {
   cursor: pointer;
 }
