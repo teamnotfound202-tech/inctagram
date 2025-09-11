@@ -12,12 +12,10 @@ import {
 import {Path} from "@/shared/config";
 import {Card} from "@/shared/ui/Card/Card";
 import {useState} from "react";
-import {EmailInputType} from "@/shared/lib/schemas/passwordRecoverySchema";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {LoginInputs, loginSchema} from "@/shared/lib/schemas/loginSchema";
 import ReCAPTCHA from 'react-google-recaptcha'
 import {Modal} from "@/shared/ui/Modal/Modal";
-
+import {EmailInputType, LoginInputs, loginSchema} from "@/shared/lib/schemas/auth";
 
 
 export const ForgotPasswordForm = () => {
