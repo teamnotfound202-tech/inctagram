@@ -1,14 +1,16 @@
-name: Build Next.js App
+name: Build Next.js App on PR to Main
 
 on:
-  push:
-    branches: [ main ]  # Добавляем все нужные ветки
   pull_request:
-    branches: [ main ]  # Запускаем на PR в эти ветки
+    branches: [ main ]  # Только PR в main ветку
+    types: [opened, synchronize, reopened]  # Конкретные события PR
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    # Дополнительная проверка на всякий случай
+    if: github.event.pull_request.base.ref == 'main'
 
     steps:
       - name: Checkout code
@@ -29,8 +31,16 @@ jobs:
           NEXT_PUBLIC_REDIRECT_URL: ${{ secrets.NEXT_PUBLIC_REDIRECT_URL }}
           NODE_ENV: production
         run: |
-          echo "Building from branch: ${{ github.ref }}"
+          echo "Building from PR to main branch"
+          echo "Base ref: ${{ github.base_ref }}"
+          echo "Target branch: ${{ github.event.pull_request.base.ref }}"
           npm run build
 
       - name: Run tests
         run: npm test
+
+      - name: Upload build artifacts (опционально)
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next/
