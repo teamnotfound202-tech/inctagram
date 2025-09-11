@@ -1,0 +1,46 @@
+name: Build Next.js App on PR to Main
+
+on:
+  pull_request:
+    branches: [ main ]  # Только PR в main ветку
+    types: [opened, synchronize, reopened]  # Конкретные события PR
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Дополнительная проверка на всякий случай
+    if: github.event.pull_request.base.ref == 'main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js application
+        env:
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
+          NEXT_PUBLIC_REDIRECT_URL: ${{ secrets.NEXT_PUBLIC_REDIRECT_URL }}
+          NODE_ENV: production
+        run: |
+          echo "Building from PR to main branch"
+          echo "Base ref: ${{ github.base_ref }}"
+          echo "Target branch: ${{ github.event.pull_request.base.ref }}"
+          npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Upload build artifacts (опционально)
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next/

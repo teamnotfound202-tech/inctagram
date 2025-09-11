@@ -1,42 +1,45 @@
-'use client'
+'use client';
 
-import {Input} from "@/shared/ui/Input/Input";
-import {Button} from "@/shared/ui/Button/Button";
-import {type SubmitHandler, useForm} from 'react-hook-form';
-import s from '../../styles/Register-Form.module.scss'
-import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg'
-import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
+import { Input } from '@/shared/ui/Input/Input';
+import { Button } from '@/shared/ui/Button/Button';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import s from '../../styles/Register-Form.module.scss';
+import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg';
+import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg';
 
 import {useLoginMutation} from "@/features/auth/api/authApi";
 import {Path} from "@/shared/config";
-import {useId} from "react";
+import {useEffect, useId, useState} from "react";
 import {RequestBodyLogin} from "@/shared/api";
 import {isSuccessResponse, validatePassword} from "@/features/auth/model";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
+import {useAppDispatch} from "@/shared/lib/hooks/hooks";
+import {loginTC} from "@/shared/api/appSlice";
 import Link from "next/link";
-
-
 
 
 export const LoginForm = () => {
     const router = useRouter()
+    const dispatch =useAppDispatch()
     const {
         register,
         handleSubmit,
         formState: {errors, isSubmitting},
-        clearErrors,
         reset,
-        watch,
         trigger
     } = useForm<RequestBodyLogin>({
             mode: 'onChange', // ← Валидация при потере фокуса
             //reValidateMode: 'onBlur', // ← Повторная валидация тоже при blur
         }
     );
+    const [mounted, setMounted] = useState(false);
     const [login] = useLoginMutation()
     const emailId = useId();
     const passwordId = useId();
+    useEffect(() => {
+        setMounted(true);
+    }, []);
     const onSubmit: SubmitHandler<RequestBodyLogin> = async (data) => {
         const values: RequestBodyLogin = {
             email: data.email,
@@ -46,60 +49,63 @@ export const LoginForm = () => {
         try {
             const res = await login(values).unwrap();
             if (isSuccessResponse(res)) {
-                sessionStorage.setItem(ACCESS_TOKEN, res.accessToken);
+                localStorage.setItem(ACCESS_TOKEN, res.accessToken);
+                dispatch(loginTC({isLoggedIn:true}))
                 router.replace(Path.Profile)
                 reset();
             } else {
-
                 reset({password: ''});
             }
+        } catch {
 
-        } catch (error) {
-            console.error("Login error:", error);
             reset({password: ''});
         }
     };
 
-    const error = errors.email?.message || errors.password?.message
-    const disabled = isSubmitting || !!error
+  const error = errors.email?.message || errors.password?.message;
+  const disabled = isSubmitting || !!error;
 
+  // Автоматически очищаем ошибку при вводе
 
-    // Автоматически очищаем ошибку при вводе
+  const handleEmailBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    // Сохраняем native onBlur из register
+    const nativeOnBlur = register('email').onBlur;
+    if (nativeOnBlur) {
+      nativeOnBlur(e);
+    }
+    await trigger('email');
+  };
+  if (!mounted) {
+    return <div>Loading...</div>;
+  }
 
-    const handleEmailBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
-        // Сохраняем native onBlur из register
-        const nativeOnBlur = register('email').onBlur;
-        if (nativeOnBlur) {
-            nativeOnBlur(e);
-        }
-        await trigger('email');
-    };
-    return (
-        <div className={s.containerForm}>
-            <h1 className={s.registrationFormTitle}>Sign In</h1>
-            <div className={s.oAuthIconContainer}>
-                <a href={'https://www.google.com'}><IconGoogleRegistration/></a>
-                <a href={'https://github.com/'}><GitHubIconRegistration/></a>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
-
-                <Input
-                    id={'email' + emailId}
-                    type="email"
-                    label="Email"
-
-                    placeholder="Enter your email"
-                    error={errors.email?.message}
-                    {...register("email", {
-                        required: "Enter your email",
-                        pattern: {
-                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: " The email must match the format example@example.com",
-                        },
-
-                    })}
-                    onBlur={handleEmailBlur}
-                />
+  return (
+    <div className={s.containerForm}>
+      <h1 className={s.registrationFormTitle}>Sign In</h1>
+      <div className={s.oAuthIconContainer}>
+        <a href={'https://www.google.com'}>
+          <IconGoogleRegistration />
+        </a>
+        <a href={'https://github.com/'}>
+          <GitHubIconRegistration />
+        </a>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
+        <Input
+          id={'email' + emailId}
+          type='email'
+          label='Email'
+          placeholder='Enter your email'
+          error={errors.email?.message}
+          {...register('email', {
+            required: 'Enter your email',
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: ' The email must match the format example@example.com'
+            }
+          })}
+          onBlur={handleEmailBlur}
+        />
 
                 <Input
                     id={'password' + passwordId}
@@ -125,7 +131,6 @@ export const LoginForm = () => {
                     Sign Up
                 </a>
             </Button>
-
         </div>
     );
 };

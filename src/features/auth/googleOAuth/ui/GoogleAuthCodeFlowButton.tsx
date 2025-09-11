@@ -3,7 +3,7 @@
 import {useGoogleLogin} from '@react-oauth/google';
 import IconGoogleRegistration from "@/features/auth/styles/icons/iconGoogleRegistration.svg";
 import {Button} from '@/shared/ui'
-import s from './GoogleOAuth.module.scss'
+import s from './GoogleAuthCodeFlowButton.module.scss'
 
 export default function GoogleAuthCodeFlowButton() {
     const login = useGoogleLogin({

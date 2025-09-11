@@ -1,9 +1,10 @@
-import {baseApi} from '@/shared/api/baseApi';
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-
+import {baseApi} from '@/shared/api/baseApi';
+import {AppSlice, appSlice} from "@/shared/api/appSlice";
 export const store = configureStore({
   reducer: {
+    [appSlice.name]: AppSlice,
     [baseApi.reducerPath]: baseApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
