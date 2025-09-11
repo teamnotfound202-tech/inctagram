@@ -10,7 +10,7 @@ export const startBaseQuery = fetchBaseQuery({
     baseUrl: 'https://connectpix.site/api/v1/',
     credentials: 'include',
     prepareHeaders: (headers) => {
-        const accessToken = sessionStorage.getItem(ACCESS_TOKEN)
+        const accessToken = localStorage.getItem(ACCESS_TOKEN)
         if (accessToken) {
             headers.set('Authorization', `Bearer ${accessToken}`)
         }
@@ -45,9 +45,12 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
             localStorage.removeItem(ACCESS_TOKEN)
 
             toast.error("Сессия истекла. Войдите снова.")
-            if (typeof window !== "undefined") {
-                window.location.href = "/login"
-            }
+
+
+                //не нужно перенаправлять, у нас по функционалу всегда есть базовый функционал
+           /* if (typeof window !== "undefined") {
+                window.location.href = "/s"
+            }*/
             return result
         }
     }

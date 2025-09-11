@@ -1,28 +1,21 @@
 'use client'
-
-
 import s from '../../styles/Register-Form.module.scss'
 import {zodResolver} from "@hookform/resolvers/zod"
-import { Input } from '@/shared/ui/Input/Input';
-import { Button } from '@/shared/ui/Button/Button';
-import { type SubmitHandler, useForm } from 'react-hook-form';
-import s from '../../styles/Register-Form.module.scss';
-import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg';
+import {Input} from '@/shared/ui/Input/Input';
+import {Button} from '@/shared/ui/Button/Button';
+import {type SubmitHandler, useForm} from 'react-hook-form';
 import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg';
 
 import {useLoginMutation} from "@/features/auth/api/authApi";
 import {Path} from "@/shared/config";
 import {useEffect, useId, useState} from "react";
 import {RequestBodyLogin} from "@/shared/api";
-import {isSuccessResponse, validatePassword} from "@/features/auth/model";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
 import {useAppDispatch} from "@/shared/lib/hooks/hooks";
 import {loginTC} from "@/shared/api/appSlice";
-import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/googleOAuth";
 import {LoginFormData, loginSchema} from "@/shared/lib/shemas/loginShema";
-
-
+import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
 
 
 export const LoginForm = () => {
@@ -58,7 +51,7 @@ export const LoginForm = () => {
             if (res.accessToken) {
                 localStorage.setItem(ACCESS_TOKEN, res.accessToken);
                 dispatch(loginTC({isLoggedIn: true}))
-                router.replace(Path.Profile)
+                router.replace(Path.Home)
                 reset();
             } else {
                 reset({password: ''});
