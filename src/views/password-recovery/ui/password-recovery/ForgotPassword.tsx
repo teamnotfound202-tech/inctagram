@@ -1,5 +1,8 @@
-import {ForgotPasswordForm} from "../../../../features/auth/ui/passwordRecovering";
+import {ForgotPasswordForm} from "@/features/auth/ui/passwordRecovering";
+import {FormWrapper} from "@/shared/ui";
 
 export default function PasswordRecovery() {
-  return <ForgotPasswordForm />
+  return   <FormWrapper>
+    <ForgotPasswordForm/>
+  </FormWrapper>
 }

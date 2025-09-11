@@ -88,7 +88,7 @@ export const ForgotPasswordForm = () => {
 
     return (
 
-        <div className={s.wrapper}>
+        <>
             <Card title={'Forgot Password'}>
 
                 <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
@@ -146,6 +146,6 @@ export const ForgotPasswordForm = () => {
             >
                 We have sent a link to confirm your email to {userEmail}
             </Modal>}
-        </div>
+    </>
     );
 };

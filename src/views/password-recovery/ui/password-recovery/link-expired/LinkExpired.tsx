@@ -1,5 +1,7 @@
-import {PasswordRecoveryLinkExpired} from "@/views/password-recovery";
+import PasswordRecoveryLinkExpired
+  from "@/features/auth/ui/passwordRecovering/ui/PasswordRecoveryLinkExpired/PasswordRecoveryLinkExpired";
+import {FormWrapper} from "@/shared/ui";
 
 export default function LinkExpired() {
-  return <PasswordRecoveryLinkExpired />
+  return   <FormWrapper><PasswordRecoveryLinkExpired /></FormWrapper>
 }
