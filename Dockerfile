@@ -13,7 +13,7 @@ COPY . .
 
 # Превращаем их в переменные окружения
 ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=272583913867-t74i019ufdvmarh05jlv8bcu1ak0a6o6.apps.googleusercontent.com
-ENV NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://connectpix.site/auth/callback
+ENV NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://connectpix.site/google/callback
 COPY --from=dependencies /app/node_modules ./node_modules
 RUN npm run build:production
 
@@ -23,6 +23,6 @@ WORKDIR /app
 ENV NODE_ENV production
 COPY --from=builder /app/ ./
 ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=272583913867-t74i019ufdvmarh05jlv8bcu1ak0a6o6.apps.googleusercontent.com
-ENV NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://connectpix.site/auth/callback
+ENV NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://connectpix.site/google/callback
 EXPOSE 3000
 CMD ["npm", "start"]
