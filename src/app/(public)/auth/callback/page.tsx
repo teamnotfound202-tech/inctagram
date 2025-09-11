@@ -31,7 +31,7 @@ function CallbackContent() {
                     localStorage.setItem(ACCESS_TOKEN, response.accessToken)
                 }
 
-                setTimeout(() => router.push('/profile'), 1000)
+                setTimeout(() => router.replace('/profile'), 1000)
             } catch (err) {
                 console.error('Ошибка авторизации:', err)
                 setError('Ошибка авторизации. Перенаправление на страницу входа...')
