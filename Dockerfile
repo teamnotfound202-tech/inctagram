@@ -10,13 +10,10 @@ RUN npm install
 FROM node:20.11-alpine as builder
 WORKDIR /app
 COPY . .
-# Аргументы (приходят во время docker build)
-ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
-ARG NEXT_PUBLIC_GOOGLE_REDIRECT_URI
 
 # Превращаем их в переменные окружения
-ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_CLIENT_ID
-ENV NEXT_PUBLIC_GOOGLE_REDIRECT_URI=$NEXT_PUBLIC_GOOGLE_REDIRECT_URI
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=272583913867-t74i019ufdvmarh05jlv8bcu1ak0a6o6.apps.googleusercontent.com
+ENV NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://connectpix.site/auth/callback
 COPY --from=dependencies /app/node_modules ./node_modules
 RUN npm run build:production
 
@@ -25,5 +22,7 @@ FROM node:20.11-alpine as runner
 WORKDIR /app
 ENV NODE_ENV production
 COPY --from=builder /app/ ./
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=272583913867-t74i019ufdvmarh05jlv8bcu1ak0a6o6.apps.googleusercontent.com
+ENV NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://connectpix.site/auth/callback
 EXPOSE 3000
 CMD ["npm", "start"]
