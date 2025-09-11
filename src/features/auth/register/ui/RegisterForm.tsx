@@ -1,18 +1,18 @@
-'use client';
-import { useRegistrationMutation } from '@/features/auth/api/authApi';
-import type { RegistrationData } from '@/shared/api';
-import { Path } from '@/shared/config';
-import { Input } from '@/shared/ui/Input/Input';
-import { Button } from '@/shared/ui/Button/Button';
-import { Modal } from '@/shared/ui/Modal/Modal';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
-import s from '../../styles/Register-Form.module.scss';
-import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg';
-import { CustomCheckbox } from '@/shared/ui/Checkbox/Checkbox';
-import Link from 'next/link';
-import GoogleAuthCodeFlowButton from '@/features/auth/googleOAuth/ui/googleOAuth';
+'use client'
+import {useRegistrationMutation} from '@/features/auth/api/authApi';
+import type {RegistrationData} from '@/shared/api';
+import {Path} from '@/shared/config';
+import {Input} from "@/shared/ui/Input/Input";
+import {Button} from "@/shared/ui/Button/Button";
+import {Modal} from '@/shared/ui/Modal/Modal';
+import {useRouter} from 'next/navigation';
+import {useState} from 'react';
+import {Controller, type SubmitHandler, useForm} from 'react-hook-form';
+import s from '../../styles/Register-Form.module.scss'
+import {CustomCheckbox} from "@/shared/ui/Checkbox/Checkbox";
+import Link from "next/link";
+import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
+import GitHubAuthButton from "@/features/auth/gitHubOAuth/ui/GitHubAuthButton";
 
 type RegisterFormValues = {
   username: string;
@@ -62,40 +62,32 @@ export const RegisterForm = () => {
   const passwordValue = watch('password');
   const agreeValue = watch('agree');
 
-  return (
-    <>
-      <div className={s.containerForm}>
-        <h1 className={s.registrationFormTitle}>Sign Up</h1>
-        <div className={s.oAuthIconContainer}>
-          <GoogleAuthCodeFlowButton />
-          <a href={'https://github.com/'}>
-            <GitHubIconRegistration />
-          </a>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
-          <Input
-            id={'username'}
-            autoComplete='username'
-            type='text'
-            label='Username'
-            placeholder='Enter your username'
-            error={errors.username?.message}
-            {...register('username', {
-              required: 'Enter your username',
-              minLength: {
-                value: 6,
-                message: 'Minimum number of characters 6'
-              },
-              maxLength: {
-                value: 30,
-                message: 'Maximum number of characters 30'
-              },
-              pattern: {
-                value: /^[A-Za-z0-9_-]+$/,
-                message: 'You can only use letters, numbers, _ and -'
-              }
-            })}
-          />
+    return (
+        <>
+        <div className={s.containerForm}>
+            <h1 className={s.registrationFormTitle}>Sign Up</h1>
+            <div className={s.oAuthIconContainer}>
+                <GoogleAuthCodeFlowButton/>
+                <GitHubAuthButton/>
+            </div>
+                <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
+                    <Input
+                        id={'username'}
+                        autoComplete="username"
+                        type="text"
+                        label="Username"
+                        placeholder="Enter your username"
+                        error={errors.username?.message}
+                        {...register("username", {
+                            required: "Enter your username",
+                            minLength: {value: 6, message: "Minimum number of characters 6"},
+                            maxLength: {value: 30, message: "Maximum number of characters 30"},
+                            pattern: {
+                                value: /^[A-Za-z0-9_-]+$/,
+                                message: "You can only use letters, numbers, _ and -",
+                            },
+                        })}
+                    />
 
           <Input
             id={'email'}
