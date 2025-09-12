@@ -106,6 +106,12 @@ export const LoginForm = () => {
                     <Link href={Path.PasswordRecovery} className={s.forgotBtn}>Forgot Password</Link>
                 </div>
 
+                {/*<div className={s.fogrotBtnContainer}>*/}
+                {/*    <Button className={s.forgotBtn} onClick={() => router.replace('/')}>*/}
+                {/*        Forgot Password*/}
+                {/*    </Button>*/}
+                {/*</div>*/}
+
                 <Button type="submit" disabled={disabled}>
                     {isSubmitting ? "Loading..." : "Sign In"}
                 </Button>

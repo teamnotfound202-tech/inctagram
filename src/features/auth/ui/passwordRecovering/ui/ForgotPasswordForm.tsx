@@ -77,6 +77,17 @@ export const ForgotPasswordForm = () => {
         }
     }
 
+    //TODO: исправить any. Нелзя оставлять иначе билд в продакшене не пойдет
+    // Вариант catch (err: unknown) {
+    //             if(err && typeof err === "object" && "data" in err && isErrorWithMessage(err.data)){
+    //                 if (err.data?.messages?.[0]?.message) {
+    //                     setServerError(err.data.messages[0].message)
+    //                 } else {
+    //                     setServerError('An unknown error occurred')
+    //                 }
+    //             }
+    //         }
+
     const handleCloseModal = () => {
         setIsModalOpen(false)
         setLetterSent(true)
@@ -140,7 +151,7 @@ export const ForgotPasswordForm = () => {
             </Card>
             {isModalOpen && <Modal
 
-                onClose={handleCloseModal}
+                onClick={handleCloseModal}
                 title={'Email sent'}
 
             >

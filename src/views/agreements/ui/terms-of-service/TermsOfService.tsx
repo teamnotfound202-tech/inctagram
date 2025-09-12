@@ -2,7 +2,7 @@
 
 import {Path} from '@/shared/config';
 import s from '../../styles/styleAgreements.module.scss'
-import ArrowBack from '@/shared/lib/components/agreements/icon/ArrowBack.svg'
+import ArrowBack from '@/views/agreements/icon/ArrowBack.svg'
 import {useRouter} from "next/navigation";
 
 export const TermsOfService = () => {
