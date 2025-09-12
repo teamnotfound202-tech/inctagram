@@ -29,21 +29,21 @@ export default function CreateNewPasswordForm() {
   const passwordId = useId();
 
   const [serverError, setServerError] = useState<undefined | string>(undefined);
-  const [isVerifying, setIsVerifying] = useState(true);
+  const [isVerifyingSuccess, setIsVerifyingSuccess] = useState(false);
 
   useEffect(() => {
     const verifyRecoveryCode = async () => {
       if (recoveryCode) {
         try {
           await checkRecoveryCode({ recoveryCode }).unwrap();
+          setIsVerifyingSuccess(true);
         } catch (err: any) {
           if (err.data.messages[0].message === "Code is not valid") {
             router.push("/password-recovery/link-expired");
+            isVerifyingSuccess && setIsVerifyingSuccess(false);
           } else {
             alert(err);
           }
-        } finally {
-          setIsVerifying(true);
         }
       }
     };
@@ -79,7 +79,7 @@ export default function CreateNewPasswordForm() {
     }
   };
 
-  if (isLoading || isVerifying) {
+  if (isLoading || !isVerifyingSuccess) {
     return <div>Loading...</div>;
   }
 
