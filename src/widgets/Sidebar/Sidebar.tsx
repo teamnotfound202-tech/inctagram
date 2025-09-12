@@ -10,6 +10,7 @@ import {sideBarData} from "@/shared/config/sideBarItems/sideBarData";
 import type {ResponsesMe} from "@/shared/api";
 import {useAppDispatch, useAppSelector} from "@/shared/lib/hooks/hooks";
 import {loginTC, selectIsLoggedIn} from "@/shared/api/appSlice";
+import clx from "classnames";
 
 
 type Props = {
@@ -43,18 +44,21 @@ export const Sidebar = ({data}: Props) => {
                 console.log(err);
             });
     };
-
+    const isVisible = !islogined
     return (
-        <ul className={s.sidebar}>
+        <ul className={clx(
+            s.sidebar,
+            {[s.unvisible]: isVisible}
+        )}>
             {sideBarData.map((item) => {
-                const isVisible = !islogined
+
                 return (
                     <SidebarItem
                         key={item.key}
                         text={item.text}
                         link={item.link}
                         isDisabled={item.isDisabled}
-                        isVisible={isVisible}
+
                         {...(item.onclick && {onClickAction: handleModelOpen})}
                     />
                 )
