@@ -1,6 +1,6 @@
 export {AlertsProvider} from './Alerts/Alerts';
 export {Button} from './Button/Button';
-export {Card} from './Cards/Cards';
+export {Card} from './Card/Card';
 export {CustomCheckbox} from './Checkbox/Checkbox';
 export {Container} from './Conatiner/Container';
 export {RangeDatePicker} from './DatePicker/RangeDatePicker/RangeDatePicker';
