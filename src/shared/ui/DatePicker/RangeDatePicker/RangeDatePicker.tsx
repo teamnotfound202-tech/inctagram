@@ -51,7 +51,9 @@ export const RangeDatePicker = ({
     if (selectedRange?.from) {
       return formatDate(selectedRange.from)
     }
-    return `${formatDate(new Date())} - ${formatDate(new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000))}`
+    return `${formatDate(new Date())} - ${formatDate(
+      new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000)
+    )}`
   }
 
   return (
