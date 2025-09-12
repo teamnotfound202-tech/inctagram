@@ -1,18 +1,20 @@
-@use "@/shared/styles/variables" as *;
+@use '@/shared/styles/variables' as *;
 
 .box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: $dark-500;
+
   width: 380px;
-  padding: 24px;
   min-height: 400px;
+  padding: 24px;
+
+  background-color: $dark-500;
 }
 
 .title {
-  text-align: center;
   margin-bottom: 13px;
+  text-align: center;
 }
 
 .content {

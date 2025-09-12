@@ -3,58 +3,69 @@
 .container {
   display: flex;
   flex-direction: column;
-  max-width: 284px;
   gap: 6px;
+
+  max-width: 284px;
   padding: 6px;
 }
 
 .title {
-  color: $light-900;
   font-size: 14px;
+  color: $light-900;
 }
 
 .textarea {
-  min-height: 84px;
-  width: 100%;
   resize: none;
+
+  width: 100%;
+  min-height: 84px;
   padding: 6px 12px;
-  border-radius: 2px;
-  background: $dark-500;
-  color: $light-900;
   border: 1px solid $dark-100;
+  border-radius: 2px;
+
   font-size: 16px;
+  color: $light-900;
+
+  background: $dark-500;
+
   &::placeholder {
     color: $light-900;
   }
-  &:focus{
-    outline: none;
+
+  &:focus {
     border-color: $accent-700;
     color: $light-100;
+    outline: none;
+
     &::placeholder {
       color: $light-100;
     }
   }
+
   &:active {
     border-color: $light-100;
     color: $light-100;
+
     &::placeholder {
       color: $light-100;
     }
   }
+
   &:disabled {
     cursor: not-allowed;
     border-color: $light-900;
     color: $light-900;
+
     &::placeholder {
       color: $light-900;
     }
   }
-
 }
 
 .error {
   border-color: $danger-500;
   color: $light-100;
+
   &::placeholder {
     color: $light-100;
   }

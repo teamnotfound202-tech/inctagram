@@ -1,2 +1,2 @@
-export {Path} from './routes/routes'
-export {responseCodes} from './responseCode/responseCode'
+export { Path } from './routes/routes'
+export { responseCodes } from './responseCode/responseCode'

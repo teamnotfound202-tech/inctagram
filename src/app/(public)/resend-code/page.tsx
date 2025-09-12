@@ -1,6 +1,6 @@
-'use client';
-import { VerificationLinkExpired } from '@/widgets/VerificationLinkExpired/VerificationLinkExpired';
+'use client'
+import { VerificationLinkExpired } from '@/widgets/VerificationLinkExpired/VerificationLinkExpired'
 
 export default function Page() {
-  return <VerificationLinkExpired />;
+  return <VerificationLinkExpired />
 }

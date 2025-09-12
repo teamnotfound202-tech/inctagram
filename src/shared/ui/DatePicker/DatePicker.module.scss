@@ -1,50 +1,54 @@
 @use '@/shared/styles/variables' as *;
 
 .text {
-  font-weight: 400;
   font-size: 14px;
+  font-weight: 400;
   line-height: 24px;
   color: $light-900;
 }
 
 .iconContainer {
+  color: inherit;
+
   svg {
     width: 24px;
     height: 24px;
   }
-  color: inherit;
 }
 
 .datePicker {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   width: 262px;
   min-height: 36px;
   padding: 6px 12px;
-  display: flex;
-  justify-content: space-between;
   border: 1px solid $dark-300;
-  outline: 1px solid transparent;
   border-radius: 2px;
-  background-color: $dark-500;
-  color: $light-100;
-  line-height: 24px;
+
   font-size: 16px;
   font-weight: 400;
-  position: relative;
-  cursor: pointer;
-  align-items: center;
+  line-height: 24px;
+  color: $light-100;
 
+  background-color: $dark-500;
+  outline: 1px solid transparent;
 
   &:focus,
   &:focus-visible {
-    outline: 2px solid $accent-700 !important;;
-    /*border: 1px solid $accent-700 !important;*/
+    outline: 2px solid $accent-700 !important;
+
+    /* border: 1px solid $accent-700 !important; */
   }
 
-
   &.error {
-    color: $danger-500;
     border-color: $danger-500 !important;
+    color: $danger-500;
 
     &:focus,
     &:focus-visible {
@@ -52,13 +56,11 @@
     }
   }
 
-
   &.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
     border-color: $dark-300;
     color: $dark-300;
-    cursor: not-allowed;
-    pointer-events: none;
-
 
     &:focus,
     &:focus-visible {
@@ -73,25 +75,27 @@
 }
 
 .errorMessage {
-  color: $danger-500;
-  font-size: 12px;
   margin-top: 4px;
+  font-size: 12px;
+  color: $danger-500;
 }
 
 .wrapperCalendar {
   position: absolute;
-  left: -131px;
   top: -3px;
-  width: 300px;
-  padding: 16px 24px;
+  left: -131px;
+
   display: flex;
   justify-content: center;
-  background-color: $dark-500;
+
+  box-sizing: border-box;
+  width: 300px;
+  padding: 16px 24px;
   border: 1px solid $dark-500;
   border-radius: 2px;
-  box-sizing: border-box;
-}
 
+  background-color: $dark-500;
+}
 
 .rdpRoot {
   position: relative;
@@ -102,18 +106,19 @@
   }
 }
 
-
 .rdpDay {
+  cursor: pointer;
+
   width: 36px;
   height: 36px;
-  text-align: center;
-  border-radius: 100%;
   border: none;
-  color: $light-100;
-  font-weight: 400;
+  border-radius: 100%;
+
   font-size: 16px;
+  font-weight: 400;
   line-height: 24px;
-  cursor: pointer;
+  color: $light-100;
+  text-align: center;
 
   &:hover {
     background-color: $accent-700;
@@ -124,8 +129,8 @@
   }
 
   &:focus {
-    background-color: inherit;
     border: 2px solid $accent-300;
+    background-color: inherit;
   }
 
   &.rdpDay_selected {
@@ -138,33 +143,38 @@
 }
 
 .rdpDay_button {
+  display: inline-block;
+
   width: 36px;
   height: 36px;
-  display: inline-block;
-  background-color: transparent;
   border: none;
-}
 
+  background-color: transparent;
+}
 
 .rdpNav {
   position: absolute;
   inset-block-start: 0;
   inset-inline-end: 0;
+
   display: flex;
   align-items: center;
 }
 
 .rdpButton_next,
 .rdpButton_previous {
-  width: 36px;
-  height: 36px;
-  border-radius: 100%;
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $dark-100;
+
+  width: 36px;
+  height: 36px;
   border: none;
-  cursor: pointer;
+  border-radius: 100%;
+
+  background-color: $dark-100;
 
   svg {
     width: 20px;
@@ -178,21 +188,19 @@
   }
 }
 
-
 .rdp-day_weekend {
   // Стили для кнопки внутри выходного дня
   .rdpDay_button {
     color: $danger-500 !important;
   }
 
-
   &:not(.rdp-day_outside) {
     color: $danger-500 !important;
   }
 
   &.rdp-day_today {
-    color: $danger-500 !important;
     font-weight: bold;
+    color: $danger-500 !important;
   }
 
   &.rdp-day_selected {
@@ -204,17 +212,17 @@
   }
 }
 
-
 .rdpCaption_label {
   display: flex;
   align-items: center;
-  padding: 8px 6px;
+
   min-height: 36px;
-  color: $light-100;
+  padding: 8px 6px;
+
   font-weight: 700;
   line-height: 24px;
+  color: $light-100;
 }
-
 
 .rdpMonths {
   display: flex;
@@ -222,17 +230,17 @@
   max-width: fit-content;
 }
 
-
 .rdpWeekdays {
   color: $light-900;
 }
 
 .rdpWeekday {
+  width: 36px;
+  height: 40px;
+
   font-weight: 400;
   line-height: 24px;
   text-align: center;
-  width: 36px;
-  height: 40px;
 }
 
 /* Week Styles - суббота и воскресенье */
@@ -245,18 +253,21 @@
 
 .rdpOutside {
   color: $light-900;
-  opacity: .4;
+  opacity: 0.4;
 }
 
 /* Dropdowns */
 .rdpDropdown {
+  cursor: pointer;
+
   position: absolute;
   inset-block: 0;
   inset-inline-start: 0;
-  opacity: 0;
-  appearance: none;
-  cursor: pointer;
+
   width: 100%;
+
+  appearance: none;
+  opacity: 0;
 }
 
 .rdpDropdown_root {
@@ -277,8 +288,8 @@
 
   &.rdpDay_selected {
     .rdpDay_button {
-      color: $light-100;
       font-weight: 700;
+      color: $light-100;
     }
   }
 }

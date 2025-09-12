@@ -1,25 +1,28 @@
-@use "@/shared/styles/variables.scss" as *;
+@use '@/shared/styles/variables.scss' as *;
 
 .sidebar {
   display: flex;
   flex-direction: column;
-  &.unvisible{
+
+  &.unvisible {
     display: none;
   }
 }
-.buttonWrapper{
+
+.buttonWrapper {
   display: flex;
   gap: 24px;
 }
-.contentTextModal{
+
+.contentTextModal {
   width: 390px;
-  font-weight: 400;
+
   font-size: 16px;
+  font-weight: 400;
   line-height: 150%;
   color: $light-100;
-  & span{
+
+  & span {
     font-weight: 700;
   }
 }
-
-

@@ -1,3 +1,3 @@
 export default function Page() {
-    return <div>Private page</div>
+  return <div>Private page</div>
 }

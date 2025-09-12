@@ -1,4 +1,4 @@
-@use "@/shared/styles/variables" as *;
+@use '@/shared/styles/variables' as *;
 
 .select {
   position: relative;
@@ -11,24 +11,30 @@
 
 .trigger {
   all: unset;
+
+  cursor: pointer;
+
   display: inline-flex;
+  gap: 8px;
   align-items: center;
   justify-content: space-between;
+
+  box-sizing: border-box;
+  min-width: 210px;
+  height: 36px;
   padding: 12px 16px;
+  border: 1px solid $light-900;
+
   font-size: 14px;
   line-height: 1;
-  gap: 8px;
-  background-color: $dark-900;
-  border: 1px solid $light-900;
-  outline: 2px solid transparent;
   color: $light-100;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-  height: 36px;
-  min-width: 210px;
 
-  &.selectLang{
+  background-color: $dark-900;
+  outline: 2px solid transparent;
+
+  transition: all 0.2s ease;
+
+  &.selectLang {
     min-width: 163px;
   }
 
@@ -38,14 +44,14 @@
 
   &:hover {
     border-color: $light-100;
-    background-color: $dark-900;
     color: $light-900;
+    background-color: $dark-900;
   }
 
   &:focus {
-    outline: 2px solid $accent-500;
     border: 1px solid transparent;
     color: $light-900;
+    outline: 2px solid $accent-500;
   }
 
   &[data-placeholder] {
@@ -61,20 +67,20 @@
   }
 
   &.disabled {
-    border-color: $light-900;
-    background-color: $dark-900;
-    color: $light-900;
     cursor: not-allowed;
+    border-color: $light-900;
+    color: $light-900;
+    background-color: $dark-900;
 
     &:hover {
       border-color: $light-900;
-      background-color: $dark-900;
       color: $light-900;
+      background-color: $dark-900;
     }
   }
 }
 
-.trigger[data-state="open"]{
+.trigger[data-state='open'] {
   border: 1px solid $light-100;
 }
 
@@ -83,78 +89,87 @@
   transition: transform 0.2s ease;
 }
 
-.trigger[data-state="open"] .icon {
+.trigger[data-state='open'] .icon {
   transform: rotate(180deg);
 }
 
 .content {
-  overflow: hidden;
-  border: 1px solid $light-100;
-  background-color: $dark-900;
-  color: $light-900;
-  z-index: 1000;
-  animation-duration: 0.2s;
-  animation-timing-function: ease;
   cursor: pointer;
+
+  z-index: 1000;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
   width: var(--radix-select-trigger-width);
   max-height: 300px;
-  box-sizing: border-box;
+  border: 1px solid $light-100;
+
+  color: $light-900;
+
+  background-color: $dark-900;
+
+  animation-duration: 0.2s;
+  animation-timing-function: ease;
 
   &:hover {
-    background-color: $dark-900;
     color: $light-900;
+    background-color: $dark-900;
   }
 
-
-  &[data-state="open"] {
+  &[data-state='open'] {
     animation-name: slideUp;
   }
 
-  &[data-state="closed"] {
+  &[data-state='closed'] {
     animation-name: slideDown;
   }
 }
 
 .viewport {
-  padding: 4px;
-  max-height: 180px;
   overflow-y: auto;
+  max-height: 180px;
+  padding: 4px;
 }
 
 @keyframes slideUp {
   from {
-    opacity: 0;
     transform: translateY(-8px);
+    opacity: 0;
   }
+
   to {
-    opacity: 1;
     transform: translateY(0);
+    opacity: 1;
   }
 }
 
 @keyframes slideDown {
   from {
-    opacity: 1;
     transform: translateY(0);
+    opacity: 1;
   }
+
   to {
-    opacity: 0;
     transform: translateY(-8px);
+    opacity: 0;
   }
 }
 
 .label {
   display: block;
+
+  margin-bottom: 6px;
+
   font-size: 14px;
   font-weight: 500;
   color: $light-900;
-  margin-bottom: 6px;
 }
 
 .errorMessage {
-  color: $danger-500;
-  font-size: 12px;
   margin-top: 4px;
+  font-size: 12px;
+  color: $danger-500;
 }
 
 .placeholder {
@@ -162,40 +177,47 @@
 }
 
 .item {
+  cursor: pointer;
+  user-select: none;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  height: 32px;
+  margin: 2px 0;
+  padding: 0 12px;
+  border: none;
+
   font-size: 14px;
   line-height: 1;
   color: $light-100;
-  display: flex;
-  align-items: center;
-  height: 32px;
-  padding: 0 12px;
-  position: relative;
-  user-select: none;
-  cursor: pointer;
+
   transition: all 0.1s ease;
-  border: none;
-  margin: 2px 0;
 
   &[data-highlighted] {
-    outline: none;
-    background-color: $dark-300;
     color: $accent-500;
-  }}
+    background-color: $dark-300;
+    outline: none;
+  }
+}
 
-.itemContent{
+.itemContent {
   display: flex;
-  align-items: center;
   gap: 5px;
-  svg{
+  align-items: center;
+
+  svg {
     width: 24px;
     height: 24px;
   }
 }
 
-.fullWidth{
+.fullWidth {
   width: 100%;
 }
 
-.customSelect{
+.customSelect {
   background-color: #fff;
 }
