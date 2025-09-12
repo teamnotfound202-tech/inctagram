@@ -4,6 +4,7 @@ import {toast} from 'sonner';
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {ResponsesLogin} from "@/shared/api/types";
 import {handleError} from "@/shared/lib/utils";
+import {Path} from "@/shared/config";
 
 
 export const startBaseQuery = fetchBaseQuery({
@@ -42,7 +43,7 @@ export const baseQueryWithReAuth: BaseQueryFn = async (args, api, extraOptions) 
 
             toast.error("Сессия истекла. Войдите снова.")
             if (typeof window !== "undefined") {
-                window.location.href = "/login"
+                window.location.href = `${Path.SignIn}`
             }
             return result
         }

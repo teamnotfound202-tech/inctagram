@@ -5,6 +5,7 @@ import { Modal } from '@/shared/ui/Modal/Modal';
 import { Button } from '@/shared/ui';
 import { useLogoutMutation, useMeQuery } from '@/features/auth/api/authApi';
 import { useRouter } from 'next/navigation';
+import {Path} from "@/shared/config";
 
 export type Text =
   | 'Feed'
@@ -34,7 +35,7 @@ export const Sidebar = () => {
       .unwrap()
       .then((res) => {
         console.log(res);
-        router.push('/login');
+        router.push(`${Path.SignIn}`);
       })
       .catch((err) => {
         console.log(err);
