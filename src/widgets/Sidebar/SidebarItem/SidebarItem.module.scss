@@ -1,24 +1,30 @@
-@use "@/shared/styles/variables.scss" as *;
+@use '@/shared/styles/variables.scss' as *;
 
 .sidebarItem {
+  cursor: pointer;
+
   display: inline-block;
+
   min-width: 220px;
   max-width: fit-content;
   margin-bottom: 24px;
-  cursor: pointer;
   padding: 0;
+
   &:nth-child(5) {
-   margin-bottom: 60px;
+    margin-bottom: 60px;
   }
+
   &:nth-child(7) {
     margin-bottom: 180px;
   }
+
   &:last-child {
     margin-bottom: 0;
   }
+
   &:hover .sidebarItemLink,
   &:hover .icon {
-  color: $accent-500;
+    color: $accent-500;
   }
 
   &:active .sidebarItemLink,
@@ -28,28 +34,33 @@
 
   &.disabled {
     cursor: not-allowed;
+
     & .sidebarItemLink,
     & .icon {
-      color: $dark-100;
       pointer-events: none;
+      color: $dark-100;
     }
   }
 }
 
 .sidebarItemLink {
-  background-color: transparent;
-  color: $light-100;
   display: flex;
-  align-items: center;
   gap: 12px;
-  outline: none;
-  border: 2px solid transparent;
+  align-items: center;
+
   padding: 0 7px 0 0;
+  border: 2px solid transparent;
+
+  color: $light-100;
+
+  background-color: transparent;
+  outline: none;
 
   &:hover {
     background-color: transparent;
     transition: none;
   }
+
   &:focus {
     border: 2px solid $accent-700;
     border-radius: 2px;
@@ -57,7 +68,7 @@
 }
 
 .icon {
-  color: $light-100;
   width: 24px;
   height: 24px;
+  color: $light-100;
 }

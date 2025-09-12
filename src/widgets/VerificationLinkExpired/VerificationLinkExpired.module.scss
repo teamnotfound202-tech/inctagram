@@ -1,34 +1,38 @@
 @use '@/shared/styles/variables' as *;
 
 .verificationWrapper {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  min-height: 100vh;
   padding-top: 95px;
-  text-align: center;
+
   color: $light-100;
+  text-align: center;
 }
 
 .verificationTitle {
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 1.8;
   margin-bottom: 19px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.8;
 }
 
 .verificationText {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.5;
   max-width: 294px;
   margin-bottom: 30px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .verificationForm {
   display: flex;
   flex-direction: column;
   gap: 24px;
+
   min-width: 229px;
   margin-bottom: 36px;
 }
@@ -38,7 +42,7 @@
 }
 
 .verificationIcon {
-  max-width: 473px;
   width: 100%;
+  max-width: 473px;
   height: 352px;
 }

@@ -1,11 +1,13 @@
-.container{
+.container {
   margin: 24px;
 }
-.homePageWrapper{
+
+.homePageWrapper {
   display: flex;
 }
-.homePageContent{
+
+.homePageContent {
   display: flex;
-  width: 100%;
   flex-direction: column;
+  width: 100%;
 }

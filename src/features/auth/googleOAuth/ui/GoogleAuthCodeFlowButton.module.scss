@@ -1,12 +1,12 @@
 .googleAuthButton {
-  padding: 0;
   height: 36px;
+  padding: 0;
   border: none;
 
-  &:hover, &:active, &:focus {
+  &:hover,
+  &:active,
+  &:focus {
     border-color: transparent;
     background: none;
   }
 }
-
-

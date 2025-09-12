@@ -1,4 +1,4 @@
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
 /**
  * Универсальная утилита для типизации ошибок RTK Query.
@@ -14,19 +14,14 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
  * }
  */
 export function getTypedErrorData<T>(
-    error: unknown
+  error: unknown
 ): { status?: number | string; data?: T } | null {
-    if (
-        typeof error === "object" &&
-        error !== null &&
-        "status" in error &&
-        "data" in error
-    ) {
-        const err = error as FetchBaseQueryError & { data: T };
-        return {
-            status: err.status,
-            data: err.data,
-        };
+  if (typeof error === 'object' && error !== null && 'status' in error && 'data' in error) {
+    const err = error as FetchBaseQueryError & { data: T }
+    return {
+      status: err.status,
+      data: err.data,
     }
-    return null;
+  }
+  return null
 }

@@ -1,65 +1,73 @@
 @use '@/shared/styles/variables' as *;
 
-.header{
+.header {
   position: fixed;
+  z-index: 10;
   width: 100%;
   border-bottom: 1px solid $dark-100;
-  z-index: 10;
 }
+
 .headerWrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 0;
 }
 
 .headerTitle {
+  cursor: pointer;
+
   font-family: inherit;
-  font-weight: 600;
   font-size: 26px;
+  font-weight: 600;
   line-height: 138%;
   color: $light-100;
-  cursor: pointer;
 }
-.headerGroupContainer{
+
+.headerGroupContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.buttonNotification{
+
+.buttonNotification {
   all: unset;
+
   cursor: pointer;
+
+  position: relative;
+
   width: 24px;
   height: 24px;
-  position: relative;
   margin-right: 45px;
 }
 
-.notificationCount{
+.notificationCount {
   position: absolute;
-  bottom: 15px;
   right: -2px;
+  bottom: 15px;
 
   width: 15px;
   height: 15px;
+  padding-top: 3px;
+  border-radius: 50%;
 
-  font-weight: 500;
   font-size: 10px;
+  font-weight: 500;
   line-height: 80%;
   text-align: center;
-  padding-top: 3px;
 
-
-  border-radius: 50%;
   background-color: $danger-500;
 }
-.buttonGroupLogin{
+
+.buttonGroupLogin {
   display: flex;
 
-  &>*:nth-child(1){
+  & > *:nth-child(1) {
     margin-right: 36px;
-}
-  &>*:nth-child(2){
+  }
+
+  & > *:nth-child(2) {
     margin-right: 24px;
   }
 }
