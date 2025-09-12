@@ -5,10 +5,7 @@ import {Button} from "@/shared/ui/Button/Button";
 import {type SubmitHandler, useForm} from 'react-hook-form';
 import s from './ForgotPassword.module.scss'
 import Link from "next/link";
-import {
-    useRecoveryPasswordMutation,
-    useResendRecoveryPasswordMutation
-} from "@/features/auth/api/authApi";
+import {useRecoveryPasswordMutation, useResendRecoveryPasswordMutation} from "@/features/auth/api/authApi";
 import {Path} from "@/shared/config";
 import {Card} from "@/shared/ui/Card/Card";
 import {useState} from "react";
@@ -16,6 +13,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import ReCAPTCHA from 'react-google-recaptcha'
 import {Modal} from "@/shared/ui/Modal/Modal";
 import {EmailInputType, LoginInputs, loginSchema} from "@/shared/lib/schemas/auth";
+import {isErrorWithMessage} from "@/shared/lib/utils/isErrorWithMessage";
 
 
 export const ForgotPasswordForm = () => {
@@ -68,13 +66,15 @@ export const ForgotPasswordForm = () => {
             setUserEmail(data.email)
             setIsModalOpen(true)
             reset()
-        } catch (err: any) {
-            if (err.data?.messages?.[0]?.message) {
-                setServerError(err.data.messages[0].message)
-            } else {
-                setServerError('An unknown error occurred')
-            }
-        }
+        }  catch (err: unknown) {
+            if(err && typeof err === "object" && "data" in err && isErrorWithMessage(err.data)){
+                        if (err.data.messages[0].message) {
+                            setServerError(err.data.messages[0].message)
+                        } else {
+                            setServerError('An unknown error occurred')
+                        }
+                    }
+                }
     }
 
     //TODO: исправить any. Нелзя оставлять иначе билд в продакшене не пойдет

@@ -1,3 +1,2 @@
-import { HomePage } from '@/widgets/HomePage/HomePage'
+export {HomePage as default} from "@/views/HomePage/HomePage";
 export const dynamic = 'force-dynamic'
-export default HomePage

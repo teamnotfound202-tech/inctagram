@@ -1,5 +1,5 @@
 'use client';
-import { useRegistrationEmailResendingMutation } from '@/features/auth/api/authApi';
+
 import { Path } from '@/shared/config';
 import { Button, Input } from '@/shared/ui';
 import { Modal } from '@/shared/ui/Modal/Modal';

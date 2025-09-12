@@ -1,6 +1,7 @@
 'use client';
-import EmailVerificationHandler from '@/widgets/EmailVerificationHandler/EmailVerificationHandler';
+
 import {Suspense} from 'react';
+import EmailVerificationHandler from "@/views/EmailVerificationHandler/EmailVerificationHandler";
 
 export default function Page() {
     return (
