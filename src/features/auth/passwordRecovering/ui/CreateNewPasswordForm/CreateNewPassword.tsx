@@ -39,7 +39,9 @@ export default function CreateNewPasswordForm() {
                     if (err && typeof err === "object" && "data" in err && isErrorWithMessage(err.data)) {
                         if (err.data.messages[0].message === "Code is not valid") {
                             router.push("/password-recovery/link-expired");
-                            isVerifyingSuccess && setIsVerifyingSuccess(false);
+                            if (isVerifyingSuccess){
+                                setIsVerifyingSuccess(false)
+                            }
                         } else {
                             alert(err);
                         }
