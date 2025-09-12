@@ -1,5 +1,4 @@
 'use client'
-import dynamic from 'next/dynamic'
 import {useRouter, useSearchParams} from 'next/navigation';
 import {Suspense, useEffect, useState} from 'react';
 import {ACCESS_TOKEN} from "@/shared/lib";
