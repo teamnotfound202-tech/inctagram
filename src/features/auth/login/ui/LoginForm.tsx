@@ -16,6 +16,7 @@ import {useAppDispatch} from "@/shared/lib/hooks/hooks";
 import {loginTC} from "@/shared/api/appSlice";
 import {LoginFormData, loginSchema} from "@/shared/lib/shemas/loginShema";
 import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
+import Link from "next/link";
 
 
 export const LoginForm = () => {
@@ -102,9 +103,7 @@ export const LoginForm = () => {
                 />
 
                 <div className={s.fogrotBtnContainer}>
-                    <Button className={s.forgotBtn} onClick={() => router.replace('/')}>
-                        Forgot Password
-                    </Button>
+                    <Link href={Path.PasswordRecovery} className={s.forgotBtn}>Forgot Password</Link>
                 </div>
 
                 <Button type="submit" disabled={disabled}>
