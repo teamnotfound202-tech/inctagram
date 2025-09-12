@@ -27,7 +27,7 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
     let result = await startBaseQuery(args, api, extraOptions)
 
     if (result.error && result.error.status === 401) {
-
+const oldtoken = localStorage.getItem(ACCESS_TOKEN)
         const refreshResult = await startBaseQuery(
             {url: "/auth/update-tokens",method: "POST"},
             api,
@@ -43,8 +43,10 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
         } else {
             // refresh не удался → разлогиниваем
             localStorage.removeItem(ACCESS_TOKEN)
+if(oldtoken){
+    toast.error("Сессия истекла. Войдите снова.")
+}
 
-            toast.error("Сессия истекла. Войдите снова.")
 
 
                 //не нужно перенаправлять, у нас по функционалу всегда есть базовый функционал
