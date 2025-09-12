@@ -27,9 +27,9 @@ export const baseQueryWithReAuth: BaseQueryFn = async (
     let result = await startBaseQuery(args, api, extraOptions)
 
     if (result.error && result.error.status === 401) {
-const oldtoken = localStorage.getItem(ACCESS_TOKEN)
+        const oldtoken = localStorage.getItem(ACCESS_TOKEN)
         const refreshResult = await startBaseQuery(
-            {url: "/auth/update-tokens",method: "POST"},
+            {url: "/auth/update-tokens", method: "POST"},
             api,
             extraOptions
         )
@@ -43,21 +43,14 @@ const oldtoken = localStorage.getItem(ACCESS_TOKEN)
         } else {
             // refresh не удался → разлогиниваем
             localStorage.removeItem(ACCESS_TOKEN)
-if(oldtoken){
-    toast.error("Сессия истекла. Войдите снова.")
-}
-
-
-
-                //не нужно перенаправлять, у нас по функционалу всегда есть базовый функционал
-           /* if (typeof window !== "undefined") {
-                window.location.href = "/s"
-            }*/
+            if (oldtoken) {
+                toast.error("Сессия истекла. Войдите снова.")
+            }
             return result
         }
     }
 
     // === глобальная обработка других ошибок ===
-           handleError(result)
+    handleError(result)
     return result
 }
