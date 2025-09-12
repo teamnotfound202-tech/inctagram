@@ -9,9 +9,11 @@ import type {
     RegistrationData,
     RequestBodyGoogleLogin,
     RequestBodyResending,
-    ResponseGoogleLogin
+    ResponseGoogleLogin,
+    RequestCreateNewPassword,
+    RequestRecoveryPassword, RequestResendRecoveryPassword
 } from '@/shared/api/types';
-// import {baseApi} from "@/shared/api/baseApi"
+
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -45,6 +47,36 @@ export const authApi = baseApi.injectEndpoints({
                 body: args
             }),
         }),
+        recoveryPassword: builder.mutation<void, RequestRecoveryPassword>(
+            {
+                query: body => ({
+                    url: '/auth/password-recovery',
+                    method: 'POST',
+                    body,
+                }),
+            }
+        ),
+        createNewPassword: builder.mutation<void, RequestCreateNewPassword>({
+            query: body => ({
+                url: '/auth/new-password',
+                method: 'POST',
+                body,
+            }),
+        }),
+        resendRecoveryPassword: builder.mutation<void, RequestResendRecoveryPassword>({
+            query: body => ({
+                url: '/auth/password-recovery-resending',
+                method: 'POST',
+                body,
+            }),
+        }),
+        checkRecoveryCode: builder.mutation<void, { recoveryCode: string }>({
+            query: body => ({
+                url: '/auth/check-recovery-code',
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
 })
 
@@ -56,4 +88,8 @@ export const {
     useGoogleLoginMutation,
     useMeQuery,
     useLogoutMutation,
+    useRecoveryPasswordMutation,
+    useCreateNewPasswordMutation,
+    useResendRecoveryPasswordMutation,
+    useCheckRecoveryCodeMutation
 } = authApi

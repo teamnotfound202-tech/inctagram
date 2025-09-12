@@ -7,5 +7,6 @@ export const Path = {
     Profile: '/profile',
     Success: '/success',
     Resend: '/resend-code',
+    PasswordRecovery: '/password-recovery',
     Public: '/public',
 }

@@ -6,16 +6,16 @@ import s from './Modal.module.scss'
 type Props ={
     title: string,
     children: ReactNode,
-    onClick: () => void,
+    onClose: () => void,
 }
 
-export const Modal = ({title, children, onClick}: Props) => {
+export const Modal = ({title, children, onClose}: Props) => {
     return(
         <div className={s.overlay}>
             <div className={s.modal}>
                 <div className={s.modalTop}>
                     <h3 className={s.modalTitle}>{title}</h3>
-                    <button className={s.modalCloseBtn} onClick={onClick}>
+                    <button className={s.modalCloseBtn} onClick={onClose}>
                         <CloseBtnIcon className={s.closeBtnIcon}/>
                     </button>
                 </div>
