@@ -4,11 +4,11 @@ export function isErrorWithMessage(errorObj: unknown): errorObj is {
     error: string
 } {
     return (
-        typeof errorObj === "object" && // Проверяем, что error – это объект
-        errorObj !== null && // Убеждаемся, что это не null
+        typeof errorObj === "object" &&
+        errorObj !== null &&
         "statusCode" in errorObj &&
         typeof (errorObj.statusCode) === 'number' &&
-        "messages" in errorObj && // Проверяем, что у объекта есть свойство 'messages'
+        "messages" in errorObj &&
          Array.isArray(errorObj.messages) &&
             errorObj.messages.length > 0 &&
             typeof (errorObj.messages[0].message) === 'string' &&
