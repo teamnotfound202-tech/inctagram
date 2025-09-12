@@ -1,21 +1,21 @@
-'use client';
-
-import { Input } from '@/shared/ui/Input/Input';
-import { Button } from '@/shared/ui/Button/Button';
-import { type SubmitHandler, useForm } from 'react-hook-form';
-import s from '../../styles/Register-Form.module.scss';
-import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg';
+'use client'
+import s from '../../styles/Register-Form.module.scss'
+import {zodResolver} from "@hookform/resolvers/zod"
+import {Input} from '@/shared/ui/Input/Input';
+import {Button} from '@/shared/ui/Button/Button';
+import {type SubmitHandler, useForm} from 'react-hook-form';
 import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg';
 
 import {useLoginMutation} from "@/features/auth/api/authApi";
 import {Path} from "@/shared/config";
 import {useEffect, useId, useState} from "react";
 import {RequestBodyLogin} from "@/shared/api";
-import {isSuccessResponse, validatePassword} from "@/features/auth/model";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
 import {useAppDispatch} from "@/shared/lib/hooks/hooks";
 import {loginTC} from "@/shared/api/appSlice";
+import {LoginFormData, loginSchema} from "@/shared/lib/shemas/loginShema";
+import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
 import Link from "next/link";
 
 
@@ -28,12 +28,12 @@ export const LoginForm = () => {
         formState: {errors, isSubmitting},
         reset,
         trigger
-    } = useForm<RequestBodyLogin>({
-            mode: 'onChange', // ← Валидация при потере фокуса
-            //reValidateMode: 'onBlur', // ← Повторная валидация тоже при blur
-        }
-    );
+    } = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema), // Добавляем zod resolver
+        mode: 'onChange',
+    });
     const [mounted, setMounted] = useState(false);
+
     const [login] = useLoginMutation()
     const emailId = useId();
     const passwordId = useId();
@@ -47,65 +47,51 @@ export const LoginForm = () => {
         }
 
         try {
-            const res = await login(values).unwrap();
-            if (isSuccessResponse(res)) {
+            const res = await login(data).unwrap();
+
+            if (res.accessToken) {
                 localStorage.setItem(ACCESS_TOKEN, res.accessToken);
-                dispatch(loginTC({isLoggedIn:true}))
-                router.replace(Path.Profile)
+                dispatch(loginTC({isLoggedIn: true}))
+                router.replace(Path.Home)
                 reset();
             } else {
+                console.log(res)
                 reset({password: ''});
             }
         } catch {
-
             reset({password: ''});
         }
     };
 
-  const error = errors.email?.message || errors.password?.message;
-  const disabled = isSubmitting || !!error;
+    const error = errors.email?.message || errors.password?.message
+    const disabled = isSubmitting || !!error
 
-  // Автоматически очищаем ошибку при вводе
+    const handleEmailBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+        const nativeOnBlur = register('email').onBlur;
+        if (nativeOnBlur) {
+            nativeOnBlur(e);
+        }
+        await trigger('email');
+    };
 
-  const handleEmailBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
-    // Сохраняем native onBlur из register
-    const nativeOnBlur = register('email').onBlur;
-    if (nativeOnBlur) {
-      nativeOnBlur(e);
-    }
-    await trigger('email');
-  };
-  if (!mounted) {
-    return <div>Loading...</div>;
-  }
+    return (
+        <div className={s.containerForm}>
+            <h1 className={s.registrationFormTitle}>Sign In</h1>
+            <div className={s.oAuthIconContainer}>
+                <GoogleAuthCodeFlowButton/>
+                <a href={'https://github.com/'}><GitHubIconRegistration/></a>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
 
-  return (
-    <div className={s.containerForm}>
-      <h1 className={s.registrationFormTitle}>Sign In</h1>
-      <div className={s.oAuthIconContainer}>
-        <a href={'https://www.google.com'}>
-          <IconGoogleRegistration />
-        </a>
-        <a href={'https://github.com/'}>
-          <GitHubIconRegistration />
-        </a>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
-        <Input
-          id={'email' + emailId}
-          type='email'
-          label='Email'
-          placeholder='Enter your email'
-          error={errors.email?.message}
-          {...register('email', {
-            required: 'Enter your email',
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: ' The email must match the format example@example.com'
-            }
-          })}
-          onBlur={handleEmailBlur}
-        />
+                <Input
+                    id={'email' + emailId}
+                    type="email"
+                    label="Email"
+                    placeholder="Enter your email"
+                    error={errors.email?.message}
+                    {...register("email")}
+                    onBlur={handleEmailBlur}
+                />
 
                 <Input
                     id={'password' + passwordId}
@@ -113,19 +99,20 @@ export const LoginForm = () => {
                     label="Password"
                     placeholder="Enter your password"
                     error={errors.password?.message}
-                    {...register("password", {
-                        required: "Enter your password",
-                        validate: validatePassword
-                    })}
+                    {...register("password")}
                 />
+
                 <div className={s.fogrotBtnContainer}>
                     <Link href={Path.PasswordRecovery} className={s.forgotBtn}>Forgot Password</Link>
                 </div>
+
                 <Button type="submit" disabled={disabled}>
                     {isSubmitting ? "Loading..." : "Sign In"}
                 </Button>
             </form>
+
             <span className={s.loginSpan}>Do you have an account?</span>
+
             <Button asChild variant={'text'} fullWidth>
                 <a href={Path.SignUp}>
                     Sign Up

@@ -1,9 +1,9 @@
 name: Build Next.js App on PR to Main
 
-on:
-  pull_request:
-    branches: [ main ]  # Только PR в main ветку
-    types: [opened, synchronize, reopened]  # Конкретные события PR
+#on:
+#  pull_request:
+#    branches: [ main ]  # Только PR в main ветку
+#    types: [opened, synchronize, reopened]  # Конкретные события PR
 
 jobs:
   build:

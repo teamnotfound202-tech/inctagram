@@ -16,20 +16,20 @@ import {useEffect, useState} from "react";
 type Props = {
     isLogin: boolean;
     notification: number;
-    agreement?:boolean;
+    agreement?: boolean;
 };
 
-export const Header = ({ isLogin, notification, agreement }: Props) => {
+export const Header = ({isLogin, notification, agreement}: Props) => {
     const [isLoggined, setIsLoggedIn] = useState(false);
-const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
-const dispatch = useAppDispatch();
+    const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
+    const dispatch = useAppDispatch();
     useEffect(() => {
-        const token = sessionStorage.getItem(ACCESS_TOKEN);
+        const token = localStorage.getItem(ACCESS_TOKEN);
         setIsLoggedIn(!!token);
     }, [loginedWithSignIn]);
-    const signUpHandle = ()=>{
+    const signUpHandle = () => {
         dispatch(loginTC({isLoggedIn: false}));
-        sessionStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(ACCESS_TOKEN);
     }
     return (
         <header className={s.header}>
@@ -37,57 +37,57 @@ const dispatch = useAppDispatch();
                 <div className={s.headerWrapper}>
                     <a className={s.headerTitle} href={'/'}>Inctagram</a>
 
-                    {isLogin
+                    {isLoggined
                         ? <div className={s.headerGroupContainer}>
 
-                        <button className={s.buttonNotification}>
-                            <NotificationIcon />
-                            { notification!== 0 && <span className={s.notificationCount}>{notification}</span>}
-                        </button>
-                        <SelectBox
-                            options={[
-                            {value:'option1', icon:<FlagRussia/>, label:'Russia'},
-                            {value:'option2', icon:<FlagEngland/>, label:'England'},
-                        ]}
-                            name={'select1'}
-                            type={'lang'}
-                            defaultValue={'option2'}
-                            fullWidth={false}
-                        />
-                    </div>
-                    : agreement
-                        ? <div className={s.headerGroupContainer}>
-                        <SelectBox
-                            options={[
-                                {value:'option1', icon:<FlagRussia/>, label:'Russia'},
-                                {value:'option2', icon:<FlagEngland/>, label:'England'},
-                            ]}
-                            name={'select1'}
-                            type={'lang'}
-                            defaultValue={'option2'}
-                            fullWidth={false}
-                        />
-                    </div>
-                        : <div className={s.buttonGroupLogin}>
-                        <SelectBox
-                            options={[
-                                {value:'option1', icon:<FlagRussia/>, label:'Russia'},
-                                {value:'option2', icon:<FlagEngland/>, label:'England'},
-                            ]}
-                            name={'select1'}
-                            type={'lang'}
-                            defaultValue={'option2'}
-                            fullWidth={false}
-                        />
-                            {!isLoggined &&  <Button variant={'text'} asChild>
-                                <Link href={Path.SignIn}>Log in</Link>
-                            </Button>}
+                            <button className={s.buttonNotification}>
+                                <NotificationIcon/>
+                                {notification !== 0 && <span className={s.notificationCount}>{notification}</span>}
+                            </button>
+                            <SelectBox
+                                options={[
+                                    {value: 'option1', icon: <FlagRussia/>, label: 'Russia'},
+                                    {value: 'option2', icon: <FlagEngland/>, label: 'England'},
+                                ]}
+                                name={'select1'}
+                                type={'lang'}
+                                defaultValue={'option2'}
+                                fullWidth={false}
+                            />
+                        </div>
+                        : agreement
+                            ? <div className={s.headerGroupContainer}>
+                                <SelectBox
+                                    options={[
+                                        {value: 'option1', icon: <FlagRussia/>, label: 'Russia'},
+                                        {value: 'option2', icon: <FlagEngland/>, label: 'England'},
+                                    ]}
+                                    name={'select1'}
+                                    type={'lang'}
+                                    defaultValue={'option2'}
+                                    fullWidth={false}
+                                />
+                            </div>
+                            : <div className={s.buttonGroupLogin}>
+                                <SelectBox
+                                    options={[
+                                        {value: 'option1', icon: <FlagRussia/>, label: 'Russia'},
+                                        {value: 'option2', icon: <FlagEngland/>, label: 'England'},
+                                    ]}
+                                    name={'select1'}
+                                    type={'lang'}
+                                    defaultValue={'option2'}
+                                    fullWidth={false}
+                                />
+                                {!isLoggined && <Button variant={'text'} asChild>
+                                    <Link href={Path.SignIn}>Log in</Link>
+                                </Button>}
 
-                        <Button onClick={signUpHandle} asChild>
-                            <Link href={Path.SignUp}>Sign up</Link>
-                        </Button>
-                    </div>
-                }
+                                <Button onClick={signUpHandle} asChild>
+                                    <Link href={Path.SignUp}>Sign up</Link>
+                                </Button>
+                            </div>
+                    }
                 </div>
             </Container>
         </header>

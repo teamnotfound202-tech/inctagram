@@ -8,6 +8,7 @@ import {handleError} from "@/shared/lib/utils";
 
 export const startBaseQuery = fetchBaseQuery({
     baseUrl: 'https://connectpix.site/api/v1/',
+    credentials: 'include',
     prepareHeaders: (headers) => {
         const accessToken = localStorage.getItem(ACCESS_TOKEN)
         if (accessToken) {
@@ -18,12 +19,15 @@ export const startBaseQuery = fetchBaseQuery({
 })
 
 
-
-export const baseQueryWithReAuth: BaseQueryFn = async (args, api, extraOptions) => {
+export const baseQueryWithReAuth: BaseQueryFn = async (
+    args,
+    api,
+    extraOptions
+) => {
     let result = await startBaseQuery(args, api, extraOptions)
 
     if (result.error && result.error.status === 401) {
-
+const oldtoken = localStorage.getItem(ACCESS_TOKEN)
         const refreshResult = await startBaseQuery(
             {url: "/auth/update-tokens",method: "POST"},
             api,
@@ -31,7 +35,7 @@ export const baseQueryWithReAuth: BaseQueryFn = async (args, api, extraOptions) 
         )
 
         if (refreshResult.data) {
-            const { accessToken } = refreshResult.data as ResponsesLogin
+            const {accessToken} = refreshResult.data as ResponsesLogin
             localStorage.setItem(ACCESS_TOKEN, accessToken)
 
             // 🔄 повторяем исходный запрос
@@ -39,16 +43,21 @@ export const baseQueryWithReAuth: BaseQueryFn = async (args, api, extraOptions) 
         } else {
             // refresh не удался → разлогиниваем
             localStorage.removeItem(ACCESS_TOKEN)
+if(oldtoken){
+    toast.error("Сессия истекла. Войдите снова.")
+}
 
-            toast.error("Сессия истекла. Войдите снова.")
-            if (typeof window !== "undefined") {
-                window.location.href = "/login"
-            }
+
+
+                //не нужно перенаправлять, у нас по функционалу всегда есть базовый функционал
+           /* if (typeof window !== "undefined") {
+                window.location.href = "/s"
+            }*/
             return result
         }
     }
 
-    handleError(result)
-
+    // === глобальная обработка других ошибок ===
+           handleError(result)
     return result
 }

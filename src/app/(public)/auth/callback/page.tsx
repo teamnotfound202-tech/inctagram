@@ -1,8 +1,8 @@
-'use client';
+'use client'
 import {useRouter, useSearchParams} from 'next/navigation';
 import {Suspense, useEffect, useState} from 'react';
-import {ACCESS_TOKEN} from '@/shared/lib';
 import {useGoogleLoginMutation} from "@/features/auth/api/authApi";
+import {ACCESS_TOKEN} from "@/shared/lib";
 
 function CallbackContent() {
     const router = useRouter();
