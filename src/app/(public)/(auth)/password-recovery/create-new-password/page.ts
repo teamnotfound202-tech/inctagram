@@ -1,1 +1,1 @@
-export { CreateNewPassword as default } from '@/views/password-recovery'
+export { CreateNewPassword as default } from '@/views/Password-recovery'

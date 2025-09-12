@@ -1,1 +1,1 @@
-export {TermsOfService as default} from "@/views/agreements/ui";
+export {TermsOfService as default} from "@/views/Agreements/ui";

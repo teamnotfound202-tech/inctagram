@@ -1,1 +1,1 @@
-export {PrivacyPolicy as default} from "@/views/agreements/ui";
+export {PrivacyPolicy as default} from "@/views/Agreements/ui";

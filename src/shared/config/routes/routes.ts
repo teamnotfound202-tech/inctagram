@@ -8,5 +8,5 @@ export const Path = {
     Success: '/success',
     Resend: '/resend-code',
     Public: '/public',
-    PasswordRecovery: '/password-recovery',
+    PasswordRecovery: '/Password-recovery',
 }

@@ -1,1 +1,1 @@
-export { ForgotPassword as default } from '@/views/password-recovery'
+export { ForgotPassword as default } from '@/views/Password-recovery'
