@@ -3,6 +3,7 @@ import {useRouter, useSearchParams} from 'next/navigation';
 import {Suspense, useEffect, useState} from 'react';
 import {ACCESS_TOKEN} from '@/shared/lib';
 import {useGoogleLoginMutation} from "@/features/auth/api/authApi";
+import {Path} from "@/shared/config";
 
 function CallbackContent() {
     const router = useRouter();
@@ -21,7 +22,7 @@ function CallbackContent() {
         if (!mounted) return;
         if (!code) {
             setError('Код авторизации не найден в URL');
-            setTimeout(() => router.push('/login'), 2000);
+            setTimeout(() => router.push(`${Path.SignIn}`), 2000);
             return;
         }
 
@@ -36,11 +37,11 @@ function CallbackContent() {
                     localStorage.setItem(ACCESS_TOKEN, response.accessToken)
                 }
 
-                setTimeout(() => router.replace('/profile'), 1000)
+                setTimeout(() => router.replace(`${Path.Profile}`), 1000)
             } catch (err) {
                 console.error('Ошибка авторизации:', err)
                 setError('Ошибка авторизации. Перенаправление на страницу входа...')
-                setTimeout(() => router.push('/login'), 2000)
+                setTimeout(() => router.push(`${Path.SignIn}`), 2000)
             }
         }
 
