@@ -14,7 +14,7 @@ import {ACCESS_TOKEN} from "@/shared/lib";
 import {useEffect, useState} from "react";
 import {useLanguageSwitcher} from "@/shared/lib/hooks/useLanguageSwitch";
 import {useTranslations} from 'next-intl';
-
+import {useRouter} from 'next/navigation';
 
 type Props = {
     isLogin: boolean;
@@ -24,17 +24,18 @@ type Props = {
 
 export const Header = ({isLogin, notification, agreement}: Props) => {
     const [isLoggined, setIsLoggedIn] = useState(false);
+    const [forceUpdate, setForceUpdate] = useState(0); // Для принудительного обновления
     const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
     const dispatch = useAppDispatch();
     const { currentLocale, changeLanguage } = useLanguageSwitcher();
+    const router = useRouter();
 
-    // Пытаемся получить переводы, а если контекст не доступен - используем статичные значения
+    // Пытаемся получить переводы
     let t: any;
     try {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         t = useTranslations();
     } catch (error) {
-        // Контекст intl не доступен
         t = (key: string) => {
             const fallbackTexts: {[key: string]: string} = {
                 'languages.russian': 'Русский',
@@ -70,8 +71,12 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
         }
     ];
 
-    const handleLanguageChange = (value: string) => {
-        changeLanguage(value);
+    const handleLanguageChange = async (value: string) => {
+        await changeLanguage(value);
+        // Принудительно обновляем компонент после смены языка
+        setForceUpdate(prev => prev + 1);
+        // И перезагружаем страницу для полного обновления переводов
+        router.refresh();
     };
 
     // Функция для получения корректных путей с учетом локали
