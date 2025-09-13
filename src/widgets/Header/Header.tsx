@@ -14,7 +14,7 @@ import {ACCESS_TOKEN} from "@/shared/lib";
 import {useEffect, useState} from "react";
 import {useLanguageSwitcher} from "@/shared/lib/hooks/useLanguageSwitch";
 import {useTranslations} from 'next-intl';
-import {LocalizedLink} from '@/shared/ui/LocalizedLink';
+
 
 type Props = {
     isLogin: boolean;
@@ -27,34 +27,35 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
     const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
     const dispatch = useAppDispatch();
     const { currentLocale, changeLanguage } = useLanguageSwitcher();
-    
+
     // Пытаемся получить переводы, а если контекст не доступен - используем статичные значения
     let t: any;
     try {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         t = useTranslations();
     } catch (error) {
         // Контекст intl не доступен
         t = (key: string) => {
             const fallbackTexts: {[key: string]: string} = {
-                'languages.russian': currentLocale === 'ru' ? 'Русский' : 'Russian',
-                'languages.english': currentLocale === 'ru' ? 'Английский' : 'English',
-                'auth.logIn': currentLocale === 'ru' ? 'Войти' : 'Log in',
-                'auth.signUp': currentLocale === 'ru' ? 'Регистрация' : 'Sign up'
+                'languages.russian': 'Русский',
+                'languages.english': 'English',
+                'auth.logIn': 'Log in',
+                'auth.signUp': 'Sign up'
             };
             return fallbackTexts[key] || key;
         };
     }
-    
+
     useEffect(() => {
         const token = localStorage.getItem(ACCESS_TOKEN);
         setIsLoggedIn(!!token);
     }, [loginedWithSignIn]);
-    
+
     const signUpHandle = () => {
         dispatch(loginTC({isLoggedIn: false}));
         localStorage.removeItem(ACCESS_TOKEN);
     }
-    
+
     // Опции для языкового селектора
     const languageOptions = [
         {
@@ -68,15 +69,21 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
             label: t('languages.english')
         }
     ];
-    
+
     const handleLanguageChange = (value: string) => {
         changeLanguage(value);
     };
+
+    // Функция для получения корректных путей с учетом локали
+    const getLocalizedPath = (path: string) => {
+        return `/${currentLocale}${path}`;
+    };
+
     return (
         <header className={s.header}>
             <Container>
                 <div className={s.headerWrapper}>
-                    <LocalizedLink className={s.headerTitle} href={'/'}>Inctagram</LocalizedLink>
+                    <a className={s.headerTitle} href={getLocalizedPath('/')}>Inctagram</a>
 
                     {isLoggined
                         ? <div className={s.headerGroupContainer}>
@@ -115,11 +122,11 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
                                     fullWidth={false}
                                 />
                                 {!isLoggined && <Button variant={'text'} asChild>
-                                    <LocalizedLink href={Path.SignIn}>{t('auth.logIn')}</LocalizedLink>
+                                    <Link href={getLocalizedPath(Path.SignIn)}>{t('auth.logIn')}</Link>
                                 </Button>}
 
                                 <Button onClick={signUpHandle} asChild>
-                                    <LocalizedLink href={Path.SignUp}>{t('auth.signUp')}</LocalizedLink>
+                                    <Link href={getLocalizedPath(Path.SignUp)}>{t('auth.signUp')}</Link>
                                 </Button>
                             </div>
                     }
