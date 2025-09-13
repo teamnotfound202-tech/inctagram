@@ -6,6 +6,7 @@ export {Container} from './Conatiner/Container';
 export {RangeDatePicker} from './DatePicker/RangeDatePicker/RangeDatePicker';
 export {SimpleDatePicker} from './DatePicker/SimpleDatePicker/SimpleDatePicker';
 export {Input} from './Input/Input';
+export {LocalizedLink} from './LocalizedLink/LocalizedLink';
 export {SuperPagination} from './Pagination/SuperPagination';
 export {RadioButtons} from './RadioButtons/RadioButtons';
 export {ScrollBox} from './Scroll/Scroll';

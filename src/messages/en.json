@@ -15,7 +15,9 @@
     "previous": "Previous",
     "search": "Search",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "welcome": "Welcome to Inctagram",
+    "description": "A modern social media platform built with Next.js and React"
   },
   "navigation": {
     "home": "Home",
@@ -27,7 +29,8 @@
     "favorites": "Favorites",
     "search": "Search",
     "settings": "Settings",
-    "logOut": "Log Out"
+    "logOut": "Log Out",
+    "features": "Features"
   },
   "auth": {
     "signIn": "Sign In",

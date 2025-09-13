@@ -1,3 +1,6 @@
-import { HomePage } from '@/widgets/HomePage/HomePage'
-export const dynamic = 'force-dynamic'
-export default HomePage
+import {redirect} from 'next/navigation';
+
+export default function RootPage() {
+  // Перенаправляем на страницу с локалью по умолчанию
+  redirect('/en');
+}

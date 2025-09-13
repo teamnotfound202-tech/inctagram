@@ -15,7 +15,9 @@
     "previous": "Предыдущий",
     "search": "Поиск",
     "error": "Ошибка",
-    "success": "Успех"
+    "success": "Успех",
+    "welcome": "Добро пожаловать в Inctagram",
+    "description": "Современная социальная платформа, созданная с помощью Next.js и React"
   },
   "navigation": {
     "home": "Главная",
@@ -27,7 +29,8 @@
     "favorites": "Избранное",
     "search": "Поиск",
     "settings": "Настройки",
-    "logOut": "Выйти"
+    "logOut": "Выйти",
+    "features": "Возможности"
   },
   "auth": {
     "signIn": "Войти",
