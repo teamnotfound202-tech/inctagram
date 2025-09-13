@@ -1,81 +1,9 @@
-'use client';
-import {useRouter, useSearchParams} from 'next/navigation';
-import {Suspense, useEffect, useState} from 'react';
-import {ACCESS_TOKEN} from '@/shared/lib';
-import {useGoogleLoginMutation} from "@/features/auth/api/authApi";
-import {Path} from "@/shared/config";
+'use client'
+import {useGoogleOAuthService} from "@/features/auth/googleOAuth/hooks/useGoogleOAuthService";
+import AuthCallback from "@/widgets/AuthCallbackPage/AuthCallbackPage";
 
-function CallbackContent() {
-    const router = useRouter();
-    const params = useSearchParams();
-    const code = params.get('code');
-    const [error, setError] = useState<string | null>(null);
-    const [mounted, setMounted] = useState(false);
-    const [googleLogin] = useGoogleLoginMutation()
-
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    useEffect(() => {
-        if (!mounted) return;
-        if (!code) {
-            setError('Код авторизации не найден в URL');
-            setTimeout(() => router.push(`${Path.SignIn}`), 2000);
-            return;
-        }
-
-        const handleGoogleCallback = async (): Promise<void> => {
-            try {
-                const response = await googleLogin({
-                    code,
-                    redirectUrl: process.env.NEXT_PUBLIC_REDIRECT_URL!
-                }).unwrap()
-
-                if (response.accessToken) {
-                    localStorage.setItem(ACCESS_TOKEN, response.accessToken)
-                }
-
-                setTimeout(() => router.replace(`${Path.Profile}`), 1000)
-            } catch (err) {
-                console.error('Ошибка авторизации:', err)
-                setError('Ошибка авторизации. Перенаправление на страницу входа...')
-                setTimeout(() => router.push(`${Path.SignIn}`), 2000)
-            }
-        }
-
-        handleGoogleCallback()
-    }, [mounted, code, router])
-
-    if (!mounted) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return (
-            <div style={{padding: '20px'}}>
-                <h2>❌ Ошибка</h2>
-                <p>{error}</p>
-            </div>
-        )
-    }
-
+export default function Page() {
     return (
-        <div style={{padding: '20px'}}>
-            <h2>Google OAuth Callback</h2>
-            <div style={{marginTop: '20px'}}>
-                <h3>✅ Обработка авторизации...</h3>
-                <p>Пожалуйста, подождите, происходит перенаправление.</p>
-            </div>
-        </div>
-    );
-}
-
-export default function AuthCallback() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <CallbackContent/>
-        </Suspense>
+        <AuthCallback useOAuthHook={useGoogleOAuthService}/>
     );
 }
