@@ -51,6 +51,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
         if (value === undefined) {
             setInternalValue(newValue);
         }
+
         onValueChange?.(newValue);
     }, [value, onValueChange]);
 

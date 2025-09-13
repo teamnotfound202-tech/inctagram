@@ -21,34 +21,34 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   const googleClientId =
-    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'fallback-client-id';
+      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'fallback-client-id';
 
   if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
     console.error('NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set');
   }
 
   return (
-    <html lang="en">
+      <html lang="en">
       <body className={inter.variable}>
-        <GoogleOAuthProvider clientId={googleClientId}>
-          <Theme appearance={'dark'}>
-            <StoreWrapper>
-              <AlertsProvider>
-                <Header isLogin={false} notification={0} />
-                <main className={'main'}>
-                  {children}
-                  <Toaster />
-                </main>
-              </AlertsProvider>
-            </StoreWrapper>
-          </Theme>
-        </GoogleOAuthProvider>
+      <GoogleOAuthProvider clientId={googleClientId}>
+        <Theme appearance={'dark'}>
+          <StoreWrapper>
+            <AlertsProvider>
+              <Header isLogin={false} notification={0} />
+              <main className={'main'}>
+                {children}
+                <Toaster />
+              </main>
+            </AlertsProvider>
+          </StoreWrapper>
+        </Theme>
+      </GoogleOAuthProvider>
       </body>
-    </html>
+      </html>
   );
 }

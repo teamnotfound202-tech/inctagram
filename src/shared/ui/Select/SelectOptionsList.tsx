@@ -40,7 +40,7 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
                                                                fullWidth = true,
                                                                type = 'default'
                                                            }) => {
-
+    const selectedOption = options.find(option => option.value === value);
     return (
         <Select.Root value={value} onValueChange={onValueChange} disabled={disabled}>
             <Select.Trigger
@@ -55,6 +55,7 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
                 id={id}
                 aria-labelledby={ariaLabelledBy}
             >
+
                 <Select.Value placeholder={placeholder}/>
                 <Select.Icon className={styles.icon}>
                     <ChevronDownIconUpDown/>
