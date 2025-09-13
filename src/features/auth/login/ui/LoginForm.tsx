@@ -1,90 +1,83 @@
-'use client';
+'use client'
+import s from '../../styles/Register-Form.module.scss'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Input } from '@/shared/ui/Input/Input'
+import { Button } from '@/shared/ui/Button/Button'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg'
 
-import { Input } from '@/shared/ui/Input/Input';
-import { Button } from '@/shared/ui/Button/Button';
-import { type SubmitHandler, useForm } from 'react-hook-form';
-import s from '../../styles/Register-Form.module.scss';
-import IconGoogleRegistration from '@/features/auth/styles/icons/iconGoogleRegistration.svg';
-import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg';
-
-import {useLoginMutation} from "@/features/auth/api/authApi";
-import {Path} from "@/shared/config";
-import {useEffect, useId, useState} from "react";
-import {RequestBodyLogin} from "@/shared/api";
-import {isSuccessResponse, validatePassword} from "@/features/auth/model";
-import {ACCESS_TOKEN} from "@/shared/lib";
-import {useRouter} from "next/navigation";
-import {useAppDispatch} from "@/shared/lib/hooks/hooks";
-import {loginTC} from "@/shared/api/appSlice";
-
+import { useLoginMutation } from '@/features/auth/api/authApi'
+import { Path } from '@/shared/config'
+import { useEffect, useId, useState } from 'react'
+import { RequestBodyLogin } from '@/shared/api'
+import { ACCESS_TOKEN } from '@/shared/lib'
+import { useRouter } from 'next/navigation'
+import { useAppDispatch } from '@/shared/lib/hooks/hooks'
+import { loginTC } from '@/shared/api/appSlice'
+import { LoginFormData, loginSchema } from '@/shared/lib/shemas/loginShema'
+import GoogleAuthCodeFlowButton from '@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton'
+import Link from 'next/link'
 
 export const LoginForm = () => {
-    const router = useRouter()
-    const dispatch =useAppDispatch()
-    const {
-        register,
-        handleSubmit,
-        formState: {errors, isSubmitting},
-        reset,
-        trigger
-    } = useForm<RequestBodyLogin>({
-            mode: 'onChange', // ← Валидация при потере фокуса
-            //reValidateMode: 'onBlur', // ← Повторная валидация тоже при blur
-        }
-    );
-    const [mounted, setMounted] = useState(false);
-    const [login] = useLoginMutation()
-    const emailId = useId();
-    const passwordId = useId();
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-    const onSubmit: SubmitHandler<RequestBodyLogin> = async (data) => {
-        const values: RequestBodyLogin = {
-            email: data.email,
-            password: data.password,
-        }
+  const router = useRouter()
+  const dispatch = useAppDispatch()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    trigger,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema), // Добавляем zod resolver
+    mode: 'onChange',
+  })
+  const [mounted, setMounted] = useState(false)
 
-        try {
-            const res = await login(values).unwrap();
-            if (isSuccessResponse(res)) {
-                localStorage.setItem(ACCESS_TOKEN, res.accessToken);
-                dispatch(loginTC({isLoggedIn:true}))
-                router.replace(Path.Profile)
-                reset();
-            } else {
-                reset({password: ''});
-            }
-        } catch {
+  const [login] = useLoginMutation()
+  const emailId = useId()
+  const passwordId = useId()
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  const onSubmit: SubmitHandler<RequestBodyLogin> = async data => {
+    const values: RequestBodyLogin = {
+      email: data.email,
+      password: data.password,
+    }
 
-            reset({password: ''});
-        }
-    };
+    try {
+      const res = await login(data).unwrap()
 
-  const error = errors.email?.message || errors.password?.message;
-  const disabled = isSubmitting || !!error;
+      if (res.accessToken) {
+        localStorage.setItem(ACCESS_TOKEN, res.accessToken)
+        dispatch(loginTC({ isLoggedIn: true }))
+        router.replace(Path.Home)
+        reset()
+      } else {
+        console.log(res)
+        reset({ password: '' })
+      }
+    } catch {
+      reset({ password: '' })
+    }
+  }
 
-  // Автоматически очищаем ошибку при вводе
+  const error = errors.email?.message || errors.password?.message
+  const disabled = isSubmitting || !!error
 
   const handleEmailBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
-    // Сохраняем native onBlur из register
-    const nativeOnBlur = register('email').onBlur;
+    const nativeOnBlur = register('email').onBlur
     if (nativeOnBlur) {
-      nativeOnBlur(e);
+      nativeOnBlur(e)
     }
-    await trigger('email');
-  };
-  if (!mounted) {
-    return <div>Loading...</div>;
+    await trigger('email')
   }
 
   return (
     <div className={s.containerForm}>
       <h1 className={s.registrationFormTitle}>Sign In</h1>
       <div className={s.oAuthIconContainer}>
-        <a href={'https://www.google.com'}>
-          <IconGoogleRegistration />
-        </a>
+        <GoogleAuthCodeFlowButton />
         <a href={'https://github.com/'}>
           <GitHubIconRegistration />
         </a>
@@ -92,44 +85,39 @@ export const LoginForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
         <Input
           id={'email' + emailId}
-          type='email'
-          label='Email'
-          placeholder='Enter your email'
+          type="email"
+          label="Email"
+          placeholder="Enter your email"
           error={errors.email?.message}
-          {...register('email', {
-            required: 'Enter your email',
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: ' The email must match the format example@example.com'
-            }
-          })}
+          {...register('email')}
           onBlur={handleEmailBlur}
         />
 
-                <Input
-                    id={'password' + passwordId}
-                    type="password"
-                    label="Password"
-                    placeholder="Enter your password"
-                    error={errors.password?.message}
-                    {...register("password", {
-                        required: "Enter your password",
-                        validate: validatePassword
-                    })}
-                />
-                <div className={s.fogrotBtnContainer}>
-                    <Button className={s.forgotBtn} onClick={() => router.replace('/')}> Forgot Password</Button>
-                </div>
-                <Button type="submit" disabled={disabled}>
-                    {isSubmitting ? "Loading..." : "Sign In"}
-                </Button>
-            </form>
-            <span className={s.loginSpan}>Do you have an account?</span>
-            <Button asChild variant={'text'} fullWidth>
-                <a href={Path.SignUp}>
-                    Sign Up
-                </a>
-            </Button>
+        <Input
+          id={'password' + passwordId}
+          type="password"
+          label="Password"
+          placeholder="Enter your password"
+          error={errors.password?.message}
+          {...register('password')}
+        />
+
+        <div className={s.fogrotBtnContainer}>
+          <Link href={Path.PasswordRecovery} className={s.forgotBtn}>
+            Forgot Password
+          </Link>
         </div>
-    );
-};
+
+        <Button type="submit" disabled={disabled}>
+          {isSubmitting ? 'Loading...' : 'Sign In'}
+        </Button>
+      </form>
+
+      <span className={s.loginSpan}>Do you have an account?</span>
+
+      <Button asChild variant={'text'} fullWidth>
+        <a href={Path.SignUp}>Sign Up</a>
+      </Button>
+    </div>
+  )
+}

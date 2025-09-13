@@ -1,110 +1,127 @@
 @use '@/shared/styles/variables' as *;
 
 .button {
-  border-radius: 2px;
-  padding: 4px 22px;
   cursor: pointer;
-  line-height: 1.5;
-  transition: 0.25s;
+
+  padding: 4px 22px;
   border: 2px solid transparent;
+  border-radius: 2px;
+
+  line-height: 1.5;
+
+  transition: 0.25s;
 }
 
 .primary {
   background: $accent-500;
 
-  &:hover{
+  &:hover {
     background: $accent-100;
   }
-  &:active{
+
+  &:active {
     background: $accent-700;
   }
+
   &:focus {
-    border-color:$accent-700;
+    border-color: $accent-700;
   }
+
   &:disabled {
-    background: $accent-900;
-    color: $light-900;
     cursor: not-allowed;
+    color: $light-900;
+    background: $accent-900;
   }
 }
 
-
 .secondary {
-  background: $dark-300;
   color: $light-100;
-  &:hover{
+  background: $dark-300;
+
+  &:hover {
     background: $dark-100;
   }
-  &:active{
+
+  &:active {
     background: $dark-400;
   }
+
   &:focus {
-    border-color:$accent-300;
+    border-color: $accent-300;
   }
+
   &:disabled {
-    background: $dark-500;
-    color: $light-900;
     cursor: not-allowed;
+    color: $light-900;
+    background: $dark-500;
   }
 }
 
 .outline {
-  background: none;
   border: 2px solid $accent-500;
   color: $accent-500;
-  &:hover{
+  background: none;
+
+  &:hover {
     border-color: $accent-100;
     color: $accent-100;
     background: none;
   }
-  &:active{
+
+  &:active {
     border-color: $accent-500;
     background: none;
   }
+
   &:focus {
-    border-color:$accent-700;
+    border-color: $accent-700;
     color: $accent-700;
     background: none;
   }
+
   &:disabled {
+    cursor: not-allowed;
     border-color: $accent-900;
     color: $accent-900;
     background: none;
-    cursor: not-allowed;
   }
 }
 
 .text {
   border: 2px solid transparent;
-  background: none;
   color: $accent-500;
-  &:hover{
+  background: none;
+
+  &:hover {
     border-color: $accent-100;
     color: $accent-100;
     background: none;
   }
-  &:active{
+
+  &:active {
     border-color: $accent-500;
     background: none;
   }
+
   &:focus {
-    border:2px solid $accent-700;
+    border: 2px solid $accent-700;
     color: $accent-700;
     background: none;
   }
+
   &:disabled {
+    cursor: not-allowed;
     border-color: $accent-900;
     color: $accent-900;
     background: none;
-    cursor: not-allowed;
   }
 }
 
-.fullWidth{
-  text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 150%;
-width: 100%;
-}
+.fullWidth {
+  width: 100%;
 
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 150%;
+  text-align: center;
+}

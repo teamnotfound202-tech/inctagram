@@ -1,1 +1,1 @@
-export {ACCESS_TOKEN} from './constants/constants'
+export { ACCESS_TOKEN } from './constants/constants'

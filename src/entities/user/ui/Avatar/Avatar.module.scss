@@ -1,21 +1,23 @@
 .avatar {
   position: relative;
-  flex-shrink: 0;
   display: inline-block;
+  flex-shrink: 0;
 
   &__container {
     position: relative;
-    border-radius: 50%;
     overflow: hidden;
     aspect-ratio: 1/1;
+    border-radius: 50%;
   }
 
   &__image {
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
-    object-fit: cover;
     border-radius: 50%;
-    box-sizing: border-box;
+
+    object-fit: cover;
+
     transition: opacity 0.2s ease;
   }
 
@@ -38,17 +40,17 @@
     width: 200px;
     height: 200px;
 
-    @media (max-width: 1024px) {
+    @media (width <= 1024px) {
       width: 150px;
       height: 150px;
     }
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       width: 120px;
       height: 120px;
     }
 
-    @media (max-width: 480px) {
+    @media (width <= 480px) {
       width: 90px;
       height: 90px;
     }
@@ -60,15 +62,17 @@
 
   &__status {
     position: absolute;
-    bottom: 10%;
+    z-index: 2;
     right: 10%;
+    bottom: 10%;
+
     width: 10%;
-    height: 10%;
     min-width: 8px;
+    height: 10%;
     min-height: 8px;
     border: 2px solid white;
     border-radius: 50%;
+
     background-color: #42b883;
-    z-index: 2;
   }
 }

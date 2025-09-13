@@ -1,5 +1,6 @@
 @use '@/shared/styles/variables' as *;
-.container{
+
+.container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -7,44 +8,47 @@
 
   width: 100%;
   padding: 12px 24px;
-
-  background-color: $dark-500;
   border: 1px solid $dark-300;
   border-radius: 2px;
+
+  background-color: $dark-500;
 }
 
-.title{
-  font-weight: 700;
+.title {
   font-size: 18px;
+  font-weight: 700;
   line-height: 133%;
   color: $light-100;
 }
 
 .numbersContainer {
+  overflow: hidden;
   display: flex;
-  background: $dark-700;
+
+  padding: 12px;
   border: 1px solid $dark-300;
   border-radius: 2px;
-  overflow: hidden;
-  padding: 12px;
+
+  background: $dark-700;
 }
 
 .digit {
-  flex: 1;
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
 
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 133%;
-  text-align: center;
-  color: $light-100;
   width: 30px;
   height: 30px;
   border-right: solid 1px $dark-300;
 
-  &:last-child{
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 133%;
+  color: $light-100;
+  text-align: center;
+
+  &:last-child {
     border-right: none;
   }
 }

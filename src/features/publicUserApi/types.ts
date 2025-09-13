@@ -1,3 +1,3 @@
 export type GetPublicUsers = {
-    "totalCount": number
+  totalCount: number
 }

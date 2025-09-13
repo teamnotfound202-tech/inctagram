@@ -3,23 +3,29 @@
 .root {
   width: 100%;
   height: 100%;
-  word-break: break-word;//если есть длинные слова/строки без пробелов, браузер может переносить их внутри элемента
+  word-break: break-word; // если есть длинные слова/строки без пробелов, браузер может переносить их внутри элемента
 }
 
 .viewport {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
   border-radius: inherit;
 }
 
 .scrollbar {
-  display: flex;
-  user-select: none;//запрет на выделение внутри scrollbar
-  padding: 0.125rem;
-  background-color: $dark-500;
+  user-select: none; // запрет на выделение внутри scrollbar
+
   z-index: 100;
+
+  display: flex;
+
+  padding: 0.125rem;
+
+  background-color: $dark-500;
+
   transition: background 160ms ease-out;
+
   &:hover {
     .thumb {
       background: $light-900;
@@ -29,6 +35,7 @@
   &[data-orientation='vertical'] {
     width: 0.5rem;
   }
+
   &[data-orientation='horizontal'] {
     flex-direction: column;
     height: 0.5rem;
@@ -36,14 +43,20 @@
 }
 
 .thumb {
-  flex: 1;
   position: relative;
-  background-color: $dark-300;
-  border-radius: 0.188rem;
+
+  flex: 1;
+
   width: 0.25rem;
+  border-radius: 0.188rem;
+
+  background-color: $dark-300;
 
   &:hover {
     background: $light-900;
   }
 }
-.corner { background: transparent }// элемент в углу прокрутки между горизонтальной и вертикальной полосами)
+
+.corner {
+  background: transparent;
+} // элемент в углу прокрутки между горизонтальной и вертикальной полосами)
