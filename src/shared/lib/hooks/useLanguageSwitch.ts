@@ -1,27 +1,23 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
-import { useCallback } from 'react';
+import {useRouter, usePathname} from 'next/navigation';
+import {useLocale} from 'next-intl';
 
-export function useLanguageSwitch() {
+export const useLanguageSwitcher = () => {
     const router = useRouter();
     const pathname = usePathname();
+    const currentLocale = useLocale();
 
-    const switchLanguage = useCallback((newLocale: string) => {
-        // Разбиваем путь на сегменты
-        const segments = pathname.split('/');
+    const changeLanguage = (newLocale: string) => {
+        // Сохраняем текущий путь без локали
+        const pathWithoutLocale = pathname.replace(`/${currentLocale}`, '') || '/';
 
-        // Заменяем локаль (второй сегмент, если первый - пустая строка)
-        const localeIndex = segments[1] ? 1 : 0;
-        segments[localeIndex] = newLocale;
+        // Перенаправляем на новый путь с выбранной локалью
+        router.push(`/${newLocale}${pathWithoutLocale}`);
+    };
 
-        // Собираем новый путь
-        const newPath = segments.join('/');
-
-        // Переходим на новый путь
-        router.push(newPath);
-    }, [pathname, router]);
-
-    return switchLanguage;
-}
+    return {
+        currentLocale,
+        changeLanguage
+    };
+};
