@@ -20,18 +20,19 @@
     "description": "A modern social media platform built with Next.js and React"
   },
   "navigation": {
-    "home": "Home",
-    "profile": "Profile",
-    "feed": "Feed",
-    "create": "Create",
-    "messenger": "Messenger",
-    "statistics": "Statistics",
-    "favorites": "Favorites",
-    "search": "Search",
-    "settings": "Settings",
-    "logOut": "Log Out",
-    "features": "Features"
+    "Home": "Home",
+    "My Profile": "My Profile",
+    "Feed": "Feed",
+    "Create": "Create",
+    "Messenger": "Messenger",
+    "Statistics": "Statistics",
+    "Favorites": "Favorites",
+    "Search": "Search",
+    "Settings": "Settings",
+    "Log Out": "Log Out",
+    "Features": "Features"
   },
+
   "auth": {
     "signIn": "Sign In",
     "signUp": "Sign Up",

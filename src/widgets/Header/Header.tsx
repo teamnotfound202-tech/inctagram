@@ -13,40 +13,39 @@ import {loginTC, selectIsLoggedIn} from "@/shared/api/appSlice";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useEffect, useState} from "react";
 import {useLanguageSwitcher} from "@/shared/lib/hooks/useLanguageSwitch";
-import {useTranslations} from 'next-intl';
-import {useRouter} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
+import {useLocale} from "next-intl";
+
+// Интерфейс для переводов
+interface HeaderTranslations {
+    languages: {
+        russian: string;
+        english: string;
+    };
+    auth: {
+        logIn: string;
+        signUp: string;
+    };
+}
 
 type Props = {
     isLogin: boolean;
     notification: number;
     agreement?: boolean;
+    translations: HeaderTranslations; // Добавляем пропс с переводами
 };
 
-export const Header = ({isLogin, notification, agreement}: Props) => {
+export const Header = ({isLogin, notification, agreement, translations}: Props) => {
     const [isLoggined, setIsLoggedIn] = useState(false);
-    const [forceUpdate, setForceUpdate] = useState(0); // Для принудительного обновления
     const loginedWithSignIn = useAppSelector(selectIsLoggedIn);
     const dispatch = useAppDispatch();
     const { currentLocale, changeLanguage } = useLanguageSwitcher();
     const router = useRouter();
-
-    // Пытаемся получить переводы
-    let t: any;
-    try {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        t = useTranslations();
-    } catch (error) {
-        t = (key: string) => {
-            const fallbackTexts: {[key: string]: string} = {
-                'languages.russian': 'Русский',
-                'languages.english': 'English',
-                'auth.logIn': 'Log in',
-                'auth.signUp': 'Sign up'
-            };
-            return fallbackTexts[key] || key;
-        };
-    }
-
+    const [forceUpdate, setForceUpdate] = useState(0);
+    const pathname = usePathname();
+    useEffect(() => {
+        setForceUpdate(prev => prev + 1);
+    }, [pathname]);
     useEffect(() => {
         const token = localStorage.getItem(ACCESS_TOKEN);
         setIsLoggedIn(!!token);
@@ -62,24 +61,20 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
         {
             value: 'ru',
             icon: <FlagRussia/>,
-            label: t('languages.russian')
+            label: translations.languages?.russian || 'Русский'
         },
         {
             value: 'en',
             icon: <FlagEngland/>,
-            label: t('languages.english')
+            label: translations.languages.english || 'English'
         }
     ];
 
     const handleLanguageChange = async (value: string) => {
         await changeLanguage(value);
-        // Принудительно обновляем компонент после смены языка
-        setForceUpdate(prev => prev + 1);
-        // И перезагружаем страницу для полного обновления переводов
         router.refresh();
     };
 
-    // Функция для получения корректных путей с учетом локали
     const getLocalizedPath = (path: string) => {
         return `/${currentLocale}${path}`;
     };
@@ -92,7 +87,6 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
 
                     {isLoggined
                         ? <div className={s.headerGroupContainer}>
-
                             <button className={s.buttonNotification}>
                                 <NotificationIcon/>
                                 {notification !== 0 && <span className={s.notificationCount}>{notification}</span>}
@@ -127,11 +121,15 @@ export const Header = ({isLogin, notification, agreement}: Props) => {
                                     fullWidth={false}
                                 />
                                 {!isLoggined && <Button variant={'text'} asChild>
-                                    <Link href={getLocalizedPath(Path.SignIn)}>{t('auth.logIn')}</Link>
+                                    <Link href={getLocalizedPath(Path.SignIn)}>
+                                        {translations.auth.logIn}
+                                    </Link>
                                 </Button>}
 
                                 <Button onClick={signUpHandle} asChild>
-                                    <Link href={getLocalizedPath(Path.SignUp)}>{t('auth.signUp')}</Link>
+                                    <Link href={getLocalizedPath(Path.SignUp)}>
+                                        {translations.auth.signUp}
+                                    </Link>
                                 </Button>
                             </div>
                     }

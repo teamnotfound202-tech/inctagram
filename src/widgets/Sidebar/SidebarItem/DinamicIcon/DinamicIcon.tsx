@@ -18,7 +18,7 @@ const iconMap = {
     'Statistics': StatisticsIcon,
     'Favorites': FavoritesIcon,
     'Log Out': LogOutIcon
-};
+} ;
 
 
 type IconProp = {

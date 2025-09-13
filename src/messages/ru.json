@@ -21,16 +21,16 @@
   },
   "navigation": {
     "home": "Главная",
-    "profile": "Профиль",
-    "feed": "Лента",
-    "create": "Создать",
-    "messenger": "Сообщения",
-    "statistics": "Статистика",
-    "favorites": "Избранное",
-    "search": "Поиск",
-    "settings": "Настройки",
-    "logOut": "Выйти",
-    "features": "Возможности"
+    "My Profile": "Профиль",
+    "Feed": "Лента",
+    "Create": "Создать",
+    "Messenger": "Сообщения",
+    "Statistics": "Статистика",
+    "Favorites": "Избранное",
+    "Search": "Поиск",
+    "Settings": "Настройки",
+    "Log Out\"": "Выйти",
+    "Features": "Возможности"
   },
   "auth": {
     "signIn": "Войти",

@@ -8,7 +8,7 @@ import clx from 'classnames'
 
 type Props = {
     link: string,
-    text: Text,
+    text: Text ,
     isDisabled: boolean
     onClickAction?: () => void
     isVisible?: boolean
@@ -31,7 +31,7 @@ export const SidebarItem = ({link, text, isDisabled, onClickAction, isVisible}: 
                 </Button>
             ) : (
                 <Link href={link} className={s.sidebarItemLink}>
-                    <DynamicIcon text={text}/>
+                    <DynamicIcon text={text as Text}/>
                     <span className={s.sidebarItemtext}>{text}</span>
                 </Link>
             )
