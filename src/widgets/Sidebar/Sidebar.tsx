@@ -30,11 +30,11 @@ export const Sidebar = ({ data }: Props) => {
     logout()
       .unwrap()
       .then(res => {
-        console.log(res)
+
         localStorage.removeItem(ACCESS_TOKEN)
         dispatch(loginTC({ isLoggedIn: false }))
         handleModelClose()
-        //router.push('/');
+
       })
       .catch(err => {
         console.log(err)
