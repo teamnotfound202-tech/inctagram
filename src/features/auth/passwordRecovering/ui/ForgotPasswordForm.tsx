@@ -20,9 +20,9 @@ import ReCAPTCHA from 'react-google-recaptcha'
 // import {isErrorWithMessage} from "@/shared/lib/utils/isErrorWithMessage";
 //
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { EmailInputType, LoginInputs, loginSchema } from '@/shared/lib/schemas/auth'
 import { getTypedErrorData } from '@/shared/api/utils'
 import { ResponsesTypeError } from '@/shared/api'
+import { EmailInputType, LoginInputs, loginSchema } from '@/shared/lib/sсhemas/loginShema'
 
 export const ForgotPasswordForm = () => {
   const [recoveryPassword] = useRecoveryPasswordMutation()
