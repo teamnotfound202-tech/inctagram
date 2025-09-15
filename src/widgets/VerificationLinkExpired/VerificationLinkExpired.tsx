@@ -1,10 +1,9 @@
 'use client'
-import { useRegistrationEmailResendingMutation } from '@/features/auth/api/authApi'
 import { Path } from '@/shared/config'
 import { Button, Input } from '@/shared/ui'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import s from './VerificationLinkExpired.module.scss'
 import VerificationIcon from './icons/verification.svg'
@@ -92,7 +91,7 @@ export const VerificationLinkExpired = () => {
         <VerificationIcon className={s.verificationIcon} />
       </div>
       {isModalOpen && (
-        <Modal title={'Email sent'} onClick={handleModalClose}>
+        <Modal title={'Email sent'} onClose={handleModalClose}>
           <p style={{ maxWidth: '330px' }}>
             We have sent a link to confirm your email to {emailValue}
           </p>
