@@ -180,7 +180,7 @@ export const RegisterForm = () => {
         </Button>
       </div>
       {isModalOpen && (
-        <Modal title={'Email sent'} onClick={handleModalClose}>
+        <Modal title={'Email sent'} onClose={handleModalClose}>
           <p style={{ maxWidth: '330px' }}>
             We have sent a link to confirm your email to {emailValue}
           </p>
