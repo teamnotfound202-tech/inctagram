@@ -54,7 +54,7 @@ export const LoginForm = () => {
         router.replace(Path.Home)
         reset()
       } else {
-        console.log(res)
+
         reset({ password: '' })
       }
     } catch {
