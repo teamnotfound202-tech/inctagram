@@ -6,6 +6,7 @@ import type {
 } from '@reduxjs/toolkit/query'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
+import {ACCESS_TOKEN} from "@/shared/lib";
 
 export const handleError = (
   result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>
@@ -21,6 +22,14 @@ export const handleError = (
         toast.custom(() => (
           <AlertToast variant="error" title={`${result.error.status}`} description={errMsg} />
         ))
+        break
+      case 401:
+        const oldToken = localStorage.getItem(ACCESS_TOKEN)
+        if (oldToken) {
+          toast.custom(() => (
+              <AlertToast variant="error" title={'Ошибка авторизации. Войдите в систему.'} />
+          ))
+        }
         break
       case 400:
       case 403:
