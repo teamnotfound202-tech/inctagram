@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import { Path } from '@/shared/config'
+import {Path} from '@/shared/config';
 import s from '../../styles/styleAgreements.module.scss'
-import ArrowBack from '@/shared/lib/components/agreements/icon/ArrowBack.svg'
-import { useRouter } from 'next/navigation'
+import ArrowBack from '@/views/Agreements/icon/ArrowBack.svg'
+import {useRouter} from "next/navigation";
 
-export const PrivacyPolicy = () => {
+export const TermsOfService = () => {
   const router = useRouter()
   return (
     <div className={s.wrapper}>
@@ -16,7 +16,7 @@ export const PrivacyPolicy = () => {
         <span>Back to Sign Up</span>
       </button>
       <section className={s.content}>
-        <h1 className={s.title}>Privacy Policy</h1>
+        <h1 className={s.title}>Terms of Service</h1>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
           ut labore et dolore magna aliqua. Fames ac turpis egestas integer eget aliquet nibh. Amet

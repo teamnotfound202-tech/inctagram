@@ -1,6 +1,1 @@
-'use client'
-import { Congratulations } from '@/widgets/Congratulations/Congratulations'
-
-export default function Page() {
-  return <Congratulations />
-}
+export  {Congratulations as default} from "@/views/Congratulations/Congratulations";

@@ -4,16 +4,21 @@ import { Input } from '@/shared/ui/Input/Input'
 import { Button } from '@/shared/ui/Button/Button'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import s from './ForgotPassword.module.scss'
-import Link from 'next/link'
+import Link from "next/link";
 import {
-  useRecoveryPasswordMutation,
-  useResendRecoveryPasswordMutation,
-} from '@/features/auth/api/authApi'
-import { Path } from '@/shared/config'
-import { Card } from '@/shared/ui/Card/Card'
-import { useState } from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
+    useRecoveryPasswordMutation,
+    useResendRecoveryPasswordMutation
+} from "@/features/auth/api/authApi";
+import {Path} from "@/shared/config";
+import {Card} from "@/shared/ui/Card/Card";
+import {useState} from "react";
+import {zodResolver} from "@hookform/resolvers/zod";
 import ReCAPTCHA from 'react-google-recaptcha'
+//
+// import {Modal} from "@/shared/ui/Modal/Modal";
+// import {EmailInputType, LoginInputs, loginSchema} from "@/shared/lib/schemas/auth";
+// import {isErrorWithMessage} from "@/shared/lib/utils/isErrorWithMessage";
+//
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { EmailInputType, LoginInputs, loginSchema } from '@/shared/lib/schemas/auth'
 import { getTypedErrorData } from '@/shared/api/utils'
@@ -47,9 +52,8 @@ export const ForgotPasswordForm = () => {
 
     if (!captchaToken) {
       alert('Пожалуйста, подтвердите, что вы не робот')
-
-      return
-    }
+            return
+        }
 
     try {
       if (!isLetterSent) {
@@ -66,18 +70,28 @@ export const ForgotPasswordForm = () => {
       }
 
       setUserEmail(data.email)
-      setIsModalOpen(true)
-      reset()
+        setIsModalOpen(true)
+        reset()
     } catch (err: unknown) {
-      const typedError = getTypedErrorData<ResponsesTypeError>(err)
+        const typedError = getTypedErrorData<ResponsesTypeError>(err)
 
-      if (typedError?.data) {
-        setServerError(typedError.data.messages[0].message)
-      } else {
-        setServerError('An unknown error occurred')
-      }
+        if (typedError?.data) {
+            setServerError(typedError.data.messages[0].message)
+        } else {
+            setServerError('An unknown error occurred')
+        }
     }
   }
+    //     }  catch (err: unknown) {
+    //         if(err && typeof err === "object" && "data" in err && isErrorWithMessage(err.data)){
+    //             if (err.data.messages[0].message) {
+    //                 setServerError(err.data.messages[0].message)
+    //             } else {
+    //                 setServerError('An unknown error occurred')
+    //             }
+    //         }
+    // }
+    // }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
@@ -123,24 +137,24 @@ export const ForgotPasswordForm = () => {
                 sitekey={'6LdHxG4qAAAAAPKRxEHrlV5VvLFHIf2BO5NMI8YM'}
                 theme={'dark'}
                 onChange={handleCaptchaChange}
-              />
-            </div>
-          )}
-          <div className={s.buttonsBlock}>
-            <Button fullWidth type={'submit'}>
-              {!isLetterSent ? 'Send Link' : 'Send Link Again'}
-            </Button>
-            <Button variant={'text'}>
-              <Link href={Path.SignIn}>Back to Sign In</Link>
-            </Button>
-          </div>
+            />
+         </div>
+    )}
+    <div className={s.buttonsBlock}>
+        <Button fullWidth type={'submit'}>
+            {!isLetterSent ? 'Send Link' : 'Send Link Again'}
+        </Button>
+        <Button variant={'text'}>
+            <Link href={Path.SignIn}>Back to Sign In</Link>
+        </Button>
+    </div>
         </form>
       </Card>
-      {isModalOpen && (
-        <Modal onClose={handleCloseModal} title={'Email sent'}>
-          We have sent a link to confirm your email to {userEmail}
-        </Modal>
-      )}
+        {isModalOpen && <Modal
+            onClick={handleCloseModal}
+            title={'Email sent'}>
+                We have sent a link to confirm your email to {userEmail}
+            </Modal>}
     </>
-  )
-}
+    );
+};
