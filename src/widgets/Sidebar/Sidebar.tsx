@@ -25,6 +25,7 @@ export const Sidebar = ({ data }: Props) => {
   const handleModelOpen = () => setModalOpen(true)
   const handleModelClose = () => setModalOpen(false)
   const handleLogout = () => {
+
     logout()
       .unwrap()
       .then(() => {

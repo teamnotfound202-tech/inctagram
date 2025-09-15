@@ -122,6 +122,11 @@
   font-size: 14px;
   color: $danger-500;
   letter-spacing: -0.9px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .inputError {
