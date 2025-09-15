@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { Button } from '@/shared/ui'
 import { useLogoutMutation } from '@/features/auth/api/authApi'
-import { useRouter } from 'next/navigation'
 import { ACCESS_TOKEN } from '@/shared/lib'
 import { sideBarData } from '@/shared/config/sideBarItems/sideBarData'
 import type { ResponsesMe } from '@/shared/api'
@@ -19,7 +18,6 @@ type Props = {
 export const Sidebar = ({ data }: Props) => {
   const [logout] = useLogoutMutation()
 
-  const router = useRouter()
   const [isModalOpen, setModalOpen] = useState(false)
 
   const islogined = useAppSelector(selectIsLoggedIn)
@@ -29,15 +27,10 @@ export const Sidebar = ({ data }: Props) => {
   const handleLogout = () => {
     logout()
       .unwrap()
-      .then(res => {
-        console.log(res)
+      .then(() => {
         localStorage.removeItem(ACCESS_TOKEN)
         dispatch(loginTC({ isLoggedIn: false }))
         handleModelClose()
-        //router.push('/');
-      })
-      .catch(err => {
-        console.log(err)
       })
   }
   const isVisible = !islogined
@@ -56,7 +49,7 @@ export const Sidebar = ({ data }: Props) => {
       })}
 
       {isModalOpen && (
-        <Modal title={'Log Out'} onClose={handleModelClose}>
+        <Modal title={'Log Out'} onClick={handleModelClose}>
           <p className={s.contentTextModal}>
             Are you really want to log out of your account <span>{data?.email}</span>
           </p>
