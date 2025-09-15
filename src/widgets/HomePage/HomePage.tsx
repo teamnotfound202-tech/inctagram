@@ -24,8 +24,7 @@ export const HomePage = () => {
   }, [])
   const { data } = useMeQuery(undefined, { skip: !mounted })
   const { data: totalCountUser } = useGetTotalRegisteredUsersQuery()
-  console.log(data)
-  if(data?.isBlocked){
+   if(data?.isBlocked){
     localStorage.removeItem(ACCESS_TOKEN)
     dispatch(loginTC({ isLoggedIn: false }))
   }
