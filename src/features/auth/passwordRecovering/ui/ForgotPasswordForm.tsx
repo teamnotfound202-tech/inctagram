@@ -55,23 +55,23 @@ export const ForgotPasswordForm = () => {
             return
         }
 
-    try {
-      if (!isLetterSent) {
-        await recoveryPassword({
-          ...data,
-          baseUrl: `${window.location.origin}/password-recovery/create-new-password`,
-          recaptcha: captchaToken,
-        }).unwrap()
-      } else {
-        await resendRecoveryPassword({
-          ...data,
-          baseUrl: `${window.location.origin}/password-recovery/create-new-password`,
-        }).unwrap()
-      }
+      try {
+          if (!isLetterSent) {
+              await recoveryPassword({
+                  ...data,
+                  baseUrl: `${window.location.origin}/password-recovery/create-new-password`,
+                  recaptcha: captchaToken,
+              }).unwrap()
+          } else {
+              await resendRecoveryPassword({
+                  ...data,
+                  baseUrl: `${window.location.origin}/password-recovery/create-new-password`,
+              }).unwrap()
+          }
 
-      setUserEmail(data.email)
-        setIsModalOpen(true)
-        reset()
+          setUserEmail(data.email)
+          setIsModalOpen(true)
+          reset()
     } catch (err: unknown) {
         const typedError = getTypedErrorData<ResponsesTypeError>(err)
 
