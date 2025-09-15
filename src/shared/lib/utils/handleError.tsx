@@ -7,6 +7,7 @@ import type {
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import {ACCESS_TOKEN} from "@/shared/lib";
+import { responseCodes } from '@/shared/config'
 
 export const handleError = (
   result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>
@@ -23,7 +24,7 @@ export const handleError = (
           <AlertToast variant="error" title={`${result.error.status}`} description={errMsg} />
         ))
         break
-      case 401:
+      case responseCodes.Unauthorized:
         const oldToken = localStorage.getItem(ACCESS_TOKEN)
         if (oldToken) {
           toast.custom(() => (
@@ -31,10 +32,10 @@ export const handleError = (
           ))
         }
         break
-      case 400:
-      case 403:
-      case 404:
-      case 500:
+      case responseCodes.Bad_Request:
+      case responseCodes.Forbidden:
+      case responseCodes.NotFound:
+      case responseCodes.ServerError:
         if (isErrorWithMessage(result.error.data)) {
           const errorMessage = result.error.data.messages[0].message
           toast.custom(() => (
