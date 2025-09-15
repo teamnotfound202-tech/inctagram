@@ -24,11 +24,7 @@ export const HomePage = () => {
   }, [])
   const { data } = useMeQuery(undefined, { skip: !mounted })
   const { data: totalCountUser } = useGetTotalRegisteredUsersQuery()
-  console.log(data?.isBlocked)
-  if(data?.isBlocked){
-    localStorage.removeItem(ACCESS_TOKEN)
-    dispatch(loginTC({ isLoggedIn: false }))
-  }
+
   return (
     <Container className={s.container}>
       <div className={s.homePageWrapper}>
