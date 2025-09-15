@@ -53,7 +53,6 @@ export const RegisterForm = () => {
         setEmailValue(values.email);
         reset();
       })
-      .catch((err) => {});
   };
 
   const handleModalClose = () => {
