@@ -33,7 +33,6 @@ export const baseQueryWithReAuth: BaseQueryFn = async (args, api, extraOptions) 
     if (refreshResult.data) {
       const { accessToken } = refreshResult.data as ResponsesLogin
       localStorage.setItem(ACCESS_TOKEN, accessToken)
-
       // 🔄 повторяем исходный запрос
       result = await startBaseQuery(args, api, extraOptions)
     } else {

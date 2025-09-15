@@ -56,7 +56,7 @@ export const Sidebar = ({ data }: Props) => {
       })}
 
       {isModalOpen && (
-        <Modal title={'Log Out'} onClick={handleModelClose}>
+        <Modal title={'Log Out'} onClose={handleModelClose}>
           <p className={s.contentTextModal}>
             Are you really want to log out of your account <span>{data?.email}</span>
           </p>
