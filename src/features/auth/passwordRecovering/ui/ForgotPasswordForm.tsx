@@ -4,15 +4,15 @@ import { Input } from '@/shared/ui/Input/Input'
 import { Button } from '@/shared/ui/Button/Button'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import s from './ForgotPassword.module.scss'
-import Link from "next/link";
+import Link from 'next/link'
 import {
-    useRecoveryPasswordMutation,
-    useResendRecoveryPasswordMutation
-} from "@/features/auth/api/authApi";
-import {Path} from "@/shared/config";
-import {Card} from "@/shared/ui/Card/Card";
-import {useState} from "react";
-import {zodResolver} from "@hookform/resolvers/zod";
+  useRecoveryPasswordMutation,
+  useResendRecoveryPasswordMutation,
+} from '@/features/auth/api/authApi'
+import { Path } from '@/shared/config'
+import { Card } from '@/shared/ui/Card/Card'
+import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import ReCAPTCHA from 'react-google-recaptcha'
 //
 // import {Modal} from "@/shared/ui/Modal/Modal";
