@@ -34,7 +34,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
           <Theme appearance={'dark'}>
             <StoreWrapper>
               <AlertsProvider>
-                <Header isLogin={false} notification={0} />
+                <Header notification={0} />
                 <main className={'main'}>
                   {children}
                   <Toaster />

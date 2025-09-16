@@ -3,7 +3,7 @@ import {useSearchParams} from 'next/navigation';
 import {Suspense, useEffect, useState} from 'react';
 import {toast} from "sonner";
 import {AlertToast} from "@/shared/ui/Alerts/Alerts";
-import {CallbackContentProps} from "@/widgets/AuthCallbackPage/types/types";
+import {CallbackContentProps} from "@/views/AuthCallbackPage/types/types";
 
 function CallbackContent({useOAuthHook}: CallbackContentProps) {
 
