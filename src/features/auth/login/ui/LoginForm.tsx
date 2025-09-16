@@ -4,11 +4,10 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import {Input} from '@/shared/ui/Input/Input';
 import {Button} from '@/shared/ui/Button/Button';
 import {type SubmitHandler, useForm} from 'react-hook-form';
-import GitHubIconRegistration from '@/features/auth/styles/icons/gitHubIconRegistration.svg';
 
 import {useLoginMutation} from "@/features/auth/api/authApi";
 import {Path} from "@/shared/config";
-import {useEffect, useId, useState} from "react";
+import {useId} from "react";
 import {RequestBodyLogin} from "@/shared/api";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
@@ -17,6 +16,7 @@ import {loginTC} from "@/shared/api/appSlice";
 import {LoginFormData, loginSchema} from "@/shared/lib/sсhemas/auth";
 import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
 import Link from "next/link";
+import GitHubAuthButton from "@/features/auth/gitHubOAuth/ui/GitHubAuthButton";
 
 
 export const LoginForm = () => {
@@ -29,23 +29,15 @@ export const LoginForm = () => {
         reset,
         trigger
     } = useForm<LoginFormData>({
-        resolver: zodResolver(loginSchema), // Добавляем zod resolver
+        resolver: zodResolver(loginSchema),
         mode: 'onChange',
     });
-    const [mounted, setMounted] = useState(false);
+
 
     const [login] = useLoginMutation()
     const emailId = useId();
     const passwordId = useId();
-    useEffect(() => {
-        setMounted(true);
-    }, []);
     const onSubmit: SubmitHandler<RequestBodyLogin> = async (data) => {
-        const values: RequestBodyLogin = {
-            email: data.email,
-            password: data.password,
-        }
-
         try {
             const res = await login(data).unwrap();
 
@@ -55,7 +47,6 @@ export const LoginForm = () => {
                 router.replace(Path.Home)
                 reset();
             } else {
-
                 reset({password: ''});
             }
         } catch {
@@ -79,7 +70,7 @@ export const LoginForm = () => {
             <h1 className={s.registrationFormTitle}>Sign In</h1>
             <div className={s.oAuthIconContainer}>
                 <GoogleAuthCodeFlowButton/>
-                <a href={'https://github.com/'}><GitHubIconRegistration/></a>
+                <GitHubAuthButton/>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
 
