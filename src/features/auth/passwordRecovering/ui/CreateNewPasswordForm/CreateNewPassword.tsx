@@ -13,7 +13,8 @@ import {
 import { Card, Input } from '@/shared/ui'
 import { Path } from '@/shared/config'
 import { isErrorWithMessage } from '@/shared/lib/utils/isErrorWithMessage'
-import { CreateNewPasswordInputs, createNewPasswordSchema } from '@/shared/lib/sсhemas/loginShema'
+import {CreateNewPasswordInputs, createNewPasswordSchema} from "@/shared/lib/sсhemas/auth";
+
 
 export default function CreateNewPasswordForm() {
   const [createNewPassword] = useCreateNewPasswordMutation()
