@@ -14,7 +14,7 @@ import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
 import {useAppDispatch} from "@/shared/lib/hooks/hooks";
 import {loginTC} from "@/shared/api/appSlice";
-import {LoginFormData, loginSchema} from "@/shared/lib/sсhemas/loginShema";
+import {LoginFormData, loginSchema} from "@/shared/lib/sсhemas/auth";
 import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
 import Link from "next/link";
 
