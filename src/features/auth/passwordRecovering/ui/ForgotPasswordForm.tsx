@@ -14,6 +14,7 @@ import { Card } from '@/shared/ui/Card/Card'
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ReCAPTCHA from 'react-google-recaptcha'
+// что это за комменты спросить у Жени 🤔
 //
 // import {Modal} from "@/shared/ui/Modal/Modal";
 // import {EmailInputType, LoginInputs, loginSchema} from "@/shared/lib/schemas/auth";
@@ -51,51 +52,52 @@ export const ForgotPasswordForm = () => {
     setServerError(undefined)
 
     if (!captchaToken) {
-      alert('Пожалуйста, подтвердите, что вы не робот')
-            return
-        }
+      return
+    }
 
-      try {
-          if (!isLetterSent) {
-              await recoveryPassword({
-                  ...data,
-                  baseUrl: `${window.location.origin}/password-recovery/create-new-password`,
-                  recaptcha: captchaToken,
-              }).unwrap()
-          } else {
-              await resendRecoveryPassword({
-                  ...data,
-                  baseUrl: `${window.location.origin}/password-recovery/create-new-password`,
-              }).unwrap()
-          }
+    try {
+      if (!isLetterSent) {
+        await recoveryPassword({
+          ...data,
+          baseUrl: `${window.location.origin}/password-recovery/create-new-password`,
+          recaptcha: captchaToken,
+        }).unwrap()
+      } else {
+        await resendRecoveryPassword({
+          ...data,
+          baseUrl: `${window.location.origin}/password-recovery/create-new-password`,
+        }).unwrap()
+      }
 
-          setUserEmail(data.email)
-          setIsModalOpen(true)
-          reset()
+      setUserEmail(data.email)
+      setIsModalOpen(true)
+      setLetterSent(true)
+      reset()
     } catch (err: unknown) {
-        const typedError = getTypedErrorData<ResponsesTypeError>(err)
+      const typedError = getTypedErrorData<ResponsesTypeError>(err)
 
-        if (typedError?.data) {
-            setServerError(typedError.data.messages[0].message)
-        } else {
-            setServerError('An unknown error occurred')
-        }
+      if (typedError?.data) {
+        setServerError(typedError.data.messages[0].message)
+      } else {
+        setServerError('An unknown error occurred')
+      }
     }
   }
-    //     }  catch (err: unknown) {
-    //         if(err && typeof err === "object" && "data" in err && isErrorWithMessage(err.data)){
-    //             if (err.data.messages[0].message) {
-    //                 setServerError(err.data.messages[0].message)
-    //             } else {
-    //                 setServerError('An unknown error occurred')
-    //             }
-    //         }
-    // }
-    // }
+
+  // что это за комменты спросить у Жени 🤔
+  //     }  catch (err: unknown) {
+  //         if(err && typeof err === "object" && "data" in err && isErrorWithMessage(err.data)){
+  //             if (err.data.messages[0].message) {
+  //                 setServerError(err.data.messages[0].message)
+  //             } else {
+  //                 setServerError('An unknown error occurred')
+  //             }
+  //         }
+  // }
+  // }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
-    setLetterSent(true)
   }
 
   const handleCaptchaChange = (token: string | null) => {
@@ -137,24 +139,29 @@ export const ForgotPasswordForm = () => {
                 sitekey={'6LdHxG4qAAAAAPKRxEHrlV5VvLFHIf2BO5NMI8YM'}
                 theme={'dark'}
                 onChange={handleCaptchaChange}
-            />
-         </div>
-    )}
-    <div className={s.buttonsBlock}>
-        <Button fullWidth type={'submit'}>
-            {!isLetterSent ? 'Send Link' : 'Send Link Again'}
-        </Button>
-        <Button variant={'text'}>
-            <Link href={Path.SignIn}>Back to Sign In</Link>
-        </Button>
-    </div>
+              />
+            </div>
+          )}
+          <div className={s.buttonsBlock}>
+            <Button fullWidth type={'submit'} disabled={!userEmail && !captchaToken}>
+              {!isLetterSent ? 'Send Link' : 'Send Link Again'}
+            </Button>
+            <Button variant={'text'}>
+              <Link href={Path.SignIn}>Back to Sign In</Link>
+            </Button>
+          </div>
         </form>
       </Card>
-        {isModalOpen && <Modal
-            onClick={handleCloseModal}
-            title={'Email sent'}>
-                We have sent a link to confirm your email to {userEmail}
-            </Modal>}
+      {isModalOpen && (
+        <Modal onClick={handleCloseModal} title={'Email sent'}>
+          <p style={{ maxWidth: '330px' }}>
+            We have sent a link to confirm your email to {userEmail}
+          </p>
+          <Button type={'button'} onClick={handleCloseModal}>
+            OK
+          </Button>
+        </Modal>
+      )}
     </>
-    );
-};
+  )
+}
