@@ -1,11 +1,9 @@
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { toast } from 'sonner'
-import { Mutex } from 'async-mutex'
-import { ACCESS_TOKEN } from '@/shared/lib'
-import { ResponsesLogin } from '@/shared/api/types'
-import { handleError } from '@/shared/lib/utils'
-import {AlertToast} from "@/shared/ui/Alerts/Alerts";
+import type {BaseQueryFn, FetchArgs, FetchBaseQueryError} from '@reduxjs/toolkit/query'
+import {fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {Mutex} from 'async-mutex'
+import {ACCESS_TOKEN} from '@/shared/lib'
+import {ResponsesLogin} from '@/shared/api/types'
+import {handleError} from '@/shared/lib/utils'
 
 const mutex = new Mutex()
 
