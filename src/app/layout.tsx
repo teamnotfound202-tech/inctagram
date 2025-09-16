@@ -21,14 +21,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
-    // TODO: временные коменты. НЕ УДАЛЯТЬ !!!!
-    // const googleClientId =
-  //   process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'fallback-client-id';
-  //
-  // if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
-  //   console.error('NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set');
-  // }
-
   return (
     <html lang="en">
       <body className={inter.variable}>
