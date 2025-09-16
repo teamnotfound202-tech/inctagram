@@ -1,6 +1,6 @@
 // Словарь для интернационализации приложения Inctagram
 // Поддерживаемые языки: английский (en) и русский (ru)
-
+//TODO: почитстить (удалить библиотеку Intl?)
 export type Language = 'en' | 'ru';
 
 export interface Messages {
