@@ -119,7 +119,7 @@ export const RegisterForm = () => {
               pattern: {
                 value:
                   /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!"#$%&'()*+,-.\/:;<=>?@[\]^_`{|}~])[A-Za-z0-9!"#$%&'()*+,-.\/:;<=>?@[\]^_`{|}~]+$/,
-                message: 'The password must not contain special characters.'
+                message: 'The password must contain special characters.'
               }
             })}
           />

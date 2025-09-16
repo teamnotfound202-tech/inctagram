@@ -11,15 +11,9 @@ import {
 } from '@/features/auth/api/authApi'
 import { Path } from '@/shared/config'
 import { Card } from '@/shared/ui/Card/Card'
-import { useState } from 'react'
+import {useState} from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ReCAPTCHA from 'react-google-recaptcha'
-// что это за комменты спросить у Жени 🤔
-//
-// import {Modal} from "@/shared/ui/Modal/Modal";
-// import {EmailInputType, LoginInputs, loginSchema} from "@/shared/lib/schemas/auth";
-// import {isErrorWithMessage} from "@/shared/lib/utils/isErrorWithMessage";
-//
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { getTypedErrorData } from '@/shared/api/utils'
 import { ResponsesTypeError } from '@/shared/api'
@@ -83,19 +77,6 @@ export const ForgotPasswordForm = () => {
       }
     }
   }
-
-  // что это за комменты спросить у Жени 🤔
-  //     }  catch (err: unknown) {
-  //         if(err && typeof err === "object" && "data" in err && isErrorWithMessage(err.data)){
-  //             if (err.data.messages[0].message) {
-  //                 setServerError(err.data.messages[0].message)
-  //             } else {
-  //                 setServerError('An unknown error occurred')
-  //             }
-  //         }
-  // }
-  // }
-
   const handleCloseModal = () => {
     setIsModalOpen(false)
   }
@@ -163,5 +144,5 @@ export const ForgotPasswordForm = () => {
         </Modal>
       )}
     </>
-  )
-}
+    );
+};
