@@ -28,7 +28,6 @@ export const ForgotPasswordForm = () => {
   const [userEmail, setUserEmail] = useState('')
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
-
   const {
     register,
     reset,
