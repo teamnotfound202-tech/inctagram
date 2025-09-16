@@ -14,7 +14,7 @@ import { Card } from '@/shared/ui/Card/Card'
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ReCAPTCHA from 'react-google-recaptcha'
-// что это за комменты, спросить у Игоря 🤔
+// что это за комменты, спросить у Жени 🤔
 //
 // import {Modal} from "@/shared/ui/Modal/Modal";
 // import {EmailInputType, LoginInputs, loginSchema} from "@/shared/lib/schemas/auth";
@@ -84,7 +84,7 @@ export const ForgotPasswordForm = () => {
     }
   }
 
-  // что это за комменты, спросить у Игоря 🤔
+  // что это за комменты, спросить у Жени 🤔
   //     }  catch (err: unknown) {
   //         if(err && typeof err === "object" && "data" in err && isErrorWithMessage(err.data)){
   //             if (err.data.messages[0].message) {
