@@ -3,7 +3,6 @@ import { Button } from '@/shared/ui/Button/Button'
 import Link from 'next/link'
 import s from './Header.module.scss'
 import NotificationIcon from '@/widgets/Header/icons/notification.svg'
-import { SelectBox } from '@/shared/ui/Select/Select'
 import FlagRussia from '@/shared/ui/Select/icon/FlagRussia.svg'
 import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
 import { Path } from '@/shared/config'
@@ -12,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { loginTC, selectIsLoggedIn } from '@/shared/api/appSlice'
 import { ACCESS_TOKEN } from '@/shared/lib'
 import { useEffect, useState } from 'react'
+import { SelectBox } from '@/shared/ui/Select/SelectOptionsList'
 
 type Props = {
   isLogin: boolean
