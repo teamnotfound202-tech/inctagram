@@ -12,9 +12,10 @@ type Props = {
   isDisabled: boolean
   onClickAction?: () => void
   isVisible?: boolean
+  spanText:string
 }
 
-export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible }: Props) => {
+export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible,spanText }: Props) => {
   return (
     <li
       className={clx(s.sidebarItem, {
@@ -29,12 +30,12 @@ export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible }
           onClick={onClickAction}
         >
           <DynamicIcon text={text} />
-          <span className={s.sidebarItemtext}>{text}</span>
+          <span className={s.sidebarItemtext}>{spanText}</span>
         </Button>
       ) : (
         <Link href={link} className={s.sidebarItemLink}>
           <DynamicIcon text={text} />
-          <span className={s.sidebarItemtext}>{text}</span>
+          <span className={s.sidebarItemtext}>{spanText}</span>
         </Link>
       )}
     </li>

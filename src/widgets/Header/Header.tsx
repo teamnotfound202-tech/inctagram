@@ -9,9 +9,10 @@ import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
 import { Path } from '@/shared/config'
 import { Container } from '@/shared/ui'
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
-import { loginTC, selectIsLoggedIn } from '@/shared/api/appSlice'
+import { changeLanguage, loginTC, selectIsLoggedIn } from '@/shared/api/appSlice'
 import { ACCESS_TOKEN } from '@/shared/lib'
 import { useEffect, useState } from 'react'
+
 
 type Props = {
   isLogin: boolean
@@ -22,6 +23,7 @@ type Props = {
 export const Header = ({ isLogin, notification, agreement }: Props) => {
   const [isLoggined, setIsLoggedIn] = useState(false)
   const loginedWithSignIn = useAppSelector(selectIsLoggedIn)
+
   const dispatch = useAppDispatch()
   useEffect(() => {
     const token = localStorage.getItem(ACCESS_TOKEN)
@@ -31,6 +33,12 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
     dispatch(loginTC({ isLoggedIn: false }))
     localStorage.removeItem(ACCESS_TOKEN)
   }
+  const handleLanguageChange = (value:string) => {
+
+    dispatch(changeLanguage({
+      language: value === 'option1' ? "ru" : "en"
+    }));
+  };
   return (
     <header className={s.header}>
       <Container>
@@ -54,6 +62,7 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
                 type={'lang'}
                 defaultValue={'option2'}
                 fullWidth={false}
+                onValueChange={handleLanguageChange}
               />
             </div>
           ) : agreement ? (
@@ -67,6 +76,7 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
                 type={'lang'}
                 defaultValue={'option2'}
                 fullWidth={false}
+                onValueChange={handleLanguageChange}
               />
             </div>
           ) : (
@@ -80,6 +90,7 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
                 type={'lang'}
                 defaultValue={'option2'}
                 fullWidth={false}
+                onValueChange={handleLanguageChange}
               />
               {!isLoggined && (
                 <Button variant={'text'} asChild>

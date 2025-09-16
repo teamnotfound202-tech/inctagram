@@ -8,7 +8,7 @@ import { ACCESS_TOKEN } from '@/shared/lib'
 import { sideBarData } from '@/shared/config/sideBarItems/sideBarData'
 import type { ResponsesMe } from '@/shared/api'
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
-import { loginTC, selectIsLoggedIn } from '@/shared/api/appSlice'
+import { loginTC, selectCurrentMessages, selectIsLoggedIn, selectLanguage } from '@/shared/api/appSlice'
 import clx from 'classnames'
 
 type Props = {
@@ -17,7 +17,8 @@ type Props = {
 
 export const Sidebar = ({ data }: Props) => {
   const [logout] = useLogoutMutation()
-
+const messages = useAppSelector(selectCurrentMessages)
+  const language = useAppSelector(selectLanguage)
   const [isModalOpen, setModalOpen] = useState(false)
 
   const islogined = useAppSelector(selectIsLoggedIn)
@@ -37,12 +38,14 @@ export const Sidebar = ({ data }: Props) => {
   const isVisible = !islogined
   return (
     <ul className={clx(s.sidebar, { [s.unvisible]: isVisible })}>
+
       {sideBarData.map(item => {
         return (
           <SidebarItem
             key={item.key}
             text={item.text}
             link={item.link}
+            spanText={item.textForLink[language]}
             isDisabled={item.isDisabled}
             {...(item.onclick && { onClickAction: handleModelOpen })}
           />
