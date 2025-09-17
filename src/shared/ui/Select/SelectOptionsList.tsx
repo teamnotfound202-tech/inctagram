@@ -1,87 +1,125 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useRef, useEffect} from 'react'
 import styles from './Select.module.scss'
+import ChevronDownIconUpDown from './icon/ChevronDownIconUpDown.svg'
 import clsx from 'clsx'
-import SelectOptionList, { SelectOption } from '@/shared/ui/Select/Select'
 
-export type SelectBoxProps = {
-  options: SelectOption[]
-  value?: string
-  defaultValue?: string
-  onValueChange?: (value: string) => void
-  placeholder?: string
-  label?: string
-  error?: string
+export type SelectOption = {
+  value: string
+  label: string
   disabled?: boolean
-  required?: boolean
-  className?: string
-  name: string
-  id?: string
-  type?: 'default' | 'lang'
-  fullWidth?: boolean
+  icon?: React.ReactNode
 }
 
-export const SelectBox: React.FC<SelectBoxProps> = ({
-                                                      options,
-                                                      value,
-                                                      defaultValue = '',
-                                                      onValueChange,
-                                                      placeholder,
-                                                      label,
-                                                      error,
-                                                      disabled = false,
-                                                      required = false,
-                                                      className = '',
-                                                      name,
-                                                      id,
-                                                      fullWidth = true,
-                                                      type = 'default',
-                                                    }) => {
-  const [internalValue, setInternalValue] = useState(defaultValue)
-  const currentValue = value !== undefined ? value : internalValue
+export type SelectOptionListProps = {
+  options: SelectOption[]
+  value?: string
+  onValueChange?: (value: string) => void
+  placeholder?: string
+  className?: string
+  disabled?: boolean
+  id?: string
+  'aria-labelledby'?: string
+  'aria-invalid'?: boolean
+  fullWidth?: boolean
+  type?: 'default' | 'lang'
+}
 
-  const handleValueChange = useCallback(
-    (newValue: string) => {
-      if (value === undefined) {
-        setInternalValue(newValue)
+export const SelectOptionList: React.FC<SelectOptionListProps> = ({
+                                                                    options,
+                                                                    value,
+                                                                    onValueChange,
+                                                                    placeholder = 'Выберите опцию',
+                                                                    className = '',
+                                                                    disabled = false,
+                                                                    id,
+                                                                    'aria-labelledby': ariaLabelledBy,
+                                                                    fullWidth = true,
+                                                                    type = 'default',
+                                                                  }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const selectRef = useRef<HTMLDivElement>(null)
+
+  // Закрытие селекта при клике вне его области
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
       }
-      onValueChange?.(newValue)
-    },
-    [value, onValueChange]
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleOptionClick = (optionValue: string) => {
+    if (!disabled) {
+      onValueChange?.(optionValue)
+      setIsOpen(false)
+    }
+  }
+
+  const selectedOption = options.find(option => option.value === value)
+  const displayValue = selectedOption ? (
+    <div className={styles.itemContent}>
+      {selectedOption.icon}
+      {selectedOption.label}
+    </div>
+  ) : (
+    <span className={styles.placeholder}>{placeholder}</span>
   )
 
-  const selectId = id || name
-  const displayError = error || (required && !currentValue ? 'Поле обязательно для заполнения' : undefined)
-  const triggerId = selectId ? `${selectId}-trigger` : undefined
-  const labelId = selectId ? `${selectId}-label` : undefined
-
   return (
-    <div className={clsx(styles.selectWrapper, className, { [styles.fullWidth]: fullWidth })}>
-      {label && (
-        <label className={styles.label} id={labelId} htmlFor={triggerId}>
-          {label}
-          {required && <span style={{ color: '#ef4444' }}>*</span>}
-        </label>
-      )}
-
-      <SelectOptionList
-        options={options}
-        id={triggerId}
-        aria-labelledby={labelId}
-        aria-invalid={!!displayError}
-        value={currentValue}
-        onValueChange={handleValueChange}
-        placeholder={placeholder}
+    <div
+      ref={selectRef}
+      className={clsx(styles.selectContainer, {
+        [styles.fullWidth]: fullWidth,
+      })}
+    >
+      <button
+        type="button"
+        className={clsx(styles.trigger, className, {
+          [styles.fullWidth]: fullWidth,
+          [styles.selectLang]: type === 'lang',
+          [styles.disabled]: disabled,
+        })}
+        id={id}
+        aria-labelledby={ariaLabelledBy}
+        aria-expanded={isOpen}
         disabled={disabled}
-        fullWidth={fullWidth}
-        type={type}
-      />
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+      >
+        {displayValue}
+        <span className={clsx(styles.icon, { [styles.rotated]: isOpen })}>
+          <ChevronDownIconUpDown />
+        </span>
+      </button>
 
-      {displayError && <div className={styles.errorMessage}>{displayError}</div>}
-
-      {/* Скрытое поле для форм */}
-      {name && <input type="hidden" name={name} value={currentValue} disabled={disabled} />}
+      {isOpen && (
+        <div className={styles.dropdown}>
+          <div className={styles.viewport}>
+            {options.map(option => (
+              <div
+                key={option.value}
+                className={clsx(styles.item, {
+                  [styles.selected]: option.value === value,
+                  [styles.disabled]: option.disabled,
+                })}
+                onClick={() => !option.disabled && handleOptionClick(option.value)}
+              >
+                <div className={styles.itemContent}>
+                  {option.icon}
+                  {option.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
+
