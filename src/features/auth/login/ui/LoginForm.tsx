@@ -11,8 +11,6 @@ import {useId} from "react";
 import {RequestBodyLogin} from "@/shared/api";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {useRouter} from "next/navigation";
-import {useAppDispatch} from "@/shared/lib/hooks/hooks";
-import {meAC} from "@/shared/api/appSlice";
 import {LoginFormData, loginSchema} from "@/shared/lib/sсhemas/auth";
 import GoogleAuthCodeFlowButton from "@/features/auth/googleOAuth/ui/GoogleAuthCodeFlowButton";
 import Link from "next/link";
@@ -21,7 +19,6 @@ import GitHubAuthButton from "@/features/auth/gitHubOAuth/ui/GitHubAuthButton";
 
 export const LoginForm = () => {
     const router = useRouter()
-    const dispatch =useAppDispatch()
     const {
         register,
         handleSubmit,
@@ -37,12 +34,12 @@ export const LoginForm = () => {
     const [login] = useLoginMutation()
     const emailId = useId();
     const passwordId = useId();
+
     const onSubmit: SubmitHandler<RequestBodyLogin> = async (data) => {
         try {
             const res = await login(data).unwrap();
             if (res.accessToken) {
                 localStorage.setItem(ACCESS_TOKEN, res.accessToken);
-                // dispatch(loginTC({isLoggedIn: true}))
                 router.replace(Path.Home)
                 reset();
             } else {
@@ -104,9 +101,9 @@ export const LoginForm = () => {
             <span className={s.loginSpan}>Do you have an account?</span>
 
             <Button asChild variant={'text'} fullWidth>
-                <a href={Path.SignUp}>
+                <Link href={Path.SignUp}>
                     Sign Up
-                </a>
+                </Link>
             </Button>
         </div>
     );

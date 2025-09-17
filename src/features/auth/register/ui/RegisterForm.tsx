@@ -56,7 +56,7 @@ export const RegisterForm = () => {
   };
 
   const handleModalClose = () => {
-    router.push(Path.SignIn);
+    router.replace(Path.SignIn);
   };
   const passwordValue = watch('password');
   const agreeValue = watch('agree');
@@ -181,6 +181,7 @@ export const RegisterForm = () => {
       </div>
       {isModalOpen && (
         <Modal title={'Email sent'} onClick={handleModalClose}>
+            {/*TODO вынести стили в module*/}
           <p style={{ maxWidth: '330px' }}>
             We have sent a link to confirm your email to {emailValue}
           </p>
