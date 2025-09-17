@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { loginTC, selectIsLoggedIn } from '@/shared/api/appSlice'
 import { ACCESS_TOKEN } from '@/shared/lib'
 import { useEffect, useState } from 'react'
-import { SelectBox } from '@/shared/ui/Select/SelectOptionsList'
+import { SelectBox } from '@/shared/ui/Select/Select'
 
 type Props = {
   isLogin: boolean
