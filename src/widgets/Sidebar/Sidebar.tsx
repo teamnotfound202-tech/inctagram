@@ -1,22 +1,22 @@
+import { baseApi } from '@/shared/api'
 import {SidebarItem} from '@/widgets/Sidebar/SidebarItem/SidebarItem'
 import s from './Sidebar.module.scss'
 import {useState} from 'react'
 import {Modal} from '@/shared/ui/Modal/Modal'
 import {Button} from '@/shared/ui'
-import {useLogoutMutation} from '@/features/auth/api/authApi'
+import { useLogoutMutation, useMeQuery } from '@/features/auth/api/authApi'
 import {ACCESS_TOKEN} from '@/shared/lib'
 import {sideBarData} from '@/shared/config/sideBarItems/sideBarData'
-import {useAppDispatch, useAppSelector} from '@/shared/lib/hooks/hooks'
-import {logoutAC,selectUserEmail} from '@/shared/api/appSlice'
+import {useAppDispatch} from '@/shared/lib/hooks/hooks'
 import {useRouter} from "next/navigation";
 import {Path} from "@/shared/config";
 
 
 
 export const Sidebar = () => {
-  const dispatch = useAppDispatch()
-  const email = useAppSelector(selectUserEmail)
   const [logout] = useLogoutMutation()
+  const {data} = useMeQuery()
+  const dispatch = useAppDispatch()
   const router = useRouter()
 
   const [isModalOpen, setModalOpen] = useState(false)
@@ -24,14 +24,18 @@ export const Sidebar = () => {
 
   const handleModelOpen = () => setModalOpen(true)
   const handleModelClose = () => setModalOpen(false)
+
   const handleLogout = () => {
     logout()
       .unwrap()
-      .then(() => {
-        localStorage.removeItem(ACCESS_TOKEN)
-        dispatch(logoutAC())
+      .then((res) => {
         handleModelClose()
         router.push(Path.Home)
+        localStorage.removeItem(ACCESS_TOKEN)
+        dispatch(baseApi.util.resetApiState())
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
 
@@ -52,7 +56,7 @@ export const Sidebar = () => {
       {isModalOpen && (
         <Modal title={'Log Out'} onClick={handleModelClose}>
           <p className={s.contentTextModal}>
-            Are you really want to log out of your account <span>{email}</span>
+            Are you really want to log out of your account <span>{data?.email}</span>
           </p>
           <div className={s.buttonWrapper}>
             <Button variant={'outline'} onClick={handleLogout}>

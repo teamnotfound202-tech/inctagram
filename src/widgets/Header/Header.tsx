@@ -8,9 +8,6 @@ import FlagRussia from '@/shared/ui/Select/icon/FlagRussia.svg'
 import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
 import {Path} from '@/shared/config'
 import {Container} from '@/shared/ui'
-import {useAppDispatch, useAppSelector} from '@/shared/lib/hooks/hooks'
-import {meAC,selectIsLoggedIn} from '@/shared/api/appSlice'
-import {useEffect} from 'react'
 import {useMeQuery} from "@/features/auth/api/authApi";
 
 type Props = {
@@ -20,22 +17,6 @@ type Props = {
 
 export const Header = ({notification, agreement }: Props) => {
   const {data} = useMeQuery()
-  const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
-
-  useEffect(() => {
-    if(data) {
-      dispatch(meAC({...data, isLoggedIn: true}))
-    }
-  }, [data,dispatch]);
-
-
-
-  // const loginedWithSignIn = useAppSelector(selectIsLoggedIn)
-  // useEffect(() => {
-  //   const token = localStorage.getItem(ACCESS_TOKEN)
-  //   setIsLoggedIn(!!token)
-  // }, [loginedWithSignIn])
 
   return (
     <header className={s.header}>
@@ -45,7 +26,7 @@ export const Header = ({notification, agreement }: Props) => {
             Inctagram
           </a>
 
-          {isLoggedIn ? (
+          {data?.userId ? (
             <div className={s.headerGroupContainer}>
               <button className={s.buttonNotification}>
                 <NotificationIcon />
@@ -87,7 +68,7 @@ export const Header = ({notification, agreement }: Props) => {
                 defaultValue={'option2'}
                 fullWidth={false}
               />
-              {!isLoggedIn && (
+              {!data?.userId && (
                 <Button variant={'text'} asChild>
                   <Link href={Path.SignIn}>Log in</Link>
                 </Button>

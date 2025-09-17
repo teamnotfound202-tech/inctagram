@@ -34,7 +34,10 @@ export const authApi = baseApi.injectEndpoints({
             }),
         }),
         logout: builder.mutation<void, void>({
-            query: () => ({method: "post", url: "auth/logout"}),
+            query: () => {
+              debugger
+              return {method: "post", url: "auth/logout"}
+            },
         }),
         me: builder.query<ResponsesMe, void>({
             query: () => "auth/me",

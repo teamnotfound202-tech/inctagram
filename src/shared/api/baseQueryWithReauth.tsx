@@ -1,3 +1,4 @@
+import { responseCodes } from '@/shared/config'
 import type {BaseQueryFn, FetchArgs, FetchBaseQueryError} from '@reduxjs/toolkit/query'
 import {fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {Mutex} from 'async-mutex'
@@ -26,8 +27,7 @@ export const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   await mutex.waitForUnlock()
 
   let result = await startBaseQuery(args, api, extraOptions)
-
-  if (result.error && result.error.status === 401) {
+  if (result.error && result.error.status === responseCodes.Unauthorized) {
     // если токен никто не обновляет → пробуем сами
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()

@@ -33,13 +33,13 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
           <Theme appearance={'dark'}>
             <StoreWrapper>
-              <AlertsProvider>
-                <Header notification={0} />
-                <main className={'main'}>
-                  {children}
-                  <Toaster />
-                </main>
-              </AlertsProvider>
+                <AlertsProvider>
+                  <Header notification={0} />
+                  <main className={'main'}>
+                    {children}
+                    <Toaster />
+                  </main>
+                </AlertsProvider>
             </StoreWrapper>
           </Theme>
         </GoogleOAuthProvider>
