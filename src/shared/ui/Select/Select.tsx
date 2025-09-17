@@ -35,7 +35,6 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
                                                              disabled = false,
                                                              id,
                                                              'aria-labelledby': ariaLabelledBy,
-                                                             'aria-invalid': ariaInvalid = false,
                                                              fullWidth = true,
                                                              type = 'default',
                                                            }) => {
@@ -90,7 +89,6 @@ const SelectOptionList: React.FC<SelectOptionListProps> = ({
         id={id}
         aria-labelledby={ariaLabelledBy}
         aria-expanded={isOpen}
-        aria-invalid={ariaInvalid}
         disabled={disabled}
         onClick={() => !disabled && setIsOpen(!isOpen)}
       >
