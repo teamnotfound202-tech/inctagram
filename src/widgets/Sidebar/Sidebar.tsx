@@ -1,44 +1,50 @@
-import { SidebarItem } from '@/widgets/Sidebar/SidebarItem/SidebarItem'
+import { baseApi } from '@/shared/api'
+import {SidebarItem} from '@/widgets/Sidebar/SidebarItem/SidebarItem'
 import s from './Sidebar.module.scss'
-import { useState } from 'react'
-import { Modal } from '@/shared/ui/Modal/Modal'
-import { Button } from '@/shared/ui'
-import { useLogoutMutation } from '@/features/auth/api/authApi'
-import { ACCESS_TOKEN } from '@/shared/lib'
-import { sideBarData } from '@/shared/config/sideBarItems/sideBarData'
-import type { ResponsesMe } from '@/shared/api'
+import {useState} from 'react'
+import {Modal} from '@/shared/ui/Modal/Modal'
+import {Button} from '@/shared/ui'
+import { useLogoutMutation, useMeQuery } from '@/features/auth/api/authApi'
+import {ACCESS_TOKEN} from '@/shared/lib'
+import {sideBarData} from '@/shared/config/sideBarItems/sideBarData'
+import {useRouter} from "next/navigation";
+import {Path} from "@/shared/config";
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
-import { loginTC, selectCurrentMessages, selectIsLoggedIn, selectLanguage } from '@/shared/api/appSlice'
-import clx from 'classnames'
+import { selectLanguage } from '@/shared/api/appSlice'
 
-type Props = {
-  data: ResponsesMe | undefined
-}
 
-export const Sidebar = ({ data }: Props) => {
+
+
+export const Sidebar = () => {
   const [logout] = useLogoutMutation()
-const messages = useAppSelector(selectCurrentMessages)
+  const {data} = useMeQuery()
   const language = useAppSelector(selectLanguage)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const [isModalOpen, setModalOpen] = useState(false)
 
-  const islogined = useAppSelector(selectIsLoggedIn)
-  const dispatch = useAppDispatch()
+
   const handleModelOpen = () => setModalOpen(true)
   const handleModelClose = () => setModalOpen(false)
-  const handleLogout = () => {
 
+  const handleLogout = () => {
     logout()
       .unwrap()
       .then(() => {
-        localStorage.removeItem(ACCESS_TOKEN)
-        dispatch(loginTC({ isLoggedIn: false }))
         handleModelClose()
+        router.replace(Path.Home)
+        localStorage.removeItem(ACCESS_TOKEN)
+        dispatch(baseApi.util.resetApiState())
+      })
+      .catch(() => {
+        handleModelClose()
+        router.replace(Path.SignIn)
+        dispatch(baseApi.util.resetApiState())
       })
   }
-  const isVisible = !islogined
-  return (
-    <ul className={clx(s.sidebar, { [s.unvisible]: isVisible })}>
 
+  return (
+    <ul className={s.sidebar}>
       {sideBarData.map(item => {
         return (
           <SidebarItem

@@ -4,6 +4,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  & div {
+    outline: none !important;
+    --text-field-border-width: none;
+  }
 
   &:has(input:not(:disabled)):active .searchIcon {
     color: $light-100;
@@ -40,25 +44,52 @@
   color: $light-900;
 }
 
-.Input {
+.Input{
   all: unset;
 
-  display: flex;
+  display: flex !important;
   flex-direction: row-reverse;
   justify-content: center;
 
-  padding: 6px 12px;
+  padding: 6px 12px !important;
   border: 1px solid $dark-100;
-  border-radius: 2px;
+  border-radius: 2px !important;
+  background-color: transparent !important;
 
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 400;
+  font-family: inherit !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
   line-height: 150%;
-
+  min-height: 36px;
+  max-height: 36px;
+  box-sizing: border-box;
   outline: none;
 
   transition: 0.25s;
+  & input {
+    background-color: transparent  !important;
+    text-indent: 0;
+    line-height: 150% !important;
+    padding: 4px 0 !important;
+    border: transparent !important;
+    outline: none !important;
+
+    &:hover {
+      border-color: $light-900;
+    }
+
+    &:active {
+      border-color: $light-100 !important;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      border-color: $dark-100;
+    }
+    &:focus-within {
+      border-color: $light-100 !important;
+    }
+  }
 
   &:focus-within {
     border-color: $accent-500;

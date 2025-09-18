@@ -31,9 +31,8 @@ export const RegisterForm = () => {
     control,
     reset,
   } = useForm<RegisterFormValues>({
-    mode: 'onBlur',
+    mode: 'all',
   })
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
   const [credentials] = useRegistrationMutation()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [emailValue, setEmailValue] = useState('')
@@ -44,7 +43,7 @@ export const RegisterForm = () => {
       userName: data.username,
       email: data.email,
       password: data.password,
-      baseUrl: baseUrl + '/verify-email'
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL + '/verify-email'
     };
     credentials(values)
       .unwrap()
@@ -56,7 +55,7 @@ export const RegisterForm = () => {
   };
 
   const handleModalClose = () => {
-    router.push(Path.SignIn);
+    router.replace(Path.SignIn);
   };
   const passwordValue = watch('password');
   const agreeValue = watch('agree');
@@ -181,6 +180,7 @@ export const RegisterForm = () => {
       </div>
       {isModalOpen && (
         <Modal title={'Email sent'} onClick={handleModalClose}>
+            {/*TODO вынести стили в module*/}
           <p style={{ maxWidth: '330px' }}>
             We have sent a link to confirm your email to {emailValue}
           </p>

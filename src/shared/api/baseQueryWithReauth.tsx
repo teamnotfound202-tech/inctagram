@@ -1,16 +1,15 @@
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
-import { Mutex } from 'async-mutex'
-import { ACCESS_TOKEN } from '@/shared/lib'
-import { ResponsesLogin } from '@/shared/api/types'
-import { handleError } from '@/shared/lib/utils'
-
+import { responseCodes } from '@/shared/config'
+import type {BaseQueryFn, FetchArgs, FetchBaseQueryError} from '@reduxjs/toolkit/query'
+import {fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {Mutex} from 'async-mutex'
+import {ACCESS_TOKEN} from '@/shared/lib'
+import {ResponsesLogin} from '@/shared/api/types'
+import {handleError} from '@/shared/lib/utils'
 
 const mutex = new Mutex()
 
 export const startBaseQuery = fetchBaseQuery({
-  baseUrl: 'https://connectpix.site/api/v1/',
+  baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
   credentials: 'include',
   prepareHeaders: headers => {
     if (typeof window !== 'undefined') {
@@ -28,8 +27,7 @@ export const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   await mutex.waitForUnlock()
 
   let result = await startBaseQuery(args, api, extraOptions)
-
-  if (result.error && result.error.status === 401) {
+  if (result.error && result.error.status === responseCodes.Unauthorized) {
     // если токен никто не обновляет → пробуем сами
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()

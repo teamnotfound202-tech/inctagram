@@ -1,44 +1,35 @@
 'use client'
-import { Button } from '@/shared/ui/Button/Button'
+import {Button} from '@/shared/ui/Button/Button'
 import Link from 'next/link'
 import s from './Header.module.scss'
 import NotificationIcon from '@/widgets/Header/icons/notification.svg'
 import FlagRussia from '@/shared/ui/Select/icon/FlagRussia.svg'
 import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
+import {useMeQuery} from "@/features/auth/api/authApi";
 import { Path } from '@/shared/config'
 import { Container } from '@/shared/ui'
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
-import { changeLanguage, loginTC, selectIsLoggedIn } from '@/shared/api/appSlice'
+import { changeLanguage} from '@/shared/api/appSlice'
 import { ACCESS_TOKEN } from '@/shared/lib'
 import { useEffect, useState } from 'react'
 import { SelectBox } from '@/shared/ui/Select/Select'
 
 
 type Props = {
-  isLogin: boolean
   notification: number
   agreement?: boolean
 }
 
-export const Header = ({ isLogin, notification, agreement }: Props) => {
-  const [isLoggined, setIsLoggedIn] = useState(false)
-  const loginedWithSignIn = useAppSelector(selectIsLoggedIn)
-
+export const Header = ({notification, agreement }: Props) => {
+  const {data} = useMeQuery()
   const dispatch = useAppDispatch()
-  useEffect(() => {
-    const token = localStorage.getItem(ACCESS_TOKEN)
-    setIsLoggedIn(!!token)
-  }, [loginedWithSignIn])
-  const signUpHandle = () => {
-    dispatch(loginTC({ isLoggedIn: false }))
-    localStorage.removeItem(ACCESS_TOKEN)
-  }
-  const handleLanguageChange = (value:string) => {
 
+  const handleLanguageChange = (value:string) => {
     dispatch(changeLanguage({
       language: value === 'option1' ? "ru" : "en"
     }));
   };
+
   return (
     <header className={s.header}>
       <Container>
@@ -47,7 +38,7 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
             Inctagram
           </a>
 
-          {isLoggined ? (
+          {data?.userId ? (
             <div className={s.headerGroupContainer}>
               <button className={s.buttonNotification}>
                 <NotificationIcon />
@@ -92,13 +83,13 @@ export const Header = ({ isLogin, notification, agreement }: Props) => {
                 fullWidth={false}
                 onValueChange={handleLanguageChange}
               />
-              {!isLoggined && (
+              {!data?.userId && (
                 <Button variant={'text'} asChild>
                   <Link href={Path.SignIn}>Log in</Link>
                 </Button>
               )}
 
-              <Button onClick={signUpHandle} asChild>
+              <Button asChild>
                 <Link href={Path.SignUp}>Sign up</Link>
               </Button>
             </div>

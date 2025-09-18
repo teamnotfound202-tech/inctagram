@@ -1,7 +1,7 @@
 'use client'
 
 import {useGitHubOAuthService} from "@/features/auth/gitHubOAuth/hooks/useGitHubOAuthService";
-import AuthCallback from "@/widgets/AuthCallbackPage/AuthCallbackPage";
+import AuthCallback from "@/views/AuthCallbackPage/AuthCallbackPage";
 
 export default function Page() {
     return (

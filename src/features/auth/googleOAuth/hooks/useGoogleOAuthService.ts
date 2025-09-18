@@ -3,7 +3,7 @@ import {Path} from "@/shared/config";
 import {ACCESS_TOKEN} from "@/shared/lib";
 import {ReadonlyURLSearchParams, useRouter} from "next/navigation";
 import {useGoogleLoginMutation} from "@/features/auth/api/authApi";
-import {OAuthHookResult} from "@/widgets/AuthCallbackPage/types/types";
+import {OAuthHookResult} from "@/views/AuthCallbackPage/types/types";
 
 export function useGoogleOAuthService(params: ReadonlyURLSearchParams) {
     const router = useRouter();

@@ -13,10 +13,8 @@ export default function GoogleAuthCodeFlowButton() {
   })
 
   return (
-    <>
       <Button onClick={login} variant={'text'} className={s.googleAuthButton}>
         <IconGoogleRegistration />
       </Button>
-    </>
   )
 }
