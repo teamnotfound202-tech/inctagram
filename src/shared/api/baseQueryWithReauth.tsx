@@ -9,7 +9,7 @@ import {handleError} from '@/shared/lib/utils'
 const mutex = new Mutex()
 
 export const startBaseQuery = fetchBaseQuery({
-  baseUrl: 'https://connectpix.site/api/v1/',
+  baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
   credentials: 'include',
   prepareHeaders: headers => {
     if (typeof window !== 'undefined') {

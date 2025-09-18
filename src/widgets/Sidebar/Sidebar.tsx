@@ -28,14 +28,16 @@ export const Sidebar = () => {
   const handleLogout = () => {
     logout()
       .unwrap()
-      .then((res) => {
+      .then(() => {
         handleModelClose()
-        router.push(Path.Home)
+        router.replace(Path.Home)
         localStorage.removeItem(ACCESS_TOKEN)
         dispatch(baseApi.util.resetApiState())
       })
-      .catch((err) => {
-        console.log(err)
+      .catch(() => {
+        handleModelClose()
+        router.replace(Path.SignIn)
+        dispatch(baseApi.util.resetApiState())
       })
   }
 
