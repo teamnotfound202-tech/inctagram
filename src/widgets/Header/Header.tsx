@@ -10,9 +10,9 @@ import { Path } from '@/shared/config'
 import { Container } from '@/shared/ui'
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { changeLanguage} from '@/shared/api/appSlice'
-import { ACCESS_TOKEN } from '@/shared/lib'
-import { useEffect, useState } from 'react'
 import { SelectBox } from '@/shared/ui/Select/Select'
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 type Props = {
@@ -21,7 +21,7 @@ type Props = {
 }
 
 export const Header = ({notification, agreement }: Props) => {
-  const {data} = useMeQuery()
+  const {data, isLoading, isError} = useMeQuery()
   const dispatch = useAppDispatch()
 
   const handleLanguageChange = (value:string) => {
@@ -37,8 +37,16 @@ export const Header = ({notification, agreement }: Props) => {
           <a className={s.headerTitle} href={'/'}>
             Inctagram
           </a>
+          {isLoading && (
+            <Skeleton
+              baseColor="rgba(23, 23, 23, 0.6)"
+              highlightColor="rgba(40, 40, 40, 0.8)"
+              width={500}
+              height={32}
+            />
+          )}
 
-          {data?.userId ? (
+          {data?.userId && (
             <div className={s.headerGroupContainer}>
               <button className={s.buttonNotification}>
                 <NotificationIcon />
@@ -56,21 +64,8 @@ export const Header = ({notification, agreement }: Props) => {
                 onValueChange={handleLanguageChange}
               />
             </div>
-          ) : agreement ? (
-            <div className={s.headerGroupContainer}>
-              <SelectBox
-                options={[
-                  { value: 'option1', icon: <FlagRussia />, label: 'Russia' },
-                  { value: 'option2', icon: <FlagEngland />, label: 'England' },
-                ]}
-                name={'select1'}
-                type={'lang'}
-                defaultValue={'option2'}
-                fullWidth={false}
-                onValueChange={handleLanguageChange}
-              />
-            </div>
-          ) : (
+          )}
+          { isError && (
             <div className={s.buttonGroupLogin}>
               <SelectBox
                 options={[
