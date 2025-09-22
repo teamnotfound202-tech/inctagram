@@ -25,6 +25,7 @@ export const Header = ({notification, agreement }: Props) => {
   const dispatch = useAppDispatch()
 
   const handleLanguageChange = (value:string) => {
+
     dispatch(changeLanguage({
       language: value === 'option1' ? "ru" : "en"
     }));

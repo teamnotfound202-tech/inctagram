@@ -99,6 +99,7 @@ export interface Messages {
   posts: {
     newPost: string;
     createPost: string;
+    addPhoto:string
     editPost: string;
     deletePost: string;
     post: string;
@@ -287,6 +288,7 @@ export const messages: Record<Language, Messages> = {
 
     posts: {
       newPost: 'New Post',
+      addPhoto:'Add Photo',
       createPost: 'Create Post',
       editPost: 'Edit Post',
       deletePost: 'Delete Post',
@@ -469,6 +471,7 @@ export const messages: Record<Language, Messages> = {
 
     posts: {
       newPost: 'Новая публикация',
+      addPhoto:'Добавить фото',
       createPost: 'Создать публикацию',
       editPost: 'Редактировать публикацию',
       deletePost: 'Удалить публикацию',

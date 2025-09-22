@@ -10,22 +10,27 @@ import {sideBarData} from '@/shared/config/sideBarItems/sideBarData'
 import {useRouter} from "next/navigation";
 import {Path} from "@/shared/config";
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
-import { selectLanguage } from '@/shared/api/appSlice'
+import { selectCurrentMessages, selectLanguage } from '@/shared/api/appSlice'
 
 
-
+export type TypeOfModalWindow = 'Logout' | 'AddPhotoModal'|null
 
 export const Sidebar = () => {
   const [logout] = useLogoutMutation()
   const {data} = useMeQuery()
   const language = useAppSelector(selectLanguage)
+  const currentLanguageArray = useAppSelector(selectCurrentMessages)
   const dispatch = useAppDispatch()
   const router = useRouter()
-  const [isModalOpen, setModalOpen] = useState(false)
+  const [isModalOpen, setModalOpen] = useState<TypeOfModalWindow>(null)
 
 
-  const handleModelOpen = () => setModalOpen(true)
-  const handleModelClose = () => setModalOpen(false)
+  const handleModelOpen = (type:TypeOfModalWindow) => {
+    setModalOpen(type)
+  }
+  const handleModelClose = () => {
+    setModalOpen(null)
+  }
 
   const handleLogout = () => {
     logout()
@@ -58,13 +63,26 @@ export const Sidebar = () => {
         )
       })}
 
-      {isModalOpen && (
+      {isModalOpen==='Logout' && (
         <Modal title={'Log Out'} onClick={handleModelClose}>
           <p className={s.contentTextModal}>
             Are you really want to log out of your account <span>{data?.email}</span>
           </p>
           <div className={s.buttonWrapper}>
             <Button variant={'outline'} onClick={handleLogout}>
+              Yes
+            </Button>
+            <Button onClick={handleModelClose}>No</Button>
+          </div>
+        </Modal>
+      )}
+      {isModalOpen==='AddPhotoModal' && (
+        <Modal title={currentLanguageArray.posts.addPhoto} onClick={handleModelClose}>
+          <p className={s.contentTextModal}>
+            Are you really want to log out of your account <span>{data?.email}</span>
+          </p>
+          <div className={s.buttonWrapper}>
+            <Button variant={'outline'} onClick={()=>alert('hi')}>
               Yes
             </Button>
             <Button onClick={handleModelClose}>No</Button>
