@@ -50,7 +50,7 @@ export const Sidebar = () => {
           <SidebarItem
             key={item.key}
             text={item.text}
-            link={item.link}
+            link={item.text === 'My Profile'? `/profile/${data?.userId}` : item.link}
             spanText={item.textForLink[language]}
             isDisabled={item.isDisabled}
             {...(item.onclick && { onClickAction: handleModelOpen })}

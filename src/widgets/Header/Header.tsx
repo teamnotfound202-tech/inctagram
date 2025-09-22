@@ -8,7 +8,7 @@ import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
 import {useMeQuery} from "@/features/auth/api/authApi";
 import { Path } from '@/shared/config'
 import { Container } from '@/shared/ui'
-import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
+import { useAppDispatch } from '@/shared/lib/hooks/hooks'
 import { changeLanguage} from '@/shared/api/appSlice'
 import { SelectBox } from '@/shared/ui/Select/Select'
 import Skeleton from 'react-loading-skeleton';
@@ -17,10 +17,9 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 type Props = {
   notification: number
-  agreement?: boolean
 }
 
-export const Header = ({notification, agreement }: Props) => {
+export const Header = ({notification}: Props) => {
   const {data, isLoading, isError} = useMeQuery()
   const dispatch = useAppDispatch()
 
