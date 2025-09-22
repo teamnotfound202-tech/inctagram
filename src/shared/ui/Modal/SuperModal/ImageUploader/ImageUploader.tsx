@@ -1,51 +1,57 @@
+import PhotoUplaodBg from '@/shared/ui/Modal/icons/photoUploadBg.svg'
 import { useRef, useState } from 'react'
 import styles from './ImageUploader.module.scss'
-type ImageUploaderProps ={
-  onUpload: (files: File[]) => void;
+import { Button } from '@/shared/ui'
+import { useAppSelector } from '@/shared/lib/hooks/hooks'
+import { selectCurrentMessages } from '@/shared/api/appSlice'
+
+type ImageUploaderProps = {
+  onUpload: (files: File[]) => void
 }
-export const ImageUploader = ({onUpload}:ImageUploaderProps) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [dragOver, setDragOver] = useState(false);
+export const ImageUploader = ({ onUpload }: ImageUploaderProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [dragOver, setDragOver] = useState(false)
+  const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-    validateAndUpload(files);
-  };
+    const files = Array.from(event.target.files || [])
+    validateAndUpload(files)
+  }
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setDragOver(false);
-    const files = Array.from(event.dataTransfer.files);
-    validateAndUpload(files);
-  };
+    event.preventDefault()
+    setDragOver(false)
+    const files = Array.from(event.dataTransfer.files)
+    validateAndUpload(files)
+  }
 
   const validateAndUpload = (files: File[]) => {
     const validFiles = files.filter(file => {
-      const isValidType = ['image/jpeg', 'image/png'].includes(file.type);
-      const isValidSize = file.size <= 20 * 1024 * 1024; // 20MB
+      const isValidType = ['image/jpeg', 'image/png'].includes(file.type)
+      const isValidSize = file.size <= 20 * 1024 * 1024 // 20MB
       if (!isValidType) {
-        alert('Only JPEG and PNG files are allowed');
-        return false;
+        alert('Only JPEG and PNG files are allowed')
+        return false
       }
       if (!isValidSize) {
-        alert('File size must be less than 20MB');
-        return false;
+        alert('File size must be less than 20MB')
+        return false
       }
-
-      return true;
-    });
+      return true
+    })
 
     if (validFiles.length > 0) {
-      onUpload(validFiles.slice(0, 10)); // Max 10 files
+      onUpload(validFiles.slice(0, 10)) // Max 10 files
     }
-  };
-  const containerClasses = `${styles.container} ${dragOver ? styles.dragOver : ''}`;
+  }
+  const containerClasses = `${styles.container} ${dragOver ? styles.dragOver : ''}`
 
   return (
+<div className={styles.modalWrapper}>
     <div
       className={containerClasses}
       onDrop={handleDrop}
-      onDragOver={(e) => e.preventDefault()}
+      onDragOver={e => e.preventDefault()}
       onDragEnter={() => setDragOver(true)}
       onDragLeave={() => setDragOver(false)}
       onClick={() => fileInputRef.current?.click()}
@@ -60,10 +66,23 @@ export const ImageUploader = ({onUpload}:ImageUploaderProps) => {
       />
 
       <div className={styles.content}>
-gfhgfh
-fchgfh
+        <PhotoUplaodBg />
       </div>
     </div>
-  );
+<div className={styles.buttonUploadContainer}>
+  <Button className={styles.buttonUploadItem} onClick={() => fileInputRef.current?.click()}>
+    <input
+      ref={fileInputRef}
+      type="file"
+      multiple
+      accept="image/jpeg,image/png"
+      onChange={handleFileSelect}
+      className={styles.fileInput}
+    />
+    {currentLanguageArray.modals.selectPhoto}
+  </Button>
+  <Button className={styles.buttonUploadItem} variant={'outline'} >{currentLanguageArray.modals.openDraft}</Button>
+</div>
+</div>
+  )
 }
-
