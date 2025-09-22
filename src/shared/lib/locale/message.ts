@@ -25,18 +25,7 @@ export interface Messages {
   };
 
   // Навигация и заголовки
-  navigation: {
-    home: string;
-    profile: string;
-    feed: string;
-    create: string;
-    messenger: string;
-    statistics: string;
-    favorites: string;
-    search: string;
-    settings: string;
-    logOut: string;
-  };
+  navigation: Record<string, string>;
 
   // Аутентификация
   auth: {
@@ -158,6 +147,8 @@ export interface Messages {
     theme: string;
     deleteAccount: string;
     deactivateAccount: string;
+    close:string
+    save:string
   };
 
   // Ошибки и валидация
@@ -187,6 +178,9 @@ export interface Messages {
     confirmDeleteMessage: string;
     areYouSure: string;
     thisActionCannotBeUndone: string;
+    closeModalWarningBegin:string
+    closeModalwarningQSecondPart:string
+    discard: string;
   };
 
   // Языки
@@ -345,6 +339,8 @@ export const messages: Record<Language, Messages> = {
       theme: 'Theme',
       deleteAccount: 'Delete Account',
       deactivateAccount: 'Deactivate Account',
+      close:'Close',
+      save:'Save draft'
     },
 
     errors: {
@@ -372,6 +368,9 @@ export const messages: Record<Language, Messages> = {
       confirmDeleteMessage: 'Are you sure you want to delete this item?',
       areYouSure: 'Are you sure?',
       thisActionCannotBeUndone: 'This action cannot be undone',
+      closeModalWarningBegin:'Do you really want to close the creation of a publication?',
+      closeModalwarningQSecondPart:'If you close everything will be deleted',
+discard:'Discard'
     },
 
     languages: {
@@ -528,6 +527,8 @@ export const messages: Record<Language, Messages> = {
       theme: 'Тема',
       deleteAccount: 'Удалить аккаунт',
       deactivateAccount: 'Деактивировать аккаунт',
+      close:'Закрыть',
+      save:'Сохранить черновик'
     },
 
     errors: {
@@ -555,6 +556,9 @@ export const messages: Record<Language, Messages> = {
       confirmDeleteMessage: 'Вы уверены, что хотите удалить этот элемент?',
       areYouSure: 'Вы уверены?',
       thisActionCannotBeUndone: 'Это действие нельзя отменить',
+      closeModalWarningBegin:'Вы действительно хотите закрыть создание публикации?',
+      closeModalwarningQSecondPart:'Если вы закроете, все будет удалено',
+      discard:'Сбросить'
     },
 
     languages: {
