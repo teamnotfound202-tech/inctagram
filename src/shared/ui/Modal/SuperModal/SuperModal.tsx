@@ -9,7 +9,7 @@ import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
 import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
 import { FiltersPanel, ImageEditor, ImageUploader, PublishForm } from '@/shared/ui/Modal'
-import { filters } from 'css-select'
+import { useUploadPostsImagesMutation } from '@/features/posts/api/posts-api'
 
 type Props ={
   title: string,
@@ -18,6 +18,7 @@ type Props ={
 }
 export type Step = 'upload' | 'edit' | 'filters' | 'publish';
 export const SuperModal = ({title,callback}: Props) => {
+const [uploadImage,{data}] = useUploadPostsImagesMutation()
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
   const [currentStep, setCurrentStep] = useState<Step>('upload');
@@ -26,9 +27,10 @@ export const SuperModal = ({title,callback}: Props) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const handleImageUpload = (files: File[]) => {
     setImages(files);
+    //uploadImage(files)
     setCurrentStep('edit');
   };
-
+  console.log(data?.images)
   const handleNext = () => {
     switch (currentStep) {
       case 'edit':
@@ -78,13 +80,13 @@ const titleForHeader = currentStep==='upload'?title:currentStep==='edit'?'Croppi
       <ModalHeader forwarfClick={handleNext} uploadClick={handlePublish} backClick={handleBack} type={currentStep} title={titleForHeader} onClick={handleModalCloseHandler}/>
         <div className={s.supermodalContent}>
           {currentStep === 'upload' && (
-            <ImageUploader onUpload={handleImageUpload} />
+            <ImageUploader images={images} onUpload={handleImageUpload} />
           )}
           {currentStep === 'edit' && (
             <ImageEditor
-             /* images={images}
+            images={images}
               selectedImage={selectedImage}
-              onSelectImage={setSelectedImage}*/
+              onSelectImage={setSelectedImage}
             />
           )}
           {currentStep === 'filters' && (

@@ -1,5 +1,5 @@
 import PhotoUplaodBg from '@/shared/ui/Modal/icons/photoUploadBg.svg'
-import { useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 import styles from './ImageUploader.module.scss'
 import { Button } from '@/shared/ui'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
@@ -7,13 +7,14 @@ import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 type ImageUploaderProps = {
   onUpload: (files: File[]) => void
+  images: File[]
 }
-export const ImageUploader = ({ onUpload }: ImageUploaderProps) => {
+export const ImageUploader = ({ onUpload,images }: ImageUploaderProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [dragOver, setDragOver] = useState(false)
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || [])
     validateAndUpload(files)
   }
@@ -44,6 +45,7 @@ export const ImageUploader = ({ onUpload }: ImageUploaderProps) => {
       onUpload(validFiles.slice(0, 10)) // Max 10 files
     }
   }
+
   const containerClasses = `${styles.container} ${dragOver ? styles.dragOver : ''}`
 
   return (
@@ -66,7 +68,7 @@ export const ImageUploader = ({ onUpload }: ImageUploaderProps) => {
       />
 
       <div className={styles.content}>
-        <PhotoUplaodBg />
+        <PhotoUplaodBg className={styles.photoUploadBg}/>
       </div>
     </div>
 <div className={styles.buttonUploadContainer}>
@@ -81,7 +83,7 @@ export const ImageUploader = ({ onUpload }: ImageUploaderProps) => {
     />
     {currentLanguageArray.modals.selectPhoto}
   </Button>
-  <Button className={styles.buttonUploadItem} variant={'outline'} >{currentLanguageArray.modals.openDraft}</Button>
+  <Button onClick={()=>validateAndUpload(images)} className={styles.buttonUploadItem} variant={'outline'} >{currentLanguageArray.modals.openDraft}</Button>
 </div>
 </div>
   )

@@ -1,0 +1,104 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+  white-space: nowrap;
+}
+
+.ratioButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.ratioButton {
+  padding: 8px 16px;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  background-color: white;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  min-width: 60px;
+  text-align: center;
+
+  &:hover {
+    border-color: #adb5bd;
+    background-color: #f8f9fa;
+  }
+
+  &.active {
+    border-color: #007bff;
+    background-color: #007bff;
+    color: white;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .label {
+    text-align: center;
+  }
+
+  .ratioButtons {
+    justify-content: center;
+  }
+}
+
+// Добавить в AspectRatioPicker.module.scss
+.ratioButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  // остальные стили без изменений
+}
+
+.iconSquare,
+.iconPortrait,
+.iconLandscape {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.iconSquare {
+  width: 20px;
+  height: 20px;
+}
+
+.iconPortrait {
+  width: 16px;
+  height: 20px;
+}
+
+.iconLandscape {
+  width: 24px;
+  height: 14px;
+}
