@@ -4,6 +4,7 @@ import OriginalIcon from '../../../icons/photoUploadBg.svg'
 import OneToOneIcon from '../../../icons/11.svg'
 import FourToFiveIcon from '../../../icons/45.svg'
 import SixTeenToNineIcon from '../../../icons/169.svg'
+
 export type AspectRatio = '1:1' | '4:5' | '16:9' | 'base'
 
 /*interface AspectRatioPickerProps {
@@ -16,13 +17,13 @@ export type AspectRatio = '1:1' | '4:5' | '16:9' | 'base'
 const RatioIcon = ({ ratio }: { ratio: AspectRatio }) => {
   switch (ratio) {
     case 'base':
-      return <OriginalIcon className={styles.originalIcon}/>
+      return <OriginalIcon className={styles.originalIcon} />
     case '1:1':
-      return <OneToOneIcon/>
+      return <OneToOneIcon className={styles.onetoone}/>
     case '4:5':
-      return <FourToFiveIcon/>
+      return <FourToFiveIcon className={styles.fourtofive}/>
     case '16:9':
-      return <SixTeenToNineIcon/>
+      return <SixTeenToNineIcon className={styles.sixteentonine}/>
     default:
       return null
   }
@@ -53,7 +54,6 @@ export const ImageRatio = ({}) => {
         >
           <div className={styles.ratiocontent}>
             <span>{ratio.label}</span>
-
             <RatioIcon ratio={ratio.value} />
           </div>
         </button>

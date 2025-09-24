@@ -24,7 +24,7 @@
   transition: all 0.2s ease-in-out;
   &.active {
     color: $light-100;
-  }
+    }
 }
 .originalIcon{
   width: 18px;
@@ -56,4 +56,16 @@
 .iconLandscape {
   width: 24px;
   height: 14px;
+}
+.onetoone {
+  width: 18px;
+  height: 18px;
+}
+.fourtofive{
+  width: 18px;
+  height: 26px;
+}
+.sixteentonine{
+  width: 26px;
+  height: 20px;
 }
