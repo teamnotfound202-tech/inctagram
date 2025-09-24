@@ -1,84 +1,39 @@
+@use '@/shared/styles/variables' as *;
+
 .container {
+  position: absolute;
+  bottom: 50px;
+  left: 11px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 16px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-}
-
-.label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #495057;
-  white-space: nowrap;
+  padding: 12px;
+  background-color: rgba($dark-500, 0.8);
+  border-radius: 2px;
+  width: 156px;
 }
 
 .ratioButtons {
   display: flex;
-  gap: 8px;
-}
-
-.ratioButton {
-  padding: 8px 16px;
-  border: 2px solid #dee2e6;
-  border-radius: 6px;
-  background-color: white;
-  color: #495057;
-  font-size: 14px;
-  font-weight: 500;
+  width: 100%;
+  color: $light-900;
+  font-size: 16px;
+  padding: 0;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  min-width: 60px;
-  text-align: center;
-
-  &:hover {
-    border-color: #adb5bd;
-    background-color: #f8f9fa;
-  }
-
   &.active {
-    border-color: #007bff;
-    background-color: #007bff;
-    color: white;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-  }
-
-  &:active {
-    transform: translateY(1px);
+    color: $light-100;
   }
 }
-
-// Адаптивность
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  .label {
-    text-align: center;
-  }
-
-  .ratioButtons {
-    justify-content: center;
-  }
+.originalIcon{
+  width: 18px;
+  height: 18px;
 }
-
-// Добавить в AspectRatioPicker.module.scss
-.ratioButton {
+.ratiocontent {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 12px 8px;
-  // остальные стили без изменений
+  width: 100%;
+  justify-content: space-between;
 }
 
 .iconSquare,

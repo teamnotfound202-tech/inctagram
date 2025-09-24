@@ -11,12 +11,12 @@
   align-items: center;
   justify-content: center;
   position: relative;
-}
-
-.imageContainer {
   width: 492px;
   height: 503px;
   max-width: 500px;
+}
+
+.imageContainer {
 
   display: flex;
   align-items: center;
@@ -80,30 +80,39 @@
   }
 
   &.scaleArrow {
-    bottom: 20px;
+    bottom: 11px;
     left: 11px;
   }
 
   &.zoomArrow {
-    bottom: 20px;
+    bottom: 11px;
     left: 71px;
   }
-&.multipleArrow{
-  bottom: 20px;
-  right:11px;
-}
+
+  &.multipleArrow {
+    bottom: 11px;
+    right: 11px;
+  }
+
   &:disabled {
     opacity: 0;
     cursor: not-allowed;
   }
 }
-.iconstyle{
-  width:24px;
-  height:24px;
+
+.iconstyle {
+  width: 24px;
+  height: 24px;
   color: white;
-&:active,&:hover,&:focus {
-  color:$accent-500
-}
+
+
+  &:active, &:hover, &:focus {
+    color: $accent-500
+  }
+
+  &.iconActive {
+    color: $accent-500
+  }
 }
 
 .sliderDots {

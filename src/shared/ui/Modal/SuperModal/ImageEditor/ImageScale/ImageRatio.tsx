@@ -1,7 +1,10 @@
 import styles from './ImageRatio.module.scss'
 import { useState } from 'react'
-
-export type AspectRatio = '1:1' | '4:5' | '16:9'|'base'
+import OriginalIcon from '../../../icons/photoUploadBg.svg'
+import OneToOneIcon from '../../../icons/11.svg'
+import FourToFiveIcon from '../../../icons/45.svg'
+import SixTeenToNineIcon from '../../../icons/169.svg'
+export type AspectRatio = '1:1' | '4:5' | '16:9' | 'base'
 
 /*interface AspectRatioPickerProps {
   selectedRatio: AspectRatio
@@ -12,50 +15,49 @@ export type AspectRatio = '1:1' | '4:5' | '16:9'|'base'
 // Компоненты-иконки для соотношений
 const RatioIcon = ({ ratio }: { ratio: AspectRatio }) => {
   switch (ratio) {
+    case 'base':
+      return <OriginalIcon className={styles.originalIcon}/>
     case '1:1':
-      return <div className={styles.iconSquare}>□</div>
+      return <OneToOneIcon/>
     case '4:5':
-      return <div className={styles.iconPortrait}>▭</div>
+      return <FourToFiveIcon/>
     case '16:9':
-      return <div className={styles.iconLandscape}>▬</div>
+      return <SixTeenToNineIcon/>
     default:
       return null
   }
 }
 
 export const ImageRatio = ({}) => {
-  const [selectedRatio, setSelectedRatio] = useState<AspectRatio>('1:1');
+  const [selectedRatio, setSelectedRatio] = useState<AspectRatio>('base')
 
   const handleRatioChange = (ratio: AspectRatio) => {
-    setSelectedRatio(ratio);
+    setSelectedRatio(ratio)
+
     // Дополнительная логика при изменении соотношения
-  };
+  }
   const ratios: { value: AspectRatio; label: string }[] = [
+    { value: 'base', label: 'Original' },
     { value: '1:1', label: '1:1' },
     { value: '4:5', label: '4:5' },
     { value: '16:9', label: '16:9' },
-    { value: 'base', label: 'Original' },
   ]
 
   return (
     <div className={`${styles.container}`}>
-      <span className={styles.label}>Соотношение сторон:</span>
-      <div className={styles.ratioButtons}>
-        {ratios.map(ratio => (
-          <button
-            key={ratio.value}
-            type="button"
-            className={`${styles.ratioButton} ${
-              selectedRatio === ratio.value ? styles.active : ''
-            }`}
-            onClick={() => handleRatioChange(ratio.value)}
-            title={`Соотношение ${ratio.label}`}
-          >
-            <RatioIcon ratio={ratio.value} />
+      {ratios.map(ratio => (
+        <button
+          key={ratio.value}
+          className={`${styles.ratioButtons} ${selectedRatio === ratio.value ? styles.active : ''}`}
+          onClick={() => handleRatioChange(ratio.value)}
+        >
+          <div className={styles.ratiocontent}>
             <span>{ratio.label}</span>
-          </button>
-        ))}
-      </div>
+
+            <RatioIcon ratio={ratio.value} />
+          </div>
+        </button>
+      ))}
     </div>
   )
 }

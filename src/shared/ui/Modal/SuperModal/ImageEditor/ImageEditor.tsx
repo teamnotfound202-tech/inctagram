@@ -6,6 +6,7 @@ import BackArrow from '../../icons/backArrow.svg'
 import ForwardArrow from '../../icons/forwardArrow.svg'
 import ImageControls from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageControls/ImageControls'
 import { ImageRatio } from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageScale/ImageRatio'
+import { MultipleImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/MultipleImage/MultipleImage'
 
 type ImageEditorProps = {
   images: File[]
@@ -13,15 +14,10 @@ type ImageEditorProps = {
   onSelectImage: (index: number) => void
   onCropComplete?: (croppedImage: File, index: number) => void
 }
-export type TypeOfControls = 'ratio'|'zoom'|'multiple'|null
-export const ImageEditor = ({
-  images,
-  selectedImage,
-  onSelectImage,
-
-}: ImageEditorProps) => {
+export type TypeOfControls = 'ratio' | 'zoom' | 'multiple' | null
+export const ImageEditor = ({ images, selectedImage, onSelectImage }: ImageEditorProps) => {
   const [imageUrls, setImageUrls] = useState<string[]>([])
-  const [openState,setOpenState] = useState<TypeOfControls>(null)
+  const [openState, setOpenState] = useState<TypeOfControls>(null)
 
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
@@ -42,13 +38,13 @@ export const ImageEditor = ({
   }, [images])
 
   // Навигация по слайдеру
-   const handleNextImage = () => {
+  const handleNextImage = () => {
     if (selectedImage < images.length - 1) {
       onSelectImage(selectedImage + 1)
     }
   }
 
-   const handlePrevImage = () => {
+  const handlePrevImage = () => {
     if (selectedImage > 0) {
       onSelectImage(selectedImage - 1)
     }
@@ -56,9 +52,10 @@ export const ImageEditor = ({
   if (images.length === 0) {
     return <div>No images to edit</div>
   }
-  const openControlsHandler = (type:TypeOfControls)=>{
+  const openControlsHandler = (type: TypeOfControls) => {
     setOpenState(openState === type ? null : type)
   }
+
   return (
     <div className={styles.imageEditor}>
       {/* Основная область редактирования */}
@@ -80,7 +77,7 @@ export const ImageEditor = ({
               disabled={selectedImage === 0}
               className={`${styles.sliderButton} ${styles.backArrow}`}
             >
-              <BackArrow/>
+              <BackArrow />
             </button>
             <div className={styles.sliderDots}>
               {images.map((_, index) => (
@@ -89,7 +86,6 @@ export const ImageEditor = ({
                   className={`${styles.dot} ${index === selectedImage ? styles.active : ''}`}
                   onClick={() => {
                     onSelectImage(index)
-
                   }}
                 />
               ))}
@@ -99,14 +95,13 @@ export const ImageEditor = ({
               disabled={selectedImage === images.length - 1}
               className={`${styles.sliderButton} ${styles.forwardArrow}`}
             >
-              <ForwardArrow/>
+              <ForwardArrow />
             </button>
-
           </div>
-
         )}
-        <ImageControls onClickHandler={openControlsHandler}/>
-        {openState==='ratio' && <ImageRatio/>}
+        <ImageControls openState={openState} onClickHandler={openControlsHandler} />
+        {openState === 'ratio' && <ImageRatio />}
+        {openState==='multiple' && <MultipleImage selectedImage={selectedImage} images={imageUrls}/>}
       </div>
     </div>
   )

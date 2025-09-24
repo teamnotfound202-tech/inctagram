@@ -9,7 +9,6 @@ export const postsApi = baseApi.injectEndpoints({
         images.forEach(file => {
           formData.append(`files`, file)
         })
-
         debugger
         return {
           url: `/posts/image`,

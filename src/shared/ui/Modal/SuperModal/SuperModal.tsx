@@ -30,7 +30,7 @@ const [uploadImage,{data}] = useUploadPostsImagesMutation()
     //uploadImage(files)
     setCurrentStep('edit');
   };
-  console.log(data?.images)
+
   const handleNext = () => {
     switch (currentStep) {
       case 'edit':

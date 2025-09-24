@@ -3,35 +3,45 @@ import ScaleIcon from '@/shared/ui/Modal/icons/scaleIcon.svg'
 import ZoomIcon from '@/shared/ui/Modal/icons/zoomIcon.svg'
 import PhotoUploadIcon from '@/shared/ui/Modal/icons/photoUploadBg.svg'
 import { TypeOfControls } from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageEditor'
+import { clsx } from 'clsx'
 
 type Props = {
-  onClickHandler: (type:TypeOfControls) => void,
+  onClickHandler: (type: TypeOfControls) => void
+  openState: TypeOfControls
 }
 
-export const ImageControls = ({onClickHandler}:Props) => {
-
+export const ImageControls = ({ onClickHandler, openState }: Props) => {
   return (
     <>
       <button
-        onClick={()=>onClickHandler('ratio')}
-
+        onClick={() => onClickHandler('ratio')}
         className={`${styles.sliderButton} ${styles.scaleArrow}`}
       >
-        <ScaleIcon className={styles.iconstyle}/>
+        <ScaleIcon
+          className={clsx(styles.iconstyle, {
+            [styles.iconActive]: openState === 'ratio',
+          })}
+        />
       </button>
       <button
-       onClick={()=>onClickHandler('zoom')}
-
+        onClick={() => onClickHandler('zoom')}
         className={`${styles.sliderButton} ${styles.zoomArrow}`}
       >
-        <ZoomIcon className={styles.iconstyle}/>
+        <ZoomIcon
+          className={clsx(styles.iconstyle, {
+            [styles.iconActive]: openState === 'zoom',
+          })}
+        />
       </button>
       <button
-        onClick={()=>onClickHandler('multiple')}
-
+        onClick={() => onClickHandler('multiple')}
         className={`${styles.sliderButton} ${styles.multipleArrow}`}
       >
-        <PhotoUploadIcon className={styles.iconstyle}/>
+        <PhotoUploadIcon
+          className={clsx(styles.iconstyle, {
+            [styles.iconActive]: openState === 'multiple',
+          })}
+        />
       </button>
     </>
   )
