@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  images: {
+    remotePatterns: [new URL('https://staging-it-incubator.s3.eu-central-1.amazonaws.com/trainee-instagram-api/**')],
+  },
 }
 
 export default nextConfig

@@ -1,22 +1,35 @@
 import { GetPublicUsers, ResponsesPosts } from '@/features/publicUserApi/types'
 import { baseApi } from '@/shared/api'
+import { PAGINATION } from '@/shared/constants/pagination'
+
 
 export const publicUserApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getTotalRegisteredUsers: builder.query<GetPublicUsers, void>({
       query: () => '/public-user',
     }),
-    getPostsForUser: builder.infiniteQuery<ResponsesPosts, string, string | undefined>({
-      infiniteQueryOptions: {
-        initialPageParam: undefined,
-        getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams, queryArg) => {
-          debugger
-          return '1'
-        }
+    getPostsForUser: builder.query<ResponsesPosts, { userId: string; endCursorPostId: string }>({
+      query: ({ userId, endCursorPostId }) => ({
+        url: `/posts/user/${userId}/${endCursorPostId || ''}?pageSize=${PAGINATION.DEFAULT_PAGE_SIZE}`,
+      }),
+
+      providesTags: (_result, _error, { userId }) => [
+        { type: 'UserPosts', id: userId }
+      ],
+
+      serializeQueryArgs: ({queryArgs: {userId}}) => `userPosts-${userId}`,
+
+      merge: (currentCache: ResponsesPosts, newData: ResponsesPosts,
+      ) => {
+
+        currentCache.items.push(...newData.items)
       },
-      query: userId => `/api/v1/posts/user/${userId}`,
-    })
+      forceRefetch({ currentArg, previousArg}) {
+        return currentArg?.endCursorPostId !== previousArg?.endCursorPostId
+      },
+    }),
   }),
 })
 
-export const { useGetTotalRegisteredUsersQuery, useGetPostsForUserInfiniteQuery } = publicUserApi
+export const { useGetTotalRegisteredUsersQuery, useGetPostsForUserQuery } = publicUserApi
+export const publicUserReducer = publicUserApi.reducer
