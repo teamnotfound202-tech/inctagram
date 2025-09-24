@@ -115,6 +115,9 @@ export interface Messages {
     unsavePost: string;
     postDeleted: string;
     noPostsYet: string;
+    addAComment: string;
+    publish:string;
+    answer: string;
   };
 
   // Уведомления
@@ -304,6 +307,9 @@ export const messages: Record<Language, Messages> = {
       unsavePost: 'Unsave Post',
       postDeleted: 'Post deleted',
       noPostsYet: 'No posts yet',
+      addAComment: 'Add a comment',
+      publish:'Publish',
+      answer: 'Answer',
     },
 
     notifications: {
@@ -486,6 +492,9 @@ export const messages: Record<Language, Messages> = {
       unsavePost: 'Убрать из сохраненных',
       postDeleted: 'Публикация удалена',
       noPostsYet: 'Пока нет публикаций',
+      addAComment: 'Добавить комментарий',
+      publish:'Опубликовать',
+      answer: 'Ответить',
     },
 
     notifications: {

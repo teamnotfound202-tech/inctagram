@@ -1,13 +1,13 @@
-import { StoreWrapper } from '@/shared/lib/store/StoreWrapper';
-import { Header } from '@/widgets/Header/Header';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import {StoreWrapper} from '@/shared/lib/store/StoreWrapper';
+import {Header} from '@/widgets/Header/Header';
+import {GoogleOAuthProvider} from '@react-oauth/google';
+import type {Metadata} from 'next';
+import {Inter} from 'next/font/google';
 import './globals.css';
 import '@radix-ui/themes/styles.css';
-import { Theme } from '@radix-ui/themes';
-import { Toaster } from 'sonner';
-import { AlertsProvider } from '@/shared/ui';
+import {Theme} from '@radix-ui/themes';
+import {Toaster} from 'sonner';
+import {AlertsProvider} from '@/shared/ui';
 
 const inter = Inter({
   variable: "--font-inter",
