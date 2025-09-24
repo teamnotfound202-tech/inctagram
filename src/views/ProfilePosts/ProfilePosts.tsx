@@ -2,50 +2,62 @@
 
 import s from './ProfilePosts.module.scss'
 import { ResponsesPosts } from '@/features/publicUserApi/types'
-import { PostItem } from '@/views/ProfilePosts/PostItem/PostItem'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { publicUserApi } from '@/features'
-import { useGetPostsForUserQuery } from '@/features/publicUserApi/publicUserApi'
+import {
+  useGetPostsForUserInfiniteQuery,
+} from '@/features/publicUserApi/publicUserApi'
 import { PostsList } from '@/views/ProfilePosts/PostsList/PostsList'
+import { shallowEqual } from 'react-redux'
 
 type Props = {
-  postsData: ResponsesPosts,
+  postsData: ResponsesPosts | undefined,
   userId: string
 }
 
 export const ProfilePosts =  ({postsData, userId}: Props) => {
-  const dataFromCache = useAppSelector((state) =>
-  publicUserApi.endpoints.getPostsForUser
-    .select({userId, endCursorPostId: ''})(state).data
-  )
+  const dataFromCache = useAppSelector((state) => {
+    const endpoint = publicUserApi.endpoints.getPostsForUser;
 
-  const [endCursorPostId, setEndCursorPostId] = useState('')
+    const selector = endpoint.select({ userId });
+    const cachedData = selector(state);
+
+
+    return {
+      ...cachedData,
+      items: cachedData?.data?.pages.flatMap(post => post.items),
+    }
+  }, shallowEqual);
+
+
+
   const dispatch = useAppDispatch()
-  const needHydrateStateRef = useRef(!!postsData.items.length && !dataFromCache?.items.length)
+  const needHydrateStateRef = useRef(!!postsData?.items.length && !dataFromCache?.items?.length)
   const observerRef = useRef<HTMLDivElement>(null)
-  const {data} = useGetPostsForUserQuery({userId, endCursorPostId: endCursorPostId.toString()}, {
-    skip: needHydrateStateRef.current
+
+  const {data, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage} = useGetPostsForUserInfiniteQuery({userId}, {
+    skip: needHydrateStateRef.current,
   })
 
-  const handleLoadMorePosts = useCallback(() => {
-    if (dataFromCache && dataFromCache.items.length < dataFromCache.totalCount){
-      setEndCursorPostId((dataFromCache?.items[dataFromCache?.items.length - 1].id).toString())
+  const loadMoreHandler = useCallback(() => {
+    if(hasNextPage && !isFetching) {
+      fetchNextPage()
     }
-  }, [dataFromCache])
+  }, [hasNextPage, isFetching, fetchNextPage])
 
   useEffect(() => {
-      if (needHydrateStateRef.current) {
+
+      if (postsData && needHydrateStateRef.current) {
         needHydrateStateRef.current = false
+
+        const infiniteData = {
+          pages: [postsData],
+          pageParams: [undefined]
+        };
         const thunk = publicUserApi.util.upsertQueryData('getPostsForUser', {
           userId,
-          endCursorPostId: '',
-        }, {
-          totalCount: postsData.totalCount,
-          pageSize: postsData.pageSize,
-          items: postsData.items,
-          totalUsers: postsData.totalUsers,
-        })
+        }, infiniteData)
         dispatch(thunk)
       }
   }, [])
@@ -58,7 +70,7 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
       entries => {
         // entries - наблюдаемый элемент
         if (entries.length > 0 && entries[0].isIntersecting) {
-          handleLoadMorePosts()
+          loadMoreHandler()
         }
       },
       {
@@ -79,22 +91,27 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
         observer.unobserve(currentObserverRef)
       }
     }
-  }, [handleLoadMorePosts])
+  }, [loadMoreHandler])
 
-  const userPosts = data?.items || postsData.items
+  const userPostData = data?.pages.flatMap((page) => page.items) || postsData?.items
 
   return (
     <div className={s.profilePostsWrapper}>
-      <div style={{ height: '252px' }}></div>
-      {userPosts.length > 0 ? (
-        <PostsList userPosts={userPosts}/>
-      ) : (
-        <p className={s.postsText}>The user has no posts</p>
+      {userPostData && userPostData.length > 0 && (
+        <PostsList userPosts={userPostData}/>
       )}
-      {dataFromCache && dataFromCache.items.length < dataFromCache.totalCount ?
-        <div ref={observerRef}>Loading more posts...</div> : <div style={{ height: '20px' }}/>
+      {
+        userPostData && userPostData.length === 0 && (
+          <p className={s.postsText}>The user has no posts</p>
+        )
       }
-      {dataFromCache && dataFromCache.items.length === dataFromCache.totalCount && <p>Nothing more to load</p>}
+      {hasNextPage && (
+          <div ref={observerRef}>
+            {isFetchingNextPage ? <div>Loading more posts...</div> : <div style={{ height: '20px' }}/>}
+          </div>
+        )
+      }
+      {!hasNextPage && <p>Nothing more to load</p>}
     </div>
   )
 }

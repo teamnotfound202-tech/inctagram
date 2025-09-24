@@ -17,6 +17,7 @@ export default async function ProfilePage (props: {
 
   return (
     <div style={{width: '100%'}}>
+      <div style={{height: '200px'}}></div>
       <ProfilePosts postsData={postsData} userId={params.userId.toString()}/>
     </div>
   )
