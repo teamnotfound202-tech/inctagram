@@ -4,10 +4,10 @@ import CloseBtnIcon from '@/shared/ui/Modal/icons/close.svg'
 import { Step } from '@/shared/ui/Modal/SuperModal/SuperModal'
 import BackArrowIcon from '@/shared/ui/Modal/icons/backArrow.svg'
 import { Button } from '@/shared/ui'
-
+import { MouseEvent } from 'react'
 type ModalProps = {
   title: string
-  onClick: () => void
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void
   forwarfClick: () => void
   backClick: () => void
   type: Step
