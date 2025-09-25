@@ -10,25 +10,53 @@ import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
 import { FiltersPanel, ImageEditor, ImageUploader, PublishForm } from '@/shared/ui/Modal'
 import { useUploadPostsImagesMutation } from '@/features/posts/api/posts-api'
 import { MouseEvent } from 'react'
+import { Image } from '@/shared/lib/sсhemas/posts'
+import { toast } from 'sonner'
+import { AlertToast } from '@/shared/ui/Alerts/Alerts'
+
 type Props = {
   title: string
   callback: (type: TypeOfModalWindow) => void
 }
 export type Step = 'upload' | 'edit' | 'filters' | 'publish'
 export const SuperModal = ({ title, callback }: Props) => {
-  const [uploadImage, { data,isLoading }] = useUploadPostsImagesMutation()
+  const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
   const [currentStep, setCurrentStep] = useState<Step>('upload')
   const [exitModalIsOpen, setExitModalIsOpen] = useState(false)
-  const [imagesforDraft, setImagesForDraft] = useState<File[]>([])
+  const [localFiles, setLocalFiles] = useState<File[]>([])
+  const [uploadedImages, setUploadedImages] = useState<Image[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
   const modalRef = useRef<HTMLDivElement>(null)
-  const handleImageUpload = (files: File[]) => {
-    setImagesForDraft(files)
-    uploadImage(files)
+  const handleImageUpload = async (files: File[]) => {
     setCurrentStep('edit')
+    setSelectedImage(0)
+    const newFiles = [...localFiles, ...files]
+       if (newFiles.length > 10) {
+      const remainingSlots = 10 - localFiles.length
+      const errorMessage = `You can add only add ${remainingSlots} more image(s)`
+      toast.custom(() => (
+        <AlertToast variant="error" title="Limit is reached" description={errorMessage} />
+      ))
+      setCurrentStep('upload')
+      return
+    }
+    try {
+
+      setLocalFiles(newFiles)
+
+
+      const result = await uploadImage(newFiles).unwrap()
+      setUploadedImages(result.images)
+    } catch (error) {
+      setSelectedImage(0)
+      setCurrentStep('upload')
+
+      setLocalFiles(localFiles) // Возвращаем предыдущее значение
+    }
   }
+
   const handleOpendraft = () => {
     setCurrentStep('edit')
   }
@@ -58,14 +86,14 @@ export const SuperModal = ({ title, callback }: Props) => {
     }
   }
 
-  const handleOverlayClick = (event: MouseEvent<HTMLElement> ) => {
+  const handleOverlayClick = (event: MouseEvent<HTMLElement>) => {
     if (event.target === event.currentTarget) {
       setExitModalIsOpen(true)
     }
   }
 
   // Обработчик для кнопки закрытия
-  const handleCloseClick = (event:  MouseEvent<HTMLButtonElement> ): void => {
+  const handleCloseClick = (event: MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation() // Останавливаем всплытие
     callback(null)
   }
@@ -115,23 +143,22 @@ export const SuperModal = ({ title, callback }: Props) => {
             <ImageEditor
               onUpload={handleImageUpload}
               isLoading={isLoading}
-              images={data?.images||[]}
+              images={uploadedImages || []}
               selectedImage={selectedImage}
               onSelectImage={setSelectedImage}
             />
           )}
           {currentStep === 'filters' && (
             <FiltersPanel
-            /*image={images[selectedImage]}
-                filters={filters}
-                onFilterSelect={setFilters}*/
+            images={uploadedImages || []}
+
             />
           )}
           {currentStep === 'publish' && (
             <PublishForm
             /*images={images}
-                filters={filters}
-                onPublish={() => {/!* API call *!/}}*/
+                      filters={filters}
+                      onPublish={() => {/!* API call *!/}}*/
             />
           )}
         </div>

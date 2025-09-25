@@ -3,23 +3,23 @@ import DeleteIcon from '../../../icons/close.svg'
 import PlusPhotoIcon from '../../../icons/plus-circle.svg'
 import { clsx } from 'clsx'
 import { Image } from '@/shared/lib/sсhemas/posts'
-import { useRef } from 'react'
-import { useFileUpload } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/useUploader'
+import { ChangeEvent, useRef } from 'react'
 import { SuperUploadInput } from '@/shared/ui/Modal/SuperModal/SuperUploadInput/SuperUploadInput'
 
 type Props = {
   images: Image[]
   selectedImage: number
-  onUpload: (files: File[]) => void
+
+  addNewFiles: (newFiles: File[]) => void
 }
 
-export const MultipleImage = ({ images,selectedImage,onUpload }: Props) => {
+export const MultipleImage = ({ images,selectedImage,addNewFiles }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { handleFileSelect,addToExistingFile } = useFileUpload({
-    onUpload: files => {
-      onUpload(files)
-    },
-  })
+  const addToExistingFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const newFiles = Array.from(event.target.files || [])
+    addNewFiles(newFiles)
+
+  }
   return (
     <div className={styles.container}>
       <div className={styles.thumbnailContainer}>

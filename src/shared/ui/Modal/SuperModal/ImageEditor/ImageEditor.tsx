@@ -16,6 +16,7 @@ type ImageEditorProps = {
   isLoading: boolean
   onSelectImage: (index: number) => void
   onUpload: (files: File[]) => void
+
 }
 export type TypeOfControls = 'ratio' | 'zoom' | 'multiple' | null
 export const ImageEditor = ({
@@ -24,6 +25,7 @@ export const ImageEditor = ({
   onSelectImage,
   isLoading,
   onUpload,
+
 }: ImageEditorProps) => {
   const [openState, setOpenState] = useState<TypeOfControls>(null)
 
@@ -58,6 +60,7 @@ export const ImageEditor = ({
   // Проверяем существование текущего изображения
   const currentImage = images[selectedImage]
   if (!currentImage) {
+
     return <div>Selected image not found</div>
   }
 
@@ -107,7 +110,12 @@ export const ImageEditor = ({
         <ImageControls openState={openState} onClickHandler={openControlsHandler} />
         {openState === 'ratio' && <ImageRatio />}
         {openState === 'multiple' && (
-          <MultipleImage onUpload={onUpload} selectedImage={selectedImage} images={images} />
+          <MultipleImage
+            addNewFiles={onUpload}
+
+            selectedImage={selectedImage}
+            images={images}
+          />
         )}
       </div>
     </div>

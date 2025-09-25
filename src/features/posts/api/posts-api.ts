@@ -17,8 +17,9 @@ export const postsApi = baseApi.injectEndpoints({
           body: formData,
         }
       },
-
+      invalidatesTags: ['Posts']
     }),
+
   }),
 })
 export const { useUploadPostsImagesMutation } = postsApi

@@ -1,8 +1,13 @@
+import { Image } from '@/shared/lib/sсhemas/posts'
 
-export const FiltersPanel = () => {
+type Props = {
+  images: Image[]
+
+
+}
+export const FiltersPanel = ({images}:Props) => {
   return (
     <div>
-
     </div>
   )
 }
