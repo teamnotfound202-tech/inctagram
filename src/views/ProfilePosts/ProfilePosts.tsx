@@ -2,7 +2,7 @@
 
 import s from './ProfilePosts.module.scss'
 import { ResponsesPosts } from '@/features/publicUserApi/types'
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { publicUserApi } from '@/features'
 import {
@@ -10,6 +10,7 @@ import {
 } from '@/features/publicUserApi/publicUserApi'
 import { PostsList } from '@/views/ProfilePosts/PostsList/PostsList'
 import { shallowEqual } from 'react-redux'
+import { useInfiniteScroll } from '@/shared/lib/hooks'
 
 type Props = {
   postsData: ResponsesPosts | undefined,
@@ -23,31 +24,20 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
     const selector = endpoint.select({ userId });
     const cachedData = selector(state);
 
-
     return {
       ...cachedData,
       items: cachedData?.data?.pages.flatMap(post => post.items),
     }
   }, shallowEqual);
 
-
-
   const dispatch = useAppDispatch()
   const needHydrateStateRef = useRef(!!postsData?.items.length && !dataFromCache?.items?.length)
-  const observerRef = useRef<HTMLDivElement>(null)
-
   const {data, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage} = useGetPostsForUserInfiniteQuery({userId}, {
     skip: needHydrateStateRef.current,
   })
-
-  const loadMoreHandler = useCallback(() => {
-    if(hasNextPage && !isFetching) {
-      fetchNextPage()
-    }
-  }, [hasNextPage, isFetching, fetchNextPage])
+  const {observerRef} = useInfiniteScroll({hasNextPage, isFetching, fetchNextPage})
 
   useEffect(() => {
-
       if (postsData && needHydrateStateRef.current) {
         needHydrateStateRef.current = false
 
@@ -61,37 +51,6 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
         dispatch(thunk)
       }
   }, [])
-
-
-  useEffect(() => {
-    // IntersectionObserver отслеживает элементы и сообщает, насколько они видны во viewport
-    // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
-    const observer = new IntersectionObserver(
-      entries => {
-        // entries - наблюдаемый элемент
-        if (entries.length > 0 && entries[0].isIntersecting) {
-          loadMoreHandler()
-        }
-      },
-      {
-        root: null, // Отслеживание относительно окна браузера (viewport). null = весь экран
-        rootMargin: '100px', // Начинать загрузку до появления элемента
-      }
-    )
-
-    const currentObserverRef = observerRef.current
-    if (currentObserverRef) {
-      // начинает наблюдение за элементом
-      observer.observe(currentObserverRef)
-    }
-
-    // Функция очистки - прекращает наблюдение при размонтировании компонента
-    return () => {
-      if (currentObserverRef) {
-        observer.unobserve(currentObserverRef)
-      }
-    }
-  }, [loadMoreHandler])
 
   const userPostData = data?.pages.flatMap((page) => page.items) || postsData?.items
 
