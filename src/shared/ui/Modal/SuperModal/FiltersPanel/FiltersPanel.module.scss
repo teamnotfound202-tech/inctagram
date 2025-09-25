@@ -1,0 +1,182 @@
+@use './../../../../styles/variables' as *;
+
+// основной контейнер
+.filtersPanel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 24px;
+  min-height: 400px;
+}
+
+// контейнер для изображения и слайдера интенсивности
+.previewSection {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 16px;
+}
+
+// контейнер для превью изображения
+.previewContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $dark-500;
+  border-radius: 2px;
+  overflow: hidden;
+  flex: 1;
+}
+
+// стили для основного изображения
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-height: 400px;
+}
+
+// сетка 3x4 для миниатюр фильтров
+.filtersGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 12px;
+  max-width: 240px;
+  max-height: 400px;
+
+  // Если вдруг нужен будет скроллбар
+  // overflow-y: auto;
+  // &::-webkit-scrollbar {
+  //   width: 4px;
+  // }
+
+  // &::-webkit-scrollbar-track {
+  //   background: $dark-300;
+  // }
+
+  // &::-webkit-scrollbar-thumb {
+  //   background: $dark-100;
+  //   border-radius: 2px;
+  // }
+}
+
+//  стили для каждого элемента фильтра с hover и selected состояниями
+.filterItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $dark-300;
+  }
+
+  &.selected {
+    background-color: $accent-500; //Фон выбранного элемента
+
+    .filterName {
+      color: $light-100;
+      font-weight: 600;
+    }
+  }
+}
+
+// контейнер для миниатюры фильтра
+.filterPreview {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+
+  .selected & {
+    border-color: $accent-500;
+  }
+}
+
+// стили для миниатюр изображений
+.filterThumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// стили для названий фильтров
+.filterName {
+  font-size: 12px;
+  color: $light-900;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+// сообщение при отсутствии изображения если отставить проверку пришло изображение или нет
+// но по факту оно не может не придти
+// .noImageMessage {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 100%;
+//   height: 100%;
+//   color: $light-900;
+//   font-size: 16px;
+//   text-align: center;
+// }
+
+// контейнер для слайдера интенсивности
+.intensityControl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background-color: $dark-300;
+  border-radius: 4px;
+  width: 100%;
+}
+
+// стили для элементов управления интенсивностью:
+//  intensityLabel, intensitySlider, intensityValue
+.intensityLabel {
+  font-size: 14px;
+  color: $light-100;
+  font-weight: 500;
+}
+
+.intensitySlider {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: $dark-100;
+  outline: none;
+  -webkit-appearance: none;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: $accent-500;
+    cursor: pointer;
+  }
+
+  &::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: $accent-500;
+    cursor: pointer;
+    border: none;
+  }
+}
+
+.intensityValue {
+  font-size: 12px;
+  color: $light-900;
+  text-align: center;
+}
+

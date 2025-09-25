@@ -66,6 +66,12 @@
   width: 492px;
   height: 503px;
   flex: 1;
+
+  // Для фильтров делаем контейнер шире (Женя)
+  &.filtersStep {
+    width: 720px;
+    padding: 24px;
+  }
 }
 .photoEditingNextBtn{
   padding:0;

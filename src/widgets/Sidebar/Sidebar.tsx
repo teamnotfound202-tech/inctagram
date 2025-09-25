@@ -24,7 +24,8 @@ export const Sidebar = () => {
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
   const dispatch = useAppDispatch()
   const router = useRouter()
-  const [isModalOpen, setModalOpen] = useState<TypeOfModalWindow>('exitEditing')
+  const [isModalOpen, setModalOpen] = useState<TypeOfModalWindow>(null)
+  //поменял состояние на нал а было exitEditing у юзстейта выше (Женя)
 
   const handleModelHandler = (type: TypeOfModalWindow) => {
     setModalOpen(type)
