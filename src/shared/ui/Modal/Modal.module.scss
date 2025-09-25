@@ -69,8 +69,14 @@
 
   // Для фильтров делаем контейнер шире (Женя)
   &.filtersStep {
-    width: 720px;
-    padding: 24px;
+    width: 900px;
+    //padding: 24px;
+  }
+
+  // Для шага публикации тоже делаем контейнер шире
+  &.publishStep {
+    width: 900px;
+    //padding: 24px;
   }
 }
 .photoEditingNextBtn{

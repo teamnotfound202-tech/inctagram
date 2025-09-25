@@ -13,7 +13,6 @@ import { useUploadPostsImagesMutation } from '@/features/posts/api/posts-api'
 
 type Props = {
   title: string
-
   callback: (type: TypeOfModalWindow) => void
 }
 export type Step = 'upload' | 'edit' | 'filters' | 'publish'
@@ -127,7 +126,8 @@ export const SuperModal = ({ title, callback }: Props) => {
       ? 'Filters'
       : 'Publication'
 
-  //добавил стили в дивку ниже когда currentStep === 'filters' тогда s.filtersStep (Женя)
+  //добавил стили в дивку ниже когда currentStep === 'filters' или 'publish'
+  // тогда s.filtersStep или s.publishStep (Женя)
   return (
     <div className={s.overlay}>
       <div className={s.modal}>
@@ -139,7 +139,10 @@ export const SuperModal = ({ title, callback }: Props) => {
           title={titleForHeader}
           onClick={handleModalCloseHandler}
         />
-        <div className={clsx(s.supermodalContent, currentStep === 'filters' && s.filtersStep)}>
+        <div className={clsx(s.supermodalContent,
+          currentStep === 'filters' && s.filtersStep,
+          currentStep === 'publish' && s.publishStep
+          )}>
           {currentStep === 'upload' && (
             <ImageUploader images={images} onUpload={handleImageUpload} />
           )}
@@ -159,9 +162,11 @@ export const SuperModal = ({ title, callback }: Props) => {
           )}
           {currentStep === 'publish' && (
             <PublishForm
-            /*images={images}
-              filters={filters}
-              onPublish={() => {/!* API call *!/}}*/
+              images={imageUrls}
+              selectedImage={selectedImage}
+              onSelectImage={setSelectedImage}
+              appliedFilter={selectedFilter}
+              filterIntensity={filterIntensity}
             />
           )}
         </div>
