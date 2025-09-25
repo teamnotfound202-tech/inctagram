@@ -21,8 +21,9 @@ export const publicUserApi = baseApi.injectEndpoints({
 
       merge: (currentCache: ResponsesPosts, newData: ResponsesPosts,
       ) => {
-
-        currentCache.items.push(...newData.items)
+        if (newData.items.length > 0) {
+          currentCache.items.push(...newData.items)
+        }
       },
       forceRefetch({ currentArg, previousArg}) {
         return currentArg?.endCursorPostId !== previousArg?.endCursorPostId

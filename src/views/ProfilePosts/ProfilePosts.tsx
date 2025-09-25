@@ -2,7 +2,6 @@
 
 import s from './ProfilePosts.module.scss'
 import { ResponsesPosts } from '@/features/publicUserApi/types'
-import { PostItem } from '@/views/ProfilePosts/PostItem/PostItem'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { publicUserApi } from '@/features'
