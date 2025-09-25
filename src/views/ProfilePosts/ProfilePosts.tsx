@@ -53,7 +53,7 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
 
         const infiniteData = {
           pages: [postsData],
-          pageParams: [undefined]
+          pageParams: [undefined],
         };
         const thunk = publicUserApi.util.upsertQueryData('getPostsForUser', {
           userId,

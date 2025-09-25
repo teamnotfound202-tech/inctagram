@@ -50,11 +50,9 @@ export const publicUserApi = baseApi.injectEndpoints({
       },
       infiniteQueryOptions: {
         initialPageParam: undefined,
-        getNextPageParam: (lastPage) => {
-          if (
-            lastPage.items.length < lastPage.totalCount &&
-            lastPage.items[lastPage.items.length - 1]?.id
-          ) {
+        getNextPageParam: (lastPage, allPages) => {
+          const totalCountPosts = allPages.flatMap(page => page.items).length
+          if (totalCountPosts < lastPage.totalCount && lastPage.items[lastPage.items.length - 1]?.id) {
             return lastPage.items[lastPage.items.length - 1].id.toString()
           }
 
