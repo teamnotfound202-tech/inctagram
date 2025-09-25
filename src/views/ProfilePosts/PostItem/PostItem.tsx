@@ -61,24 +61,21 @@ export const PostItem = ({post}: Props) => {
               </SwiperSlide>
             ))
           }
-          {post.images.length > 1 && (
-            <>
-              <button
-                className={`${s.navigationButton} ${s.navigationButtonPrev}`}
-                onClick={handlePrevClick}
-                disabled={isPrevDisabled}
-              >
-                <ArrowLeftIcon/>
-              </button>
-              <button
-                className={`${s.navigationButton} ${s.navigationButtonNext}`}
-                onClick={handleNextClick}
-                disabled={isNextDisabled}
-              >
-                <ArrowRightIcon/>
-              </button>
-            </>
-          )}
+
+            <button
+              className={`${s.navigationButton} ${s.navigationButtonPrev}`}
+              onClick={handlePrevClick}
+              disabled={isPrevDisabled}
+            >
+              <ArrowLeftIcon/>
+            </button>
+            <button
+              className={`${s.navigationButton} ${s.navigationButtonNext}`}
+              onClick={handleNextClick}
+              disabled={isNextDisabled}
+            >
+              <ArrowRightIcon/>
+            </button>
         </Swiper>
       ) : (
         <Image
