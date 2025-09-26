@@ -1,0 +1,22 @@
+@use '@/shared/styles/variables' as *;
+
+.usersList {
+  min-width: 572px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.searchInput {
+  width: 100%;
+  margin-bottom: 24px;
+}
+.skeleton{
+  display: flex;
+  flex-direction: column;
+  gap:24px;
+}
+
+.notFoundMessage{
+  color: $light-900;
+}

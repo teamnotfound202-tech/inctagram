@@ -1,189 +1,128 @@
+'use client'
 import Avatar from '../../../../../entities/user/ui/Avatar/Avatar'
-import s from '@/shared/lib/components/ModalUserFollowers/ModalUserHeaderProfile.module.scss'
+import s from './UserListItem.module.scss'
 import Skeleton from 'react-loading-skeleton'
 import { Button } from '@/shared/ui'
 import {
-  useFollowingsUserQuery,
   useFollowingUserMutation,
   useUnFollowingUserMutation,
 } from '@/features/publicUserApi/publicUserApi'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useCallback, useMemo, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { useMeQuery } from '@/features/auth/api/authApi'
 import { UserItem } from '@/features/publicUserApi/types'
-import { Modal } from '@/shared/ui/Modal/Modal'
-import { Path } from '@/shared/config'
-import { ACCESS_TOKEN } from '@/shared/lib'
-import { baseApi } from '@/shared/api'
-
-
+import { ConfirmModal } from '@/shared/lib/components/ModalUserFollowers/ConfirmModal/ConfirmModal'
 
 type Props = {
   user: UserItem
   isLoading: boolean
   type: 'following' | 'followers'
-  isOwnProfile: boolean
-};
-export const UserListItem = ({user,isLoading,type, isOwnProfile}: Props) => {
-  const router = useRouter()
+}
 
+type ModalKind = 'unfollow' | 'delete-following' | null
+
+export const UserListItem = ({ user, isLoading, type }: Props) => {
   const { data: currentUser } = useMeQuery()
-  const {data:followingUsers} = useFollowingsUserQuery({ userName: user.userName })
-  const [followingUser, { isLoading: isFollowingLoading }] = useFollowingUserMutation()
-  const [unFollowingUser, { isLoading: isUnfollowingLoading }] = useUnFollowingUserMutation()
+  const [followUser, { isLoading: isFollowMutLoading }] = useFollowingUserMutation()
+  const [unfollowUser, { isLoading: isUnfollowMutLoading }] = useUnFollowingUserMutation()
 
-  const isLoadingButtons = isFollowingLoading || isUnfollowingLoading
+  const pathname = usePathname()
+  const userId = Number(pathname.split('/')[2])
+  const isOwnProfile = currentUser?.userId === userId
 
-  const [buttonIsLoading, setbuttonIsLoading] = useState(false)
+  const [isFollowing, setIsFollowing] = useState<boolean>(user.isFollowing)
+  const [modalKind, setModalKind] = useState<ModalKind>(null)
 
-  const [isModalOpen, setModalOpen] = useState(false)
-  const [modalTitle, setModalTitle] = useState('')
+  const pendingAction = useMemo<ModalKind | null>(() => {
+    if (isFollowMutLoading) return 'delete-following'
+    if (isUnfollowMutLoading) return 'unfollow'
+    return null
+  }, [isFollowMutLoading, isUnfollowMutLoading])
 
+  const openUnfollowModal = useCallback(() => setModalKind('unfollow'), [])
+  const openDeleteFollowingModal = useCallback(() => setModalKind('delete-following'), [])
+  const closeModal = useCallback(() => setModalKind(null), [])
 
-  const handleModelClose = () => setModalOpen(false)
+  const handleFollow = useCallback(async () => {
+    await followUser({ selectedUserId: user.userId, userName: user.userName }).unwrap()
+    setIsFollowing(true)
+  }, [followUser, user.userId, user.userName])
 
-  const handleDeleteFollowing = () => {
-    setbuttonIsLoading(true)
-    unFollowingUser({ userId: user.userId })
-      .unwrap()
-      .then(() => {
-        setbuttonIsLoading(false)
-        setUserIsFollowing(false)
-        handleModelClose()
-    })
-      .catch(() => {
-        handleModelClose()
-      })
-  }
+  const handleUnfollowConfirmed = useCallback(async () => {
+    await unfollowUser({ userId: user.userId, userName: user.userName }).unwrap()
+    setIsFollowing(false)
+    closeModal()
+  }, [unfollowUser, user.userId, user.userName, closeModal])
 
-  const followHandler = () =>{
-    setbuttonIsLoading(true)
-    followingUser({ selectedUserId: user.userId }).then(() => {
-      setbuttonIsLoading(false)
-      setUserIsFollowing(true)
-    })
-  }
-  const unFollowHandler = () =>{
-    setbuttonIsLoading(true)
-    unFollowingUser({ userId: user.userId })
-      .then(() => {
-        setbuttonIsLoading(false)
-    })
-  }
-  const [userIsFollowing, setUserIsFollowing] = useState<boolean>(user.isFollowing)
+  const followDisabled = Boolean(pendingAction)
+  const unfollowDisabled = Boolean(pendingAction)
 
   return (
-    <div key={user.id}>
-      <Avatar src={user?.avatars?.[0]?.url} alt={'Avatar Image'} size={'small'} />
-      <button className={s.userNameButton} onClick={() => router.push(`/profile/${user.userId}`)}>
-        <span>{user.userName}</span>
-      </button>
+    <div className={s.item}>
+      <div className={s.userInfoWrapper}>
+        <Avatar src={user?.avatars?.[0]?.url} alt="Avatar Image" size="small" />
+
+        <Link className={s.userName} href={`/profile/${user.userId}`} prefetch>
+          <span>{user.userName}</span>
+        </Link>
+      </div>
 
       <div className={s.buttonGroup}>
-        {isLoading && (
+        {isLoading ? (
           <Skeleton
             baseColor="rgba(23, 23, 23, 0.6)"
             highlightColor="rgba(40, 40, 40, 0.8)"
             width={250}
             height={36}
           />
-        )}
-
-        {!isLoading &&
-          currentUser?.userId && //делаем проверку на то что загрузка завершена
-          isOwnProfile && ( //на то что мы авторизованы, и что мы вызываем модалку на нашем профиле
+        ) : (
+          currentUser?.userId &&  //если мы авторизованы и профиль наш
+          isOwnProfile && (
             <div>
-              {
-                //если модалка "followers" и мы не подписаны на юзера из списка
-                type === 'followers' && !userIsFollowing && (
-                  <div>
-                    <Button
-                      variant={'primary'}
-                      onClick={followHandler}
-                      disabled={isLoadingButtons}
-                    >
-                      {buttonIsLoading ? 'Loading...' : 'Follow'}
-                    </Button>
-                    <Button variant={'text'} onClick={()=>{
-                      setModalOpen(true)
-                      setModalTitle('Delete Following')
-                    }} disabled={isLoadingButtons}>
-                      {buttonIsLoading && isUnfollowingLoading ? 'Loading...' : 'Delete'}
-                    </Button>
-                  </div>
-                )
-              }
-              {
-                //если модалка "followers" и мы подписаны на юзера из списка
-                type === 'followers' && userIsFollowing && (
-                  <Button variant={'text'} onClick={()=>{
-                    setModalOpen(true)
-                    setModalTitle('Delete Following')
-                  }} disabled={isLoadingButtons}>
-                    {buttonIsLoading ? 'Loading...' : 'Delete'}
+              {type === 'followers' && !isFollowing && ( //если модалка followers и юзер НЕ ПОДПИСАН на нас
+                <div>
+                  <Button className={s.modalButtons} variant="primary" onClick={handleFollow} disabled={followDisabled}>
+                    {isFollowMutLoading ? 'Loading...' : 'Follow'}
                   </Button>
-                )
-              }
+                  <Button className={s.modalDeleteButton} variant="text" onClick={openDeleteFollowingModal} disabled={unfollowDisabled}>
+                    {isUnfollowMutLoading ? 'Loading...' : 'Delete'}
+                  </Button>
+                </div>
+              )}
 
-              {
-                //если модалка "following", затем меняем кнопки в зависимости от того отписались мы от юзера или нет
-                type === 'following' &&
-                  (userIsFollowing ? (
-                    <Button
-                      variant={'outline'}
-                      onClick={()=>{
-                        setModalOpen(true)
-                        setModalTitle('Unfollow')
-                      }}
-                      disabled={isLoadingButtons}
-                    >
-                      {buttonIsLoading ? 'Loading...' : 'Unfollow'}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant={'primary'}
-                      onClick={followHandler}
-                      disabled={isLoadingButtons}
-                    >
-                      {buttonIsLoading ? 'Loading...' : 'Follow'}
-                    </Button>
-                  ))
-              }
+              {type === 'followers' && isFollowing && (//если модалка followers и юзер ПОДПИСАН на нас
+                <Button className={s.modalDeleteButton} variant="text" onClick={openDeleteFollowingModal} disabled={unfollowDisabled}>
+                  {isUnfollowMutLoading ? 'Loading...' : 'Delete'}
+                </Button>
+              )}
+
+              {type === 'following' && //если модалка following и юзер ПОДПИСАН на нас
+                (isFollowing ? (
+                  <Button className={s.modalButtons} variant="outline" onClick={openUnfollowModal} disabled={unfollowDisabled}>
+                    {isUnfollowMutLoading ? 'Loading...' : 'Unfollow'}
+                  </Button>
+                ) : ( //если модалка following и юзер НЕ ПОДПИСАН на нас
+                  <Button className={s.modalButtons} variant="primary" onClick={handleFollow} disabled={followDisabled}>
+                    {isFollowMutLoading ? 'Loading...' : 'Follow'}
+                  </Button>
+                ))}
             </div>
-          )}
+          )
+        )}
       </div>
 
-      {isModalOpen && (
-        <Modal title={modalTitle} onClick={handleModelClose}>
-          <div>
-            <Avatar src={user?.avatars?.[0]?.url} alt={'Avatar Image'} size={'small'} />
-
-            {modalTitle === 'Delete Following' ? (
-              <div>
-                <span>Do you really want to delete a Following </span>
-                <button className={s.userNameButton} onClick={() => router.push(`/profile/${user.userId}`)}>
-                  <span>{user.userName}?</span>
-                </button>
-              </div>
-            ):(
-              <div>
-                <span>Do you really want to Unfollow from this user </span>
-                <button className={s.userNameButton} onClick={() => router.push(`/profile/${user.userId}`)}>
-                  <span>{user.userName}?</span>
-                </button>
-              </div>
-            )}
-
-          </div>
-          <div className={s.buttonWrapper}>
-            <Button variant={'outline'} onClick={handleDeleteFollowing}>
-              Yes
-            </Button>
-            <Button onClick={handleModelClose}>No</Button>
-          </div>
-        </Modal>
-      )}
+      <ConfirmModal
+        isOpen={modalKind !== null}
+        kind={(modalKind ?? 'unfollow') as 'unfollow' | 'delete-following'}
+        confirmAction={handleUnfollowConfirmed}
+        closeAction={closeModal}
+        user={{
+          userId: user.userId,
+          userName: user.userName,
+          avatarUrl: user?.avatars?.[0]?.url,
+        }}
+      />
     </div>
-
   )
 }

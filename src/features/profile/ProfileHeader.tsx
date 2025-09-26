@@ -2,54 +2,36 @@
 import Avatar from '../../entities/user/ui/Avatar/Avatar'
 import s from './ProfileHeader.module.scss'
 import { useMeQuery } from '@/features/auth/api/authApi'
-import Skeleton from 'react-loading-skeleton'
 import { Button } from '@/shared/ui'
-import {
-  useFollowingUserMutation,
-  useGetUserFollowingAndFollowersQuery,
-  useUnFollowingUserMutation,
-} from '@/features/publicUserApi/publicUserApi'
-import { UserDataResponse } from '@/features/publicUserApi/types'
+import { useFollowingUserMutation, useGetUserFollowingAndFollowersQuery, useUnFollowingUserMutation} from '@/features/publicUserApi/publicUserApi'
+import { UserDataResponse, UserProfileResponse } from '@/features/publicUserApi/types'
 import Paid from './icons/Paid.svg'
-import { useState } from 'react'
-import { ModalUserFollowers } from '@/shared/lib/components/ModalUserFollowers/ModalUserFollowers'
+import { ProfileHeadersStats } from '@/features/profile/ProfileHeadersStats/ProfileHeadersStats'
+import Skeleton from 'react-loading-skeleton'
 
 type Props = {
   user: UserDataResponse
+  userStats: UserProfileResponse
 }
 
-export const ProfileHeader = ({ user }: Props) => {
+export const ProfileHeader = ({ user, userStats }: Props) => {
   const { data: currentUser } = useMeQuery()
-  const { data: userProfile, isLoading, isFetching} = useGetUserFollowingAndFollowersQuery({ userName: user.userName})
+  const {data: freshProfileData, isLoading, isFetching } = useGetUserFollowingAndFollowersQuery({ userName: user.userName })
 
+  const dataForRender = freshProfileData || userStats
   const [followingUser, { isLoading: isFollowingLoading }] = useFollowingUserMutation()
   const [unFollowingUser, { isLoading: isUnfollowingLoading }] = useUnFollowingUserMutation()
 
-  const [isModalOpen, setModalOpen] = useState(false)
-  const [typeModal, setTypeModal] = useState<'following'| 'followers'>('following')
-
   const isOwnProfile = currentUser?.userId === user?.id
   const isLoadingButtons = isFollowingLoading || isUnfollowingLoading || isFetching
-
-
+  const showLoading =  isFollowingLoading || isUnfollowingLoading || isFetching
 
   const followHandler = () => {
-    followingUser({ selectedUserId: user.id })
+    followingUser({ selectedUserId: user.id, userName: user.userName })
   }
   const unFollowHandler = () => {
-    unFollowingUser({ userId: user.id })
+    unFollowingUser({ userId: user.id, userName: user.userName  })
   }
-
-
-  const showFollowingHandler = () =>{
-        setModalOpen(true)
-        setTypeModal('following')
-  }
-  const showFollowersHandler = () =>{
-        setModalOpen(true)
-        setTypeModal('followers')
-  }
-  const handleModelClose = () => setModalOpen(false)
 
   return (
     <div>
@@ -68,31 +50,22 @@ export const ProfileHeader = ({ user }: Props) => {
                   baseColor="rgba(23, 23, 23, 0.6)"
                   highlightColor="rgba(40, 40, 40, 0.8)"
                   width={272}
-                  height={36}
+                  height={32}
                 />
               )}
 
-              {!isLoading &&
-                currentUser?.userId &&
-                (isOwnProfile ? (
+              {!isLoading && currentUser?.userId &&
+                (isOwnProfile  ? (
                   <Button variant={'secondary'}>Profile Settings</Button>
                 ) : (
                   <div className={s.foreignProfileButtons}>
-                    {userProfile?.isFollowing ? (
-                      <Button
-                        variant={'outline'}
-                        onClick={unFollowHandler}
-                        disabled={isLoadingButtons}
-                      >
-                        {isUnfollowingLoading || isFetching ? 'Loading...' : 'Unfollow'}
+                    {freshProfileData?.isFollowing ? (
+                      <Button variant={'outline'} onClick={unFollowHandler} disabled={isLoadingButtons}>
+                        {showLoading ? 'Loading...' : 'Unfollow'}
                       </Button>
                     ) : (
-                      <Button
-                        variant={'primary'}
-                        onClick={followHandler}
-                        disabled={isLoadingButtons}
-                      >
-                        {isFollowingLoading || isFetching ? 'Loading...' : 'Follow'}
+                      <Button variant={'primary'} onClick={followHandler} disabled={isLoadingButtons}>
+                        {showLoading ? 'Loading...' : 'Follow'}
                       </Button>
                     )}
                     <Button variant={'secondary'}>Send Message</Button>
@@ -101,40 +74,14 @@ export const ProfileHeader = ({ user }: Props) => {
             </div>
           </div>
 
-          <div className={s.userStats}>
-            <button className={s.statsButton} onClick={showFollowingHandler} disabled={!currentUser?.userId}>
-              {isLoading ?
-                <Skeleton baseColor="rgba(23, 23, 23, 0.6)" highlightColor="rgba(40, 40, 40, 0.8)" width={48} height={20} />
-                : <span className={s.statsCount}>{userProfile?.followingCount}</span>}
-              <span className={s.statsDescription}>Following</span>
-            </button>
-
-            <button className={s.statsButton} onClick={showFollowersHandler} disabled={!currentUser?.userId}>
-              {isLoading ?
-                <Skeleton baseColor="rgba(23, 23, 23, 0.6)" highlightColor="rgba(40, 40, 40, 0.8)" width={48} height={20} />
-                : <span className={s.statsCount}>{userProfile?.followersCount}</span>}
-              <span className={s.statsDescription}>Followers</span>
-            </button>
-
-            <button className={s.statsButton} disabled={!currentUser?.userId}>
-              {isLoading ?
-                <Skeleton baseColor="rgba(23, 23, 23, 0.6)" highlightColor="rgba(40, 40, 40, 0.8)" width={48} height={20} />
-                : <span className={s.statsCount}>{userProfile?.publicationsCount}</span>}
-              <span className={s.statsDescription}>Publications</span>
-            </button>
-          </div>
+          <ProfileHeadersStats data={dataForRender} userName={user.userName}/>
 
           <div className={s.userAbout}>
             <p>{user.aboutMe}</p>
           </div>
+
         </div>
 
-        {(isModalOpen && typeModal === 'following') && (
-          <ModalUserFollowers userName={user.userName} type={'following'} currentUser={currentUser} onClose={handleModelClose} isOpen={isModalOpen} isOwnProfile={isOwnProfile}/>
-        )}
-        {(isModalOpen && typeModal === 'followers') && (
-          <ModalUserFollowers userName={user.userName} type={'followers'} currentUser={currentUser} onClose={handleModelClose} isOpen={isModalOpen} isOwnProfile={isOwnProfile}/>
-        )}
       </div>
     </div>
   )

@@ -1,0 +1,30 @@
+@use '@/shared/styles/variables' as *;
+.content{
+  max-width: 330px;
+  display: flex;
+  gap: 12px;
+}
+.text{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: $light-100
+}
+
+.userName{
+  cursor: pointer;
+  &> span{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+  }
+}
+
+.buttonGroup{
+  display: flex;
+  gap:24px;
+}
+
+.buttonsModal{
+  min-width: 96px;
+}

@@ -17,14 +17,14 @@ export const publicUserApi = baseApi.injectEndpoints({
         result ? [{ type: 'UserProfile', id: userName }] : ['UserProfile'],
     }),
 
-    followingUser: builder.mutation<void, { selectedUserId: number }>({
+    followingUser: builder.mutation<void, { selectedUserId: number, userName: string }>({
       query: body => ({ url: `/users/following`, method: 'POST', body }),
-      invalidatesTags: ['UserProfile'],
+      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
     }),
 
-    unFollowingUser: builder.mutation<void, { userId: number }>({
+    unFollowingUser: builder.mutation<void, { userId: number, userName:string }>({
       query: ({ userId }) => ({ url: `/users/follower/${userId}`, method: 'DELETE' }),
-      invalidatesTags: ['UserProfile'],
+      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
     }),
     followingsUser: builder.query<UsersListResponse, { userName: string }>({
       query: ({ userName }) => ({ url: `/users/${userName}/following`, method: 'GET' }),
@@ -47,12 +47,9 @@ export const publicUserApi = baseApi.injectEndpoints({
 
 export const {
   useGetTotalRegisteredUsersQuery,
-  useGetPostsForUserInfiniteQuery,
   useGetUserFollowingAndFollowersQuery,
   useFollowingUserMutation,
   useUnFollowingUserMutation,
-  useFollowingsUserQuery,
   useLazyFollowingsUserQuery,
-  useFollowersUserQuery,
-  useLazyFollowersUserQuery
+  useLazyFollowersUserQuery,
 } = publicUserApi
