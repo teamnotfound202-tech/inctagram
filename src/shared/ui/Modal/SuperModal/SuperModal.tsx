@@ -161,6 +161,7 @@ export const SuperModal = ({ title, callback }: Props) => {
 
           {currentStep === 'edit' && (
             <ImageEditor
+
               deletePost={handleDeletePosts}
               onUpload={localUpload}
               isLoading={isLoading}

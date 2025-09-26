@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { useAppSelector } from '@/shared/lib/hooks/hooks'
-import { selectCurrentMessages } from '@/shared/api/appSlice'
 import styles from './ImageEditor.module.scss'
 import BackArrow from '../../icons/backArrow.svg'
 import ForwardArrow from '../../icons/forwardArrow.svg'
@@ -10,6 +8,8 @@ import { MultipleImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/Multiple
 import { Image } from '@/shared/lib/sсhemas/posts'
 import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
 import { ZoomCrop } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ZoomCrop'
+import 'cropperjs/dist/cropper.css'
+import ReactCrop, { Crop } from 'react-image-crop'
 
 type ImageEditorProps = {
   images: Image[]
@@ -17,7 +17,7 @@ type ImageEditorProps = {
   isLoading: boolean
   onSelectImage: (index: number) => void
   onUpload: (files: File[]) => void
-  deletePost: (id: string,inex:number) => void
+  deletePost: (id: string, inex: number) => void
 }
 export type TypeOfControls = 'ratio' | 'zoom' | 'multiple' | null
 export const ImageEditor = ({
@@ -29,8 +29,7 @@ export const ImageEditor = ({
   deletePost,
 }: ImageEditorProps) => {
   const [openState, setOpenState] = useState<TypeOfControls>(null)
-
-  const currentLanguageArray = useAppSelector(selectCurrentMessages)
+  const [crop, setCrop] = useState<Crop>()
 
   // Навигация по слайдеру
   const handleNextImage = () => {
@@ -69,15 +68,20 @@ export const ImageEditor = ({
       {/* Основная область редактирования */}
       <div className={styles.editorArea}>
         <div className={styles.imageContainer}>
-          <img
-            src={currentImage.url}
-            alt={`Editing ${selectedImage + 1} of ${images.length}`}
-            className={styles.editableImage}
-          />
+          {openState === 'zoom' ? (
+            <ReactCrop crop={crop} onChange={c => setCrop(c)}>
+              <img src={currentImage.url} />
+            </ReactCrop>
+          ) : (
+            <img
+              src={currentImage.url}
+              alt={`Editing ${selectedImage + 1} of ${images.length}`}
+              className={styles.editableImage}
+            />
+          )}
         </div>
 
         {/* Элементы управления слайдером */}
-
         {images.length > 1 && (
           <div className={styles.sliderControls}>
             <button
@@ -92,9 +96,7 @@ export const ImageEditor = ({
                 <button
                   key={index}
                   className={`${styles.dot} ${index === selectedImage ? styles.active : ''}`}
-                  onClick={() => {
-                    onSelectImage(index)
-                  }}
+                  onClick={() => onSelectImage(index)}
                 />
               ))}
             </div>
@@ -107,7 +109,9 @@ export const ImageEditor = ({
             </button>
           </div>
         )}
+
         <ImageControls openState={openState} onClickHandler={openControlsHandler} />
+
         {openState === 'ratio' && <ImageRatio />}
         {openState === 'multiple' && (
           <MultipleImage
@@ -117,7 +121,7 @@ export const ImageEditor = ({
             images={images}
           />
         )}
-        {openState==='zoom' && <ZoomCrop/>}
+        {openState === 'zoom' && <ZoomCrop />}
       </div>
     </div>
   )
