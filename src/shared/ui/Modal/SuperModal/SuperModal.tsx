@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import s from '../Modal.module.scss'
 import { ModalHeader } from '@/shared/ui/Modal/SuperModal/ModalHeader/ModalHeader'
 import { Modal } from '@/shared/ui/Modal/Modal'
@@ -8,7 +8,10 @@ import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
 import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
 import { FiltersPanel, ImageEditor, ImageUploader, PublishForm } from '@/shared/ui/Modal'
-import { useUploadPostsImagesMutation } from '@/features/posts/api/posts-api'
+import {
+  useDeletePostsImageMutation,
+  useUploadPostsImagesMutation,
+} from '@/features/posts/api/posts-api'
 import { MouseEvent } from 'react'
 import { Image } from '@/shared/lib/sсhemas/posts'
 import { toast } from 'sonner'
@@ -21,6 +24,7 @@ type Props = {
 export type Step = 'upload' | 'edit' | 'filters' | 'publish'
 export const SuperModal = ({ title, callback }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
+  const [deletePosts] = useDeletePostsImageMutation()
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
   const [currentStep, setCurrentStep] = useState<Step>('upload')
@@ -29,11 +33,18 @@ export const SuperModal = ({ title, callback }: Props) => {
   const [uploadedImages, setUploadedImages] = useState<Image[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
   const modalRef = useRef<HTMLDivElement>(null)
-  const handleImageUpload = async (files: File[]) => {
-    setCurrentStep('edit')
+  useEffect(() => {
+    setUploadedImages(data?.images || [])
+  }, [data])
+  const handleImageUpload = (files: File[], step: Step) => {
+    setCurrentStep(step)
+    setLocalFiles(files)
     setSelectedImage(0)
+    uploadImage(files)
+  }
+  const localUpload = (files: File[]) => {
     const newFiles = [...localFiles, ...files]
-       if (newFiles.length > 10) {
+    if (newFiles.length > 10) {
       const remainingSlots = 10 - localFiles.length
       const errorMessage = `You can add only add ${remainingSlots} more image(s)`
       toast.custom(() => (
@@ -42,21 +53,30 @@ export const SuperModal = ({ title, callback }: Props) => {
       setCurrentStep('upload')
       return
     }
-    try {
+    const tempId = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    const tempImages = files.map((file, index) => ({
+      url: URL.createObjectURL(file),
+      width: 0,
+      height: 0,
+      fileSize: file.size,
+      createdAt: new Date().toISOString(),
+      uploadId: `${tempId}-${index}-${file.name.replace(/[^a-z0-9]/gi, '-')}`,
+      _optimistic: true,
+    }))
+    const tempUploadImages = [...uploadedImages, ...tempImages]
+    setLocalFiles(newFiles)
+    setUploadedImages(tempUploadImages)
 
-      setLocalFiles(newFiles)
-
-
-      const result = await uploadImage(newFiles).unwrap()
-      setUploadedImages(result.images)
-    } catch (error) {
-      setSelectedImage(0)
-      setCurrentStep('upload')
-
-      setLocalFiles(localFiles) // Возвращаем предыдущее значение
-    }
   }
 
+  const handleDeletePosts = (postsId: string,index:number) => {
+    const stateAfterDelete = uploadedImages.filter(image => image.uploadId !== postsId)
+    const localFilesAfterDeleting = localFiles.filter((file, i) => i !== index)
+    setUploadedImages(stateAfterDelete)
+    setLocalFiles(localFilesAfterDeleting)
+    deletePosts({uploadId:postsId})
+
+  }
   const handleOpendraft = () => {
     setCurrentStep('edit')
   }
@@ -64,10 +84,10 @@ export const SuperModal = ({ title, callback }: Props) => {
   const handleNext = () => {
     switch (currentStep) {
       case 'edit':
-        setCurrentStep('filters')
+        handleImageUpload(localFiles, 'filters')
         break
       case 'filters':
-        setCurrentStep('publish')
+        handleImageUpload(localFiles, 'publish')
         break
     }
   }
@@ -141,24 +161,20 @@ export const SuperModal = ({ title, callback }: Props) => {
 
           {currentStep === 'edit' && (
             <ImageEditor
-              onUpload={handleImageUpload}
+              deletePost={handleDeletePosts}
+              onUpload={localUpload}
               isLoading={isLoading}
               images={uploadedImages || []}
               selectedImage={selectedImage}
               onSelectImage={setSelectedImage}
             />
           )}
-          {currentStep === 'filters' && (
-            <FiltersPanel
-            images={uploadedImages || []}
-
-            />
-          )}
+          {currentStep === 'filters' && <FiltersPanel images={uploadedImages || []} />}
           {currentStep === 'publish' && (
             <PublishForm
             /*images={images}
-                      filters={filters}
-                      onPublish={() => {/!* API call *!/}}*/
+                        filters={filters}
+                        onPublish={() => {/!* API call *!/}}*/
             />
           )}
         </div>

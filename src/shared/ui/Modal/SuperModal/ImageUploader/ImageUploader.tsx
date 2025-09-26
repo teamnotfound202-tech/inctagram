@@ -7,9 +7,10 @@ import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 import { useFileUpload } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/useUploader'
 import { SuperUploadInput } from '@/shared/ui/Modal/SuperModal/SuperUploadInput/SuperUploadInput'
+import { Step } from '@/shared/ui/Modal/SuperModal/SuperModal'
 
 type ImageUploaderProps = {
-  onUpload: (files: File[]) => void
+  onUpload: (files: File[],step:Step) => void
   handleOpenDraft: () => void
 }
 export const ImageUploader = ({ onUpload, handleOpenDraft }: ImageUploaderProps) => {
@@ -19,7 +20,7 @@ export const ImageUploader = ({ onUpload, handleOpenDraft }: ImageUploaderProps)
 
   const { dragOver, setDragOver, handleFileSelect, handleDrop } = useFileUpload({
     onUpload: files => {
-      onUpload(files)
+      onUpload(files,'edit')
     },
   })
 
