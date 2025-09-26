@@ -1,0 +1,14 @@
+@use '@/shared/styles/variables' as *;
+
+.postWrapper {
+  width: 100%;
+  display: flex;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: $dark-300;
+  border: 1px solid $dark-100;
+  max-width: 1124px;
+  border-radius: 1px;
+}
+

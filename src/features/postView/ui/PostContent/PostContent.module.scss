@@ -1,37 +1,9 @@
-.postContentWrapper{}
+.postContentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+}
 
-.postTitle{}
 
-.avatar{}
 
-.ownerName{}
-
-.commentsWrapper{}
-
-.comment{}
-
-.commentAuthorName{}
-
-.commentDescription{}
-
-.commentCreationTime{}
-
-.likesCount{}
-
-.commentAnswer{}
-
-.commentLike{}
-
-.postMetaInf{}
-
-.controls{}
-
-.postIconButton{}
-
-.avatarsWhoLikes{}
-
-.likesCount{}
-
-.createCommentInput{}
-
-.publishButton{}

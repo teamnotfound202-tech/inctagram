@@ -118,6 +118,7 @@ export interface Messages {
     addAComment: string;
     publish:string;
     answer: string;
+    addComment:string;
   };
 
   // Уведомления
@@ -310,6 +311,7 @@ export const messages: Record<Language, Messages> = {
       addAComment: 'Add a comment',
       publish:'Publish',
       answer: 'Answer',
+      addComment:'Add a Comment...',
     },
 
     notifications: {
@@ -495,6 +497,7 @@ export const messages: Record<Language, Messages> = {
       addAComment: 'Добавить комментарий',
       publish:'Опубликовать',
       answer: 'Ответить',
+      addComment:'Добавить комментарий...',
     },
 
     notifications: {

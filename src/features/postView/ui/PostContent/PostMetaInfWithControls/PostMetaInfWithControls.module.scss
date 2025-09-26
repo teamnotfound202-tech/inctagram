@@ -1,0 +1,30 @@
+@use '@/shared/styles/variables' as *;
+
+.postMetaInf {
+  padding: 16px 25px 6px 25px;
+  border-bottom: 1px solid $dark-100;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 28px;
+
+
+  .postIconButton {
+    cursor: pointer;
+  }
+
+  .leftControl {
+    margin-left: auto;
+  }
+}
+
+.avatarsWhoLikes {
+  display: flex;
+  justify-content: start;
+  gap: 12px;
+}
+
+.likesCount {
+}
