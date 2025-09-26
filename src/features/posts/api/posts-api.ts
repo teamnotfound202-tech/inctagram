@@ -1,23 +1,25 @@
 import { baseApi } from '@/shared/api'
-import { ImagesResponseSchema } from '@/shared/lib/sсhemas/posts'
+import { ImagesResponse, ImagesResponseSchema } from '@/shared/lib/sсhemas/posts'
 
 export const postsApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: builder => ({
-    uploadPostsImages: builder.mutation({
+    uploadPostsImages: builder.mutation<ImagesResponse,File[]>({
       query: (images: File[]) => {
         const formData = new FormData()
         images.forEach(file => {
-          formData.append(`files`, file)
+          formData.append(`file`, file)
         })
-        debugger
+
         return {
           url: `/posts/image`,
           method: 'POST',
           body: formData,
         }
       },
-      transformResponse: ImagesResponseSchema.parse,
+      invalidatesTags: ['Posts']
     }),
+
   }),
 })
 export const { useUploadPostsImagesMutation } = postsApi

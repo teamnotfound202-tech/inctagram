@@ -82,3 +82,8 @@
 .photoEditingNextBtn{
   padding:0;
 }
+.buttonWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}

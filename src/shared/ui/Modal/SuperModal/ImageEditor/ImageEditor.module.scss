@@ -142,5 +142,23 @@
   }
 }
 
-
-
+.skeletonContainer{
+  position: relative;
+  overflow: hidden;
+}
+.skeletonArea{
+  position: absolute;
+  display: flex;
+  bottom: 11px;
+  width: 100%;
+  padding-left: 11px;
+  padding-right: 11px;
+align-items: center;
+  & .skeletonItem:last-child{
+    justify-content: flex-end;
+  }
+}
+.skeletonItem{
+  display: flex;
+  flex: 1;
+}
