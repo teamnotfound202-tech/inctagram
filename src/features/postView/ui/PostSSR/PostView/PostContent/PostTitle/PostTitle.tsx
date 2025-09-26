@@ -3,7 +3,7 @@ import * as React from 'react';
 import s from "./PostTitle.module.scss";
 import {Avatar} from "@/entities/user/ui/Avatar";
 import {Button} from "@/shared/ui";
-import DotsHorizontalIcon from "@/features/postView/ui/Icons/DotsHorizontal.svg";
+import DotsHorizontalIcon from "@/features/postView/ui/PostSSR/PostView/Icons/DotsHorizontal.svg";
 
 type Props = {
     avatarOwner:string

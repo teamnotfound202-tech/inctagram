@@ -1,7 +1,7 @@
 'use client'
-import {PostContent} from "@/features/postView/ui/PostContent/PostContent";
+import {PostContent} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostContent";
 import s from "./PostView.module.scss"
-import {PostImage} from "@/features/postView/ui/PostImage/PostImage";
+import {PostImage} from "@/features/postView/ui/PostSSR/PostView/PostImage/PostImage";
 import {Post} from "@/features/postView/api/types";
 
 type Props = {

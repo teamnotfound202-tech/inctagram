@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   gap: 28px;
-
+  margin-bottom: 20px;
 
   .postIconButton {
     cursor: pointer;
@@ -24,7 +24,16 @@
   display: flex;
   justify-content: start;
   gap: 12px;
+  margin-bottom: 5px;
 }
 
 .likesCount {
 }
+
+.postCreationTime {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-900;
+}
+

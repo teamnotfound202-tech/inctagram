@@ -1,0 +1,54 @@
+@use '@/shared/styles/variables' as *;
+
+.postIconButton {
+  cursor: pointer;
+}
+
+.comment {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: start;
+}
+
+.postText {
+
+}
+
+.commentAuthorName {
+}
+
+.commentDescription {
+}
+
+.commentMeta {
+  display: flex;
+  justify-content: start;
+  gap: 12px;
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-900;
+  font-weight: 600;
+}
+
+.commentCreationTime {
+  font-weight: 400;
+}
+
+.likesCount {
+  font-weight: 600;
+}
+
+.answerLink {
+  cursor: pointer;
+  color: $light-900;
+}
+
+.commentAnswer {
+}
+
+.commentLike {
+}
+
+.postIconButton {
+  padding: 0 0 0 24px;
+}

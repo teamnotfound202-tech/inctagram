@@ -1,15 +1,19 @@
 import s from "./PostMetaInfWithControls.module.scss";
-import LikeIcon from "@/features/postView/ui/Icons/Like.svg";
-import PaperPlane from "@/features/postView/ui/Icons/paper-plane-outline.svg";
-import Bookmark from "@/features/postView/ui/Icons/Bookmark.svg";
-import Avatar from "../../../../../entities/user/ui/Avatar/Avatar";
+import LikeIcon from "@/features/postView/ui/PostSSR/PostView/Icons/Like.svg";
+import PaperPlane from "@/features/postView/ui/PostSSR/PostView/Icons/paper-plane-outline.svg";
+import Bookmark from "@/features/postView/ui/PostSSR/PostView/Icons/Bookmark.svg";
+import Avatar from "../../../../../../../entities/user/ui/Avatar/Avatar";
+import {timeToTimeZone} from "@/shared/lib/utils/timeToTimeZone";
 
 type Props = {
     avatars: string[],
     likesCount: number,
     updatedAt: string
 };
+
 export const PostMetaInfWithControls = ({avatars, likesCount, updatedAt}: Props) => {
+    const postUpdateTime = timeToTimeZone(updatedAt)
+
     return (
         <div className={s.postMetaInf}>
             <div className={s.controls}>
@@ -27,7 +31,7 @@ export const PostMetaInfWithControls = ({avatars, likesCount, updatedAt}: Props)
                 <Avatar src={avatars[0]} alt={'avatarsWhoLikes'} size={'very_small'}/>
                 <div className={s.likesCount}>{likesCount} &#34;Like&#34;</div>
             </div>
-            <div className={s.commentCreationTime}>{updatedAt}</div>
+            <div className={s.postCreationTime}>{postUpdateTime}</div>
         </div>
     );
 };

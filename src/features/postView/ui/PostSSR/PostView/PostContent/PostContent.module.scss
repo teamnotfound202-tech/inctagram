@@ -1,9 +1,13 @@
+@use '@/shared/styles/variables' as *;
+
 .postContentWrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 50%;
 }
+
+
 
 
 

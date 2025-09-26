@@ -5,4 +5,7 @@
   border-bottom: 1px solid $dark-100;
   padding: 25px 25px 8px 25px;
   flex-grow: 1;
+  max-height: 336px;
+  overflow: scroll;
+  overflow-x: hidden;
 }
