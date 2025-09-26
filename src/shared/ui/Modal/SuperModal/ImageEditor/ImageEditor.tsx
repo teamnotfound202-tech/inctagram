@@ -8,8 +8,8 @@ import { MultipleImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/Multiple
 import { Image } from '@/shared/lib/sсhemas/posts'
 import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
 import { ZoomCrop } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ZoomCrop'
-import 'cropperjs/dist/cropper.css'
-import ReactCrop, { Crop } from 'react-image-crop'
+
+import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 
 type ImageEditorProps = {
   images: Image[]
@@ -30,6 +30,8 @@ export const ImageEditor = ({
 }: ImageEditorProps) => {
   const [openState, setOpenState] = useState<TypeOfControls>(null)
   const [crop, setCrop] = useState<Crop>()
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
+  const [scale, setScale] = useState(1)
 
   // Навигация по слайдеру
   const handleNextImage = () => {
@@ -62,14 +64,16 @@ export const ImageEditor = ({
   if (!currentImage) {
     return <div>Selected image not found</div>
   }
-
+const handleChangeScale = (value:number)=>{
+    setScale(value)
+}
   return (
     <div className={styles.imageEditor}>
       {/* Основная область редактирования */}
       <div className={styles.editorArea}>
         <div className={styles.imageContainer}>
           {openState === 'zoom' ? (
-            <ReactCrop crop={crop} onChange={c => setCrop(c)}>
+            <ReactCrop crop={crop} onChange={c => setCrop(c)} style={{ transform: `scale(${scale}) ` }}>
               <img src={currentImage.url} />
             </ReactCrop>
           ) : (
@@ -121,7 +125,7 @@ export const ImageEditor = ({
             images={images}
           />
         )}
-        {openState === 'zoom' && <ZoomCrop />}
+        {openState === 'zoom' && <ZoomCrop handleChangeScale={handleChangeScale}/>}
       </div>
     </div>
   )
