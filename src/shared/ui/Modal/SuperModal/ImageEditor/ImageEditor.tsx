@@ -9,7 +9,8 @@ import { Image } from '@/shared/lib/sсhemas/posts'
 import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
 import { ZoomCrop } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ZoomCrop'
 
-import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
+import { Crop } from 'react-image-crop'
+import { ImageCropper } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ImageCropper'
 
 type ImageEditorProps = {
   images: Image[]
@@ -30,7 +31,7 @@ export const ImageEditor = ({
 }: ImageEditorProps) => {
   const [openState, setOpenState] = useState<TypeOfControls>(null)
   const [crop, setCrop] = useState<Crop>()
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
+  const [croppedImage, setCroppedImage] = useState<string | undefined>(undefined)
   const [scale, setScale] = useState(1)
 
   // Навигация по слайдеру
@@ -64,18 +65,28 @@ export const ImageEditor = ({
   if (!currentImage) {
     return <div>Selected image not found</div>
   }
-const handleChangeScale = (value:number)=>{
+  const handleChangeScale = (value: number) => {
     setScale(value)
-}
+  }
   return (
     <div className={styles.imageEditor}>
       {/* Основная область редактирования */}
       <div className={styles.editorArea}>
         <div className={styles.imageContainer}>
           {openState === 'zoom' ? (
-            <ReactCrop crop={crop} onChange={c => setCrop(c)} style={{ transform: `scale(${scale}) ` }}>
-              <img src={currentImage.url} />
-            </ReactCrop>
+             /* <img
+                style={{
+                  transform: `scale(${scale})`,
+                }}
+                src={currentImage.url}
+                alt={`Editing ${selectedImage + 1} of ${images.length}`}
+                className={styles.editableImage}
+              />*/
+            <ImageCropper
+              scale={scale}
+              imageToCrop={currentImage.url}
+              onImageCropped={croppedImage => setCroppedImage(croppedImage)}
+            />
           ) : (
             <img
               src={currentImage.url}
@@ -125,7 +136,7 @@ const handleChangeScale = (value:number)=>{
             images={images}
           />
         )}
-        {openState === 'zoom' && <ZoomCrop handleChangeScale={handleChangeScale}/>}
+        {openState === 'zoom' && <ZoomCrop handleChangeScale={handleChangeScale} />}
       </div>
     </div>
   )
