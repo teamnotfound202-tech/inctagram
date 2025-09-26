@@ -9,6 +9,7 @@ import { ImageRatio } from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageScale/
 import { MultipleImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/MultipleImage/MultipleImage'
 import { Image } from '@/shared/lib/sсhemas/posts'
 import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
+import { ZoomCrop } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ZoomCrop'
 
 type ImageEditorProps = {
   images: Image[]
@@ -116,6 +117,7 @@ export const ImageEditor = ({
             images={images}
           />
         )}
+        {openState==='zoom' && <ZoomCrop/>}
       </div>
     </div>
   )
