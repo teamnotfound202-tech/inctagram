@@ -22,6 +22,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative; // Для позиционирования стрелочек
 }
 
 .previewImage {
@@ -54,6 +55,55 @@
 
   &.active {
     background-color: $light-100;
+  }
+}
+
+// стили для стрелочек навигации
+.sliderButton {
+  background-color: rgba($dark-500, 0.8);
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+
+  &.backArrow, &.forwardArrow {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &.backArrow {
+    left: 50%;
+    transform: translate(-120px, -50%); // Смещаем влево от центра
+  }
+
+  &.forwardArrow {
+    right: 50%;
+    transform: translate(120px, -50%); // Смещаем вправо от центра
+  }
+
+  &:disabled {
+    opacity: 0;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: rgba($dark-500, 0.9);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+
+    &:hover {
+      color: $accent-500;
+    }
   }
 }
 
@@ -226,4 +276,50 @@
   color: $light-900;
   font-size: 16px;
   text-align: center;
+}
+
+.sliderButton {
+  background-color: rgba($dark-500, 0.8);
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+
+  &.backArrow, &.forwardArrow {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &.backArrow {
+    left: 11px;
+  }
+
+  &.forwardArrow {
+    right: 11px;
+  }
+
+  &:disabled {
+    opacity: 0;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: rgba($dark-500, 0.9);
+  }
+
+  svg {
+    width: 8px;
+    height: 15px;
+    color: white;
+
+    &:hover {
+      color: $accent-500;
+    }
+  }
 }

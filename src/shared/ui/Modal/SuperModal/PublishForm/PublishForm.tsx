@@ -4,13 +4,17 @@ import { TextArea } from '@/shared/ui'
 import { filters, getFilterWithIntensity } from '@/shared/ui/Modal/SuperModal/constans/filters'
 import Image from 'next/image'
 import Pin from './../../icons/pin.svg'
+import { Images } from '@/shared/lib/sсhemas/posts'
+import BackArrow from '@/shared/ui/Modal/icons/backArrow.svg'
+import ForwardArrow from '@/shared/ui/Modal/icons/forwardArrow.svg'
 
 type PublishFormProps = {
-  images?: string[]
+  images?: Images[]
   selectedImage?: number
   onSelectImage?: (index: number) => void
   appliedFilter?: string
   filterIntensity?: number
+  imageFilters?: {[key: number]: {filter: string, intensity: number}}
 }
 
 const mockLocations = [
@@ -23,8 +27,7 @@ export const PublishForm = ({
   images = [],
   selectedImage = 0,
   onSelectImage,
-  appliedFilter,
-  filterIntensity = 100,
+  imageFilters = {},
 }: PublishFormProps) => {
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
@@ -35,13 +38,25 @@ export const PublishForm = ({
     setShowLocationSuggestions(false)
   }
 
+  // Навигация по изображениям
+  const handleNextImage = () => {
+    if (selectedImage < images.length - 1) {
+      onSelectImage?.(selectedImage + 1)
+    }
+  }
+  const handlePrevImage = () => {
+    if (selectedImage > 0) {
+      onSelectImage?.(selectedImage - 1)
+    }
+  }
+
   const getFilterStyle = () => {
-    if (!appliedFilter || appliedFilter === 'normal') return {}
-
-    const filter = filters.find(f => f.name === appliedFilter)
+    // Получаем фильтр для текущего изображения
+    const currentImageFilter = imageFilters[selectedImage]
+    if (!currentImageFilter || currentImageFilter.filter === 'normal') return {}
+    const filter = filters.find(f => f.name === currentImageFilter.filter)
     if (!filter) return {}
-
-    const filterStyle = getFilterWithIntensity(filter.cssFilter, filterIntensity)
+    const filterStyle = getFilterWithIntensity(filter.cssFilter, currentImageFilter.intensity)
     return { filter: filterStyle}
   }
 
@@ -58,7 +73,7 @@ export const PublishForm = ({
       <div className={styles.imageSection}>
         <div className={styles.imageContainer}>
           <Image
-            src={images[selectedImage]}
+            src={images[selectedImage]?.url || ''}
             alt="Preview image"
             className={styles.previewImage}
             style={getFilterStyle()}
@@ -66,6 +81,26 @@ export const PublishForm = ({
             height={400}
           />
         </div>
+
+        {/* Стрелочки навигации */}
+        {images && images.length > 1 && (
+          <>
+            <button
+              onClick={handlePrevImage}
+              disabled={selectedImage === 0}
+              className={`${styles.sliderButton} ${styles.backArrow}`}
+            >
+              <BackArrow />
+            </button>
+            <button
+              onClick={handleNextImage}
+              disabled={selectedImage === images.length - 1}
+              className={`${styles.sliderButton} ${styles.forwardArrow}`}
+            >
+              <ForwardArrow />
+            </button>
+          </>
+        )}
 
         {images.length > 1 && (
           <div className={styles.imageNavigation}>

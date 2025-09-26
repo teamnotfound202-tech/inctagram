@@ -7,11 +7,11 @@ import ForwardArrow from '../../icons/forwardArrow.svg'
 import ImageControls from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageControls/ImageControls'
 import { ImageRatio } from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageScale/ImageRatio'
 import { MultipleImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/MultipleImage/MultipleImage'
-import { Image } from '@/shared/lib/sсhemas/posts'
+import { Images } from '@/shared/lib/sсhemas/posts'
 import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
 
 type ImageEditorProps = {
-  images: Image[]
+  images: Images[]
   selectedImage: number
   isLoading: boolean
   onSelectImage: (index: number) => void

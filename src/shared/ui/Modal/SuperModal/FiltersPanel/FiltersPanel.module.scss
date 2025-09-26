@@ -26,6 +26,7 @@
   overflow: hidden;
   flex: 1;
   background: $dark-300;
+  position: relative; // Для позиционирования стрелочек
 }
 
 // стили для основного изображения
@@ -33,7 +34,6 @@
   width: 100%;
   height: 100%;
   object-fit: fill;
-  //max-height: 400px;
 }
 
 // сетка для миниатюр фильтров
@@ -43,21 +43,6 @@
   gap: 12px;
   padding: 20px;
   max-height: 400px;
-
-  // Если вдруг нужен будет скроллбар
-  // overflow-y: auto;
-  // &::-webkit-scrollbar {
-  //   width: 4px;
-  // }
-
-  // &::-webkit-scrollbar-track {
-  //   background: $dark-300;
-  // }
-
-  // &::-webkit-scrollbar-thumb {
-  //   background: $dark-100;
-  //   border-radius: 2px;
-  // }
 }
 
 //  стили для каждого элемента фильтра с hover и selected состояниями
@@ -113,25 +98,25 @@
   transition: color 0.2s ease;
 }
 
-// сообщение при отсутствии изображения если отставить проверку пришло изображение или нет
-// но по факту оно не может не придти
-// .noImageMessage {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 100%;
-//   height: 100%;
-//   color: $light-900;
-//   font-size: 16px;
-//   text-align: center;
-// }
+ //сообщение при отсутствии изображения если отставить проверку пришло изображение или нет
+ //но по факту оно не может не придти
+ .noImageMessage {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   height: 100%;
+   color: $light-900;
+   font-size: 16px;
+   text-align: center;
+ }
 
 // контейнер для слайдера интенсивности
 .intensityControl {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 16px;
+  padding: 14px;
   background-color: $dark-300;
   border-radius: 4px;
   width: 100%;
@@ -177,5 +162,88 @@
   font-size: 12px;
   color: $light-900;
   text-align: center;
+}
+
+// стили для навигации между изображениями (поверх изображения)
+.imageNavigation {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.imageDots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &.active {
+    background-color: $light-100;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+// стили для стрелочек навигации
+.sliderControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sliderButton {
+  background-color: rgba($dark-500, 0.8);
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+
+  &.backArrow, &.forwardArrow {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &.backArrow {
+    left: 11px;
+  }
+
+  &.forwardArrow {
+    right: 11px;
+  }
+
+  &:disabled {
+    opacity: 0;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: rgba($dark-500, 0.9);
+  }
+
+  svg {
+    width: 8px;
+    height: 15px;
+    color: white;
+
+    &:hover {
+      color: $accent-500;
+    }
+  }
 }
 
