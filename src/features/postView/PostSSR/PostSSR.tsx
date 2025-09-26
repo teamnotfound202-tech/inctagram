@@ -1,5 +1,6 @@
 import {Post} from "@/features/postView/api/types";
 import {PostView} from "@/features/postView/ui/PostView";
+import PostModal from "@/features/postView/PostModal/PostModal";
 
 interface Props {
     params: {
@@ -7,11 +8,13 @@ interface Props {
     };
 }
 
-export const PostSsr = async({params}:Props) => {
+export const PostSsr = async ({params}: Props) => {
     const post = await getPost(params.id);
     if (!post) return <div>Loading...</div>;
     return (
-       <PostView post={post}/>
+        <PostModal>
+            <PostView post={post}/>
+        </PostModal>
     );
 };
 
