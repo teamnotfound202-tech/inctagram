@@ -10,6 +10,7 @@ import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
 type Props = {
     comment: Comment
 };
+
 export const PostComment = ({comment}: Props) => {
     const likeHandler = () => {
         //TODO: запрос на изменение лайка
@@ -21,8 +22,8 @@ export const PostComment = ({comment}: Props) => {
         <article className={s.comment}>
             <Avatar src={comment.from?.avatars[0]?.url} alt={'avatar'} size={"small"}/>
             <div className={s.postText}>
-                <span className={s.commentAuthorName}>{comment.from.username}</span>
-                <div className={s.commentDescription}>{comment.content}</div>
+                <span className={s.commentAuthorName}>{comment.from.username}  </span>
+                <p className={s.commentDescription}>{comment.content}</p>
                 <div className={s.commentMeta}>
                     <div className={s.commentCreationTime}>{commentCreationTime}</div>
                     {comment.likeCount && <div className={s.likesCount}>Like: {comment.likeCount}</div>}
