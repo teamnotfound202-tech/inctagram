@@ -5,6 +5,7 @@ import { Step } from '@/shared/ui/Modal/SuperModal/SuperModal'
 import BackArrowIcon from '@/shared/ui/Modal/icons/backArrow.svg'
 import { Button } from '@/shared/ui'
 import { MouseEvent } from 'react'
+import { clsx } from 'clsx'
 type ModalProps = {
   title: string
   onClick: (event: MouseEvent<HTMLButtonElement>) => void
@@ -12,6 +13,7 @@ type ModalProps = {
   backClick: () => void
   type: Step
   uploadClick: () => void
+  isLoading: boolean
 }
 
 export const ModalHeader = ({
@@ -21,11 +23,15 @@ export const ModalHeader = ({
   type,
   forwarfClick,
   uploadClick,
+  isLoading
 }: ModalProps) => {
+
   return (
     <div className={s.modalTop}>
       {type !== 'upload' && (
-        <button className={s.modalCloseBtn} onClick={backClick}>
+        <button className={clsx(s.modalCloseBtn,{
+          [s.isLoading]: isLoading,
+        })} onClick={backClick}>
           <BackArrowIcon className={s.closeBtnIcon} />
         </button>
       )}
@@ -36,6 +42,7 @@ export const ModalHeader = ({
         </button>
       ) : (
         <Button
+          disabled={isLoading}
           onClick={type === 'publish' ? uploadClick : forwarfClick}
           variant={'text'}
           className={s.photoEditingNextBtn}

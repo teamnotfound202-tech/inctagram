@@ -77,7 +77,7 @@ export const ImageCropper = ({ imageToCrop, onImageCropped, scale }: Props) => {
           const croppedImage = await getCroppedImage(imageRef, crop, 'croppedImage.jpeg')
           onImageCropped(croppedImage)
         } catch (error) {
-          console.error('Error cropping image:', error)
+          console.log('Error cropping image:', error)
         }
       }
     },

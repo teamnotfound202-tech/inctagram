@@ -21,7 +21,7 @@ type Props = {
   title: string
   callback: (type: TypeOfModalWindow) => void
 }
-export type Step = 'upload' | 'edit' | 'filters' | 'publish'
+export type Step = 'upload' | 'edit' | 'filters' | 'publish' | 'noevents'
 export const SuperModal = ({ title, callback }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
   const [deletePosts] = useDeletePostsImageMutation()
@@ -33,17 +33,18 @@ export const SuperModal = ({ title, callback }: Props) => {
   const [uploadedImages, setUploadedImages] = useState<Image[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
   const modalRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    setUploadedImages(data?.images || [])
-  }, [data])
-  const handleImageUpload = (files: File[], step: Step) => {
-    setCurrentStep(step)
-    setLocalFiles(files)
-    setSelectedImage(0)
-    uploadImage(files)
-  }
-  const localUpload = (files: File[]) => {
-    const newFiles = [...localFiles, ...files]
+
+  const handleImageUpload = (files: File[], step: Step = 'noevents') => {
+    const filteredFiles = files.filter(newFile =>
+      !localFiles.some(existingFile =>
+        existingFile.name === newFile.name &&
+        existingFile.size === newFile.size &&
+        existingFile.lastModified === newFile.lastModified
+      )
+    )
+    const newFiles = [...localFiles,...filteredFiles]
+
+
     if (newFiles.length > 10) {
       const remainingSlots = 10 - localFiles.length
       const errorMessage = `You can add only add ${remainingSlots} more image(s)`
@@ -54,7 +55,7 @@ export const SuperModal = ({ title, callback }: Props) => {
       return
     }
     const tempId = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-    const tempImages = files.map((file, index) => ({
+    const tempImages = filteredFiles.map((file, index) => ({
       url: URL.createObjectURL(file),
       width: 0,
       height: 0,
@@ -66,22 +67,27 @@ export const SuperModal = ({ title, callback }: Props) => {
     const tempUploadImages = [...uploadedImages, ...tempImages]
     setLocalFiles(newFiles)
     setUploadedImages(tempUploadImages)
+    setSelectedImage(0)
+    if (step !== 'noevents') {
+      setCurrentStep(step)
+      uploadImage(files)
+    }
 
   }
 
-  const handleDeletePosts = (postsId: string,index:number) => {
+  const handleDeletePosts = (postsId: string, index: number) => {
     const stateAfterDelete = uploadedImages.filter(image => image.uploadId !== postsId)
     const localFilesAfterDeleting = localFiles.filter((file, i) => i !== index)
     setUploadedImages(stateAfterDelete)
     setLocalFiles(localFilesAfterDeleting)
-    deletePosts({uploadId:postsId})
-
+    //deletePosts({ uploadId: postsId })
   }
   const handleOpendraft = () => {
     setCurrentStep('edit')
   }
 
   const handleNext = () => {
+
     switch (currentStep) {
       case 'edit':
         handleImageUpload(localFiles, 'filters')
@@ -147,6 +153,7 @@ export const SuperModal = ({ title, callback }: Props) => {
     <div className={s.overlay} onClick={handleOverlayClick}>
       <div className={s.modal} ref={modalRef}>
         <ModalHeader
+          isLoading={isLoading}
           forwarfClick={handleNext}
           uploadClick={handlePublish}
           backClick={handleBack}
@@ -161,9 +168,8 @@ export const SuperModal = ({ title, callback }: Props) => {
 
           {currentStep === 'edit' && (
             <ImageEditor
-
               deletePost={handleDeletePosts}
-              onUpload={localUpload}
+              onUpload={handleImageUpload}
               isLoading={isLoading}
               images={uploadedImages || []}
               selectedImage={selectedImage}
@@ -174,8 +180,8 @@ export const SuperModal = ({ title, callback }: Props) => {
           {currentStep === 'publish' && (
             <PublishForm
             /*images={images}
-                        filters={filters}
-                        onPublish={() => {/!* API call *!/}}*/
+                          filters={filters}
+                          onPublish={() => {/!* API call *!/}}*/
             />
           )}
         </div>

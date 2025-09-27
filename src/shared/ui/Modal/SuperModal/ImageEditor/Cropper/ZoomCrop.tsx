@@ -14,7 +14,7 @@ export const ZoomCrop = ({handleChangeScale}:Props) => {
 
   return (
     <div className={styles.zoomContainer}>
-      <Slider.Root onValueChange={handleZoomChange} className={styles.Root}  max={3} min={0.1} step={0.1}>
+      <Slider.Root onValueChange={handleZoomChange} className={styles.Root} defaultValue={[1]} max={3} min={0.1} step={0.1}>
         <Slider.Track className={styles.Track}>
           <Slider.Range  className={styles.Range} />
         </Slider.Track>
