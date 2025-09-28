@@ -5,19 +5,17 @@ import {
     PostDescriptionAsComment
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostDescriptionAsComment";
 import {Post} from "@/features/postView/api/types";
-import {ScrollBox} from "@/shared/ui";
 
 type Props = {
-    avatarOwner: string
     post: Post
 };
-export const PostComments = ({avatarOwner, post}: Props) => {
+export const PostComments = ({ post}: Props) => {
     const {data} = useFetchPostCommentsQuery(post.id)
 
     //TODO: добавить глобальную обработку Loading*/
     return (
         <div className={s.commentsWrapper}>
-          {/*  <ScrollBox>*/}
+          {/*  <ScrollBox>*/}       {/*TODO: нужен ли здесь скролл? В макете его нет, но комментарии должны прокручиваться*/}
                 <PostDescriptionAsComment authorName={post.userName}
                                           avatarUrl={post.avatarOwner}
                                           postContent={post.description}

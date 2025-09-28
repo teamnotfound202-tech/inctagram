@@ -19,6 +19,22 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  // Конфигурация для компонента Image
+  images: {
+    // Разрешить загрузку изображений с любого домена
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
+    ],
+    // Альтернативный вариант (устаревший, но все еще работает)
+    // domains: ['*'], // не рекомендуется для продакшена
+  },
 }
 
 export default nextConfig

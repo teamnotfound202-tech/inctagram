@@ -2,16 +2,11 @@ import {PostView} from "@/features/postView/ui/PostSSR/PostView/PostView";
 import PostModal from "@/features/postView/PostModal/PostModal";
 import {getPost} from "@/features/postView/utils/getPost";
 
-interface Props {
-    params: {
-        id: string;
-    };
-}
-
-export const PostSsr = async ({params}: Props) => {
+export const PostSsr = async ({params}: { params: Promise<{ id: string }> }) => {
+    const {id} = await params
     let post
     try {
-        post = await getPost(params.id);
+        post = await getPost(id);
     } catch (err) {
         return <div> Такого поста не существует</div>;
     }

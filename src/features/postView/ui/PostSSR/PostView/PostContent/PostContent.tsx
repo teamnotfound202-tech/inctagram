@@ -14,7 +14,7 @@ export const PostContent = ({post}: Props) => {
     return (
         <div className={s.postContentWrapper}>
             <PostTitle avatarOwner={post.avatarOwner} userName={post.userName} commentOwnerId={post.ownerId}/>
-            <PostComments avatarOwner={post.avatarOwner} post={post}/>
+            <PostComments post={post}/>
             <PostMetaInfWithControls
                 avatars={[post.avatarOwner]}
                 likesCount={post.likesCount}

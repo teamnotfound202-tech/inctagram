@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import s from "./PostModal.module.scss"
 import Close from "./Icons/Close.svg"
 
@@ -15,7 +15,7 @@ export default function PostModal({ children }: { children: React.ReactNode }) {
         <div className={s.modalWrapper}>
             <div
                 className={s.modalOverlay}
-                onClick={onClose} // Закрытие по клику на фон TODO: заменить на кнопку крестик
+                onClick={onClose} // Закрытие по клику на фон
             />
             <div className={s.modalContent}>
                 {children}
