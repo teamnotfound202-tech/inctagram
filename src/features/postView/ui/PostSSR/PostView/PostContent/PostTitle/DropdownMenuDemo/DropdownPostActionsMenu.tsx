@@ -6,15 +6,24 @@ import Edit from "../../../Icons/edit-2-outline.svg"
 import Unfollow from "../../../Icons/person-remove-outline.svg"
 import s from "./DropdownPostActionsMenu.module.scss";
 import DotsHorizontalIcon from "@/features/postView/ui/PostSSR/PostView/Icons/DotsHorizontal.svg";
+import {useAppSelector} from "@/shared/lib/hooks/hooks";
+import {selectCurrentMessages} from "@/shared/api/appSlice";
 
 type Props = {
     isPostOwner: boolean
 }
 
 const DropdownPostActionsMenu = ({isPostOwner}: Props) => {
-    const [bookmarksChecked, setBookmarksChecked] = React.useState(true);
-    const [urlsChecked, setUrlsChecked] = React.useState(false);
-    const [person, setPerson] = React.useState("pedro");
+    const currentLanguage = useAppSelector(selectCurrentMessages)
+
+    const editHandler = () => {
+    }
+    const deleteHandler = () => {
+    }
+    const unfollowHandler = () => {
+    }
+    const copyLinkHandler = () => {
+    }
 
     return (
         <DropdownMenu.Root>
@@ -27,24 +36,24 @@ const DropdownPostActionsMenu = ({isPostOwner}: Props) => {
             <DropdownMenu.Portal>
                 <DropdownMenu.Content className={s.Content} align={'end'} alignOffset={0}>
                     {isPostOwner && <>
-                        <DropdownMenu.Item className={s.Item}>
+                        <DropdownMenu.Item className={s.Item} onClick={editHandler}>
                             <div><Edit/></div>
-                            Edit Post
+                            {currentLanguage.posts.dropdownMenu.editPost}
                         </DropdownMenu.Item>
-                        <DropdownMenu.Item className={s.Item}>
+                        <DropdownMenu.Item className={s.Item} onClick={deleteHandler}>
                             <div><Bucket/></div>
-                            Delete Post
+                            {currentLanguage.posts.dropdownMenu.deletePost}
                         </DropdownMenu.Item>
                     </>}
 
                     {!isPostOwner && <>
-                        <DropdownMenu.Item className={s.Item}>
+                        <DropdownMenu.Item className={s.Item} onClick={unfollowHandler}>
                             <div><Unfollow/></div>
-                            Unfollow
+                            {currentLanguage.posts.dropdownMenu.unfollow}
                         </DropdownMenu.Item>
-                        <DropdownMenu.Item className={s.Item}>
+                        <DropdownMenu.Item className={s.Item} onClick={copyLinkHandler}>
                             <div><Copy/></div>
-                            Copy Link
+                            {currentLanguage.posts.dropdownMenu.copyLink} {/*TODO: fix-при перезагрузке страницы язык сбрасывается, нужно сохранять его в localStorage*/}
                         </DropdownMenu.Item>
                     </>}
                 </DropdownMenu.Content>

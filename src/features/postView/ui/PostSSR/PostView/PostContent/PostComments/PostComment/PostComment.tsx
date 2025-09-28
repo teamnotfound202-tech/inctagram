@@ -5,6 +5,8 @@ import Heart from "@/features/postView/ui/PostSSR/PostView/Icons/heart.svg";
 import DisLike from "@/features/postView/ui/PostSSR/PostView/Icons/DisLike.svg";
 import {Comment} from "@/features/postView/api/types";
 import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
+import {useAppSelector} from "@/shared/lib/hooks/hooks";
+import {selectCurrentMessages} from "@/shared/api/appSlice";
 
 
 type Props = {
@@ -12,6 +14,8 @@ type Props = {
 };
 
 export const PostComment = ({comment}: Props) => {
+    const currentLanguage = useAppSelector(selectCurrentMessages)
+
     const likeHandler = () => {
         //TODO: запрос на изменение лайка
     }
@@ -27,7 +31,7 @@ export const PostComment = ({comment}: Props) => {
                 <div className={s.commentMeta}>
                     <div className={s.commentCreationTime}>{commentCreationTime}</div>
                     {comment.likeCount && <div className={s.likesCount}>Like: {comment.likeCount}</div>}
-                    <span className={s.answerLink}>Answer</span> {/*TODO: добавить слова в словарь*/}
+                    <span className={s.answerLink}>{currentLanguage.posts.answer}</span> {/*TODO: добавить слова в словарь*/}
                     <div className={s.commentAnswer}> answerCount {comment.answerCount}</div>
                     {/*TODO доделать открытие ответов комментариев*/}
                 </div>

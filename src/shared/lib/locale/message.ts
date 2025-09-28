@@ -119,6 +119,12 @@ export interface Messages {
     publish:string;
     answer: string;
     addComment:string;
+    dropdownMenu:{
+      editPost:string,
+      deletePost:string,
+      unfollow:string,
+      copyLink:string,
+    },
   };
 
   // Уведомления
@@ -312,6 +318,13 @@ export const messages: Record<Language, Messages> = {
       publish:'Publish',
       answer: 'Answer',
       addComment:'Add a Comment...',
+      dropdownMenu:{
+        editPost:'Edit Post',
+        deletePost:'Delete Post',
+        unfollow:'Unfollow',
+        copyLink:'Copy Link'
+      }
+
     },
 
     notifications: {
@@ -498,6 +511,12 @@ export const messages: Record<Language, Messages> = {
       publish:'Опубликовать',
       answer: 'Ответить',
       addComment:'Добавить комментарий...',
+      dropdownMenu:{
+        editPost:'Редактировать пост',
+        deletePost:'Удалить пост',
+        unfollow:'Отписаться',
+        copyLink:'Копировать ссылку'
+      }
     },
 
     notifications: {

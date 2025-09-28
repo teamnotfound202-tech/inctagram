@@ -1,6 +1,6 @@
-import {Post} from "@/features/postView/api/types";
 import {PostView} from "@/features/postView/ui/PostSSR/PostView/PostView";
 import PostModal from "@/features/postView/PostModal/PostModal";
+import {getPost} from "@/features/postView/utils/getPost";
 
 interface Props {
     params: {
@@ -25,14 +25,3 @@ export const PostSsr = async ({params}: Props) => {
     );
 };
 
-async function getPost(postId: string): Promise<Post> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/id/${postId}`, {
-        cache: 'no-store',
-    });
-
-    if (!res.ok) {
-        throw new Error('Failed to fetch posts');
-    }
-
-    return res.json();
-}

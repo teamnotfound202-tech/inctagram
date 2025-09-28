@@ -9,9 +9,10 @@ type Props = {
 }
 
 export const PostView = ({post}: Props) => {
+
     return (
         <div className={s.postWrapper}>
-            <PostImage imageUrl={post.images[0].url}/>
+            <PostImage imageUrl={post.images[0].url}/>{/*TODO: добавить слайдер*/}
             <PostContent post={post}/>
         </div>
     );
