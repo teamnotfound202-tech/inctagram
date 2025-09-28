@@ -1,11 +1,11 @@
 import { Slider } from 'radix-ui'
-import styles from'./ZoomCrop.module.scss'
-import { ChangeEvent, useState } from 'react'
+import styles from './ZoomCrop.module.scss'
+
 type Props = {
-  handleChangeScale: (value:number) => void
+  handleChangeScale: (value: number) => void
 }
 export const ZoomCrop = ({handleChangeScale}:Props) => {
-  const [zoomLevel, setZoomLevel] = useState(100);
+
 
   const handleZoomChange = (value:number[]) => {
     handleChangeScale(value[0])

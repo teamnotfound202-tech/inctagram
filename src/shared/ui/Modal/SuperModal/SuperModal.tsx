@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import s from '../Modal.module.scss'
 import { ModalHeader } from '@/shared/ui/Modal/SuperModal/ModalHeader/ModalHeader'
 import { Modal } from '@/shared/ui/Modal/Modal'
@@ -26,8 +26,8 @@ export const SuperModal = ({ title, callback }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
   const [deletePosts] = useDeletePostsImageMutation()
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
-
   const [currentStep, setCurrentStep] = useState<Step>('upload')
+
   const [exitModalIsOpen, setExitModalIsOpen] = useState(false)
   const [localFiles, setLocalFiles] = useState<File[]>([])
   const [uploadedImages, setUploadedImages] = useState<Image[]>([])
@@ -42,8 +42,7 @@ export const SuperModal = ({ title, callback }: Props) => {
         existingFile.lastModified === newFile.lastModified
       )
     )
-    const newFiles = [...localFiles,...filteredFiles]
-
+    const newFiles = [...localFiles, ...filteredFiles]
 
     if (newFiles.length > 10) {
       const remainingSlots = 10 - localFiles.length
@@ -70,24 +69,42 @@ export const SuperModal = ({ title, callback }: Props) => {
     setSelectedImage(0)
     if (step !== 'noevents') {
       setCurrentStep(step)
-      uploadImage(files)
+      uploadImage(localFiles)
     }
-
   }
+
+  const handleImageUpdateByCrop = useCallback((index: number, updatedImage: Image, updatedFile?: File) => {
+    setUploadedImages(prev => {
+      const updated = [...prev]
+      updated[index] = updatedImage
+      return updated
+    })
+    if (updatedFile) {
+      setLocalFiles(prev => {
+        const updated = [...prev]
+        updated[index] = updatedFile
+        return updated
+      })
+    }
+  }, [])
 
   const handleDeletePosts = (postsId: string, index: number) => {
     const stateAfterDelete = uploadedImages.filter(image => image.uploadId !== postsId)
     const localFilesAfterDeleting = localFiles.filter((file, i) => i !== index)
     setUploadedImages(stateAfterDelete)
     setLocalFiles(localFilesAfterDeleting)
+    if (stateAfterDelete.length === 0) {
+      setCurrentStep('upload')
+      setSelectedImage(0)
+    }
     //deletePosts({ uploadId: postsId })
   }
+
   const handleOpendraft = () => {
-    setCurrentStep('edit')
-  }
+          setCurrentStep('edit')
+    }
 
   const handleNext = () => {
-
     switch (currentStep) {
       case 'edit':
         handleImageUpload(localFiles, 'filters')
@@ -124,17 +141,22 @@ export const SuperModal = ({ title, callback }: Props) => {
     callback(null)
   }
 
-  const handlerModalCloseWithSave = () => {
-    //дописать логику сохранения изменений
-    console.log('try to work,baby')
+  const handlerModalCloseWithSave = async () => {
+  handleExitingModal()
+    await uploadImage(localFiles).finally(()=>callback(null))
   }
+
   const handleExitingModal = () => {
     setExitModalIsOpen(false)
   }
+
   const handleDiscard = () => {
     setCurrentStep('upload')
+    setLocalFiles([])
+    setUploadedImages([])
     setExitModalIsOpen(false)
   }
+
   const handlePublish = () => {
     //логика отправик на серверд
     console.log('upload to server')
@@ -144,10 +166,10 @@ export const SuperModal = ({ title, callback }: Props) => {
     currentStep === 'upload'
       ? title
       : currentStep === 'edit'
-      ? 'Cropping'
-      : currentStep === 'filters'
-      ? 'Filters'
-      : 'Publication'
+        ? 'Cropping'
+        : currentStep === 'filters'
+          ? 'Filters'
+          : 'Publication'
 
   return (
     <div className={s.overlay} onClick={handleOverlayClick}>
@@ -174,14 +196,15 @@ export const SuperModal = ({ title, callback }: Props) => {
               images={uploadedImages || []}
               selectedImage={selectedImage}
               onSelectImage={setSelectedImage}
+              onImageUpdate={handleImageUpdateByCrop}
             />
           )}
           {currentStep === 'filters' && <FiltersPanel images={uploadedImages || []} />}
           {currentStep === 'publish' && (
             <PublishForm
-            /*images={images}
-                          filters={filters}
-                          onPublish={() => {/!* API call *!/}}*/
+              /*images={images}
+                            filters={filters}
+                            onPublish={() => {/!* API call *!/}}*/
             />
           )}
         </div>

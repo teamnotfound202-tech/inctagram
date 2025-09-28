@@ -4,17 +4,16 @@ import 'react-image-crop/dist/ReactCrop.css'
 
 type Props = {
   imageToCrop: string
-  onImageCropped: (croppedImage: string) => void
+  onImageCropped: (croppedImageFile: File, croppedImageUrl: string) => void // ✅ Теперь возвращаем File и URL
   scale: number
+  originalFile?: File //  Добавляем оригинальный файл для замены
 }
 
-// Используем тип Crop из библиотеки и расширяем его если нужно
 type CropConfig = Crop & {
   aspect?: number
 }
 
-export const ImageCropper = ({ imageToCrop, onImageCropped, scale }: Props) => {
-  // Инициализируем с правильными свойствами
+export const ImageCropper = ({ imageToCrop, onImageCropped, scale, originalFile }: Props) => {
   const [cropConfig, setCropConfig] = useState<CropConfig>({
     unit: '%',
     width: 30,
@@ -26,62 +25,76 @@ export const ImageCropper = ({ imageToCrop, onImageCropped, scale }: Props) => {
 
   const [imageRef, setImageRef] = useState<HTMLImageElement | null>(null)
 
-  // Функция для получения обрезанного изображения
-  const getCroppedImage = useCallback(
-    (sourceImage: HTMLImageElement, cropConfig: PixelCrop, fileName: string): Promise<string> => {
-      return new Promise((resolve, reject) => {
-        const canvas = document.createElement('canvas')
-        const scaleX = sourceImage.naturalWidth / sourceImage.width
-        const scaleY = sourceImage.naturalHeight / sourceImage.height
+  //  Функция для преобразования Blob в File
+  const blobToFile = (blob: Blob, fileName: string): File => {
+    return new File([blob], fileName, {
+      type: blob.type,
+      lastModified: Date.now(),
+    })
+  }
 
-        canvas.width = cropConfig.width
-        canvas.height = cropConfig.height
-        const ctx = canvas.getContext('2d')
+  //  Функция для получения обрезанного изображения как File
+  const getCroppedImageAsFile = useCallback(
+      (sourceImage: HTMLImageElement, cropConfig: PixelCrop, fileName: string): Promise<{ file: File; url: string }> => {
+        return new Promise((resolve, reject) => {
+          const canvas = document.createElement('canvas')
+          const scaleX = sourceImage.naturalWidth / sourceImage.width
+          const scaleY = sourceImage.naturalHeight / sourceImage.height
 
-        if (!ctx) {
-          reject(new Error('Failed to get canvas context'))
-          return
-        }
+          canvas.width = cropConfig.width
+          canvas.height = cropConfig.height
+          const ctx = canvas.getContext('2d')
 
-        ctx.drawImage(
-          sourceImage,
-          cropConfig.x * scaleX,
-          cropConfig.y * scaleY,
-          cropConfig.width * scaleX,
-          cropConfig.height * scaleY,
-          0,
-          0,
-          cropConfig.width,
-          cropConfig.height
-        )
-
-        canvas.toBlob(blob => {
-          if (!blob) {
-            reject('Canvas is empty')
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'))
             return
           }
 
-          const croppedImageUrl = URL.createObjectURL(blob)
-          resolve(croppedImageUrl)
-        }, 'image/jpeg')
-      })
-    },
-    []
+          ctx.drawImage(
+              sourceImage,
+              cropConfig.x * scaleX,
+              cropConfig.y * scaleY,
+              cropConfig.width * scaleX,
+              cropConfig.height * scaleY,
+              0,
+              0,
+              cropConfig.width,
+              cropConfig.height
+          )
+
+          canvas.toBlob(blob => {
+            if (!blob) {
+              reject(new Error('Canvas is empty'))
+              return
+            }
+
+            //  Создаем File из Blob
+            const file = blobToFile(blob, fileName)
+            const url = URL.createObjectURL(blob)
+
+            resolve({ file, url })
+          }, 'image/jpeg')
+        })
+      },
+      []
   )
 
   // Функция для обработки кадрирования
   const cropImage = useCallback(
-    async (crop: PixelCrop) => {
-      if (imageRef && crop.width && crop.height) {
-        try {
-          const croppedImage = await getCroppedImage(imageRef, crop, 'croppedImage.jpeg')
-          onImageCropped(croppedImage)
-        } catch (error) {
-          console.log('Error cropping image:', error)
+      async (crop: PixelCrop) => {
+        if (imageRef && crop.width && crop.height) {
+          try {
+            //  Получаем и File и URL
+            const { file, url } = await getCroppedImageAsFile(imageRef, crop, 'croppedImage.jpeg')
+
+            //  Передаем оба значения в callback
+            onImageCropped(file, url)
+          } catch (error) {
+            console.log('Error cropping image:', error)
+          }
         }
-      }
-    },
-    [imageRef, getCroppedImage, onImageCropped]
+      },
+      [imageRef, getCroppedImageAsFile, onImageCropped]
   )
 
   // Обработчики событий
@@ -90,10 +103,10 @@ export const ImageCropper = ({ imageToCrop, onImageCropped, scale }: Props) => {
   }, [])
 
   const handleCropComplete = useCallback(
-    (crop: PixelCrop) => {
-      cropImage(crop)
-    },
-    [cropImage]
+      (crop: PixelCrop) => {
+        cropImage(crop)
+      },
+      [cropImage]
   )
 
   const handleCropChange = useCallback((crop: Crop) => {
@@ -101,24 +114,24 @@ export const ImageCropper = ({ imageToCrop, onImageCropped, scale }: Props) => {
   }, [])
 
   return (
-    <ReactCrop
-      crop={cropConfig}
-      onChange={handleCropChange}
-      onComplete={handleCropComplete}
-      aspect={cropConfig.aspect}
-    >
-      <img
-        src={imageToCrop}
-        onLoad={e => handleImageLoaded(e.currentTarget)}
-        crossOrigin="anonymous"
-        alt="Image to crop"
-        style={{
-          width:'492px',
-          height:'100%',
-          transform: `scale(${scale})`,
-        }}
-      />
-    </ReactCrop>
+      <ReactCrop
+          crop={cropConfig}
+          onChange={handleCropChange}
+          onComplete={handleCropComplete}
+          aspect={cropConfig.aspect}
+      >
+        <img
+            src={imageToCrop}
+            onLoad={e => handleImageLoaded(e.currentTarget)}
+            crossOrigin="anonymous"
+            alt="Image to crop"
+            style={{
+              width: '492px',
+              height: '500px',
+              transform: `scale(${scale})`,
+            }}
+        />
+      </ReactCrop>
   )
 }
 

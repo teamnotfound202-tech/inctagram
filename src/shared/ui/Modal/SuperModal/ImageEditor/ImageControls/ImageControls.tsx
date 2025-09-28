@@ -12,10 +12,14 @@ import { selectCurrentMessages } from '@/shared/api/appSlice'
 type Props = {
   onClickHandler: (type: TypeOfControls) => void
   openState: TypeOfControls
-  setCroppedImage: () => void
+   onApplyChanges?: () => void //
+  onCancelChanges?: () => void //
+  hasUnsavedChanges?: boolean //
 }
 
-export const ImageControls = ({ onClickHandler, openState,setCroppedImage }: Props) => {
+export const ImageControls = ({ onClickHandler, openState,  onApplyChanges,
+                                onCancelChanges,
+                                hasUnsavedChanges = false, }: Props) => {
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
   return (
@@ -50,8 +54,9 @@ export const ImageControls = ({ onClickHandler, openState,setCroppedImage }: Pro
           })}
         />
       </button>
-      {openState==='zoom' &&<Button
-        onClick={()=>setCroppedImage()}
+      {(openState==='zoom' && hasUnsavedChanges)&&
+        <Button
+        onClick={onApplyChanges}
         variant={'text'}
         className={s.saveCroppedImage}
       >

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useCallback, useRef, useState} from 'react'
 import styles from './ImageEditor.module.scss'
 import BackArrow from '../../icons/backArrow.svg'
 import ForwardArrow from '../../icons/forwardArrow.svg'
@@ -19,6 +19,7 @@ type ImageEditorProps = {
   onSelectImage: (index: number) => void
   onUpload: (files: File[]) => void
   deletePost: (id: string, inex: number) => void
+  onImageUpdate: (index: number, updatedImage: Image, updatedFile?: File) => void
 }
 export type TypeOfControls = 'ratio' | 'zoom' | 'multiple' | null
 export const ImageEditor = ({
@@ -28,45 +29,77 @@ export const ImageEditor = ({
   isLoading,
   onUpload,
   deletePost,
+    onImageUpdate
 }: ImageEditorProps) => {
   const [openState, setOpenState] = useState<TypeOfControls>(null)
 const [ratio, setRatio] = useState<AspectRatio>('base')
-  const [croppedImage, setCroppedImage] = useState<string | undefined>(undefined)
-  const [croppedImageIsSettled, setCroppedImageIsSettled] = useState<boolean>(false)
+  const [temporaryCroppedImage, setTemporaryCroppedImage] = useState<string | undefined>(undefined) // ✅ Временное обрезанное изображение
+  const [temporaryCroppedFile, setTemporaryCroppedFile] = useState<File | undefined>(undefined) // ✅ Временный файл
   const [scale, setScale] = useState(1)
+  //const cropperRef = useRef<any>(null)
+  const currentImage = images[selectedImage]
 
+  const handleTemporaryCrop = useCallback((croppedFile: File, croppedImageUrl: string) => {
+    setTemporaryCroppedImage(croppedImageUrl)
+    setTemporaryCroppedFile(croppedFile)
+  }, [])
+  //  Функция для применения изменений
+  const applyChanges = useCallback(() => {
+    if (temporaryCroppedImage && temporaryCroppedFile) {
+      // Создаем обновленный объект Image
+      const updatedImage: Image = {
+        ...currentImage,
+        url: temporaryCroppedImage,
+        fileSize: temporaryCroppedFile.size,
+        // Можно добавить другие обновленные свойства
+      }
+
+      onImageUpdate(selectedImage, updatedImage, temporaryCroppedFile)
+
+      setTemporaryCroppedImage(undefined)
+      setTemporaryCroppedFile(undefined)
+    }
+  }, [temporaryCroppedImage, temporaryCroppedFile, currentImage, selectedImage, onImageUpdate])
+
+  //  Функция для отмены изменений
+  const cancelChanges = useCallback(() => {
+    setTemporaryCroppedImage(undefined)
+    setTemporaryCroppedFile(undefined)
+  }, [])
 
   const handleNextImage = () => {
     if (selectedImage < images.length - 1) {
       onSelectImage(selectedImage + 1)
     }
   }
+  const handleDeletePost = useCallback((id: string, index: number) => {
+       cancelChanges()
 
+    deletePost(id, index)
+
+    if (index === selectedImage && images.length > 1) {
+      const newSelectedIndex = index === 0 ? 0 : index - 1
+      onSelectImage(newSelectedIndex)
+    }
+  }, [deletePost, selectedImage, images.length, onSelectImage, cancelChanges])
   const handlePrevImage = () => {
     if (selectedImage > 0) {
       onSelectImage(selectedImage - 1)
     }
   }
   const openControlsHandler = (type: TypeOfControls) => {
+    cancelChanges()
     setOpenState(openState === type ? null : type)
   }
 
-
-  if (isLoading) {
-    return <ModalSkeleton />
-  }
-
-
-  if (!images || images.length === 0) {
-    return <div>No images to edit</div>
-  }
-
-
-  const currentImage = images[selectedImage]
-  if (!currentImage) {
-    return <div>Selected image not found</div>
+  const resetEditingImages=(index:number)=>{
+    if (hasUnsavedChanges) {
+      cancelChanges()
+    }
+    onSelectImage(index)
   }
   const handleChangeScale = (value: number) => {
+
     setScale(value)
   }
   const handleRatioChange = (ratio: AspectRatio) => {
@@ -81,6 +114,17 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
     }
     return ratioMap[ratio] || 'base'
   }
+  if (isLoading) {
+    return <ModalSkeleton />
+  }
+  if (!currentImage) {
+    return <div>Selected image not found</div>
+  }
+  if (!images || images.length === 0) {
+    return <div>No images to edit</div>
+  }
+  const displayImageUrl = temporaryCroppedImage || currentImage.url|| ''
+  const hasUnsavedChanges = !!temporaryCroppedImage
   return (
     <div className={styles.imageEditor}>
       <div className={styles.editorArea}>
@@ -92,12 +136,12 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
             <ImageCropper
               scale={scale}
               imageToCrop={currentImage.url}
-              onImageCropped={croppedImage => setCroppedImage(croppedImage)}
+              onImageCropped={handleTemporaryCrop}
             />
           ) : (
 
             <img
-              src={croppedImageIsSettled ? croppedImage: currentImage.url}
+              src={displayImageUrl}
               alt={`Editing ${selectedImage + 1} of ${images.length}`}
               className={styles.editableImage}
             />
@@ -119,7 +163,7 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
                 <button
                   key={index}
                   className={`${styles.dot} ${index === selectedImage ? styles.active : ''}`}
-                  onClick={() => onSelectImage(index)}
+                  onClick={() => resetEditingImages(index)}
                 />
               ))}
             </div>
@@ -133,13 +177,17 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
           </div>
         )}
 
-        <ImageControls setCroppedImage={()=>setCroppedImageIsSettled(true)} openState={openState} onClickHandler={openControlsHandler} />
+        <ImageControls   onApplyChanges={applyChanges}
+                         onCancelChanges={cancelChanges}
+                         hasUnsavedChanges={hasUnsavedChanges}
+                         openState={openState}
+                         onClickHandler={openControlsHandler} />
 
         {openState === 'ratio' && <ImageRatio onRatioChange={handleRatioChange}/>}
         {openState === 'multiple' && (
           <MultipleImage
             addNewFiles={onUpload}
-            deletePost={deletePost}
+            deletePost={handleDeletePost}
             selectedImage={selectedImage}
             images={images}
           />
