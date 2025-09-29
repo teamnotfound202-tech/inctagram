@@ -19,11 +19,7 @@ type Props = {
 
 export const ProfilePosts =  ({postsData, userId}: Props) => {
   const dataFromCache = useAppSelector((state) => {
-    const endpoint = publicUserApi.endpoints.getPostsForUser;
-
-    const selector = endpoint.select({ userId });
-    const cachedData = selector(state);
-
+    const cachedData = publicUserApi.endpoints.getPostsForUser?.select({ userId })?.(state);
     return {
       ...cachedData,
       items: cachedData?.data?.pages.flatMap(post => post.items),
