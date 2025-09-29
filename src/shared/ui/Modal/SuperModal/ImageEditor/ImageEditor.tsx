@@ -11,6 +11,7 @@ import { ZoomCrop } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ZoomC
 
 import { Crop } from 'react-image-crop'
 import { ImageCropper } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ImageCropper'
+import { ModifiedImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/prepareImagesToStorage'
 
 type ImageEditorProps = {
   images: Image[]
@@ -19,7 +20,7 @@ type ImageEditorProps = {
   onSelectImage: (index: number) => void
   onUpload: (files: File[]) => void
   deletePost: (id: string, inex: number) => void
-  onImageUpdate: (index: number, updatedImage: Image, updatedFile?: File) => void
+  onImageUpdate: (index: number, updatedImage: ModifiedImage, updatedFile?: File) => void
 }
 export type TypeOfControls = 'ratio' | 'zoom' | 'multiple' | null
 export const ImageEditor = ({
