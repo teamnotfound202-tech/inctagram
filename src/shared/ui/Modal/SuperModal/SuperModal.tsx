@@ -12,11 +12,10 @@ import {
   useDeletePostsImageMutation,
   useUploadPostsImagesMutation,
 } from '@/features/posts/api/posts-api'
+import { MouseEvent } from 'react'
+import { Image } from '@/shared/lib/sсhemas/posts'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
-import { createTempFile } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile'
-import { Image } from '@/shared/lib/sсhemas/posts'
-
 
 type Props = {
   title: string
@@ -150,8 +149,8 @@ export const SuperModal = ({ title, callback }: Props) => {
   }
 
   const handlerModalCloseWithSave = async () => {
-    handleExitingModal()
-
+  handleExitingModal()
+    await uploadImage(localFiles).finally(()=>callback(null))
   }
 
   const handleExitingModal = () => {
