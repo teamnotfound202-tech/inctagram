@@ -5,6 +5,7 @@ import { DynamicIcon } from '@/widgets/Sidebar/SidebarItem/DinamicIcon/DinamicIc
 import s from './SidebarItem.module.scss'
 import Link from 'next/link'
 import clx from 'classnames'
+import { usePathname } from 'next/navigation'
 
 type Props = {
   link: string
@@ -16,6 +17,8 @@ type Props = {
 }
 
 export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible,spanText }: Props) => {
+  const pathname = usePathname();
+
   return (
     <li
       className={clx(s.sidebarItem, {
@@ -33,7 +36,9 @@ export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible,s
           <span className={s.sidebarItemtext}>{spanText}</span>
         </Button>
       ) : (
-        <Link href={link} className={s.sidebarItemLink}>
+        <Link href={link} className={clx(s.sidebarItemLink, {
+          [s.active]: pathname === link
+        })}>
           <DynamicIcon text={text} />
           <span className={s.sidebarItemtext}>{spanText}</span>
         </Link>

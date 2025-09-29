@@ -23,7 +23,6 @@ export const Sidebar = () => {
   const router = useRouter()
   const [isModalOpen, setModalOpen] = useState(false)
 
-
   const handleModelOpen = () => setModalOpen(true)
   const handleModelClose = () => setModalOpen(false)
 

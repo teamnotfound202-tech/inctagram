@@ -56,9 +56,9 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
         <PostsList userPosts={userPostData}/>
       )}
       {
-        userPostData && userPostData.length === 0 && (
+        userPostData && userPostData.length === 0 ? (
           <p className={s.postsText}>The user has no posts</p>
-        )
+        ) : hasNextPage
       }
       {hasNextPage && (
           <div ref={observerRef}>
@@ -66,7 +66,7 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
           </div>
         )
       }
-      {!hasNextPage && <p>Nothing more to load</p>}
+      {!hasNextPage && userPostData && userPostData.length !== 0 && <p>Nothing more to load</p>}
     </div>
   )
 }
