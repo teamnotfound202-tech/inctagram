@@ -8,7 +8,6 @@ import {
   useUnFollowingUserMutation,
 } from '@/features/publicUserApi/publicUserApi'
 import { useCallback, useMemo, useState } from 'react'
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useMeQuery } from '@/features/auth/api/authApi'
 import { UserItem } from '@/features/publicUserApi/types'
