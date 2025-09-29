@@ -12,10 +12,10 @@ import {
   useDeletePostsImageMutation,
   useUploadPostsImagesMutation,
 } from '@/features/posts/api/posts-api'
-import { MouseEvent } from 'react'
 import { Image } from '@/shared/lib/sсhemas/posts'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
+import { createTempFile } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile'
 
 type Props = {
   title: string
