@@ -7,35 +7,31 @@ import SixTeenToNineIcon from '../../../icons/169.svg'
 
 export type AspectRatio = '1:1' | '4:5' | '16:9' | 'base'
 
-/*interface AspectRatioPickerProps {
-  selectedRatio: AspectRatio
+type Props = {
   onRatioChange: (ratio: AspectRatio) => void
-  className?: string
-}*/
-
+}
 // Компоненты-иконки для соотношений
 const RatioIcon = ({ ratio }: { ratio: AspectRatio }) => {
   switch (ratio) {
     case 'base':
       return <OriginalIcon className={styles.originalIcon} />
     case '1:1':
-      return <OneToOneIcon className={styles.onetoone}/>
+      return <OneToOneIcon className={styles.onetoone} />
     case '4:5':
-      return <FourToFiveIcon className={styles.fourtofive}/>
+      return <FourToFiveIcon className={styles.fourtofive} />
     case '16:9':
-      return <SixTeenToNineIcon className={styles.sixteentonine}/>
+      return <SixTeenToNineIcon className={styles.sixteentonine} />
     default:
       return null
   }
 }
 
-export const ImageRatio = ({}) => {
+export const ImageRatio = ({ onRatioChange }: Props) => {
   const [selectedRatio, setSelectedRatio] = useState<AspectRatio>('base')
 
   const handleRatioChange = (ratio: AspectRatio) => {
     setSelectedRatio(ratio)
-
-    // Дополнительная логика при изменении соотношения
+    onRatioChange(ratio)
   }
   const ratios: { value: AspectRatio; label: string }[] = [
     { value: 'base', label: 'Original' },

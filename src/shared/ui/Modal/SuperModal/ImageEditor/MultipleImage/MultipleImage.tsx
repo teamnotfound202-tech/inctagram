@@ -9,37 +9,42 @@ import { SuperUploadInput } from '@/shared/ui/Modal/SuperModal/SuperUploadInput/
 type Props = {
   images: Image[]
   selectedImage: number
-
+  deletePost: (postId: string,index:number) => void
   addNewFiles: (newFiles: File[]) => void
 }
 
-export const MultipleImage = ({ images,selectedImage,addNewFiles }: Props) => {
+export const MultipleImage = ({ images, selectedImage, addNewFiles, deletePost }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const addToExistingFile = async (event: ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(event.target.files || [])
     addNewFiles(newFiles)
-
+  }
+  const handleDelete = (postId: string,index:number) => {
+    deletePost(postId,index)
   }
   return (
     <div className={styles.container}>
       <div className={styles.thumbnailContainer}>
         {images.length > 0 &&
           images.map((image, i) => (
-            <div key={image.uploadId} className={clsx(styles.imageContainer,
-              {
-                [styles.selected]: i === selectedImage
-              }
-            )}>
+            <div key={image.uploadId}
+              className={clsx(styles.imageContainer, {
+                [styles.selected]: i === selectedImage,
+              })}
+            >
               <img src={image.url} />
-              <div onClick={() => alert('hi')} className={styles.deleteIconContainer}>
+              <div
+                onClick={() => handleDelete(image.uploadId,i)}
+                className={styles.deleteIconContainer}
+              >
                 <DeleteIcon className={styles.deleteIconBtn} />
               </div>
             </div>
           ))}
       </div>
       <div className={styles.addPhotoContainer}>
-        <PlusPhotoIcon className={styles.plusIcon} onClick={() => fileInputRef.current?.click()}/>
-       <SuperUploadInput ref={fileInputRef} handleChange={addToExistingFile}/>
+        <PlusPhotoIcon className={styles.plusIcon} onClick={() => fileInputRef.current?.click()} />
+        <SuperUploadInput ref={fileInputRef} handleChange={addToExistingFile} />
       </div>
     </div>
   )

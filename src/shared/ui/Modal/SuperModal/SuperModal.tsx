@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { MouseEvent, useCallback, useRef, useState } from 'react'
 import s from '../Modal.module.scss'
 import { ModalHeader } from '@/shared/ui/Modal/SuperModal/ModalHeader/ModalHeader'
 import { Modal } from '@/shared/ui/Modal/Modal'
@@ -9,32 +9,42 @@ import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
 import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
 import { FiltersPanel, ImageEditor, ImageUploader, PublishForm } from '@/shared/ui/Modal'
-import { useUploadPostsImagesMutation } from '@/features/posts/api/posts-api'
-import { MouseEvent } from 'react'
 import { Images } from '@/shared/lib/sсhemas/posts'
+import {
+  useDeletePostsImageMutation,
+  useUploadPostsImagesMutation,
+} from '@/features/posts/api/posts-api'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
+import { createTempFile } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile'
 
 type Props = {
   title: string
   callback: (type: TypeOfModalWindow) => void
 }
-export type Step = 'upload' | 'edit' | 'filters' | 'publish'
+export type Step = 'upload' | 'edit' | 'filters' | 'publish' | 'noevents'
 export const SuperModal = ({ title, callback }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
+  const [deletePosts] = useDeletePostsImageMutation()
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
-
   const [currentStep, setCurrentStep] = useState<Step>('upload')
   const [exitModalIsOpen, setExitModalIsOpen] = useState(false)
   const [localFiles, setLocalFiles] = useState<File[]>([])
   const [uploadedImages, setUploadedImages] = useState<Images[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
   const modalRef = useRef<HTMLDivElement>(null)
-  const handleImageUpload = async (files: File[]) => {
-    setCurrentStep('edit')
-    setSelectedImage(0)
-    const newFiles = [...localFiles, ...files]
-       if (newFiles.length > 10) {
+
+  const handleImageUpload = (files: File[], step: Step = 'noevents') => {
+    const filteredFiles = files.filter(newFile =>
+      !localFiles.some(existingFile =>
+        existingFile.name === newFile.name &&
+        existingFile.size === newFile.size &&
+        existingFile.lastModified === newFile.lastModified
+      )
+    )
+    const newFiles = [...localFiles, ...filteredFiles]
+
+    if (newFiles.length > 10) {
       const remainingSlots = 10 - localFiles.length
       const errorMessage = `You can add only add ${remainingSlots} more image(s)`
       toast.custom(() => (
@@ -43,19 +53,61 @@ export const SuperModal = ({ title, callback }: Props) => {
       setCurrentStep('upload')
       return
     }
-    try {
-      setLocalFiles(newFiles)
-      const result = await uploadImage(newFiles).unwrap()
-      setUploadedImages(result.images)
-    } catch (error) {
-      setSelectedImage(0)
-      setCurrentStep('upload')
-
-      setLocalFiles(localFiles) // Возвращаем предыдущее значение
+    const tempImages = filteredFiles.map((file, index) => (createTempFile(file)))
+    const tempUploadImages = [...uploadedImages, ...tempImages]
+    setLocalFiles(newFiles)
+    setUploadedImages(tempUploadImages)
+    setSelectedImage(0)
+    if (step !== 'noevents') {
+      setCurrentStep(step)
+      uploadImage(localFiles)
     }
   }
 
-  const handleOpendraft = () => {
+  const handleImageUpdateByCrop = useCallback(
+    (index: number, updatedImage: Image, updatedFile?: File) => {
+      setUploadedImages(prev => {
+        const updated = [...prev]
+        updated[index] = updatedImage
+        return updated
+      })
+      if (updatedFile) {
+        setLocalFiles(prev => {
+          const updated = [...prev]
+          updated[index] = updatedFile
+          return updated
+        })
+      }
+    },
+    []
+  )
+
+  const handleDeletePosts = (postsId: string, index: number) => {
+    const stateAfterDelete = uploadedImages.filter(image => image.uploadId !== postsId)
+    const localFilesAfterDeleting = localFiles.filter((file, i) => i !== index)
+    setUploadedImages(stateAfterDelete)
+    setLocalFiles(localFilesAfterDeleting)
+    if (stateAfterDelete.length === 0) {
+      setCurrentStep('upload')
+      setSelectedImage(0)
+    }
+    //deletePosts({ uploadId: postsId })
+  }
+
+  const handleOpendraft = async () => {
+   /* const storedImages = localStorage.getItem(SAVED_IMAGES)
+    if (!storedImages) return []
+    const images = JSON.parse(storedImages)
+    loadFilesFromUrls(images).then(files => {
+      if (files.length > 0) {
+        const tempImages = files.map(
+          (file, index) => createTempFile(file, images[index]?.url) // Сохраняем originalUrl
+        )
+        setLocalFiles(files)
+        setUploadedImages(tempImages)
+        setCurrentStep('edit')
+      }
+    })*/
     setCurrentStep('edit')
   }
 
@@ -76,10 +128,10 @@ export const SuperModal = ({ title, callback }: Props) => {
   const handleNext = () => {
     switch (currentStep) {
       case 'edit':
-        setCurrentStep('filters')
+        handleImageUpload(localFiles, 'filters')
         break
       case 'filters':
-        setCurrentStep('publish')
+        handleImageUpload(localFiles, 'publish')
         break
     }
   }
@@ -110,17 +162,22 @@ export const SuperModal = ({ title, callback }: Props) => {
     callback(null)
   }
 
-  const handlerModalCloseWithSave = () => {
-    //дописать логику сохранения изменений
-    console.log('try to work,baby')
+  const handlerModalCloseWithSave = async () => {
+  handleExitingModal()
+    await uploadImage(localFiles).finally(()=>callback(null))
   }
+
   const handleExitingModal = () => {
     setExitModalIsOpen(false)
   }
+
   const handleDiscard = () => {
     setCurrentStep('upload')
+    setLocalFiles([])
+    setUploadedImages([])
     setExitModalIsOpen(false)
   }
+
   const handlePublish = () => {
     //логика отправик на серверд
     console.log('upload to server')
@@ -141,6 +198,7 @@ export const SuperModal = ({ title, callback }: Props) => {
     <div className={s.overlay} onClick={handleOverlayClick}>
       <div className={s.modal} ref={modalRef}>
         <ModalHeader
+          isLoading={isLoading}
           forwarfClick={handleNext}
           uploadClick={handlePublish}
           backClick={handleBack}
@@ -158,14 +216,16 @@ export const SuperModal = ({ title, callback }: Props) => {
 
           {currentStep === 'edit' && (
             <ImageEditor
+              deletePost={handleDeletePosts}
               onUpload={handleImageUpload}
               isLoading={isLoading}
               images={uploadedImages || []}
               selectedImage={selectedImage}
               onSelectImage={setSelectedImage}
+              onImageUpdate={handleImageUpdateByCrop}
             />
           )}
-          {currentStep === 'filters' && (
+          {currentStep === 'filters' &&
             <FiltersPanel
               images={uploadedImages || []}
               selectedImage={selectedImage}
@@ -174,7 +234,7 @@ export const SuperModal = ({ title, callback }: Props) => {
               filterIntensity={getCurrentFilter().intensity}
               onFilterSelect={handleFilterSelect}
             />
-          )}
+          }
           {currentStep === 'publish' && (
             <PublishForm
               images={uploadedImages || []}

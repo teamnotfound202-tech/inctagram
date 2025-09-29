@@ -13,29 +13,36 @@
   position: relative;
   width: 492px;
   height: 503px;
-  max-width: 500px;
 }
 
 .imageContainer {
-
+  width: 492px;
+  height: 503px;
+  max-width: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  // Соотношения сторон
-  &[style*="1/1"] {
+
+  &[data-ratio="1/1"] {
     max-width: 400px;
     max-height: 400px;
   }
 
-  &[style*="4/5"] {
+  &[data-ratio="4/5"] {
     max-width: 400px;
     max-height: 500px;
   }
 
-  &[style*="16/9"] {
+  &[data-ratio="16/9"] {
     max-width: 500px;
     max-height: 281px;
+  }
+
+
+  &[data-ratio="base"] {
+    max-width: 492px;
+    max-height: 503px;
   }
 }
 
@@ -44,7 +51,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.2s ease;
-
+object-position: top;
 }
 
 // Слайдер

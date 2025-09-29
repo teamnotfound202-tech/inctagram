@@ -4,13 +4,24 @@ import ZoomIcon from '@/shared/ui/Modal/icons/zoomIcon.svg'
 import PhotoUploadIcon from '@/shared/ui/Modal/icons/photoUploadBg.svg'
 import { TypeOfControls } from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageEditor'
 import { clsx } from 'clsx'
+import { Button } from '@/shared/ui'
+import s from '@/shared/ui/Modal/Modal.module.scss'
+import { useAppSelector } from '@/shared/lib/hooks/hooks'
+import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 type Props = {
   onClickHandler: (type: TypeOfControls) => void
   openState: TypeOfControls
+   onApplyChanges?: () => void //
+  onCancelChanges?: () => void //
+  hasUnsavedChanges?: boolean //
 }
 
-export const ImageControls = ({ onClickHandler, openState }: Props) => {
+export const ImageControls = ({ onClickHandler, openState,  onApplyChanges,
+                                onCancelChanges,
+                                hasUnsavedChanges = false, }: Props) => {
+  const currentLanguageArray = useAppSelector(selectCurrentMessages)
+
   return (
     <>
       <button
@@ -43,6 +54,15 @@ export const ImageControls = ({ onClickHandler, openState }: Props) => {
           })}
         />
       </button>
+      {(openState==='zoom' && hasUnsavedChanges)&&
+        <Button
+        onClick={onApplyChanges}
+        variant={'text'}
+        className={s.saveCroppedImage}
+      >
+        {currentLanguageArray.common.save}
+      </Button> }
+
     </>
   )
 }

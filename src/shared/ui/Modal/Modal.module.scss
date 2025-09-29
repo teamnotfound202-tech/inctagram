@@ -43,6 +43,12 @@
   width: 24px;
   height: 24px;
   color: white;
+
+  &.isLoading {
+    color: $light-900;
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .modalContent {
@@ -58,7 +64,8 @@
   color: $light-100;
   max-width: 390px;
 }
-.supermodalContent{
+
+.supermodalContent {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,11 +84,19 @@
     width: 750px;
   }
 }
-.photoEditingNextBtn{
-  padding:0;
+
+.photoEditingNextBtn {
+  padding: 0;
 }
+
 .buttonWrapper {
   display: flex;
   width: 100%;
   justify-content: space-between;
+}
+
+.saveCroppedImage {
+  bottom: 51px;
+  position: absolute;
+  right: 3px;
 }
