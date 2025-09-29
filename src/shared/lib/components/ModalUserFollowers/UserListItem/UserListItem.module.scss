@@ -31,5 +31,6 @@
   color: $light-100;
   &:disabled{
     border: none;
+    color: $dark-100;
   }
 }

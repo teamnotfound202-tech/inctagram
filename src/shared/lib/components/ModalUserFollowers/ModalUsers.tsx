@@ -21,8 +21,14 @@ type Props = {
 }
 
 export const ModalUsers = ({ type, isOpen, onClose, userName, userStats }: Props) => {
-  const [getUserFollowings,{ isLoading: isLoadingFollowingsUsers, isFetching: isFetchingFollowingsUsers }] = useLazyFollowingsUserQuery()
-  const [getUserFollowers,{ isLoading: isLoadingFollowersUsers, isFetching: isFetchingFollowersUsers }] = useLazyFollowersUserQuery()
+  const [
+    getUserFollowings,
+    { isLoading: isLoadingFollowingsUsers, isFetching: isFetchingFollowingsUsers },
+  ] = useLazyFollowingsUserQuery()
+  const [
+    getUserFollowers,
+    { isLoading: isLoadingFollowersUsers, isFetching: isFetchingFollowersUsers },
+  ] = useLazyFollowersUserQuery()
 
   const [title, setTitle] = useState('')
   const [users, setUsers] = useState<UserItem[]>([])
@@ -35,35 +41,41 @@ export const ModalUsers = ({ type, isOpen, onClose, userName, userStats }: Props
     return () => clearTimeout(id)
   }, [search])
 
-  useEffect(() => { if (!isOpen) { setSearch(''); setDebounced('') } }, [isOpen]) // ← добавлен
+  useEffect(() => {
+    if (!isOpen) {
+      setSearch('')
+      setDebounced('')
+    }
+  }, [isOpen])
 
   const isLoading = isLoadingFollowingsUsers || isLoadingFollowersUsers
   const isFetching = isFetchingFollowingsUsers || isFetchingFollowersUsers
 
-
   useEffect(() => {
     if (isOpen) {
       if (type === 'following') {
-        setSkeletonCount(userStats.followingCount>7 ? 7: userStats.followingCount)
+        setSkeletonCount(userStats.followingCount > 7 ? 7 : userStats.followingCount)
+        setTitle(`${userStats.followingCount} Following`)
         getUserFollowings({ userName: userName })
           .unwrap()
           .then(res => {
-            setTitle(`${res.items.length} Following`)
             setUsers(res.items)
           })
       } else {
-        setSkeletonCount(userStats.followersCount>7 ? 7: userStats.followersCount)
+        setSkeletonCount(userStats.followersCount > 7 ? 7 : userStats.followersCount)
+        setTitle(`${userStats.followersCount} Followers`)
         getUserFollowers({ userName: userName })
           .unwrap()
           .then(res => {
-            setTitle(`${res.items.length} Followers`)
             setUsers(res.items)
           })
       }
     }
   }, [isOpen, type, userName, getUserFollowings, getUserFollowers, userStats])
 
-  const filtered = !debounced ? users: users.filter(u =>u.userName?.toLowerCase().includes(debounced))
+  const filtered = !debounced
+    ? users
+    : users.filter(u => u.userName?.toLowerCase().includes(debounced))
 
   if (!isOpen) return null
 
@@ -74,7 +86,8 @@ export const ModalUsers = ({ type, isOpen, onClose, userName, userStats }: Props
         type={'search'}
         placeholder={'Search'}
         onChange={e => setSearch(e.target.value)}
-        value={search} />
+        value={search}
+      />
 
       {(isLoading || isFetching) && (
         <div className={s.skeletonWrapper}>
@@ -87,13 +100,13 @@ export const ModalUsers = ({ type, isOpen, onClose, userName, userStats }: Props
             count={skeletonCount}
           />
         </div>
-
-      )}<div className={s.usersList}>
-      {!isLoading && !isFetching && filtered.length === 0 && (
-        <div className={s.notFoundMessage}>
-          {search ? 'No users match your search' : 'No users to show'}
-        </div>
       )}
+      <div className={s.usersList}>
+        {!isLoading && !isFetching && filtered.length === 0 && (
+          <div className={s.notFoundMessage}>
+            {search ? 'No users match your search' : 'No users to show'}
+          </div>
+        )}
 
         {filtered.map(user => (
           <UserListItem user={user} key={user.id} isLoading={isLoading} type={type} />

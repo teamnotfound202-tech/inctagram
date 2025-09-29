@@ -27,10 +27,6 @@ export const UserListItem = ({ user, isLoading, type }: Props) => {
   const [followUser, { isLoading: isFollowMutLoading }] = useFollowingUserMutation()
   const [unfollowUser, { isLoading: isUnfollowMutLoading }] = useUnFollowingUserMutation()
 
-  const pathname = usePathname()
-  const userId = Number(pathname.split('/')[2])
-  const isOwnProfile = currentUser?.userId === userId
-
   const [isFollowing, setIsFollowing] = useState<boolean>(user.isFollowing)
   const [modalKind, setModalKind] = useState<ModalKind>(null)
 
@@ -77,15 +73,14 @@ export const UserListItem = ({ user, isLoading, type }: Props) => {
             height={36}
           />
         ) : (
-          currentUser?.userId &&  //если мы авторизованы и профиль наш
-          isOwnProfile && (
+          currentUser?.userId && ( //если мы авторизованы
             <div>
               {type === 'followers' && !isFollowing && ( //если модалка followers и юзер НЕ ПОДПИСАН на нас
                 <div>
                   <Button className={s.modalButtons} variant="primary" onClick={handleFollow} disabled={followDisabled}>
                     {isFollowMutLoading ? 'Loading...' : 'Follow'}
                   </Button>
-                  <Button className={s.modalDeleteButton} variant="text" onClick={openDeleteFollowingModal} disabled={unfollowDisabled}>
+                  <Button className={s.modalDeleteButton} variant="text" onClick={openDeleteFollowingModal} disabled={unfollowDisabled || !isFollowing}>
                     {isUnfollowMutLoading ? 'Loading...' : 'Delete'}
                   </Button>
                 </div>
