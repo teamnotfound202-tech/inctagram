@@ -16,8 +16,9 @@ type CropConfig = Crop & {
 export const ImageCropper = ({ imageToCrop, onImageCropped, scale, originalFile }: Props) => {
   const [cropConfig, setCropConfig] = useState<CropConfig>({
     unit: '%',
-    width: 30,
-    height: 30,
+    width: 60,
+    height: 60,
+
     x: 0,
     y: 0,
     aspect: 16 / 9,
@@ -116,6 +117,7 @@ export const ImageCropper = ({ imageToCrop, onImageCropped, scale, originalFile 
   return (
       <ReactCrop
           crop={cropConfig}
+
           onChange={handleCropChange}
           onComplete={handleCropComplete}
           aspect={cropConfig.aspect}

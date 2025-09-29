@@ -16,6 +16,8 @@ import { MouseEvent } from 'react'
 import { Image } from '@/shared/lib/sсhemas/posts'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
+import {SAVED_IMAGES} from "@/shared/lib/constants/constants";
+import {createTempFile} from "@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile";
 
 type Props = {
   title: string
@@ -53,16 +55,7 @@ export const SuperModal = ({ title, callback }: Props) => {
       setCurrentStep('upload')
       return
     }
-    const tempId = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-    const tempImages = filteredFiles.map((file, index) => ({
-      url: URL.createObjectURL(file),
-      width: 0,
-      height: 0,
-      fileSize: file.size,
-      createdAt: new Date().toISOString(),
-      uploadId: `${tempId}-${index}-${file.name.replace(/[^a-z0-9]/gi, '-')}`,
-      _optimistic: true,
-    }))
+    const tempImages = filteredFiles.map((file, index) => (createTempFile(file)))
     const tempUploadImages = [...uploadedImages, ...tempImages]
     setLocalFiles(newFiles)
     setUploadedImages(tempUploadImages)
@@ -101,7 +94,11 @@ export const SuperModal = ({ title, callback }: Props) => {
   }
 
   const handleOpendraft = () => {
-          setCurrentStep('edit')
+const storedImages = localStorage.getItem(SAVED_IMAGES)
+    if(!storedImages) return []
+    const images = JSON.parse(storedImages)
+    console.log(images)
+    //setCurrentStep('edit')
     }
 
   const handleNext = () => {
@@ -143,7 +140,7 @@ export const SuperModal = ({ title, callback }: Props) => {
 
   const handlerModalCloseWithSave = async () => {
   handleExitingModal()
-    await uploadImage(localFiles).finally(()=>callback(null))
+    localStorage.setItem(SAVED_IMAGES, JSON.stringify(uploadedImages))
   }
 
   const handleExitingModal = () => {
