@@ -1,4 +1,4 @@
-export type Images = {
+export type ImagePost = {
     url: string;
     width: number;
     height: number;
@@ -17,7 +17,7 @@ export type Post = {
     userName: string;
     description: string;
     location: string;
-    images: Images[];
+    images: ImagePost[];
     createdAt: string;
     updatedAt: string;
     ownerId: number;
@@ -35,7 +35,6 @@ export type Avatars = {
     url: string
     width: number
 }
-
 
 export type From = {
     id: number;
@@ -60,3 +59,24 @@ export type CommentsResponse = {
     notReadCount: number;
     items: Comment[];
 }
+
+export type User = {        //TODO: вынести в другой api слой, там где запрос usersProfile
+  id: number;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  city: string;
+  country: string;
+  region: string;
+  dateOfBirth: string;
+  aboutMe: string;
+  avatars: Avatars[];
+  createdAt: string;
+}
+
+export enum LikeStatus {
+    NONE = 'NONE',
+    LIKE = 'LIKE',
+    DISLIKE = 'DISLIKE'
+}
+

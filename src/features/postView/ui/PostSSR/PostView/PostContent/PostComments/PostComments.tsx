@@ -21,7 +21,7 @@ export const PostComments = ({ post}: Props) => {
                                           postContent={post.description}
                                           descriptionCreationTime={post.createdAt}/>
                 {data?.items.map(comment => (
-                    <PostComment key={comment.id} comment={comment}/>
+                    <PostComment key={comment.id} comment={comment} postId={post.id}/>
                 ))}
             {/*</ScrollBox>*/}
         </div>

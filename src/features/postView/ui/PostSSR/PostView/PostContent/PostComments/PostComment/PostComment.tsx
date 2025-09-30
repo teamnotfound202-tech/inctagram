@@ -1,23 +1,28 @@
 'use client'
 import s from "./PostComment.module.scss";
 import Avatar from "../../../../../../../../entities/user/ui/Avatar/Avatar";
-import Heart from "@/features/postView/ui/PostSSR/PostView/Icons/heart.svg";
-import DisLike from "@/features/postView/ui/PostSSR/PostView/Icons/DisLike.svg";
-import {Comment} from "@/features/postView/api/types";
+import Heart from "@/features/postView/ui/PostSSR/PostView/Icons/littleLike/heart.svg";
+import DisLike from "@/features/postView/ui/PostSSR/PostView/Icons/littleLike/DisLike.svg";
+import {Comment, LikeStatus} from "@/features/postView/api/types";
 import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectCurrentMessages} from "@/shared/api/appSlice";
+import {useUpdateCommentLikeStatusMutation} from "@/features/postView/api/postApi";
+import {LikeButton} from "@/features/postView/ui/PostSSR/PostView/PostContent/LikeButton/LikeButton";
 
 
 type Props = {
-    comment: Comment
+    comment: Comment,
+    postId:number
 };
 
-export const PostComment = ({comment}: Props) => {
+export const PostComment = ({comment, postId}: Props) => {
     const currentLanguage = useAppSelector(selectCurrentMessages)
+    const [updateCommentLikeStatus] = useUpdateCommentLikeStatusMutation()
 
     const likeHandler = () => {
-        //TODO: запрос на изменение лайка
+        const newLikeStatus = comment.isLiked? LikeStatus.NONE : LikeStatus.LIKE
+        updateCommentLikeStatus({commentId: comment.id, postId, likeStatus: newLikeStatus})
     }
 
     const commentCreationTime = getTimeDifference(comment.createdAt)
@@ -31,14 +36,13 @@ export const PostComment = ({comment}: Props) => {
                 <div className={s.commentMeta}>
                     <div className={s.commentCreationTime}>{commentCreationTime}</div>
                     {comment.likeCount && <div className={s.likesCount}>Like: {comment.likeCount}</div>}
-                    <span className={s.answerLink}>{currentLanguage.posts.answer}</span> {/*TODO: добавить слова в словарь*/}
+                    <span
+                        className={s.answerLink}>{currentLanguage.posts.answer}</span> {/*TODO: добавить слова в словарь*/}
                     <div className={s.commentAnswer}> answerCount {comment.answerCount}</div>
                     {/*TODO доделать открытие ответов комментариев*/}
                 </div>
             </div>
-            <button className={s.postIconButton} onClick={likeHandler}>
-                {comment.isLiked ? <Heart/> : <DisLike/>}
-            </button>
+            <LikeButton isLiked={comment.isLiked} onClick={likeHandler}/>
         </article>
 
     );

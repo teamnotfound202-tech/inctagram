@@ -1,10 +1,10 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import s from './Carousel.module.scss'
-import {Images} from "@/features/postView/api/types";
+import {ImagePost} from "@/features/postView/api/types";
 import Image from "next/image";
 
 type Props = {
-    imagesArray: Images[]
+    imagesArray: ImagePost[]
 }
 
 export function Carousel({imagesArray}: Props) {

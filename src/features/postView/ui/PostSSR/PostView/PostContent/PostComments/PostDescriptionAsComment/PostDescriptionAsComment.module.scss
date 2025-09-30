@@ -1,6 +1,6 @@
 @use '@/shared/styles/variables' as *;
 
-.postIconButton {
+.likeButton {
   cursor: pointer;
 }
 
@@ -59,6 +59,6 @@
 .commentLike {
 }
 
-.postIconButton {
+.likeButton {
   padding: 0 0 0 24px;
 }

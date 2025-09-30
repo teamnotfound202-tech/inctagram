@@ -2,7 +2,6 @@
 import * as React from 'react';
 import s from "./PostTitle.module.scss";
 import {Avatar} from "@/entities/user/ui/Avatar";
-import DotsHorizontalIcon from "@/features/postView/ui/PostSSR/PostView/Icons/DotsHorizontal.svg";
 import {useMeQuery} from "@/features/auth/api/authApi";
 import DropdownPostActionsMenu
     from "@/features/postView/ui/PostSSR/PostView/PostContent/PostTitle/DropdownMenuDemo/DropdownPostActionsMenu";

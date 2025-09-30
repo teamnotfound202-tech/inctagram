@@ -7,6 +7,7 @@ export const PostSsr = async ({params}: { params: Promise<{ id: string }> }) => 
     let post
     try {
         post = await getPost(id);
+        console.log(post)
     } catch (err) {
         return <div> Такого поста не существует</div>;
     }

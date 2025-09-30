@@ -117,6 +117,7 @@ export interface Messages {
     noPostsYet: string;
     addAComment: string;
     publish:string;
+    publishing:string;
     answer: string;
     addComment:string;
     dropdownMenu:{
@@ -316,6 +317,7 @@ export const messages: Record<Language, Messages> = {
       noPostsYet: 'No posts yet',
       addAComment: 'Add a comment',
       publish:'Publish',
+      publishing:'Publishing',
       answer: 'Answer',
       addComment:'Add a Comment...',
       dropdownMenu:{
@@ -509,6 +511,7 @@ export const messages: Record<Language, Messages> = {
       noPostsYet: 'Пока нет публикаций',
       addAComment: 'Добавить комментарий',
       publish:'Опубликовать',
+      publishing:'Публикуется',
       answer: 'Ответить',
       addComment:'Добавить комментарий...',
       dropdownMenu:{
