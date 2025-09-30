@@ -1,11 +1,10 @@
-/*
 'use client';
 
 import {useRouter} from 'next/navigation';
 import s from "./PostModal.module.scss"
 import Close from "./Icons/Close.svg"
 
-export default function PostModal({ children }: { children: React.ReactNode }) {
+export default function PostModal({children}: { children: React.ReactNode }) {
     const router = useRouter();
 
     const onClose = () => {
@@ -26,18 +25,17 @@ export default function PostModal({ children }: { children: React.ReactNode }) {
             </div>
         </div>
     );
-}*/
+}
 
-
-/*import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';*/
+/*/!*import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface PostModalProps {
     children: React.ReactNode;
 }
 
 export const PostModal = ({ children }: PostModalProps) => {
-  /*  const router = useRouter();
+  /!*  const router = useRouter();
     const searchParams = useSearchParams();
     const postId = searchParams.get('postId');
     const [isMounted, setIsMounted] = useState(false);
@@ -82,7 +80,7 @@ export const PostModal = ({ children }: PostModalProps) => {
 
     // Не рендерим ничего до монтирования на клиенте
     if (!isMounted) return null;
-    if (!postId) return null;*/
+    if (!postId) return null;*!/
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -101,4 +99,4 @@ export const PostModal = ({ children }: PostModalProps) => {
             </div>
         </div>
     );
-};
+}*/

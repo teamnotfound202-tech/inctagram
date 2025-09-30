@@ -34,7 +34,7 @@ import { PostView } from "@/features/postView/ui/PostSSR/PostView/PostView";
 import { getPost } from "@/features/postView/utils/getPost";
 import { redirect } from "next/navigation";
 import { cleanSearchParams } from "@/features/postView/utils/url-utils";
-import {PostModal} from "@/features/postView/PostModal/PostModal";
+import PostModal from "@/features/postView/PostModal/PostModal";
 
 interface PostSsrProps {
     params: Promise<{ id: string }>;
