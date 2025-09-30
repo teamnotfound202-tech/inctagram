@@ -1,8 +1,8 @@
-import { Image } from '@/shared/lib/sсhemas/posts'
+import { Images } from '@/shared/lib/sсhemas/posts'
 
 export const handleBlobUrls = {
   // Сохраняем blob URL как data URL
-  async save(images: Image[]): Promise<Image[]> {
+  async save(images: Images[]): Promise<Images[]> {
     const processedImages = await Promise.all(
       images.map(async (image) => {
         if (image.url.startsWith('blob:')) {
@@ -33,9 +33,9 @@ export const handleBlobUrls = {
   },
 
   // Восстанавливаем data URL обратно в blob URL
-  async restore(images: Image[]): Promise<{ files: File[]; images: Image[] }> {
+  async restore(images: Images[]): Promise<{ files: File[]; images: Images[] }> {
     const files: File[] = [];
-    const restoredImages: Image[] = [];
+    const restoredImages: Images[] = [];
 
     for (const image of images) {
       if (image.url.startsWith('data:')) {

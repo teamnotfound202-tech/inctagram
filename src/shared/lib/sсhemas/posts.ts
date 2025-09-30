@@ -16,5 +16,5 @@ export const ImagesResponseSchema = z.object({
 })
 
 // Типы TypeScript
-export type Image = z.infer<typeof ImageSchema>
+export type Images = z.infer<typeof ImageSchema>
 export type ImagesResponse = z.infer<typeof ImagesResponseSchema>

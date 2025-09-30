@@ -1,26 +1,27 @@
-import {useCallback, useRef, useState} from 'react'
+import { useCallback, useState } from 'react'
 import styles from './ImageEditor.module.scss'
 import BackArrow from '../../icons/backArrow.svg'
 import ForwardArrow from '../../icons/forwardArrow.svg'
 import ImageControls from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageControls/ImageControls'
-import { AspectRatio, ImageRatio } from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageScale/ImageRatio'
+import {
+  AspectRatio,
+  ImageRatio,
+} from '@/shared/ui/Modal/SuperModal/ImageEditor/ImageScale/ImageRatio'
 import { MultipleImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/MultipleImage/MultipleImage'
-import { Image } from '@/shared/lib/sсhemas/posts'
+import { Images } from '@/shared/lib/sсhemas/posts'
 import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
 import { ZoomCrop } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ZoomCrop'
-
-import { Crop } from 'react-image-crop'
 import { ImageCropper } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ImageCropper'
-import { ModifiedImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/prepareImagesToStorage'
+import Image from 'next/image'
 
 type ImageEditorProps = {
-  images: Image[]
+  images: Images[]
   selectedImage: number
   isLoading: boolean
   onSelectImage: (index: number) => void
   onUpload: (files: File[]) => void
   deletePost: (id: string, inex: number) => void
-  onImageUpdate: (index: number, updatedImage: ModifiedImage, updatedFile?: File) => void
+  onImageUpdate: (index: number, updatedImage: Images, updatedFile?: File) => void
 }
 export type TypeOfControls = 'ratio' | 'zoom' | 'multiple' | null
 export const ImageEditor = ({
@@ -30,10 +31,10 @@ export const ImageEditor = ({
   isLoading,
   onUpload,
   deletePost,
-    onImageUpdate
+  onImageUpdate,
 }: ImageEditorProps) => {
   const [openState, setOpenState] = useState<TypeOfControls>(null)
-const [ratio, setRatio] = useState<AspectRatio>('base')
+  const [ratio, setRatio] = useState<AspectRatio>('base')
   const [temporaryCroppedImage, setTemporaryCroppedImage] = useState<string | undefined>(undefined) // ✅ Временное обрезанное изображение
   const [temporaryCroppedFile, setTemporaryCroppedFile] = useState<File | undefined>(undefined) // ✅ Временный файл
   const [scale, setScale] = useState(1)
@@ -48,15 +49,14 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
   const applyChanges = useCallback(() => {
     if (temporaryCroppedImage && temporaryCroppedFile) {
       // Создаем обновленный объект Image
-      const updatedImage: Image = {
+      const updatedImage: Images = {
         ...currentImage,
         url: temporaryCroppedImage,
         fileSize: temporaryCroppedFile.size,
-        // Можно добавить другие обновленные свойства
       }
 
       onImageUpdate(selectedImage, updatedImage, temporaryCroppedFile)
-
+      setOpenState(null)
       setTemporaryCroppedImage(undefined)
       setTemporaryCroppedFile(undefined)
     }
@@ -73,16 +73,19 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
       onSelectImage(selectedImage + 1)
     }
   }
-  const handleDeletePost = useCallback((id: string, index: number) => {
-       cancelChanges()
+  const handleDeletePost = useCallback(
+    (id: string, index: number) => {
+      cancelChanges()
 
-    deletePost(id, index)
+      deletePost(id, index)
 
-    if (index === selectedImage && images.length > 1) {
-      const newSelectedIndex = index === 0 ? 0 : index - 1
-      onSelectImage(newSelectedIndex)
-    }
-  }, [deletePost, selectedImage, images.length, onSelectImage, cancelChanges])
+      if (index === selectedImage && images.length > 1) {
+        const newSelectedIndex = index === 0 ? 0 : index - 1
+        onSelectImage(newSelectedIndex)
+      }
+    },
+    [deletePost, selectedImage, images.length, onSelectImage, cancelChanges]
+  )
   const handlePrevImage = () => {
     if (selectedImage > 0) {
       onSelectImage(selectedImage - 1)
@@ -93,25 +96,24 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
     setOpenState(openState === type ? null : type)
   }
 
-  const resetEditingImages=(index:number)=>{
+  const resetEditingImages = (index: number) => {
     if (hasUnsavedChanges) {
       cancelChanges()
     }
     onSelectImage(index)
   }
   const handleChangeScale = (value: number) => {
-
     setScale(value)
   }
   const handleRatioChange = (ratio: AspectRatio) => {
-        setRatio(ratio)
+    setRatio(ratio)
   }
   const getRatioAttribute = (ratio: AspectRatio): string => {
     const ratioMap: Record<AspectRatio, string> = {
-      'base': 'base',
+      base: 'base',
       '1:1': '1/1',
       '4:5': '4/5',
-      '16:9': '16/9'
+      '16:9': '16/9',
     }
     return ratioMap[ratio] || 'base'
   }
@@ -124,15 +126,12 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
   if (!images || images.length === 0) {
     return <div>No images to edit</div>
   }
-  const displayImageUrl = temporaryCroppedImage || currentImage.url|| ''
+  const displayImageUrl = temporaryCroppedImage || currentImage.url || ''
   const hasUnsavedChanges = !!temporaryCroppedImage
   return (
     <div className={styles.imageEditor}>
       <div className={styles.editorArea}>
-        <div
-          className={styles.imageContainer}
-          data-ratio={getRatioAttribute(ratio)}
-        >
+        <div className={styles.imageContainer} data-ratio={getRatioAttribute(ratio)}>
           {openState === 'zoom' ? (
             <ImageCropper
               scale={scale}
@@ -140,8 +139,9 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
               onImageCropped={handleTemporaryCrop}
             />
           ) : (
-
-            <img
+            <Image
+              width={492}
+              height={500}
               src={displayImageUrl}
               alt={`Editing ${selectedImage + 1} of ${images.length}`}
               className={styles.editableImage}
@@ -178,13 +178,15 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
           </div>
         )}
 
-        <ImageControls   onApplyChanges={applyChanges}
-                         onCancelChanges={cancelChanges}
-                         hasUnsavedChanges={hasUnsavedChanges}
-                         openState={openState}
-                         onClickHandler={openControlsHandler} />
+        <ImageControls
+          onApplyChanges={applyChanges}
+          onCancelChanges={cancelChanges}
+          hasUnsavedChanges={hasUnsavedChanges}
+          openState={openState}
+          onClickHandler={openControlsHandler}
+        />
 
-        {openState === 'ratio' && <ImageRatio onRatioChange={handleRatioChange}/>}
+        {openState === 'ratio' && <ImageRatio onRatioChange={handleRatioChange} />}
         {openState === 'multiple' && (
           <MultipleImage
             addNewFiles={onUpload}

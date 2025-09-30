@@ -12,7 +12,7 @@ import {
   useDeletePostsImageMutation,
   useUploadPostsImagesMutation,
 } from '@/features/posts/api/posts-api'
-import { Image } from '@/shared/lib/sсhemas/posts'
+import { Images } from '@/shared/lib/sсhemas/posts'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { createTempFile } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile'
@@ -30,7 +30,7 @@ export const SuperModal = ({ title, callback }: Props) => {
 
   const [exitModalIsOpen, setExitModalIsOpen] = useState(false)
   const [localFiles, setLocalFiles] = useState<File[]>([])
-  const [uploadedImages, setUploadedImages] = useState<Image[]>([])
+  const [uploadedImages, setUploadedImages] = useState<Images[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -65,7 +65,7 @@ export const SuperModal = ({ title, callback }: Props) => {
   }
 
   const handleImageUpdateByCrop = useCallback(
-    (index: number, updatedImage: Image, updatedFile?: File) => {
+    (index: number, updatedImage: Images, updatedFile?: File) => {
       setUploadedImages(prev => {
         const updated = [...prev]
         updated[index] = updatedImage
