@@ -13,7 +13,7 @@ export const AddCommentForm = () => {
         </form>
     );
 };*/
-
+'use client'
 import { useAppSelector } from '@/shared/lib/hooks/hooks';
 import { useState } from 'react';
 import {selectCurrentMessages} from "@/shared/api/appSlice";

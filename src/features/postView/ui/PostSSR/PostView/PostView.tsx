@@ -3,11 +3,9 @@ import {PostContent} from "@/features/postView/ui/PostSSR/PostView/PostContent/P
 import s from "./PostView.module.scss"
 import {PostImage} from "@/features/postView/ui/PostSSR/PostView/PostImage/PostImage";
 import {Post} from "@/features/postView/api/types";
-import {Carousel} from "@/features/postView/ui/PostSSR/PostView/PostImage/Сarousel/Сarousel";
 import {useAppDispatch} from "@/shared/lib/hooks/hooks";
-import {postApi} from "@/features";
-import {useEffect, useRef, useState} from "react";
-import {useFetchPostQuery} from "@/features/postView/api/postApi";
+import {useEffect, useState} from "react";
+import {postApi, useFetchPostQuery} from "@/features/postView/api/postApi";
 
 type Props = {
     post: Post
