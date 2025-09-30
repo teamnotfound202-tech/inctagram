@@ -23,9 +23,7 @@ type Props = {
 }
 
 export const Header = ({ notification }: Props) => {
-  const { data, isLoading, isError } = useMeQuery(undefined,{
-    pollingInterval: 30 * 60 * 1000,
-  })
+  const { data, isLoading, isError } = useMeQuery()
   const dispatch = useAppDispatch()
   useEffect(() => {
     const languageItem = localStorage.getItem(LANGUAGE)
