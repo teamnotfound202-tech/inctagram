@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback, useRef, useState } from 'react'
+import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 import s from '../Modal.module.scss'
 import { ModalHeader } from '@/shared/ui/Modal/SuperModal/ModalHeader/ModalHeader'
 import { Modal } from '@/shared/ui/Modal/Modal'
@@ -13,6 +13,7 @@ import { Images } from '@/shared/lib/sсhemas/posts'
 import {
   useDeletePostsImageMutation,
   useUploadPostsImagesMutation,
+  useCreatePostMutation
 } from '@/features/posts/api/posts-api'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
@@ -26,6 +27,7 @@ export type Step = 'upload' | 'edit' | 'filters' | 'publish' | 'noevents'
 export const SuperModal = ({ title, callback }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
   const [deletePosts] = useDeletePostsImageMutation()
+  const [createPost] = useCreatePostMutation()
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
   const [currentStep, setCurrentStep] = useState<Step>('upload')
   const [exitModalIsOpen, setExitModalIsOpen] = useState(false)
@@ -53,19 +55,23 @@ export const SuperModal = ({ title, callback }: Props) => {
       setCurrentStep('upload')
       return
     }
+    
+    // Создаем временные объекты изображений для локального использования
     const tempImages = filteredFiles.map((file, index) => (createTempFile(file)))
     const tempUploadImages = [...uploadedImages, ...tempImages]
+    
     setLocalFiles(newFiles)
     setUploadedImages(tempUploadImages)
     setSelectedImage(0)
-    if (step !== 'noevents') {
-      setCurrentStep(step)
-      uploadImage(localFiles)
+    
+    // Переходим к следующему шагу только если это первоначальная загрузка
+    if (step === 'edit') {
+      setCurrentStep('edit')
     }
   }
 
   const handleImageUpdateByCrop = useCallback(
-    (index: number, updatedImage: Image, updatedFile?: File) => {
+    (index: number, updatedImage: Images, updatedFile?: File) => {
       setUploadedImages(prev => {
         const updated = [...prev]
         updated[index] = updatedImage
@@ -114,6 +120,21 @@ export const SuperModal = ({ title, callback }: Props) => {
   //== Добавил состояния (Женя)
     //состояние для фильтров каждого изображения
   const [imageFilters, setImageFilters] = useState<{[key: number]: {filter: string, intensity: number}}>({})
+  
+  // Состояние для данных формы публикации
+  const [publishFormData, setPublishFormData] = useState({
+    description: '',
+    location: ''
+  })
+
+  // Используем ref для хранения актуальных данных
+  const publishFormDataRef = useRef(publishFormData)
+
+  // Обновляем ref при изменении состояния
+  useEffect(() => {
+    publishFormDataRef.current = publishFormData
+  }, [publishFormData])
+  
   // Получаем текущий фильтр для выбранного изображения
   const getCurrentFilter = () => imageFilters[selectedImage] || {filter: 'normal', intensity: 100}
 
@@ -125,13 +146,18 @@ export const SuperModal = ({ title, callback }: Props) => {
     }))
   }
 
+  // Обработчик изменений в форме публикации
+  const handlePublishFormDataChange = (data: {description: string, location: string}) => {
+    setPublishFormData(data)
+  }
+
   const handleNext = () => {
     switch (currentStep) {
       case 'edit':
-        handleImageUpload(localFiles, 'filters')
+        setCurrentStep('filters')
         break
       case 'filters':
-        handleImageUpload(localFiles, 'publish')
+        setCurrentStep('publish')
         break
     }
   }
@@ -178,9 +204,64 @@ export const SuperModal = ({ title, callback }: Props) => {
     setExitModalIsOpen(false)
   }
 
-  const handlePublish = () => {
-    //логика отправик на серверд
-    console.log('upload to server')
+  const handlePublish = async () => {
+    try {
+      if (localFiles.length === 0) {
+        toast.error('No images to upload')
+        return
+      }
+
+      const currentFormData = publishFormDataRef.current
+
+      if (!currentFormData.description?.trim()) {
+        toast.error('Please add a description')
+        return
+      }
+
+      if (!currentFormData.location?.trim()) {
+        toast.error('Please add a location')
+        return
+      }
+
+      // Дополнительная проверка - location не должен быть пустой строкой
+      if (currentFormData.location.trim().length === 0) {
+        toast.error('Location cannot be empty')
+        return
+      }
+
+      // Шаг 1: Загружаем изображения на сервер
+      const uploadResult = await uploadImage(localFiles).unwrap()
+
+      if (!uploadResult || !uploadResult.images) {
+        throw new Error('Failed to upload images to server')
+      }
+
+      // Шаг 2: Создаем пост с метаданными
+      const postData = {
+        description: currentFormData.description.trim(),
+        location: currentFormData.location.trim(),
+        childrenMetadata: uploadResult.images.map(image => ({
+          uploadId: image.uploadId
+        }))
+      }
+
+      const createdPost = await createPost(postData).unwrap()
+
+      callback(null)
+      toast.success('Post published successfully!')
+
+    } catch (error: any) {
+      console.error('❌ Error publishing post:', error)
+
+      // Более детальная обработка ошибок
+      if (error?.data?.message) {
+        toast.error(`Failed to publish: ${error.data.message}`)
+      } else if (error?.status === 400) {
+        toast.error('Validation error: please check your data')
+      } else {
+        toast.error('Failed to publish post. Please try again.')
+      }
+    }
   }
 
   const titleForHeader =
@@ -243,6 +324,7 @@ export const SuperModal = ({ title, callback }: Props) => {
               appliedFilter={getCurrentFilter().filter}
               filterIntensity={getCurrentFilter().intensity}
               imageFilters={imageFilters}
+              onFormDataChange={handlePublishFormDataChange}
             />
           )}
         </div>

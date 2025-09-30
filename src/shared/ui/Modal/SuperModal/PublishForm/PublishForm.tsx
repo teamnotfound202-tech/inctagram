@@ -15,12 +15,13 @@ type PublishFormProps = {
   appliedFilter?: string
   filterIntensity?: number
   imageFilters?: {[key: number]: {filter: string, intensity: number}}
+  onFormDataChange?: (data: {description: string, location: string}) => void
 }
 
 const mockLocations = [
-  { name: 'New York', details: 'Washington Square Park' },
-  { name: 'New York', details: 'Central Park' },
-  { name: 'New York', details: 'Brooklyn Bridge' },
+  { title: 'New York', place: 'Washington Square Park' },
+  { title: 'New York', place: 'Central Park' },
+  { title: 'New York', place: 'Brooklyn Bridge' },
 ]
 
 export const PublishForm = ({
@@ -28,14 +29,28 @@ export const PublishForm = ({
   selectedImage = 0,
   onSelectImage,
   imageFilters = {},
+  onFormDataChange,
 }: PublishFormProps) => {
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
 
+  // Уведомляем родительский компонент об изменениях в форме
+  const handleDescriptionChange = (value: string) => {
+    setDescription(value)
+    onFormDataChange?.({ description: value, location })
+  }
+
+  const handleLocationChange = (value: string) => {
+    setLocation(value)
+    onFormDataChange?.({ description, location: value })
+  }
+
   const handleLocationSelect = (selectedLocation: string, details: string) => {
-    setLocation(`${selectedLocation}, ${details}`)
+    const newLocation = `${selectedLocation}, ${details}`
+    setLocation(newLocation)
     setShowLocationSuggestions(false)
+    onFormDataChange?.({ description, location: newLocation })
   }
 
   // Навигация по изображениям
@@ -83,7 +98,7 @@ export const PublishForm = ({
         </div>
 
         {/* Стрелочки навигации */}
-        {images && images.length > 1 && (
+        {images.length > 1 && (
           <>
             <button
               onClick={handlePrevImage}
@@ -129,7 +144,7 @@ export const PublishForm = ({
           <span className={styles.locationLabel}>Add publication descriptions</span>
           <TextArea
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={e => handleDescriptionChange(e.target.value)}
             className={styles.descriptionInput}
             maxLength={500}
           />
@@ -143,7 +158,7 @@ export const PublishForm = ({
               type="text"
               placeholder="New York"
               value={location}
-              onChange={e => setLocation(e.target.value)}
+              onChange={e => handleLocationChange(e.target.value)}
               onFocus={() => setShowLocationSuggestions(true)}
               className={styles.locationInput}
             />
@@ -156,10 +171,10 @@ export const PublishForm = ({
                 <button
                   key={index}
                   className={styles.locationSuggestion}
-                  onClick={() => handleLocationSelect(loc.name, loc.details)}
+                  onClick={() => handleLocationSelect(loc.title, loc.place)}
                 >
-                  <div className={styles.locationName}>{loc.name}</div>
-                  <div className={styles.locationDetails}>{loc.details}</div>
+                  <div className={styles.locationName}>{loc.title}</div>
+                  <div className={styles.locationDetails}>{loc.place}</div>
                 </button>
               ))}
             </div>

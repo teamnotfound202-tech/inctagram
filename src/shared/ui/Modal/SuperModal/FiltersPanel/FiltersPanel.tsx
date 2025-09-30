@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Image from 'next/image'
 import styles from './FiltersPanel.module.scss'
 import { filters, getFilterWithIntensity } from '@/shared/ui/Modal/SuperModal/constans/filters'
@@ -23,9 +22,6 @@ export const FiltersPanel = ({
   filterIntensity = 100,
   onFilterSelect
 }: FiltersPanelProps) => {
-  // Используем пропсы вместо локального состояния
-  // const currentFilter = selectedFilter
-  // const currentIntensity = filterIntensity
 
   const handleFilterSelect = (filterName: string) => {
     onFilterSelect?.(filterName, filterIntensity)
@@ -77,7 +73,7 @@ export const FiltersPanel = ({
           />
           
           {/* Стрелочки навигации */}
-          {images && images.length > 1 && (
+          {images.length > 1 && (
             <>
               <button
                 onClick={handlePrevImage}
@@ -97,7 +93,7 @@ export const FiltersPanel = ({
           )}
 
           {/* Точки навигации поверх изображения */}
-          {images && images.length > 1 && (
+          {images.length > 1 && (
             <div className={styles.imageNavigation}>
               <div className={styles.imageDots}>
                 {images.map((_, index) => (
@@ -113,6 +109,7 @@ export const FiltersPanel = ({
         </div>
       </div>
 
+      {/*Иконки фильтров */}
       <div>
       <div className={styles.filtersGrid}>
         {filters.map((filter) => (
@@ -135,6 +132,7 @@ export const FiltersPanel = ({
           </div>
         ))}
 
+        {/*Ползунок для интенсивности фильтров */}
       </div>
         {selectedFilter !== 'normal' && (
           <div className={styles.intensityControl}>

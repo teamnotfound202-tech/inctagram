@@ -8,10 +8,7 @@ import { MultipleImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/Multiple
 import { Images } from '@/shared/lib/sсhemas/posts'
 import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
 import { ZoomCrop } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ZoomCrop'
-
-import { Crop } from 'react-image-crop'
 import { ImageCropper } from '@/shared/ui/Modal/SuperModal/ImageEditor/Cropper/ImageCropper'
-import { ModifiedImage } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/prepareImagesToStorage'
 
 type ImageEditorProps = {
   images: Images[]
@@ -20,7 +17,7 @@ type ImageEditorProps = {
   onSelectImage: (index: number) => void
   onUpload: (files: File[]) => void
   deletePost: (id: string, inex: number) => void
-  onImageUpdate: (index: number, updatedImage: ModifiedImage, updatedFile?: File) => void
+  onImageUpdate: (index: number, updatedImage: Images, updatedFile?: File) => void
 }
 export type TypeOfControls = 'ratio' | 'zoom' | 'multiple' | null
 export const ImageEditor = ({
@@ -48,14 +45,16 @@ const [ratio, setRatio] = useState<AspectRatio>('base')
   const applyChanges = useCallback(() => {
     if (temporaryCroppedImage && temporaryCroppedFile) {
       // Создаем обновленный объект Image
-      const updatedImage: Image = {
+      const updatedImage: Images = {
         ...currentImage,
         url: temporaryCroppedImage,
         fileSize: temporaryCroppedFile.size,
         // Можно добавить другие обновленные свойства
       }
 
-      onImageUpdate(selectedImage, updatedImage, temporaryCroppedFile)
+      if (onImageUpdate) {
+        onImageUpdate(selectedImage, updatedImage, temporaryCroppedFile)
+      }
 
       setTemporaryCroppedImage(undefined)
       setTemporaryCroppedFile(undefined)

@@ -8,21 +8,21 @@ import { MouseEvent } from 'react'
 import { clsx } from 'clsx'
 type ModalProps = {
   title: string
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void
-  forwarfClick: () => void
-  backClick: () => void
+  onClickAction: (event: MouseEvent<HTMLButtonElement>) => void
+  forwardClickAction: () => void
+  backClickAction: () => void
   type: Step
-  uploadClick: () => void
+  uploadClickAction: () => void
   isLoading: boolean
 }
 
 export const ModalHeader = ({
   title,
-  onClick,
-  backClick,
+  onClickAction,
+  backClickAction,
   type,
-  forwarfClick,
-  uploadClick,
+  forwardClickAction,
+  uploadClickAction,
   isLoading
 }: ModalProps) => {
 
@@ -31,19 +31,19 @@ export const ModalHeader = ({
       {type !== 'upload' && (
         <button className={clsx(s.modalCloseBtn,{
           [s.isLoading]: isLoading,
-        })} onClick={backClick}>
+        })} onClick={backClickAction}>
           <BackArrowIcon className={s.closeBtnIcon} />
         </button>
       )}
       <h3 className={s.modalTitle}>{title}</h3>
       {type === 'upload' ? (
-        <button className={s.modalCloseBtn} onClick={onClick}>
+        <button className={s.modalCloseBtn} onClick={onClickAction}>
           <CloseBtnIcon className={s.closeBtnIcon} />
         </button>
       ) : (
         <Button
           disabled={isLoading}
-          onClick={type === 'publish' ? uploadClick : forwarfClick}
+          onClick={type === 'publish' ? uploadClickAction : forwardClickAction}
           variant={'text'}
           className={s.photoEditingNextBtn}
         >

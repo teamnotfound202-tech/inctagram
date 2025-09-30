@@ -1,6 +1,5 @@
 import { baseApi } from '@/shared/api'
-import { ImagesResponse, ImagesResponseSchema } from '@/shared/lib/sсhemas/posts'
-import { BaseQueryArg } from '@reduxjs/toolkit/query'
+import { CreatePostInput, ImagesResponse, PostImage } from '@/shared/lib/sсhemas/posts'
 
 export const postsApi = baseApi.injectEndpoints({
   overrideExisting: true,
@@ -27,6 +26,16 @@ export const postsApi = baseApi.injectEndpoints({
         }
       },
     }),
+    createPost: builder.mutation<PostImage, CreatePostInput>({
+      query: (postData) => {
+        return {
+          url: `/posts`,
+          method: 'POST',
+          body: postData,
+        }
+      },
+      invalidatesTags: ['Posts'],
+    }),
   }),
 })
-export const { useUploadPostsImagesMutation,useDeletePostsImageMutation } = postsApi
+export const { useUploadPostsImagesMutation,useDeletePostsImageMutation, useCreatePostMutation } = postsApi

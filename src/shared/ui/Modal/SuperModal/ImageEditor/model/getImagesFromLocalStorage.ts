@@ -1,10 +1,10 @@
-import { Image } from '@/shared/lib/sсhemas/posts'
+import { Images } from '@/shared/lib/sсhemas/posts'
 
-export const createFilesFromLocalStorage = async (file:Image[]) => {
+export const createFilesFromLocalStorage = async (file:Images[]) => {
 
 
   try {
-    const images: Image[] = file;
+    const images: Images[] = file;
     const files: File[] = [];
 
     for (const image of images) {

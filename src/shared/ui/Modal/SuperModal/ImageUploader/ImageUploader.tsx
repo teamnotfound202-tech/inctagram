@@ -1,10 +1,9 @@
-import PhotoUplaodBg from '@/shared/ui/Modal/icons/photoUploadBg.svg'
-import { ChangeEvent, useRef, useState } from 'react'
+import PhotoUploadBg from '@/shared/ui/Modal/icons/photoUploadBg.svg'
+import { useRef} from 'react'
 import styles from './ImageUploader.module.scss'
 import { Button } from '@/shared/ui'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
-
 import { useFileUpload } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/useUploader'
 import { SuperUploadInput } from '@/shared/ui/Modal/SuperModal/SuperUploadInput/SuperUploadInput'
 import { Step } from '@/shared/ui/Modal/SuperModal/SuperModal'
@@ -39,7 +38,7 @@ export const ImageUploader = ({ onUpload, handleOpenDraft }: ImageUploaderProps)
         <SuperUploadInput ref={fileInputRef} handleChange={handleFileSelect} />
 
         <div className={styles.content}>
-          <PhotoUplaodBg className={styles.photoUploadBg} />
+          <PhotoUploadBg className={styles.photoUploadBg} />
         </div>
       </div>
       <div className={styles.buttonUploadContainer}>
