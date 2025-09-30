@@ -1,8 +1,9 @@
 import {
+  CursorPage,
   GetPublicUsers,
   ResponsesPosts,
+  UserItem,
   UserProfileResponse,
-  UsersListResponse,
 } from '@/features/publicUserApi/types'
 import { baseApi } from '@/shared/api'
 
@@ -26,11 +27,22 @@ export const publicUserApi = baseApi.injectEndpoints({
       query: ({ userId }) => ({ url: `/users/follower/${userId}`, method: 'DELETE' }),
       invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
     }),
-    followingsUser: builder.query<UsersListResponse, { userName: string }>({
-      query: ({ userName }) => ({ url: `/users/${userName}/following`, method: 'GET' }),
+    followersUser: builder.query<CursorPage<UserItem>, { userName: string; cursor?: number | null; pageSize?: number; search?: string }
+    >({
+      query: ({ userName, ...params }) => ({
+        url: `/users/${userName}/followers`,
+        method: 'GET',
+        params,
+      }),
     }),
-    followersUser: builder.query<UsersListResponse, { userName: string }>({
-      query: ({ userName }) => ({ url: `/users/${userName}/followers`, method: 'GET' }),
+
+    followingsUser: builder.query<CursorPage<UserItem>, { userName: string; cursor?: number; pageSize?: number; search?: string }
+    >({
+      query: ({ userName, ...params }) => ({
+        url: `/users/${userName}/following`,
+        method: 'GET',
+        params,
+      }),
     }),
     getPostsForUser: builder.infiniteQuery<ResponsesPosts, string, string | undefined>({
       infiniteQueryOptions: {

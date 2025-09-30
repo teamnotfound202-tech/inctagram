@@ -8,6 +8,8 @@ import { UserDataResponse, UserProfileResponse } from '@/features/publicUserApi/
 import Paid from './icons/Paid.svg'
 import { ProfileHeadersStats } from '@/features/profile/ProfileHeadersStats/ProfileHeadersStats'
 import Skeleton from 'react-loading-skeleton'
+import { useAppSelector } from '@/shared/lib/hooks/hooks'
+import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 type Props = {
   user: UserDataResponse
@@ -17,6 +19,8 @@ type Props = {
 export const ProfileHeader = ({ user, userStats }: Props) => {
   const { data: currentUser } = useMeQuery()
   const {data: freshProfileData, isLoading, isFetching } = useGetUserFollowingAndFollowersQuery({ userName: user.userName })
+
+  const messages = useAppSelector(selectCurrentMessages)
 
   const dataForRender = freshProfileData || userStats
   const [followingUser, { isLoading: isFollowingLoading }] = useFollowingUserMutation()
@@ -56,19 +60,19 @@ export const ProfileHeader = ({ user, userStats }: Props) => {
 
               {!isLoading && currentUser?.userId &&
                 (isOwnProfile  ? (
-                  <Button variant={'secondary'}>Profile Settings</Button>
+                  <Button variant={'secondary'}>{messages.profile.profileSettings}</Button>
                 ) : (
                   <div className={s.foreignProfileButtons}>
                     {freshProfileData?.isFollowing ? (
                       <Button variant={'outline'} onClick={unFollowHandler} disabled={isLoadingButtons}>
-                        {showLoading ? 'Loading...' : 'Unfollow'}
+                        {showLoading ? messages.common.loading : messages.profile.unFollow}
                       </Button>
                     ) : (
                       <Button variant={'primary'} onClick={followHandler} disabled={isLoadingButtons}>
-                        {showLoading ? 'Loading...' : 'Follow'}
+                        {showLoading ? messages.common.loading : messages.profile.follow}
                       </Button>
                     )}
-                    <Button variant={'secondary'}>Send Message</Button>
+                    <Button variant={'secondary'}>{messages.profile.sendMessage}</Button>
                   </div>
                 ))}
             </div>

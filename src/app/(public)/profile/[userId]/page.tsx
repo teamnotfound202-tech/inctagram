@@ -17,7 +17,6 @@ export default async function ProfilePage (props: {
 
   const userStats = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + `/users/${user.userName}`)
   const userStatsInfo = await userStats.json()
-  console.log(userStatsInfo)
 
   if (postsUser.statusCode === responseCodes.NotFound) {
     return <div>User not found</div>

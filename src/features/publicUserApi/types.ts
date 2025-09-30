@@ -99,3 +99,12 @@ export type UsersListResponse = {
   nextCursor: number;
   items: UserItem[];
 };
+export type CursorPage<T> = {
+  totalCount: number
+  pagesCount: number
+  page: number
+  pageSize: number
+  prevCursor: number | null
+  nextCursor: number | null
+  items: T[]
+}

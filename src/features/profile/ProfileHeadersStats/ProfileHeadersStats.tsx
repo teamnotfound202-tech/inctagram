@@ -4,6 +4,8 @@ import { ModalUsers } from '@/shared/lib/components/ModalUserFollowers/ModalUser
 import { useState } from 'react'
 import { useMeQuery } from '@/features/auth/api/authApi'
 import { UserProfileResponse } from '@/features/publicUserApi/types'
+import { useAppSelector } from '@/shared/lib/hooks/hooks'
+import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 type Props = {
   data: UserProfileResponse
@@ -13,8 +15,10 @@ type Props = {
 export const ProfileHeadersStats = ({data, userName}: Props) => {
   const { data: currentUser } = useMeQuery()
 
+  const messages = useAppSelector(selectCurrentMessages)
+
   const [isModalOpen, setModalOpen] = useState(false)
-  const [typeModal, setTypeModal] = useState<'following' | 'followers'>('following')
+  const [typeModal, setTypeModal] = useState<'following' | 'followers'>()
 
   const showFollowingHandler = () => {
     setTypeModal('following')
@@ -31,24 +35,24 @@ export const ProfileHeadersStats = ({data, userName}: Props) => {
       <button
         className={s.statsButton}
         onClick={showFollowingHandler}
-        disabled={!currentUser?.userId}
-      >
+        disabled={!currentUser?.userId}>
+
         <span className={s.statsCount}>{data.followingCount}</span>
-        <span className={s.statsDescription}>Following</span>
+        <span className={s.statsDescription}>{messages.profile.following}</span>
       </button>
 
       <button
         className={s.statsButton}
         onClick={showFollowersHandler}
-        disabled={!currentUser?.userId}
-      >
+        disabled={!currentUser?.userId}>
+
         <span className={s.statsCount}>{data.followersCount}</span>
-        <span className={s.statsDescription}>Followers</span>
+        <span className={s.statsDescription}>{messages.profile.followers}</span>
       </button>
 
       <button className={s.statsButton} disabled={!currentUser?.userId}>
         <span className={s.statsCount}>{data.publicationsCount}</span>
-        <span className={s.statsDescription}>Publications</span>
+        <span className={s.statsDescription}>{messages.profile.publications}</span>
       </button>
 
       {isModalOpen && typeModal === 'following' && (
@@ -56,7 +60,7 @@ export const ProfileHeadersStats = ({data, userName}: Props) => {
           userName={userName}
           type={'following'}
           currentUser={currentUser}
-          onClose={handleModelClose}
+          onCloseAction={handleModelClose}
           isOpen={isModalOpen}
           userStats={data}
         />
@@ -66,7 +70,7 @@ export const ProfileHeadersStats = ({data, userName}: Props) => {
           userName={userName}
           type={'followers'}
           currentUser={currentUser}
-          onClose={handleModelClose}
+          onCloseAction={handleModelClose}
           isOpen={isModalOpen}
           userStats={data}
         />

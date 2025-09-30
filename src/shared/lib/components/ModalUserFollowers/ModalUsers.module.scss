@@ -2,6 +2,7 @@
 
 .usersList {
   min-width: 572px;
+  max-height: 370px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -18,5 +19,14 @@
 }
 
 .notFoundMessage{
+  margin: 0 auto;
   color: $light-900;
+}
+.usersScrollArea{
+  max-height: 400px;
+  overflow-y: auto;
+}
+.endMessage{
+  color: $light-900;
+  margin: 0 auto;
 }
