@@ -17,7 +17,9 @@ export const appSlice = createSlice({
   name: 'appSlice',
   initialState,
   reducers: create => ({
+
     changeLanguage: create.reducer<{ language: Language }>((state, action) => {
+
       state.language = action.payload.language
     }),
   }),

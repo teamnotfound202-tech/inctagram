@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 type Props = {
   imageToCrop: string
-  onImageCropped: (croppedImageFile: File, croppedImageUrl: string) => void // ✅ Теперь возвращаем File и URL
+  onImageCropped: (croppedImageFile: File, croppedImageUrl: string) => void //  Теперь возвращаем File и URL
   scale: number
   originalFile?: File //  Добавляем оригинальный файл для замены
 }
