@@ -28,8 +28,6 @@ export const Sidebar = () => {
   const handleModelHandler = (type: TypeOfModalWindow) => {
     setModalOpen(type)
   }
-
-
   const handleLogout = () => {
     logout()
       .unwrap()
