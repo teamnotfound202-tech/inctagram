@@ -14,7 +14,7 @@ type CropConfig = Crop & {
   aspect?: number
 }
 
-export const ImageCropper = ({ imageToCrop, onImageCropped, scale, originalFile }: Props) => {
+export const ImageCropper = ({ imageToCrop, onImageCropped, scale }: Props) => {
   const [cropConfig, setCropConfig] = useState<CropConfig>({
     unit: '%',
     width: 60,

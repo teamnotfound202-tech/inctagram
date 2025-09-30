@@ -13,7 +13,6 @@ import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages, selectLanguage } from '@/shared/api/appSlice'
 import { SuperModal } from '@/shared/ui/Modal/SuperModal/SuperModal'
 import { SideBarWarning } from '@/shared/ui/Modal/SideBarWarning/SideBarWarning'
-import { clsx } from 'clsx'
 
 export type TypeOfModalWindow = 'Logout' | 'AddPhotoModal' |'exitEditing'| null
 
