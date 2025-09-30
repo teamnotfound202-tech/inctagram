@@ -24,7 +24,7 @@ type Props = {
 export type Step = 'upload' | 'edit' | 'filters' | 'publish' | 'noevents'
 export const SuperModal = ({ title, callback }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
-  const [deletePosts] = useDeletePostsImageMutation()
+
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
   const [currentStep, setCurrentStep] = useState<Step>('upload')
 
