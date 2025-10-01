@@ -333,6 +333,8 @@ export const SuperModal = ({ title, callback }: Props) => {
                 filterIntensity={getCurrentFilter().intensity}
                 imageFilters={imageFilters}
                 onFormDataChange={handlePublishFormDataChange}
+
+                // user={'сюда нужно откудато достать юзернейм и его аватар'}
               />
             )}
           </div>

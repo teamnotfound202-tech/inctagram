@@ -7,6 +7,7 @@ import Pin from './../../icons/pin.svg'
 import { Images } from '@/shared/lib/sсhemas/posts'
 import BackArrow from '@/shared/ui/Modal/icons/backArrow.svg'
 import ForwardArrow from '@/shared/ui/Modal/icons/forwardArrow.svg'
+import Avatar from '@/entities/user/ui/Avatar/Avatar'
 
 type PublishFormProps = {
   images?: Images[]
@@ -16,6 +17,11 @@ type PublishFormProps = {
   filterIntensity?: number
   imageFilters?: {[key: number]: {filter: string, intensity: number}}
   onFormDataChange?: (data: {description: string, location: string}) => void
+// для отображения аватара и юзернейма
+//   user: {
+//     userName: string
+//     avatarUrl: string
+//   }
 }
 
 const mockLocations = [
@@ -30,6 +36,7 @@ export const PublishForm = ({
   onSelectImage,
   imageFilters = {},
   onFormDataChange,
+  // user,
 }: PublishFormProps) => {
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
@@ -136,8 +143,11 @@ export const PublishForm = ({
         <div className={styles.userInfo}>
           <div className={styles.avatar}>
             <div className={styles.avatarPlaceholder}>U</div>
+            {/*Сюда закинуть аватар юзера а в спан юзернейм из супермодел где мы там его достанем потом*/}
+            {/*<Avatar src={user.avatarUrl} alt={user.userName} size={'very_small'}/>*/}
           </div>
           <span className={styles.username}>URLProfile</span>
+          {/*<span className={styles.username}>{user.userName}</span>*/}
         </div>
 
         <div className={styles.descriptionSection}>
