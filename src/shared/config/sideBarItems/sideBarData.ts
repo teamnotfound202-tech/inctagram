@@ -43,7 +43,7 @@ export const sideBarData: SideBarData[] = [
   {
     key: 'My Profile',
     text: 'My Profile',
-    link: '',
+    link: 'profile',
     isDisabled: false,
     textForLink: {
       en: 'My Profile',

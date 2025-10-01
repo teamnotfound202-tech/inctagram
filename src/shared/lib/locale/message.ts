@@ -25,7 +25,18 @@ export interface Messages {
   };
 
   // Навигация и заголовки
-  navigation: Record<string, string>;
+  navigation: {
+    home: string;
+    profile: string;
+    feed: string;
+    create: string;
+    messenger: string;
+    statistics: string;
+    favorites: string;
+    search: string;
+    settings: string;
+    logOut: string;
+  };
 
   // Аутентификация
   auth: {
@@ -82,6 +93,14 @@ export interface Messages {
     accountType: string;
     publicAccount: string;
     privateAccount: string;
+    noSearchUsers:string;
+    noUsersShow:string;
+    thatsAll: string;
+    publications:string;
+    follow:string;
+    unFollow:string;
+    delete:string;
+    sendMessage: string;
   };
 
   // Посты и контент
@@ -178,6 +197,9 @@ export interface Messages {
     confirmDeleteMessage: string;
     areYouSure: string;
     thisActionCannotBeUndone: string;
+    unfollowConfirm: string;
+    deleteFollowConfirm: string;
+    deleteFollowing: string;
     closeModalWarningBegin: string
     closeModalwarningQSecondPart: string
     discard: string;
@@ -280,6 +302,14 @@ export const messages: Record<Language, Messages> = {
       accountType: 'Account Type',
       publicAccount: 'Public Account',
       privateAccount: 'Private Account',
+      noSearchUsers:'No users match your search',
+      noUsersShow:'No users to show',
+      thatsAll:'That’s all',
+      publications:'publications',
+      follow:'Follow',
+      unFollow:'Unfollow',
+      delete:'Delete',
+      sendMessage: 'Send Message',
     },
 
     posts: {
@@ -341,8 +371,6 @@ export const messages: Record<Language, Messages> = {
       theme: 'Theme',
       deleteAccount: 'Delete Account',
       deactivateAccount: 'Deactivate Account',
-      close: 'Close',
-      save: 'Save draft',
     },
 
     errors: {
@@ -370,6 +398,9 @@ export const messages: Record<Language, Messages> = {
       confirmDeleteMessage: 'Are you sure you want to delete this item?',
       areYouSure: 'Are you sure?',
       thisActionCannotBeUndone: 'This action cannot be undone',
+      unfollowConfirm:'Do you really want to Unfollow from this user ',
+      deleteFollowConfirm:'Do you really want to delete a Following ',
+      deleteFollowing: 'Delete Following',
       closeModalWarningBegin: 'Do you really want to close the creation of a publication?',
       closeModalwarningQSecondPart: 'If you close everything will be deleted',
       discard: 'Discard',
@@ -470,6 +501,14 @@ export const messages: Record<Language, Messages> = {
       accountType: 'Тип аккаунта',
       publicAccount: 'Публичный аккаунт',
       privateAccount: 'Приватный аккаунт',
+      noSearchUsers:'Нет пользователей, соответствующих вашему поиску',
+      noUsersShow:'Нет пользователей для отображения',
+      thatsAll:'Все загружено',
+      publications:'Публикаций',
+      follow:'Подписаться',
+      unFollow:'Отписаться',
+      delete:'Удалить',
+      sendMessage: 'Отправить сообщение'
     },
 
     posts: {
@@ -531,8 +570,6 @@ export const messages: Record<Language, Messages> = {
       theme: 'Тема',
       deleteAccount: 'Удалить аккаунт',
       deactivateAccount: 'Деактивировать аккаунт',
-      close: 'Закрыть',
-      save: 'Сохранить черновик',
     },
 
     errors: {
@@ -560,6 +597,9 @@ export const messages: Record<Language, Messages> = {
       confirmDeleteMessage: 'Вы уверены, что хотите удалить этот элемент?',
       areYouSure: 'Вы уверены?',
       thisActionCannotBeUndone: 'Это действие нельзя отменить',
+      unfollowConfirm:'Вы действительно хотите отписаться от этого пользователя ',
+      deleteFollowConfirm:'Вы действительно хотите удалить подписку ',
+      deleteFollowing:'Удалить подписку',
       closeModalWarningBegin: 'Вы действительно хотите закрыть создание публикации?',
       closeModalwarningQSecondPart: 'Если вы закроете, все будет удалено',
       discard: 'Сбросить',
@@ -573,29 +613,30 @@ export const messages: Record<Language, Messages> = {
       selectLanguage: 'Выберите язык',
     },
   },
-}
+};
 
 // Функция для получения сообщений по языку
 export const getMessages = (language: Language): Messages => {
-  return messages[language] || messages.en
-}
+  return messages[language] || messages.en;
+};
 
 // Функция для получения конкретного сообщения
-export const getMessage = (
-  language: Language,
-  key: string,
-  fallback?: string,
-): string => {
-  const msgs = getMessages(language)
-  const keys = key.split('.')
-  let value: any = msgs
-
-  for (const k of keys) {
-    value = value?.[k]
-  }
-
-  return typeof value === 'string' ? value : (fallback || key)
-}
+// Закоментировали так как функция не используется - уточнить у Иры нужна ли
+// export const getMessage = (
+//   language: Language,
+//   key: string,
+//   fallback?: string
+// ): string => {
+//   const msgs = getMessages(language);
+//   const keys = key.split('.');
+//   let value: any = msgs;
+//
+//   for (const k of keys) {
+//     value = value?.[k];
+//   }
+//
+//   return typeof value === 'string' ? value : (fallback || key);
+// };
 
 // Экспорт по умолчанию
 

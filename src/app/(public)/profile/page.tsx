@@ -1,0 +1,1 @@
+export {ProfileRedirect as default} from '@/views/profileRedirect/profileRedirect'

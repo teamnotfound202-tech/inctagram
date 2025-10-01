@@ -23,6 +23,10 @@ a {
   all: unset;
 }
 
+ul {
+    list-style: none;
+}
+
 .main {
   margin: 0 auto;
   position: relative;
@@ -32,4 +36,3 @@ a {
   flex-direction: column;
   padding-top: 60px;
 }
-

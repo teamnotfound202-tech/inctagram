@@ -1,11 +1,11 @@
 'use client'
-import { Button } from '@/shared/ui/Button/Button'
+import {Button} from '@/shared/ui/Button/Button'
 import Link from 'next/link'
 import s from './Header.module.scss'
 import NotificationIcon from '@/widgets/Header/icons/notification.svg'
 import FlagRussia from '@/shared/ui/Select/icon/FlagRussia.svg'
 import FlagEngland from '@/shared/ui/Select/icon/FlagEngland.svg'
-import { useMeQuery } from '@/features/auth/api/authApi'
+import {useMeQuery} from "@/features/auth/api/authApi";
 import { Path } from '@/shared/config'
 import { Container } from '@/shared/ui'
 import { useAppDispatch } from '@/shared/lib/hooks/hooks'
@@ -19,11 +19,10 @@ import { Language } from '@/shared/lib/locale/message'
 
 type Props = {
   notification: number
-  agreement?: boolean
 }
 
-export const Header = ({ notification }: Props) => {
-  const { data, isLoading, isError } = useMeQuery()
+export const Header = ({notification}: Props) => {
+  const {data, isLoading, isError} = useMeQuery()
   const dispatch = useAppDispatch()
   useEffect(() => {
     const languageItem = localStorage.getItem(LANGUAGE)
@@ -78,7 +77,7 @@ export const Header = ({ notification }: Props) => {
               />
             </div>
           )}
-          {isError && (
+          { isError && (
             <div className={s.buttonGroupLogin}>
               <SelectBox
                 options={[

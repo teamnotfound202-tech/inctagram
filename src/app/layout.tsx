@@ -8,6 +8,7 @@ import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
 import { Toaster } from 'sonner';
 import { AlertsProvider } from '@/shared/ui';
+import { AppWrapper } from '@/shared/lib/components/AppWrapper/AppWrapper'
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,7 +37,9 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
                 <AlertsProvider>
                   <Header notification={0} />
                   <main className={'main'}>
-                    {children}
+                    <AppWrapper>
+                      {children}
+                    </AppWrapper>
                     <Toaster />
                   </main>
                 </AlertsProvider>

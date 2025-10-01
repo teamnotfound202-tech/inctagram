@@ -2,10 +2,8 @@
 
 .sidebarItem {
   cursor: pointer;
-
   display: inline-block;
-
-  min-width: 220px;
+  min-width: 149px;
   max-width: fit-content;
   margin-bottom: 24px;
   padding: 0;
@@ -27,8 +25,8 @@
     color: $accent-500;
   }
 
-  &:active .sidebarItemLink,
-  &:active .icon {
+  &.active .sidebarItemLink,
+  &.active .icon {
     color: $accent-100;
   }
 
@@ -42,6 +40,8 @@
     }
   }
 }
+
+
 
 .sidebarItemLink {
   display: flex;
@@ -71,4 +71,9 @@
   width: 24px;
   height: 24px;
   color: $light-100;
+}
+
+.active .icon,
+.active span{
+  color: $accent-500;
 }
