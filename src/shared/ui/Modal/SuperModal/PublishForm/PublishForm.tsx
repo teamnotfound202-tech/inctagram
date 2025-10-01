@@ -99,8 +99,8 @@ export const PublishForm = ({
             alt="Preview image"
             className={styles.previewImage}
             style={getFilterStyle()}
-            width={600}
-            height={400}
+            width={400}
+            height={300}
           />
         </div>
 

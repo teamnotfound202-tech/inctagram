@@ -22,6 +22,8 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  width: 400px;
+  height: 500px;
   position: relative; // Для позиционирования стрелочек
 }
 
@@ -109,7 +111,7 @@
 
 .formSection {
   width: 340px;
-  padding: 16px;
+  padding: 16px 16px 60px 16px;
   background-color: $dark-300;
   display: flex;
   flex-direction: column;
