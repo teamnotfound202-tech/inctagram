@@ -128,25 +128,9 @@ export const SuperModal = ({ title, callback }: Props) => {
   }
 
   const handleOpendraft = async () => {
-   /* const storedImages = localStorage.getItem(SAVED_IMAGES)
-    if (!storedImages) return []
-    const images = JSON.parse(storedImages)
-    loadFilesFromUrls(images).then(files => {
-      if (files.length > 0) {
-        const tempImages = files.map(
-          (file, index) => createTempFile(file, images[index]?.url) // Сохраняем originalUrl
-        )
-        setLocalFiles(files)
-        setUploadedImages(tempImages)
-        setCurrentStep('edit')
-      }
-    })*/
+
     setCurrentStep('edit')
   }
-
-
-
-
 
   // Получаем текущий фильтр для выбранного изображения
   const getCurrentFilter = () => imageFilters[selectedImage] || { filter: 'normal', intensity: 100 }
