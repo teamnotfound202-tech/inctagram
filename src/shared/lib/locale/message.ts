@@ -371,6 +371,8 @@ export const messages: Record<Language, Messages> = {
       theme: 'Theme',
       deleteAccount: 'Delete Account',
       deactivateAccount: 'Deactivate Account',
+      close: 'Close',
+      save: 'Save draft',
     },
 
     errors: {
@@ -570,6 +572,8 @@ export const messages: Record<Language, Messages> = {
       theme: 'Тема',
       deleteAccount: 'Удалить аккаунт',
       deactivateAccount: 'Деактивировать аккаунт',
+      close: 'Закрыть',
+      save: 'Сохранить черновик',
     },
 
     errors: {
