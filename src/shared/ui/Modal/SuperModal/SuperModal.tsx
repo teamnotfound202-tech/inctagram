@@ -14,6 +14,8 @@ import {
   useUploadPostsImagesMutation,
   useCreatePostMutation,
 } from '@/features/posts/api/posts-api'
+import { useMeQuery } from '@/features/auth/api/authApi'
+import { useGetUserFollowingAndFollowersQuery } from '@/features/publicUserApi/publicUserApi'
 import { Images } from '@/shared/lib/sсhemas/posts'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
@@ -30,6 +32,11 @@ export const SuperModal = ({ title, callback }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
   const [deletePosts] = useDeletePostsImageMutation()
   const [createPost] = useCreatePostMutation()
+  const { data: userData } = useMeQuery()
+  const { data: userProfile } = useGetUserFollowingAndFollowersQuery(
+    { userName: userData?.userName || '' },
+    { skip: !userData?.userName }
+  )
   const currentLanguageArray = useAppSelector(selectCurrentMessages)
   const [currentStep, setCurrentStep] = useState<Step>('upload')
   const [exitModalIsOpen, setExitModalIsOpen] = useState(false)
@@ -37,6 +44,7 @@ export const SuperModal = ({ title, callback }: Props) => {
   const [uploadedImages, setUploadedImages] = useState<Images[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
   const modalRef = useRef<HTMLDivElement>(null)
+
 
   const handleImageUpload = (files: File[], step: Step = 'noevents') => {
     const filteredFiles = files.filter(
@@ -258,6 +266,7 @@ export const SuperModal = ({ title, callback }: Props) => {
         childrenMetadata: uploadResult.images.map(image => ({
           uploadId: image.uploadId,
         })),
+        userId: userData?.userId, // Добавляем userId для правильной инвалидации тегов
       }
 
       await createPost(postData).unwrap()
@@ -333,8 +342,10 @@ export const SuperModal = ({ title, callback }: Props) => {
                 filterIntensity={getCurrentFilter().intensity}
                 imageFilters={imageFilters}
                 onFormDataChange={handlePublishFormDataChange}
-
-                // user={'сюда нужно откудато достать юзернейм и его аватар'}
+                user={userData ? {
+                  userName: userData.userName,
+                  avatarUrl: userProfile?.avatars?.[0]?.url || null
+                } : undefined}
               />
             )}
           </div>

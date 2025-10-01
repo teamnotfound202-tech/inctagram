@@ -14,6 +14,7 @@ import type {
   RequestRecoveryPassword,
   RequestResendRecoveryPassword,
 } from '@/shared/api/types'
+import type { UserDataResponse } from '@/features/publicUserApi/types'
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -38,6 +39,9 @@ export const authApi = baseApi.injectEndpoints({
         }),
         me: builder.query<ResponsesMe, void>({
             query: () => "auth/me",
+        }),
+        myProfile: builder.query<UserDataResponse, void>({
+            query: () => "users/profile",
         }),
         googleLogin: builder.mutation<ResponseGoogleLogin, RequestBodyGoogleLogin>({
             query: (args) => ({
@@ -85,6 +89,7 @@ export const {
   useRegistrationEmailResendingMutation,
   useGoogleLoginMutation,
   useMeQuery,
+  useMyProfileQuery,
   useLogoutMutation,
   useRecoveryPasswordMutation,
   useCreateNewPasswordMutation,

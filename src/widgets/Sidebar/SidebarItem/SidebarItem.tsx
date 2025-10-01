@@ -18,8 +18,59 @@ type Props = {
   spanText: string
 }
 
-export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible,spanText }: Props) => {
-  const pathname = usePathname();
+// export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible,spanText }: Props) => {
+//   const pathname = usePathname();
+//
+//   return (
+//     <li
+//       className={clx(s.sidebarItem, {
+//         [s.disabled]: isDisabled,
+//       })}
+//     >
+//       {text === 'Log Out' ? (
+//         <Button
+//           className={clx(s.sidebarItemLink, {
+//             [s.unvisible]: isVisible,
+//           })}
+//           onClick={onClickAction}
+//         >
+//           <DynamicIcon text={text} />
+//           <span className={s.sidebarItemtext}>{spanText}</span>
+//         </Button>
+//       ) : (
+//         <Link href={link} className={clx(s.sidebarItemLink, {
+//           [s.active]: pathname === link
+//         })}>
+//           <DynamicIcon text={text} />
+//           <span className={s.sidebarItemtext}>{spanText}</span>
+//         </Link>
+//       )}
+export const SidebarItem = ({
+                              link,
+                              text,
+                              isDisabled,
+                              onClickAction,
+                              isVisible,
+                              spanText,
+                            }: Props) => {
+  const baseClasses = clx(s.sidebarItemLink, {
+    [s.unvisible]: isVisible,
+  })
+
+  const action = sidebarActions[text] ?? { type: 'link' }
+
+  const content =
+    action.type === 'button' ? (
+      <Button className={baseClasses} onClick={() => onClickAction?.(action.actionType)}>
+        <DynamicIcon text={text} />
+        <span className={s.sidebarItemtext}>{spanText}</span>
+      </Button>
+    ) : (
+      <Link href={link} className={baseClasses}>
+        <DynamicIcon text={text} />
+        <span className={s.sidebarItemtext}>{spanText}</span>
+      </Link>
+    )
 
   return (
     <li
@@ -27,58 +78,7 @@ export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible,s
         [s.disabled]: isDisabled,
       })}
     >
-      {text === 'Log Out' ? (
-        <Button
-          className={clx(s.sidebarItemLink, {
-            [s.unvisible]: isVisible,
-          })}
-          onClick={onClickAction}
-        >
-          <DynamicIcon text={text} />
-          <span className={s.sidebarItemtext}>{spanText}</span>
-        </Button>
-      ) : (
-        <Link href={link} className={clx(s.sidebarItemLink, {
-          [s.active]: pathname === link
-        })}>
-          <DynamicIcon text={text} />
-          <span className={s.sidebarItemtext}>{spanText}</span>
-        </Link>
-      )}
-{/*export const SidebarItem = ({*/}
-{/*                              link,*/}
-{/*                              text,*/}
-{/*                              isDisabled,*/}
-{/*                              onClickAction,*/}
-{/*                              isVisible,*/}
-{/*                              spanText,*/}
-{/*                            }: Props) => {*/}
-{/*  const baseClasses = clx(s.sidebarItemLink, {*/}
-{/*    [s.unvisible]: isVisible,*/}
-{/*  })*/}
-
-{/*  const action = sidebarActions[text] ?? { type: 'link' }*/}
-
-{/*  const content =*/}
-{/*    action.type === 'button' ? (*/}
-{/*      <Button className={baseClasses} onClick={() => onClickAction?.(action.actionType)}>*/}
-{/*        <DynamicIcon text={text} />*/}
-{/*        <span className={s.sidebarItemtext}>{spanText}</span>*/}
-{/*      </Button>*/}
-{/*    ) : (*/}
-{/*      <Link href={link} className={baseClasses}>*/}
-{/*        <DynamicIcon text={text} />*/}
-{/*        <span className={s.sidebarItemtext}>{spanText}</span>*/}
-{/*      </Link>*/}
-{/*    )*/}
-
-{/*  return (*/}
-{/*    <li*/}
-{/*      className={clx(s.sidebarItem, {*/}
-{/*        [s.disabled]: isDisabled,*/}
-{/*      })}*/}
-{/*    >*/}
-{/*      {content}*/}
-{/*    </li>*/}
-{/*  )*/}
-{/*}*/}
+      {content}
+    </li>
+  )
+}

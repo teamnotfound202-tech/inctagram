@@ -1,6 +1,8 @@
 import { baseApi } from '@/shared/api'
 import { CreatePostInput, ImagesResponse, PostImage } from '@/shared/lib/sсhemas/posts'
 
+type CreatePostWithUserId = CreatePostInput & { userId?: number }
+
 export const postsApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: builder => ({
@@ -26,15 +28,28 @@ export const postsApi = baseApi.injectEndpoints({
         }
       },
     }),
-    createPost: builder.mutation<PostImage, CreatePostInput>({
-      query: (postData) => {
+    createPost: builder.mutation<PostImage, CreatePostWithUserId>({
+      query: ({ userId, ...postData }) => {
         return {
           url: `/posts`,
           method: 'POST',
           body: postData,
         }
       },
-      invalidatesTags: ['Posts'],
+      invalidatesTags: (result, error, arg) => {
+        const tags = [
+          'Posts',
+          { type: 'UserPosts', id: 'LIST' }, // Инвалидируем все списки постов пользователей
+          'UserProfile', // Обновляем счетчик публикаций в профиле
+        ]
+        
+        // Если есть userId, инвалидируем конкретный список постов пользователя
+        if (arg.userId) {
+          tags.push({ type: 'UserPosts', id: arg.userId.toString() })
+        }
+        
+        return tags
+      },
     }),
   }),
 })

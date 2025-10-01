@@ -17,11 +17,10 @@ type PublishFormProps = {
   filterIntensity?: number
   imageFilters?: {[key: number]: {filter: string, intensity: number}}
   onFormDataChange?: (data: {description: string, location: string}) => void
-// для отображения аватара и юзернейма
-//   user: {
-//     userName: string
-//     avatarUrl: string
-//   }
+  user?: {
+    userName: string
+    avatarUrl: string | null
+  }
 }
 
 const mockLocations = [
@@ -36,7 +35,7 @@ export const PublishForm = ({
   onSelectImage,
   imageFilters = {},
   onFormDataChange,
-  // user,
+  user,
 }: PublishFormProps) => {
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
@@ -142,12 +141,17 @@ export const PublishForm = ({
       <div className={styles.formSection}>
         <div className={styles.userInfo}>
           <div className={styles.avatar}>
-            <div className={styles.avatarPlaceholder}>U</div>
-            {/*Сюда закинуть аватар юзера а в спан юзернейм из супермодел где мы там его достанем потом*/}
-            {/*<Avatar src={user.avatarUrl} alt={user.userName} size={'very_small'}/>*/}
+            {user?.avatarUrl ? (
+              <Avatar src={user.avatarUrl} alt={user.userName} size={'very_small'}/>
+            ) : (
+              <div className={styles.avatarPlaceholder}>
+                {user?.userName ? user.userName.charAt(0).toUpperCase() : 'U'}
+              </div>
+            )}
           </div>
-          <span className={styles.username}>URLProfile</span>
-          {/*<span className={styles.username}>{user.userName}</span>*/}
+          <span className={styles.username}>
+            {user?.userName || 'URLProfile'}
+          </span>
         </div>
 
         <div className={styles.descriptionSection}>
