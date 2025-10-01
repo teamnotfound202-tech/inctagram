@@ -39,3 +39,72 @@ export type ResponsesPosts = {
   items: Post[]
   totalUsers: number
 }
+
+export type UserProfileResponse = {
+  id: number
+  userName: string
+  firstName: string
+  lastName: string
+  city: string
+  country: string
+  region: string
+  dateOfBirth: string
+  aboutMe: string
+  avatars: Avatar[]
+  isFollowing: boolean
+  isFollowedBy: boolean
+  followingCount: number
+  followersCount: number
+  publicationsCount: number
+}
+
+export type UserDataResponse = {
+  id: number
+  userName: string
+  aboutMe: string
+  avatars: Avatar[]
+  userMetadata: UserMetadata
+  hasPaymentSubscription: boolean
+}
+export type UserMetadata = {
+  following: number
+  followers: number
+  publications: number
+}
+
+export type Avatar = {
+  url: string
+  width: number
+  height: number
+  fileSize: number
+  createdAt: string
+}
+
+export type UserItem = {
+  id: number;
+  userId: number;
+  userName: string;
+  createdAt: string;
+  avatars: Avatar[];
+  isFollowing: boolean;
+  isFollowedBy: boolean;
+};
+
+export type UsersListResponse = {
+  totalCount: number;
+  pagesCount: number;
+  page: number;
+  pageSize: number;
+  prevCursor: number;
+  nextCursor: number;
+  items: UserItem[];
+};
+export type CursorPage<T> = {
+  totalCount: number
+  pagesCount: number
+  page: number
+  pageSize: number
+  prevCursor: number | null
+  nextCursor: number | null
+  items: T[]
+}

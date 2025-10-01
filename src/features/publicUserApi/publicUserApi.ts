@@ -1,41 +1,50 @@
-import { GetPublicUsers, ResponsesPosts } from '@/features/publicUserApi/types'
+import {
+  CursorPage,
+  GetPublicUsers,
+  ResponsesPosts,
+  UserItem,
+  UserProfileResponse,
+} from '@/features/publicUserApi/types'
 import { baseApi } from '@/shared/api'
 import { PAGINATION } from '@/shared/constants/pagination'
-
-//
-// export const publicUserApi = baseApi.injectEndpoints({
-//   endpoints: builder => ({
-//     getTotalRegisteredUsers: builder.query<GetPublicUsers, void>({
-//       query: () => '/public-user',
-//     }),
-//     getPostsForUser: builder.query<ResponsesPosts, { userId: string; endCursorPostId: string }>({
-//       query: ({ userId, endCursorPostId }) => ({
-//         url: `/posts/user/${userId}/${endCursorPostId || ''}?pageSize=${PAGINATION.DEFAULT_PAGE_SIZE}`,
-//       }),
-//
-//       providesTags: (_result, _error, { userId }) => [
-//         { type: 'UserPosts', id: userId }
-//       ],
-//
-//       serializeQueryArgs: ({queryArgs: {userId}}) => `userPosts-${userId}`,
-//
-//       merge: (currentCache: ResponsesPosts, newData: ResponsesPosts,
-//       ) => {
-//
-//         currentCache.items.push(...newData.items)
-//       },
-//       forceRefetch({ currentArg, previousArg}) {
-//         return currentArg?.endCursorPostId !== previousArg?.endCursorPostId
-//       },
-//     }),
-//   }),
-// })
 
 
 export const publicUserApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getTotalRegisteredUsers: builder.query<GetPublicUsers, void>({
       query: () => '/public-user',
+    }),
+    getUserFollowingAndFollowers: builder.query<UserProfileResponse, { userName: string }>({
+      query: ({ userName }) => ({ url: `/users/${userName}`, method: 'GET' }),
+      providesTags: (result, error, { userName }) =>
+        result ? [{ type: 'UserProfile', id: userName }] : ['UserProfile'],
+    }),
+
+    followingUser: builder.mutation<void, { selectedUserId: number, userName: string }>({
+      query: body => ({ url: `/users/following`, method: 'POST', body }),
+      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
+    }),
+
+    unFollowingUser: builder.mutation<void, { userId: number, userName:string }>({
+      query: ({ userId }) => ({ url: `/users/follower/${userId}`, method: 'DELETE' }),
+      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
+    }),
+    followersUser: builder.query<CursorPage<UserItem>, { userName: string; cursor?: number | null; pageSize?: number; search?: string }
+    >({
+      query: ({ userName, ...params }) => ({
+        url: `/users/${userName}/followers`,
+        method: 'GET',
+        params,
+      }),
+    }),
+
+    followingsUser: builder.query<CursorPage<UserItem>, { userName: string; cursor?: number; pageSize?: number; search?: string }
+    >({
+      query: ({ userName, ...params }) => ({
+        url: `/users/${userName}/following`,
+        method: 'GET',
+        params,
+      }),
     }),
     getPostsForUser: builder.infiniteQuery<
       ResponsesPosts,
@@ -66,5 +75,13 @@ export const publicUserApi = baseApi.injectEndpoints({
   }),
 })
 
-export const { useGetTotalRegisteredUsersQuery, useGetPostsForUserInfiniteQuery } = publicUserApi
+export const {
+  useGetTotalRegisteredUsersQuery,
+  useGetUserFollowingAndFollowersQuery,
+  useFollowingUserMutation,
+  useUnFollowingUserMutation,
+  useLazyFollowingsUserQuery,
+  useLazyFollowersUserQuery,
+  useGetPostsForUserInfiniteQuery
+} = publicUserApi
 export const publicUserReducer = publicUserApi.reducer
