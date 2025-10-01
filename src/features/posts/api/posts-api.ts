@@ -29,28 +29,25 @@ export const postsApi = baseApi.injectEndpoints({
       },
     }),
     createPost: builder.mutation<PostImage, CreatePostWithUserId>({
-      query: ({ userId, ...postData }) => {
-        return {
-          url: `/posts`,
-          method: 'POST',
-          body: postData,
-        }
-      },
-      invalidatesTags: (result, error, arg) => {
+      query: ({ userId, ...postData }) => ({
+        url: `/posts`,
+        method: 'POST',
+        body: postData,
+      }),
+      invalidatesTags: (_result, _error, arg) => {
         const tags = [
-          'Posts',
-          { type: 'UserPosts', id: 'LIST' }, // Инвалидируем все списки постов пользователей
-          'UserProfile', // Обновляем счетчик публикаций в профиле
+          { type: 'Posts' as const },  // Все теги как объекты
+          { type: 'UserPosts' as const, id: 'LIST' },
+          { type: 'UserProfile' as const },
         ]
-        
-        // Если есть userId, инвалидируем конкретный список постов пользователя
+
         if (arg.userId) {
-          tags.push({ type: 'UserPosts', id: arg.userId.toString() })
+          tags.push({ type: 'UserPosts' as const, id: arg.userId.toString() })
         }
-        
+
         return tags
       },
-    }),
+    })
   }),
 })
 export const { useUploadPostsImagesMutation,useDeletePostsImageMutation, useCreatePostMutation } = postsApi

@@ -10,9 +10,9 @@ import { selectCurrentMessages } from '@/shared/api/appSlice'
 import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
 import { FiltersPanel, ImageEditor, ImageUploader, PublishForm } from '@/shared/ui/Modal'
 import {
+  useCreatePostMutation,
   useDeletePostsImageMutation,
   useUploadPostsImagesMutation,
-  useCreatePostMutation,
 } from '@/features/posts/api/posts-api'
 import { useMeQuery } from '@/features/auth/api/authApi'
 import { useGetUserFollowingAndFollowersQuery } from '@/features/publicUserApi/publicUserApi'
