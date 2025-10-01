@@ -2,12 +2,12 @@ import styles from './MultipleImage.module.scss'
 import DeleteIcon from '../../../icons/close.svg'
 import PlusPhotoIcon from '../../../icons/plus-circle.svg'
 import { clsx } from 'clsx'
-import { Image } from '@/shared/lib/sсhemas/posts'
+import { Images } from '@/shared/lib/sсhemas/posts'
 import { ChangeEvent, useRef } from 'react'
 import { SuperUploadInput } from '@/shared/ui/Modal/SuperModal/SuperUploadInput/SuperUploadInput'
 
 type Props = {
-  images: Image[]
+  images: Images[]
   selectedImage: number
   deletePost: (postId: string,index:number) => void
   addNewFiles: (newFiles: File[]) => void

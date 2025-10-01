@@ -9,12 +9,12 @@ import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
 import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
 import { FiltersPanel, ImageEditor, ImageUploader, PublishForm } from '@/shared/ui/Modal'
-import { Images } from '@/shared/lib/sсhemas/posts'
 import {
   useDeletePostsImageMutation,
   useUploadPostsImagesMutation,
   useCreatePostMutation,
 } from '@/features/posts/api/posts-api'
+import { Images } from '@/shared/lib/sсhemas/posts'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { createTempFile } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile'
@@ -66,11 +66,15 @@ export const SuperModal = ({ title, callback }: Props) => {
     setLocalFiles(newFiles)
     setUploadedImages(tempUploadImages)
     setSelectedImage(0)
+    if (step !== 'noevents') {
+      setCurrentStep(step)
+      uploadImage(localFiles)
+    }
 
     // Переходим к следующему шагу только если это первоначальная загрузка
-    if (step === 'edit') {
-      setCurrentStep('edit')
-    }
+    // if (step === 'edit') {
+    //   setCurrentStep('edit')
+    // }
   }
 
   const handleImageUpdateByCrop = useCallback(
@@ -104,7 +108,7 @@ export const SuperModal = ({ title, callback }: Props) => {
   }
 
   const handleOpendraft = async () => {
-    /* const storedImages = localStorage.getItem(SAVED_IMAGES)
+   /* const storedImages = localStorage.getItem(SAVED_IMAGES)
     if (!storedImages) return []
     const images = JSON.parse(storedImages)
     loadFilesFromUrls(images).then(files => {

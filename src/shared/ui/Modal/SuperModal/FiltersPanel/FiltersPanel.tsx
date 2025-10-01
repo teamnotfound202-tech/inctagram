@@ -1,10 +1,10 @@
+
 import Image from 'next/image'
 import styles from './FiltersPanel.module.scss'
 import { filters, getFilterWithIntensity } from '@/shared/ui/Modal/SuperModal/constans/filters'
 import { Images } from '@/shared/lib/sсhemas/posts'
 import BackArrow from '../../icons/backArrow.svg'
 import ForwardArrow from '../../icons/forwardArrow.svg'
-
 type FiltersPanelProps = {
   images?: Images[]
   selectedImage?: number
@@ -13,16 +13,14 @@ type FiltersPanelProps = {
   filterIntensity?: number
   onFilterSelect?: (filter: string, intensity?: number) => void
 }
-
-export const FiltersPanel = ({ 
-  images, 
+export const FiltersPanel = ({
+  images,
   selectedImage = 0,
   onSelectImage,
   selectedFilter = 'normal',
   filterIntensity = 100,
   onFilterSelect
 }: FiltersPanelProps) => {
-
   const handleFilterSelect = (filterName: string) => {
     onFilterSelect?.(filterName, filterIntensity)
   }
@@ -54,7 +52,6 @@ export const FiltersPanel = ({
     )
   }
 
-  return (
     <div className={styles.filtersPanel}>
       <div className={styles.previewSection}>
         <div className={styles.previewContainer}>
@@ -71,7 +68,7 @@ export const FiltersPanel = ({
               )
             }}
           />
-          
+
           {/* Стрелочки навигации */}
           {images.length > 1 && (
             <>
@@ -149,7 +146,3 @@ export const FiltersPanel = ({
           </div>
         )}
       </div>
-    </div>
-  )
-}
-
