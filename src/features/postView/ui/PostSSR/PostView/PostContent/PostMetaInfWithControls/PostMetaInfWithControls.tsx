@@ -6,7 +6,7 @@ import {timeToTimeZone} from "@/shared/lib/utils/timeToTimeZone";
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectCurrentMessages} from "@/shared/api/appSlice";
 import {LikeButton} from "@/features/postView/ui/PostSSR/PostView/PostContent/LikeButton/LikeButton";
-import {useUpdatePostLikeStatusMutation} from "@/features/postView/api/postApi";
+import {useFetchUsersProfileQuery, useUpdatePostLikeStatusMutation} from "@/features/postView/api/postApi";
 import {LikeStatus} from "@/features/postView/api/types";
 import BigRedLike from "@/features/postView/ui/PostSSR/PostView/Icons/bigLike/bigRedLike.svg"
 import Like from "@/features/postView/ui/PostSSR/PostView/Icons/bigLike/Like.svg"
@@ -23,6 +23,7 @@ export const PostMetaInfWithControls = ({avatars, likesCount, updatedAt, isLiked
     const currentLanguage = useAppSelector(selectCurrentMessages)
     const postUpdateTime = timeToTimeZone(updatedAt)
     const [updatePostLikeStatus] = useUpdatePostLikeStatusMutation()
+    const {data: meUser, isLoading} = useFetchUsersProfileQuery()
 
     const likeHandler = () => {
         const newLikeStatus = isLiked ? LikeStatus.NONE : LikeStatus.LIKE
@@ -31,7 +32,8 @@ export const PostMetaInfWithControls = ({avatars, likesCount, updatedAt, isLiked
 
     return (
         <div className={s.postMetaInf}>
-            <div className={s.controls}>
+            //TODO: деструктуризация - вынести контролы
+            {meUser?.id && <div className={s.controls}>
                 <button className={s.likeButton} onClick={likeHandler}>
                     {isLiked ? <BigRedLike/> : <Like/>}
                 </button>
@@ -41,7 +43,7 @@ export const PostMetaInfWithControls = ({avatars, likesCount, updatedAt, isLiked
                 <button className={s.likeButton + ' ' + s.leftControl}>
                     <Bookmark/>
                 </button>
-            </div>
+            </div>}
             <div className={s.avatarsWhoLikes}>
                 <Avatar src={avatars[0]} alt={'avatarsWhoLikes'}
                         size={'very_small'}/> {/*TODO: добавить перебор аватаров*/}

@@ -3,30 +3,17 @@ import {PostContent} from "@/features/postView/ui/PostSSR/PostView/PostContent/P
 import s from "./PostView.module.scss"
 import {PostImage} from "@/features/postView/ui/PostSSR/PostView/PostImage/PostImage";
 import {Post} from "@/features/postView/api/types";
-import {useAppDispatch} from "@/shared/lib/hooks/hooks";
-import {useEffect, useState} from "react";
-import {postApi, useFetchPostQuery} from "@/features/postView/api/postApi";
+import {useFetchPostQuery} from "@/features/postView/api/postApi";
 
 type Props = {
     post: Post
 }
 
 export const PostView = ({post}: Props) => {
-    const [needToHydrate, setNeedToHydrate] = useState(true)
+      const {data: postFromCache} = useFetchPostQuery(post.id/*, {skip: needToHydrate}*/)
 
-    const dispatch = useAppDispatch()
-
-    const {data: postFromCache} = useFetchPostQuery(post.id, {skip: needToHydrate})
-
-    useEffect(() => {
-        if (needToHydrate) {
-            dispatch(
-                postApi.util.upsertQueryData('fetchPost', post.id, post) //положим данные поста в кэш
-            );
-            setNeedToHydrate(false)
-        }
-    }, []);
-
+    //При первой отрисовке берутся данные с сервера(post), а потом делается запрос с помощью useFetchPostQuery за актуальными данными,
+    //для которых важна авторизация (например, isLiked для поста), и кладутся в кэш (postFromCache)
     const postToRender = postFromCache || post
 
     return (

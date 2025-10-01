@@ -10,7 +10,6 @@ import {selectCurrentMessages} from "@/shared/api/appSlice";
 import {useUpdateCommentLikeStatusMutation} from "@/features/postView/api/postApi";
 import {LikeButton} from "@/features/postView/ui/PostSSR/PostView/PostContent/LikeButton/LikeButton";
 
-
 type Props = {
     comment: Comment,
     postId:number

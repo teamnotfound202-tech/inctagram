@@ -6,25 +6,13 @@ import {
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostMetaInfWithControls/PostMetaInfWithControls";
 import {AddCommentForm} from "@/features/postView/ui/PostSSR/PostView/PostContent/AddCommentForm/AddCommentForm";
 import {PostComments} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComments";
-import {useEffect, useState} from "react";
 import {useFetchUsersProfileQuery} from "@/features/postView/api/postApi";
 
 type Props = {
     post: Post
 };
 export const PostContent = ({post}: Props) => {
-    const {data: meUser} = useFetchUsersProfileQuery()
-    const [user, setUser] = useState<From | null>(null);
-
-    useEffect(() => {
-        if (meUser) {
-            setUser({
-                id: meUser.id,
-                username: meUser.userName,
-                avatars: [...meUser.avatars]
-            });
-        }
-    }, [meUser]);
+    const {data: meUser, isLoading} = useFetchUsersProfileQuery()
 
     return (
         <div className={s.postContentWrapper}>
@@ -36,7 +24,11 @@ export const PostContent = ({post}: Props) => {
                 updatedAt={post.updatedAt}
                 isLiked={post.isLiked}
             />
-            {user && <AddCommentForm postId={post.id} user={user}/>}
+            {!isLoading && meUser?.id && <AddCommentForm postId={post.id} user={{
+                id: meUser.id,
+                username: meUser.userName,
+                avatars: [...meUser.avatars]
+            }}/>}
         </div>
     );
 };

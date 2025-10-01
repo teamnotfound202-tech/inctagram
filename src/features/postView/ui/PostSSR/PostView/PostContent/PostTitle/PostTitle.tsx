@@ -7,11 +7,11 @@ import DropdownPostActionsMenu
     from "@/features/postView/ui/PostSSR/PostView/PostContent/PostTitle/DropdownMenuDemo/DropdownPostActionsMenu";
 
 type Props = {
-    avatarOwner:string
-    userName:string
-    commentOwnerId:number
+    avatarOwner: string
+    userName: string
+    commentOwnerId: number
 };
-export const PostTitle = ({avatarOwner, userName,commentOwnerId}: Props) => {
+export const PostTitle = ({avatarOwner, userName, commentOwnerId}: Props) => {
     const {data} = useMeQuery()
     return (
         <div className={s.postTitle}>
@@ -19,7 +19,7 @@ export const PostTitle = ({avatarOwner, userName,commentOwnerId}: Props) => {
                 <Avatar src={avatarOwner} alt={'avatar'}/>
                 <div className={s.ownerName}>{userName}</div>
             </div>
-            <DropdownPostActionsMenu isPostOwner={data?.userId === commentOwnerId}/>
+            {data?.userId && <DropdownPostActionsMenu isPostOwner={data?.userId === commentOwnerId}/>}
         </div>
     );
 };

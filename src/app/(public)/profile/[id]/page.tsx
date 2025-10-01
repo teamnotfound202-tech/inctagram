@@ -1,13 +1,3 @@
-/*
-'use client'
-
-export default function Page() {
-    return <div>
-        Private page
-    </div>
-}
-*/
-
 import {PostSsr} from "@/features/postView/ui/PostSSR/PostSSR";
 
 interface ProfilePageProps {

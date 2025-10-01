@@ -30,10 +30,10 @@ export const PostSsr = async ({params, searchParams}: Props ) => {
 */
 'use server'
 // features/postView/ui/PostSSR/PostView/PostSsr.tsx
-import { PostView } from "@/features/postView/ui/PostSSR/PostView/PostView";
-import { getPost } from "@/features/postView/utils/getPost";
-import { redirect } from "next/navigation";
-import { cleanSearchParams } from "@/features/postView/utils/url-utils";
+import {PostView} from "@/features/postView/ui/PostSSR/PostView/PostView";
+import {getPost} from "@/features/postView/utils/getPost";
+import {redirect} from "next/navigation";
+import {cleanSearchParams} from "@/features/postView/utils/url-utils";
 import PostModal from "@/features/postView/PostModal/PostModal";
 
 interface PostSsrProps {
@@ -41,37 +41,26 @@ interface PostSsrProps {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export const PostSsr = async ({ params, searchParams }: PostSsrProps) => {
-    const { id } = await params;
+export const PostSsr = async ({params, searchParams}: PostSsrProps) => {
+    const {id} = await params;
     const resolvedSearchParams = await searchParams;
     const postId = resolvedSearchParams.postId as string | undefined;
 
-    console.log('PostSsr rendered with:', { id, postId, searchParams: resolvedSearchParams });//TODO: убрать все логи
-
     // Проверяем конфликт параметров и делаем редирект если нужно
     if (postId && resolvedSearchParams.action) {
-        console.log('Conflict detected, redirecting...');
         const newSearchParams = cleanSearchParams(resolvedSearchParams);
         newSearchParams.set('postId', postId); // Гарантируем что postId останется
-
         redirect(`/profile/${id}?${newSearchParams.toString()}`);
     }
 
-    // Если нет postId - не рендерим модалку
     if (!postId) {
-        console.log('No postId, skipping modal');
         return null;
     }
-
-    console.log('Fetching post with id:', postId);
 
     let post;
     try {
         post = await getPost(postId);
-
-        console.log('Post fetched successfully:', post?.id);
     } catch (err) {
-        console.error('Error fetching post:', err);
         return (
             <PostModal>
                 <div className="p-8 text-center">Ошибка загрузки поста</div>
@@ -86,10 +75,11 @@ export const PostSsr = async ({ params, searchParams }: PostSsrProps) => {
             </PostModal>
         );
     }
+    console.log('post', post)
 
     return (
         <PostModal>
-            <PostView post={post} />
+            <PostView post={post}/>
         </PostModal>
     );
 };
