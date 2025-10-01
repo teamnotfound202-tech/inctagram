@@ -34,7 +34,7 @@ export const PostItem = ({post}: Props) => {
 
   return (
     <li  className={s.postItem}>
-      {post.images.length > 1 ? (
+      {post.images.length > 1 && (
         <Swiper
           className={s.postSlider}
           modules={[Navigation]}
@@ -76,9 +76,11 @@ export const PostItem = ({post}: Props) => {
               <ArrowRightIcon/>
             </button>
         </Swiper>
-      ) : (
+      )}
+      { post.images.length === 1 &&  // если есть только одно изображение, показываем его без слайдера
+        (
         <Image
-          src={post.images[0].url}
+          src={post.images[0]?.url}
           className={s.postImage}
           alt={'post image'}
           width={224}
@@ -90,7 +92,6 @@ export const PostItem = ({post}: Props) => {
           priority
         />
       )}
-
     </li>
   )
 }

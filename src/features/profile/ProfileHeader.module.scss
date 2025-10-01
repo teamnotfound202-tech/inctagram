@@ -1,8 +1,10 @@
 @use '@/shared/styles/variables' as *;
 
 .contentContainer {
+  padding-top: 36px;
   display: flex;
   gap: 38px;
+  margin-bottom: 48px;
 }
 
 .content {
