@@ -1,10 +1,10 @@
-
 import Image from 'next/image'
 import styles from './FiltersPanel.module.scss'
 import { filters, getFilterWithIntensity } from '@/shared/ui/Modal/SuperModal/constans/filters'
 import { Images } from '@/shared/lib/sсhemas/posts'
 import BackArrow from '../../icons/backArrow.svg'
 import ForwardArrow from '../../icons/forwardArrow.svg'
+
 type FiltersPanelProps = {
   images?: Images[]
   selectedImage?: number
@@ -51,8 +51,8 @@ export const FiltersPanel = ({
       </div>
     )
   }
-
-    <div className={styles.filtersPanel}>
+  return (
+  <div className={styles.filtersPanel}>
       <div className={styles.previewSection}>
         <div className={styles.previewContainer}>
           <Image
@@ -146,3 +146,4 @@ export const FiltersPanel = ({
           </div>
         )}
       </div>
+  </div>)}

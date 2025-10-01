@@ -18,7 +18,8 @@ import { Images } from '@/shared/lib/sсhemas/posts'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { createTempFile } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile'
-import { isErrorWithMessage } from '@/shared/lib/utils/isErrorWithMessage'
+import { filters, getFilterWithIntensity } from '@/shared/ui/Modal/SuperModal/constans/filters'
+import { applyFilterToImage } from '@/shared/ui/Modal/model/utils'
 
 type Props = {
   title: string
@@ -60,7 +61,7 @@ export const SuperModal = ({ title, callback }: Props) => {
     }
 
     // Создаем временные объекты изображений для локального использования
-    const tempImages = filteredFiles.map((file, index) => createTempFile(file))
+    const tempImages = filteredFiles.map((file) => createTempFile(file))
     const tempUploadImages = [...uploadedImages, ...tempImages]
 
     setLocalFiles(newFiles)
@@ -70,11 +71,6 @@ export const SuperModal = ({ title, callback }: Props) => {
       setCurrentStep(step)
       uploadImage(localFiles)
     }
-
-    // Переходим к следующему шагу только если это первоначальная загрузка
-    // if (step === 'edit') {
-    //   setCurrentStep('edit')
-    // }
   }
 
   const handleImageUpdateByCrop = useCallback(
@@ -221,31 +217,41 @@ export const SuperModal = ({ title, callback }: Props) => {
       }
 
       const currentFormData = publishFormDataRef.current
-
       if (!currentFormData.description?.trim()) {
         toast.error('Please add a description')
         return
       }
-
       if (!currentFormData.location?.trim()) {
         toast.error('Please add a location')
         return
       }
 
-      // Дополнительная проверка - location не должен быть пустой строкой
-      if (currentFormData.location.trim().length === 0) {
-        toast.error('Location cannot be empty')
-        return
+      // ✅ применяем фильтры к каждому изображению
+      const processedFiles: File[] = []
+      for (let i = 0; i < localFiles.length; i++) {
+        const file = localFiles[i]
+        const filterConfig = imageFilters[i]
+
+        if (filterConfig && filterConfig.filter !== 'normal') {
+          const filter = filters.find(f => f.name === filterConfig.filter)
+          const cssFilter = getFilterWithIntensity(
+            filter?.cssFilter || 'none',
+            filterConfig.intensity
+          )
+          const newFile = await applyFilterToImage(file, cssFilter)
+          processedFiles.push(newFile)
+        } else {
+          processedFiles.push(file)
+        }
       }
 
-      // Шаг 1: Загружаем изображения на сервер
-      const uploadResult = await uploadImage(localFiles).unwrap()
+      // 🔥 Теперь загружаем уже обработанные изображения
+      const uploadResult = await uploadImage(processedFiles).unwrap()
 
       if (!uploadResult || !uploadResult.images) {
         throw new Error('Failed to upload images to server')
       }
 
-      // Шаг 2: Создаем пост с метаданными
       const postData = {
         description: currentFormData.description.trim(),
         location: currentFormData.location.trim(),
@@ -254,19 +260,13 @@ export const SuperModal = ({ title, callback }: Props) => {
         })),
       }
 
-      const createdPost = await createPost(postData).unwrap()
+      await createPost(postData).unwrap()
 
       callback(null)
       toast.success('Post published successfully!')
-    } catch (err: unknown) {
+    } catch (err) {
       console.error('❌ Error publishing post:', err)
-      if (err && typeof err === 'object' && 'data' in err && isErrorWithMessage(err.data)) {
-        if (err.data.messages[0].message) {
-          toast.error(`Failed to publish: ${err.data.messages[0].message}`)
-        } else {
-          toast.error('Failed to publish post. Please try again.')
-        }
-      }
+      toast.error('Failed to publish post. Please try again.')
     }
   }
     const titleForHeader =
