@@ -44,7 +44,23 @@ export const SuperModal = ({ title, callback }: Props) => {
   const [uploadedImages, setUploadedImages] = useState<Images[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
   const modalRef = useRef<HTMLDivElement>(null)
+  const [imageFilters, setImageFilters] = useState<{
+    [key: number]: { filter: string; intensity: number }
+  }>({})
 
+  // Состояние для данных формы публикации
+  const [publishFormData, setPublishFormData] = useState({
+    description: '',
+    location: '',
+  })
+
+  // Используем ref для хранения актуальных данных
+  const publishFormDataRef = useRef(publishFormData)
+
+  // Обновляем ref при изменении состояния
+  useEffect(() => {
+    publishFormDataRef.current = publishFormData
+  }, [publishFormData])
 
   const handleImageUpload = (files: File[], step: Step = 'noevents') => {
     const filteredFiles = files.filter(
@@ -130,23 +146,7 @@ export const SuperModal = ({ title, callback }: Props) => {
 
   //== Добавил состояния (Женя)
   //состояние для фильтров каждого изображения
-  const [imageFilters, setImageFilters] = useState<{
-    [key: number]: { filter: string; intensity: number }
-  }>({})
 
-  // Состояние для данных формы публикации
-  const [publishFormData, setPublishFormData] = useState({
-    description: '',
-    location: '',
-  })
-
-  // Используем ref для хранения актуальных данных
-  const publishFormDataRef = useRef(publishFormData)
-
-  // Обновляем ref при изменении состояния
-  useEffect(() => {
-    publishFormDataRef.current = publishFormData
-  }, [publishFormData])
 
   // Получаем текущий фильтр для выбранного изображения
   const getCurrentFilter = () => imageFilters[selectedImage] || { filter: 'normal', intensity: 100 }
@@ -253,7 +253,7 @@ export const SuperModal = ({ title, callback }: Props) => {
         }
       }
 
-      // 🔥 Теперь загружаем уже обработанные изображения
+      //  Теперь загружаем уже обработанные изображения
       const uploadResult = await uploadImage(processedFiles).unwrap()
 
       if (!uploadResult || !uploadResult.images) {
