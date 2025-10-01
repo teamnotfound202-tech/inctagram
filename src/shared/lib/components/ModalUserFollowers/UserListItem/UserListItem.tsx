@@ -78,7 +78,8 @@ export const UserListItem = ({ user, isLoading, type }: Props) => {
         ) : (
           currentUser?.userId && ( //если мы авторизованы
             <div>
-              {type === 'followers' && !isFollowing && ( //если модалка followers и юзер НЕ ПОДПИСАН на нас
+
+              {type === 'followers' && !isFollowing && currentUser.userId !== user.userId &&( //если модалка followers и юзер НЕ ПОДПИСАН на нас
                 <div>
                   <Button className={s.modalButtons} variant="primary" onClick={handleFollow} disabled={followDisabled}>
                     {isFollowMutLoading ? messages.common.loading : messages.profile.follow}
@@ -89,13 +90,13 @@ export const UserListItem = ({ user, isLoading, type }: Props) => {
                 </div>
               )}
 
-              {type === 'followers' && isFollowing && (//если модалка followers и юзер ПОДПИСАН на нас
+              {type === 'followers' && isFollowing && currentUser.userId !== user.userId && (//если модалка followers и юзер ПОДПИСАН на нас
                 <Button className={s.modalDeleteButton} variant="text" onClick={openDeleteFollowingModal} disabled={unfollowDisabled}>
                   {isUnfollowMutLoading ? messages.common.loading : messages.profile.delete}
                 </Button>
               )}
 
-              {type === 'following' && //если модалка following и юзер ПОДПИСАН на нас
+              {type === 'following' && currentUser.userId !== user.userId && //если модалка following и юзер ПОДПИСАН на нас
                 (isFollowing ? (
                   <Button className={s.modalButtons} variant="outline" onClick={openUnfollowModal} disabled={unfollowDisabled}>
                     {isUnfollowMutLoading ? messages.common.loading : messages.profile.unFollow}
