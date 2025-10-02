@@ -5,6 +5,8 @@ import {Mutex} from 'async-mutex'
 import {ACCESS_TOKEN} from '@/shared/lib'
 import {ResponsesLogin} from '@/shared/api/types'
 import {handleError} from '@/shared/lib/utils'
+import { useAppDispatch } from '@/shared/lib/hooks/hooks'
+import { baseApi } from '@/shared/api/baseApi'
 
 const mutex = new Mutex()
 
@@ -23,7 +25,7 @@ export const startBaseQuery = fetchBaseQuery({
 })
 
 export const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
-
+  const dispatch = api.dispatch
   await mutex.waitForUnlock()
 
   let result = await startBaseQuery(args, api, extraOptions)
