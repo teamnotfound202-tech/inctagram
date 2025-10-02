@@ -5,7 +5,6 @@ import { DynamicIcon } from '@/widgets/Sidebar/SidebarItem/DinamicIcon/DinamicIc
 import s from './SidebarItem.module.scss'
 import Link from 'next/link'
 import clx from 'classnames'
-import { usePathname } from 'next/navigation'
 import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
 import { sidebarActions } from '@/widgets/Sidebar/SidebarItem/sidebarActions'
 

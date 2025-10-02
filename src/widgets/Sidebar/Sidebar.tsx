@@ -7,13 +7,13 @@ import {Button} from '@/shared/ui'
 import { useLogoutMutation, useMeQuery } from '@/features/auth/api/authApi'
 import {ACCESS_TOKEN} from '@/shared/lib'
 import {sideBarData} from '@/shared/config/sideBarItems/sideBarData'
-import {useRouter} from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {Path} from "@/shared/config";
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages, selectLanguage } from '@/shared/api/appSlice'
 import { SuperModal } from '@/shared/ui/Modal/SuperModal/SuperModal'
 import { SideBarWarning } from '@/shared/ui/Modal/SideBarWarning/SideBarWarning'
-
+import type {Text} from '@/shared/config/sideBarItems/sideBarData'
 export type TypeOfModalWindow = 'Logout' | 'AddPhotoModal' |'exitEditing'| null
 
 export const Sidebar = () => {
@@ -25,8 +25,13 @@ export const Sidebar = () => {
   const router = useRouter()
   const [isModalOpen, setModalOpen] = useState<TypeOfModalWindow>(null)
   //поменял состояние на нал а было exitEditing у юзстейта выше (Женя)
-
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const action = searchParams.get('action')
   const handleModelHandler = (type: TypeOfModalWindow) => {
+    if (!type) {
+      router.replace(pathname)
+    }
     setModalOpen(type)
   }
   const handleLogout = () => {
@@ -44,7 +49,21 @@ export const Sidebar = () => {
         dispatch(baseApi.util.resetApiState())
       })
   }
+  const linkCreater = (text: Text) => {
+    let link = ''
+    switch(text) {
+      case 'My Profile':
 
+        link = `/profile/${data?.userId}`
+        break
+      case 'Create':
+        link = `/profile/${data?.userId}?action=create`
+        break
+      default:
+        link = ''
+    }
+    return link
+  }
   return (
     <ul className={s.sidebar}>
       {sideBarData.map(item => {
@@ -52,7 +71,7 @@ export const Sidebar = () => {
           <SidebarItem
             key={item.key}
             text={item.text}
-            link={item.text === 'My Profile'? `/profile/${data?.userId}` : item.link}
+            link={linkCreater(item.text)}
             spanText={item.textForLink[language]}
             isDisabled={item.isDisabled}
             {...(item.onclick && { onClickAction: handleModelHandler })}
@@ -73,7 +92,7 @@ export const Sidebar = () => {
           </div>
         </Modal>
       )}
-      {isModalOpen === 'AddPhotoModal' && (
+      {(action === 'create')  && (
         <SuperModal callback={handleModelHandler} title={currentLanguageArray.posts.addPhoto}/>
       )}
 
