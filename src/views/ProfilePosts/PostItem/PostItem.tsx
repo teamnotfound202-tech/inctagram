@@ -7,10 +7,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperType } from 'swiper';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
-import { useRef, useState, MouseEvent } from 'react'
+import { useRef, useState, MouseEvent, useEffect } from 'react'
 import ArrowLeftIcon from '@/shared/assets/icons/arrowLeft.svg'
 import ArrowRightIcon from '@/shared/assets/icons/arrowRight.svg'
 import Link from 'next/link'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 type Props = {
   post: Post
@@ -21,6 +22,9 @@ export const PostItem = ({post}: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isPrevDisabled = currentIndex === 0
   const isNextDisabled = currentIndex === post.images.length - 1
+  const [path, setPath] = useState('');
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const handlePrevClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -34,9 +38,16 @@ export const PostItem = ({post}: Props) => {
     setCurrentIndex(prevState => prevState + 1)
   }
 
+  useEffect(() => {
+    const currentSearchParams = new URLSearchParams(searchParams.toString());
+    currentSearchParams.set('postId', post.id.toString());
+
+    setPath(`${pathname}?${currentSearchParams.toString()}`);
+  }, [pathname, searchParams, post.id]);
+
   return (
     <li  className={s.postItem}>
-      <Link href={window.location.href + `?postId=${post.id}`}>
+      <Link href={path}>
         {post.images.length > 1 && (
           <Swiper
             className={s.postSlider}
