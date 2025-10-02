@@ -107,6 +107,7 @@ export interface Messages {
   posts: {
     newPost: string;
     createPost: string;
+    addPhoto: string
     editPost: string;
     deletePost: string;
     post: string;
@@ -165,6 +166,8 @@ export interface Messages {
     theme: string;
     deleteAccount: string;
     deactivateAccount: string;
+    close: string
+    save: string
   };
 
   // Ошибки и валидация
@@ -197,6 +200,11 @@ export interface Messages {
     unfollowConfirm: string;
     deleteFollowConfirm: string;
     deleteFollowing: string;
+    closeModalWarningBegin: string
+    closeModalwarningQSecondPart: string
+    discard: string;
+    selectPhoto:string
+    openDraft: string;
   };
 
   // Языки
@@ -259,7 +267,7 @@ export const messages: Record<Language, Messages> = {
       repeatPassword: 'Repeat your password',
       rememberMe: 'Remember me',
       doYouHaveAccount: 'Do you have an account?',
-      dontHaveAccount: "Don't have an account?",
+      dontHaveAccount: 'Don\'t have an account?',
       emailSent: 'Email sent',
       emailSentDescription: 'We have sent a link to confirm your email to',
       invalidEmail: 'The email must match the format example@example.com',
@@ -306,6 +314,7 @@ export const messages: Record<Language, Messages> = {
 
     posts: {
       newPost: 'New Post',
+      addPhoto: 'Add Photo',
       createPost: 'Create Post',
       editPost: 'Edit Post',
       deletePost: 'Delete Post',
@@ -362,6 +371,8 @@ export const messages: Record<Language, Messages> = {
       theme: 'Theme',
       deleteAccount: 'Delete Account',
       deactivateAccount: 'Deactivate Account',
+      close: 'Close',
+      save: 'Save draft',
     },
 
     errors: {
@@ -392,6 +403,11 @@ export const messages: Record<Language, Messages> = {
       unfollowConfirm:'Do you really want to Unfollow from this user ',
       deleteFollowConfirm:'Do you really want to delete a Following ',
       deleteFollowing: 'Delete Following',
+      closeModalWarningBegin: 'Do you really want to close the creation of a publication?',
+      closeModalwarningQSecondPart: 'If you close everything will be deleted',
+      discard: 'Discard',
+      selectPhoto:'Select from Computer',
+      openDraft:'Open draft'
     },
 
     languages: {
@@ -499,6 +515,7 @@ export const messages: Record<Language, Messages> = {
 
     posts: {
       newPost: 'Новая публикация',
+      addPhoto: 'Добавить фото',
       createPost: 'Создать публикацию',
       editPost: 'Редактировать публикацию',
       deletePost: 'Удалить публикацию',
@@ -555,6 +572,8 @@ export const messages: Record<Language, Messages> = {
       theme: 'Тема',
       deleteAccount: 'Удалить аккаунт',
       deactivateAccount: 'Деактивировать аккаунт',
+      close: 'Закрыть',
+      save: 'Сохранить черновик',
     },
 
     errors: {
@@ -585,6 +604,11 @@ export const messages: Record<Language, Messages> = {
       unfollowConfirm:'Вы действительно хотите отписаться от этого пользователя ',
       deleteFollowConfirm:'Вы действительно хотите удалить подписку ',
       deleteFollowing:'Удалить подписку',
+      closeModalWarningBegin: 'Вы действительно хотите закрыть создание публикации?',
+      closeModalwarningQSecondPart: 'Если вы закроете, все будет удалено',
+      discard: 'Сбросить',
+      selectPhoto:'Выбрать на компьютере',
+      openDraft:'Открыть черновик'
     },
 
     languages: {
@@ -617,4 +641,6 @@ export const getMessages = (language: Language): Messages => {
 //
 //   return typeof value === 'string' ? value : (fallback || key);
 // };
+
+// Экспорт по умолчанию
 

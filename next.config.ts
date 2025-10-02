@@ -8,6 +8,17 @@ const nextConfig: NextConfig = {
     })
     return config
   },
+  // Конфигурация для внешних изображений
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'staging-it-incubator.s3.eu-central-1.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
   // Добавить конфигурацию для turbopack
   experimental: {
     turbo: {

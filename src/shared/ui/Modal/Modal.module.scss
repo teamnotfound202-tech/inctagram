@@ -4,13 +4,10 @@
   position: absolute;
   z-index: 20;
   inset: 0;
-
   height: 100vh;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background-color: rgb(0, 0, 0, 0.5);
 }
 
@@ -18,11 +15,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   min-height: 240px;
   border: 1px solid $dark-100;
   border-radius: 2px;
-
   background: $dark-300;
 }
 
@@ -47,6 +42,13 @@
   cursor: pointer;
   width: 24px;
   height: 24px;
+  color: white;
+
+  &.isLoading {
+    color: $light-900;
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .modalContent {
@@ -55,11 +57,46 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: space-between;
-
   padding: 30px 24px 36px;
-
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
   color: $light-100;
+  max-width: 390px;
+}
+
+.supermodalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 492px;
+  height: 503px;
+  flex: 1;
+
+  // Для фильтров делаем контейнер шире (Женя)
+  &.filtersStep {
+    width: 750px;
+  }
+
+  // Для шага публикации тоже делаем контейнер шире
+  &.publishStep {
+    width: 750px;
+  }
+}
+
+.photoEditingNextBtn {
+  padding: 0;
+}
+
+.buttonWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.saveCroppedImage {
+  bottom: 51px;
+  position: absolute;
+  right: 3px;
 }
