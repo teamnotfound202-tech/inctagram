@@ -1,5 +1,3 @@
-// @flow
-import * as React from 'react';
 import s from "./PostTitle.module.scss";
 import {Avatar} from "@/entities/user/ui/Avatar";
 import {useMeQuery} from "@/features/auth/api/authApi";
@@ -19,7 +17,7 @@ export const PostTitle = ({avatarOwner, firstName, lastName, ownerId}: Props) =>
     return (
         <div className={s.postTitle}>
             <div className={s.ownerInf}>
-                <Avatar src={user?.avatars[0]} alt={'avatar'}/>
+                <Avatar src={user?.avatars[0]?.url|| '/'} alt={'avatar'}/> {/*TODO: надо пофиксить путь*/}
                 <div className={s.ownerName}>{firstName + ' ' + lastName}</div>
             </div>
             {data?.userId && <DropdownPostActionsMenu isPostOwner={true}/>}
