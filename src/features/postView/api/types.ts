@@ -25,7 +25,7 @@ export type Post = {
     owner: Owner;
     likesCount: number;
     isLiked: boolean;
-    avatarWhoLikes: boolean;
+    avatarWhoLikes: string[];
 }
 
 export type Avatars = {

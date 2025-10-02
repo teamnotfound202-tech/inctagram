@@ -4,15 +4,11 @@ import EmblaCarousel from "@/features/postView/ui/PostSSR/PostView/PostImage/Emb
 import {EmblaOptionsType} from "embla-carousel";
 
 type Props = {
-    imageUrl?: string;
-    images:ImagePost[]
+    images: ImagePost[]
 }
 
-
-
 export const PostImage = ({images}: Props) => {
-     let imagesUrl = images.map(postImage=>postImage.url)
-    imagesUrl=[...imagesUrl]
+    const imagesUrl = images.map(postImage => postImage.url)
 
     const carouselOptions: EmblaOptionsType = {
         loop: true,
@@ -22,12 +18,12 @@ export const PostImage = ({images}: Props) => {
     };
     return (
         <div className={s.postImageWrapper}>
-            <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-                <EmblaCarousel slides={imagesUrl} options={carouselOptions} />
+            <div style={{maxWidth: '800px', margin: '0 auto'}}>
+                <EmblaCarousel slides={imagesUrl} options={carouselOptions}/>
             </div>
             {/*<ImageCarousel imagesArray={images}/>TODO: удалить лишние карусели и библиотеки*/}
             {/*<Carousel imagesArray={images}/>*/}
-           {/* <img src={imageUrl} alt={'postImage'} className={s.postImage}/>*/}
+            {/* <img src={imageUrl} alt={'postImage'} className={s.postImage}/>*/}
         </div>
     );
 };

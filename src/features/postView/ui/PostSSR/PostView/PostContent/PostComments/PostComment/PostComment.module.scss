@@ -5,57 +5,17 @@
   /*margin-right: 8px;*/
 }
 
+.disabled {
+  opacity: .5;
+
+  &:hover {
+    cursor: auto;
+  }
+}
+
 .comment {
   margin-bottom: 15px;
   display: flex;
   align-items: start;
 }
 
-.postText {
-  flex-grow: 1;
-  margin-left: 12px;
-  word-break: break-all;
-
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 171%;
-  color: $light-100;
-}
-
-.commentAuthorName {
-  font-weight: 700;
-}
-
-.commentDescription {
-  display: inline;
-}
-
-.commentMeta {
-  display: flex;
-  justify-content: start;
-  gap: 12px;
-  font-size: 12px;
-  line-height: 133%;
-  color: $light-900;
-  font-weight: 600;
-  margin-top: 5px;
-}
-
-.commentCreationTime {
-  font-weight: 400;
-}
-
-.likesCount {
-  font-weight: 600;
-}
-
-.answerLink {
-  cursor: pointer;
-  color: $light-900;
-}
-
-.commentAnswer {
-}
-
-.commentLike {
-}

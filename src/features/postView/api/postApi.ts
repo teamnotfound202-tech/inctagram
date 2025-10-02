@@ -9,8 +9,11 @@ export const postApi = baseApi.injectEndpoints({
                 {type: 'Post', id: postId}
             ],
         }),
-        fetchUsersProfile: builder.query<User, void>({        //TODO: перенести в api User или взять чужой эндпоинт для запроса
+        fetchMyProfile: builder.query<User, void>({        //TODO: перенести в api User или взять чужой эндпоинт для запроса
             query: () => `users/profile`,
+        }),
+        fetchUser: builder.query<User, number>({        //TODO: перенести в api User или взять чужой эндпоинт для запроса
+            query: (profileId) => `public-user/profile/${profileId}`,
         }),
         fetchPostComments: builder.query<CommentsResponse, number>({
             query: (postId) => `posts/${postId}/comments`,
@@ -24,7 +27,6 @@ export const postApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: {content},
             }),
-            // Автоматически обновляем кэш
             invalidatesTags: (result, error, {postId}) => [
                 {type: 'Comment', id: postId}
             ],
@@ -125,7 +127,8 @@ export const {
     useFetchPostQuery,
     useFetchPostCommentsQuery,
     useCreateCommentMutation,
-    useFetchUsersProfileQuery,
     useUpdateCommentLikeStatusMutation,
-    useUpdatePostLikeStatusMutation
+    useUpdatePostLikeStatusMutation,
+    useFetchMyProfileQuery,
+    useFetchUserQuery
 } = postApi

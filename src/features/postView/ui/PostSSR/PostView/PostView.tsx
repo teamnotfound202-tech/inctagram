@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const PostView = ({post}: Props) => {
-      const {data: postFromCache} = useFetchPostQuery(post.id/*, {skip: needToHydrate}*/)
+      const {data: postFromCache} = useFetchPostQuery(post.id)
 
     //При первой отрисовке берутся данные с сервера(post), а потом делается запрос с помощью useFetchPostQuery за актуальными данными,
     //для которых важна авторизация (например, isLiked для поста), и кладутся в кэш (postFromCache)

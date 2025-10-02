@@ -1,18 +1,3 @@
-/*
-import s from "./AddCommentForm.module.scss";
-import {Button} from "@/shared/ui";
-import {useAppSelector} from "@/shared/lib/hooks/hooks";
-import {selectCurrentMessages} from "@/shared/api/appSlice";
-
-export const AddCommentForm = () => {
-    const currentLanguage = useAppSelector(selectCurrentMessages)
-    return (
-        <form className={s.addCommentForm}>
-            <input className={s.createCommentInput} placeholder={currentLanguage.posts.addComment}/>
-            <Button variant={"text"}>{currentLanguage.posts.publish}</Button>
-        </form>
-    );
-};*/
 'use client'
 import { useAppSelector } from '@/shared/lib/hooks/hooks';
 import { useState } from 'react';
@@ -23,9 +8,9 @@ import {Button} from "@/shared/ui";
 import {From} from "@/features/postView/api/types";
 import {AlertToast} from "@/shared/ui/Alerts/Alerts";
 
-interface AddCommentFormProps {
+type AddCommentFormProps= {
     postId: number, // ID поста, к которому добавляется комментарий
-    user: From
+    user: From      //user типа From (т.к. для оптимистичного update нужна вся структура типа From)
 }
 
 export const AddCommentForm = ({ postId, user }: AddCommentFormProps) => {
@@ -40,17 +25,12 @@ export const AddCommentForm = ({ postId, user }: AddCommentFormProps) => {
             return;
         }
 
-        try {
-            await createComment({
+       createComment({
                 postId,
                 user,
                 content: content.trim()
-            }).unwrap();
-
+            })
             setContent('');
-        } catch (err) {
-            console.error('Failed to create comment:', err);
-        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,20 +57,10 @@ export const AddCommentForm = ({ postId, user }: AddCommentFormProps) => {
             {/* Отображение ошибок */}
             {error && (
                 <AlertToast description={'Ошибка при отправке комментария'}/>
-                /*<div className={s.error}>
-
-                    {/!*!//TODO: добваить тосты*!/}
-                    Ошибка при отправке комментария
-                </div>*/
             )}
 
-            {/* Успешное сообщение (опционально) */}
             {isSuccess && (
                 <AlertToast description={'Комментарий успешно добавлен!'} variant={"success"}/>
-                /*<div className={s.success}>
-
-                    Комментарий успешно добавлен!
-                </div>*/
             )}
         </form>
     );

@@ -38,6 +38,7 @@ export const authApi = baseApi.injectEndpoints({
         }),
         me: builder.query<ResponsesMe, void>({
             query: () => "auth/me",
+            keepUnusedDataFor: 0,
         }),
         googleLogin: builder.mutation<ResponseGoogleLogin, RequestBodyGoogleLogin>({
             query: (args) => ({

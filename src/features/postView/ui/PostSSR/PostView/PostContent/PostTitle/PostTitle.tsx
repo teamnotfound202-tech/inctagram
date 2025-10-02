@@ -5,21 +5,24 @@ import {Avatar} from "@/entities/user/ui/Avatar";
 import {useMeQuery} from "@/features/auth/api/authApi";
 import DropdownPostActionsMenu
     from "@/features/postView/ui/PostSSR/PostView/PostContent/PostTitle/DropdownMenuDemo/DropdownPostActionsMenu";
+import {useFetchUserQuery} from "@/features/postView/api/postApi";
 
 type Props = {
+    ownerId: number;
     avatarOwner: string
-    userName: string
-    commentOwnerId: number
+    firstName: string
+    lastName: string
 };
-export const PostTitle = ({avatarOwner, userName, commentOwnerId}: Props) => {
+export const PostTitle = ({avatarOwner, firstName, lastName, ownerId}: Props) => {
     const {data} = useMeQuery()
+    const {data:user} = useFetchUserQuery(ownerId)
     return (
         <div className={s.postTitle}>
             <div className={s.ownerInf}>
-                <Avatar src={avatarOwner} alt={'avatar'}/>
-                <div className={s.ownerName}>{userName}</div>
+                <Avatar src={user?.avatars[0]} alt={'avatar'}/>
+                <div className={s.ownerName}>{firstName + ' ' + lastName}</div>
             </div>
-            {data?.userId && <DropdownPostActionsMenu isPostOwner={data?.userId === commentOwnerId}/>}
+            {data?.userId && <DropdownPostActionsMenu isPostOwner={true}/>}
         </div>
     );
 };

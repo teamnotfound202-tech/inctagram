@@ -6,14 +6,16 @@ type Props = {
     onClick: () => void
     isLiked: boolean
     className?: string
+    disabled?: boolean
 };
-export const LikeButton = ({isLiked, onClick, className}: Props) => {
+export const LikeButton = ({isLiked, onClick, className, disabled}: Props) => {
     const likeHandler = () => {
         onClick()
     }
+    const finishClassName = s.likeButton + ' ' + (className ? className : '') + (disabled ? s.disabled : '')
 
     return (
-        <button className={s.likeButton + ' ' + className } onClick={likeHandler}>
+        <button className={finishClassName} onClick={likeHandler} disabled={disabled || false}>
             {isLiked ? <Heart/> : <DisLike/>}
         </button>
     );
