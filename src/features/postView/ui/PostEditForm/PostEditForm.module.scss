@@ -1,0 +1,59 @@
+.editForm {
+  padding: 1rem;
+  border: 1px solid var(--color-border, #e1e5e9);
+  border-radius: 8px;
+  background-color: var(--color-background, #fff);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.authorName {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-text-primary, #333);
+}
+
+.creationTime {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #666);
+}
+
+.content {
+  margin-bottom: 1rem;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
+  }
+}

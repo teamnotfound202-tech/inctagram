@@ -95,6 +95,44 @@ export const postApi = baseApi.injectEndpoints({
                 }
             },
         }),
+
+        deletePost: builder.mutation<void, {postId:number}>({
+            query: ({postId}) => ({
+                url: `posts/${postId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: (result, error, {postId}) => [
+                {type: 'Post', id: postId},
+                {type: 'Post', id: 'LIST'}
+            ],
+        }),
+
+        updatePost: builder.mutation<Post, { postId: number; description: string }>({
+            query: ({postId, description}) => ({
+                url: `posts/${postId}`,
+                method: 'PUT',
+                body: {description},
+            }),
+            invalidatesTags: (result, error, {postId}) => [
+                {type: 'Post', id: postId}
+            ],
+            // Оптимистичное обновление
+            onQueryStarted: async ({postId, description}, {dispatch, queryFulfilled, getState}) => {
+                const patchResult = dispatch(
+                  postApi.util.updateQueryData('fetchPost', postId, (draft) => {
+                      draft.description = description
+                      draft.updatedAt = new Date().toISOString()
+                  })
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    patchResult.undo();
+                }
+            },
+        }),
+
         updatePostLikeStatus: builder.mutation<void, { postId: number; likeStatus: LikeStatus }>({
             query: ({postId, likeStatus}) => ({
                 url: `posts/${postId}/like-status`,
@@ -130,5 +168,7 @@ export const {
     useUpdateCommentLikeStatusMutation,
     useUpdatePostLikeStatusMutation,
     useFetchMyProfileQuery,
-    useFetchUserQuery
+    useFetchUserQuery,
+    useDeletePostMutation,
+    useUpdatePostMutation
 } = postApi

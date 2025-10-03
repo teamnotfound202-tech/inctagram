@@ -4,23 +4,31 @@ import {useMeQuery} from "@/features/auth/api/authApi";
 import DropdownPostActionsMenu
     from "@/features/postView/ui/PostSSR/PostView/PostContent/PostTitle/DropdownMenuDemo/DropdownPostActionsMenu";
 import {useFetchUserQuery} from "@/features/postView/api/postApi";
+import { Post } from '@/features/postView/api/types'
 
 type Props = {
     ownerId: number;
     avatarOwner: string
     firstName: string
     lastName: string
+    postId: number
+    onEdit?: () => void
+
 };
-export const PostTitle = ({avatarOwner, firstName, lastName, ownerId}: Props) => {
+export const PostTitle = ({ avatarOwner, firstName, lastName, ownerId, postId,  onEdit}: Props) => {
     const {data} = useMeQuery()
     const {data:user} = useFetchUserQuery(ownerId)
+
+    //является ли текущий пользователь владельцем поста
+    const isPostOwner = data?.userId === ownerId
+
     return (
         <div className={s.postTitle}>
             <div className={s.ownerInf}>
                 <Avatar src={user?.avatars[0]?.url|| '/'} alt={'avatar'}/> {/*TODO: надо пофиксить путь*/}
                 <div className={s.ownerName}>{firstName + ' ' + lastName}</div>
             </div>
-            {data?.userId && <DropdownPostActionsMenu isPostOwner={true}/>}
+            {data?.userId && <DropdownPostActionsMenu isPostOwner={true} postId={postId} onEdit={onEdit}/>}
         </div>
     );
 };

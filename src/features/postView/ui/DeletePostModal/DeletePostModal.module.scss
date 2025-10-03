@@ -1,0 +1,39 @@
+.content {
+  padding: 1rem 0;
+}
+
+.message {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text-primary, #333);
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.cancelButton,
+.deleteButton {
+  min-width: 80px;
+  padding: 0.5rem 1rem;
+}
+
+.deleteButton {
+  background-color: var(--color-danger, #dc3545);
+  border-color: var(--color-danger, #dc3545);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-danger-hover, #c82333);
+    border-color: var(--color-danger-hover, #c82333);
+  }
+}
+
+.cancelButton {
+  &:hover:not(:disabled) {
+    background-color: var(--color-light, #f8f9fa);
+  }
+}
