@@ -1,16 +1,13 @@
 'use client'
 import s from "./PostComment.module.scss";
 import Avatar from "../../../../../../../../entities/user/ui/Avatar/Avatar";
-import Heart from "@/features/postView/ui/PostSSR/PostView/Icons/littleLike/heart.svg";
-import DisLike from "@/features/postView/ui/PostSSR/PostView/Icons/littleLike/DisLike.svg";
 import {Comment, LikeStatus} from "@/features/postView/api/types";
-import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
-import {useAppSelector} from "@/shared/lib/hooks/hooks";
-import {selectCurrentMessages} from "@/shared/api/appSlice";
-import {useUpdateCommentLikeStatusMutation} from "@/features/postView/api/postApi";
 import {LikeButton} from "@/features/postView/ui/PostSSR/PostView/PostContent/LikeButton/LikeButton";
 import {useMeQuery} from "@/features/auth/api/authApi";
-import {CommentText} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentText/CommentText";
+import {
+    CommentText
+} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentText/CommentText";
+import {useUpdateCommentLikeStatusMutation} from "@/features/posts/api/posts-api";
 
 type Props = {
     comment: Comment,

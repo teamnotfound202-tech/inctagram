@@ -5,7 +5,7 @@ import Like from "@/features/postView/ui/PostSSR/PostView/Icons/bigLike/Like.svg
 import PaperPlane from "@/features/postView/ui/PostSSR/PostView/Icons/paper-plane-outline.svg";
 import Bookmark from "@/features/postView/ui/PostSSR/PostView/Icons/Bookmark.svg";
 import {LikeStatus} from "@/features/postView/api/types";
-import {useUpdatePostLikeStatusMutation} from "@/features/postView/api/postApi";
+import {useUpdatePostLikeStatusMutation} from "@/features/posts/api/posts-api";
 
 type Props = {
     isLiked:boolean

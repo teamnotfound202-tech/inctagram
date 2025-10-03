@@ -1,11 +1,11 @@
 import s from './PostComments.module.scss';
 import {PostComment} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/PostComment";
-import {useFetchPostCommentsQuery} from "@/features/postView/api/postApi";
 import {
     PostDescriptionAsComment
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostDescriptionAsComment";
 import {Post} from "@/features/postView/api/types";
 import {Loader} from "@/shared/ui/Loader/Loader";
+import {useFetchPostCommentsQuery} from "@/features/posts/api/posts-api";
 
 type Props = {
     post: Post

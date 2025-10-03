@@ -6,7 +6,7 @@ import {
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostMetaInfWithControls/PostMetaInfWithControls";
 import {AddCommentForm} from "@/features/postView/ui/PostSSR/PostView/PostContent/AddCommentForm/AddCommentForm";
 import {PostComments} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComments";
-import {useFetchMyProfileQuery} from "@/features/postView/api/postApi";
+import {useFetchMyProfileQuery} from "@/features/publicUserApi/publicUserApi";
 
 type Props = {
     post: Post
