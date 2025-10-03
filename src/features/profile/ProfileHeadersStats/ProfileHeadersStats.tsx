@@ -23,12 +23,17 @@ export const ProfileHeadersStats = ({data, userName}: Props) => {
   const showFollowingHandler = () => {
     setTypeModal('following')
     setModalOpen(true)
+    document.body.style.overflow = 'hidden'
   }
   const showFollowersHandler = () => {
     setTypeModal('followers')
     setModalOpen(true)
+    document.body.style.overflow = 'hidden'
   }
-  const handleModelClose = () => setModalOpen(false)
+  const handleModelClose = () => {
+    setModalOpen(false)
+    document.body.style.overflow = ''
+  }
 
   return (
     <div className={s.userStats}>
