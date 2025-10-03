@@ -5,39 +5,55 @@ import { DynamicIcon } from '@/widgets/Sidebar/SidebarItem/DinamicIcon/DinamicIc
 import s from './SidebarItem.module.scss'
 import Link from 'next/link'
 import clx from 'classnames'
+import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
+import { SidebarAction, sidebarActions } from '@/widgets/Sidebar/SidebarItem/sidebarActions'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   link: string
   text: Text
   isDisabled: boolean
-  onClickAction?: () => void
+  onClickAction?: (type: TypeOfModalWindow) => void
   isVisible?: boolean
-  spanText:string
+  spanText: string
 }
+export const SidebarItem = ({
+  link,
+  text,
+  isDisabled,
+  onClickAction,
+  isVisible,
+  spanText,
+}: Props) => {
+  const baseClasses = clx(s.sidebarItemLink, {
+    [s.unvisible]: isVisible,
+  })
 
-export const SidebarItem = ({ link, text, isDisabled, onClickAction, isVisible,spanText }: Props) => {
+  const action = sidebarActions[text] ?? { type: 'link' }
+  const superModalHandler = (actionType: TypeOfModalWindow) => {
+    onClickAction?.(actionType)
+  }
+
+  const content =
+    action.type === 'button' ? (
+      <Button className={baseClasses} onClick={() => superModalHandler(action.actionType)}>
+        <DynamicIcon text={text} />
+        <span className={s.sidebarItemtext}>{spanText}</span>
+      </Button>
+    ) : (
+      <Link href={link} className={baseClasses} prefetch={true}>
+        <DynamicIcon text={text} />
+        <span className={s.sidebarItemtext}>{spanText}</span>
+      </Link>
+    )
+
   return (
     <li
       className={clx(s.sidebarItem, {
         [s.disabled]: isDisabled,
       })}
     >
-      {text === 'Log Out' ? (
-        <Button
-          className={clx(s.sidebarItemLink, {
-            [s.unvisible]: isVisible,
-          })}
-          onClick={onClickAction}
-        >
-          <DynamicIcon text={text} />
-          <span className={s.sidebarItemtext}>{spanText}</span>
-        </Button>
-      ) : (
-        <Link href={link} className={s.sidebarItemLink}>
-          <DynamicIcon text={text} />
-          <span className={s.sidebarItemtext}>{spanText}</span>
-        </Link>
-      )}
+      {content}
     </li>
   )
 }

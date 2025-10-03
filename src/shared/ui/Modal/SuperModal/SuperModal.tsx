@@ -22,65 +22,53 @@ import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { createTempFile } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile'
 import { filters, getFilterWithIntensity } from '@/shared/ui/Modal/SuperModal/constans/filters'
 import { applyFilterToImage } from '@/shared/ui/Modal/model/utils'
+import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
 import { useRouter } from 'next/navigation'
 
 type Props = {
   title: string
   callback: (type: TypeOfModalWindow) => void
-  userId: number | undefined
+  userId:number | undefined
+
 }
-
 export type Step = 'upload' | 'edit' | 'filters' | 'publish' | 'noevents'
-
-// Константы для лучшей читаемости
-const MAX_IMAGES = 10
-const DEFAULT_FILTER = { filter: 'normal', intensity: 100 }
-
-export const SuperModal = ({ title, callback, userId }: Props) => {
-  // === HOOKS ===
-  const router = useRouter()
-  const currentLanguageArray = useAppSelector(selectCurrentMessages)
-
-  // === API MUTATIONS ===
+export const SuperModal = ({ title, callback,userId }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
   const [deletePosts] = useDeletePostsImageMutation()
   const [createPost] = useCreatePostMutation()
-
-  // === API QUERIES ===
+  const router = useRouter()
   const { data: userData } = useMeQuery()
   const { data: userProfile } = useGetUserFollowingAndFollowersQuery(
     { userName: userData?.userName || '' },
     { skip: !userData?.userName }
   )
-
-  // === STATE ===
+  const currentLanguageArray = useAppSelector(selectCurrentMessages)
   const [currentStep, setCurrentStep] = useState<Step>('upload')
   const [exitModalIsOpen, setExitModalIsOpen] = useState(false)
   const [localFiles, setLocalFiles] = useState<File[]>([])
   const [uploadedImages, setUploadedImages] = useState<Images[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
+  const modalRef = useRef<HTMLDivElement>(null)
   const [imageFilters, setImageFilters] = useState<{
     [key: number]: { filter: string; intensity: number }
   }>({})
+
+  // Состояние для данных формы публикации
   const [publishFormData, setPublishFormData] = useState({
     description: '',
     location: '',
   })
-
-  // === REFS ===
-  const modalRef = useRef<HTMLDivElement>(null)
-  const publishFormDataRef = useRef(publishFormData)
-
-  // === EFFECTS ===
   useEffect(() => {
     router.replace(`/profile/${userId}?action=create`)
-  }, [router, userId])
+  }, [])
+  // Используем ref для хранения актуальных данных
+  const publishFormDataRef = useRef(publishFormData)
 
+  // Обновляем ref при изменении состояния
   useEffect(() => {
     publishFormDataRef.current = publishFormData
   }, [publishFormData])
 
-  // === HANDLERS ===
   const handleImageUpload = (files: File[], step: Step = 'noevents') => {
     const filteredFiles = files.filter(
       newFile =>
@@ -91,12 +79,11 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
             existingFile.lastModified === newFile.lastModified
         )
     )
-
     const newFiles = [...localFiles, ...filteredFiles]
 
-    if (newFiles.length > MAX_IMAGES) {
-      const remainingSlots = MAX_IMAGES - localFiles.length
-      const errorMessage = `You can only add ${remainingSlots} more image(s)`
+    if (newFiles.length > 10) {
+      const remainingSlots = 10 - localFiles.length
+      const errorMessage = `You can add only add ${remainingSlots} more image(s)`
       toast.custom(() => (
         <AlertToast variant="error" title="Limit is reached" description={errorMessage} />
       ))
@@ -104,13 +91,13 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
       return
     }
 
+    // Создаем временные объекты изображений для локального использования
     const tempImages = filteredFiles.map((file) => createTempFile(file))
     const tempUploadImages = [...uploadedImages, ...tempImages]
 
     setLocalFiles(newFiles)
     setUploadedImages(tempUploadImages)
     setSelectedImage(0)
-
     if (step !== 'noevents') {
       setCurrentStep(step)
       uploadImage(localFiles)
@@ -124,7 +111,6 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
         updated[index] = updatedImage
         return updated
       })
-
       if (updatedFile) {
         setLocalFiles(prev => {
           const updated = [...prev]
@@ -138,23 +124,25 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
 
   const handleDeletePosts = (postsId: string, index: number) => {
     const stateAfterDelete = uploadedImages.filter(image => image.uploadId !== postsId)
-    const localFilesAfterDeleting = localFiles.filter((_, i) => i !== index)
-
+    const localFilesAfterDeleting = localFiles.filter((file, i) => i !== index)
     setUploadedImages(stateAfterDelete)
     setLocalFiles(localFilesAfterDeleting)
-
     if (stateAfterDelete.length === 0) {
       setCurrentStep('upload')
       setSelectedImage(0)
     }
+    //deletePosts({ uploadId: postsId })
   }
 
-  const handleOpendraft = () => {
+  const handleOpendraft = async () => {
+
     setCurrentStep('edit')
   }
 
-  const getCurrentFilter = () => imageFilters[selectedImage] || DEFAULT_FILTER
+  // Получаем текущий фильтр для выбранного изображения
+  const getCurrentFilter = () => imageFilters[selectedImage] || { filter: 'normal', intensity: 100 }
 
+  // Функция handleFilterSelect для обработки выбора фильтров (Женя)
   const handleFilterSelect = (filter: string, intensity: number = 100) => {
     setImageFilters(prev => ({
       ...prev,
@@ -162,46 +150,46 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
     }))
   }
 
+  // Обработчик изменений в форме публикации
   const handlePublishFormDataChange = (data: { description: string; location: string }) => {
     setPublishFormData(data)
   }
 
-  // === NAVIGATION ===
   const handleNext = () => {
-    const stepMap: Record<Step, Step | undefined> = {
-      upload: undefined,
-      edit: 'filters',
-      filters: 'publish',
-      publish: undefined,
-      noevents: undefined,
+    switch (currentStep) {
+      case 'edit':
+        setCurrentStep('filters')
+        break
+      case 'filters':
+        setCurrentStep('publish')
+        break
     }
-
-    const nextStep = stepMap[currentStep]
-    if (nextStep) setCurrentStep(nextStep)
   }
 
   const handleBack = () => {
-    const stepMap: Record<Step, Step | undefined> = {
-      upload: undefined,
-      edit: 'upload',
-      filters: 'edit',
-      publish: 'filters',
-      noevents: undefined,
+    switch (currentStep) {
+      case 'edit':
+        setCurrentStep('upload')
+        break
+      case 'filters':
+        setCurrentStep('edit')
+        break
+      case 'publish':
+        setCurrentStep('filters')
+        break
     }
-
-    const prevStep = stepMap[currentStep]
-    if (prevStep) setCurrentStep(prevStep)
   }
 
-  // === MODAL CONTROLS ===
   const handleOverlayClick = (event: MouseEvent<HTMLElement>) => {
     if (event.target === event.currentTarget) {
       setExitModalIsOpen(true)
+
     }
   }
 
+  // Обработчик для кнопки закрытия
   const handleCloseClick = (event: MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation()
+    event.stopPropagation() // Останавливаем всплытие
     callback(null)
   }
 
@@ -214,6 +202,7 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
 
   const handleExitingModal = () => {
     setExitModalIsOpen(false)
+
   }
 
   const handleDiscard = () => {
@@ -223,7 +212,6 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
     setExitModalIsOpen(false)
   }
 
-  // === PUBLISH ===
   const handlePublish = async () => {
     try {
       if (localFiles.length === 0) {
@@ -241,15 +229,42 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
         return
       }
 
-      const processedFiles = await processImagesWithFilters()
-      const uploadResult = await uploadImage(processedFiles).unwrap()
+      // ✅ применяем фильтры к каждому изображению
+      const processedFiles: File[] = []
+      for (let i = 0; i < localFiles.length; i++) {
+        const file = localFiles[i]
+        const filterConfig = imageFilters[i]
 
-      if (!uploadResult?.images) {
-        console.error('❌ Failed to upload images to server')
-        return
+        if (filterConfig && filterConfig.filter !== 'normal') {
+          const filter = filters.find(f => f.name === filterConfig.filter)
+          const cssFilter = getFilterWithIntensity(
+            filter?.cssFilter || 'none',
+            filterConfig.intensity
+          )
+          const newFile = await applyFilterToImage(file, cssFilter)
+          processedFiles.push(newFile)
+        } else {
+          processedFiles.push(file)
+        }
       }
 
-      await createPostWithData(currentFormData, uploadResult.images)
+      //  Теперь загружаем уже обработанные изображения
+      const uploadResult = await uploadImage(processedFiles).unwrap()
+
+      if (!uploadResult || !uploadResult.images) {
+        console.error('❌ Failed to upload images to server')
+      }
+
+      const postData = {
+        description: currentFormData.description.trim(),
+        location: currentFormData.location.trim(),
+        childrenMetadata: uploadResult.images.map(image => ({
+          uploadId: image.uploadId,
+        })),
+        userId: userData?.userId, // Добавляем userId для правильной инвалидации тегов
+      }
+
+      await createPost(postData).unwrap()
 
       callback(null)
       toast.success('Post published successfully!')
@@ -258,148 +273,94 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
       toast.error('Failed to publish post. Please try again.')
     }
   }
+    const titleForHeader =
+      currentStep === 'upload'
+        ? title
+        : currentStep === 'edit'
+        ? 'Cropping'
+        : currentStep === 'filters'
+        ? 'Filters'
+        : 'Publication'
 
-  // === HELPER FUNCTIONS ===
-  const processImagesWithFilters = async (): Promise<File[]> => {
-    const processedFiles: File[] = []
 
-    for (let i = 0; i < localFiles.length; i++) {
-      const file = localFiles[i]
-      const filterConfig = imageFilters[i]
+    return (
+      <div className={s.overlay} onClick={handleOverlayClick}>
+        <div className={s.modal} ref={modalRef}>
+          <ModalHeader
+            isLoading={isLoading}
+            forwardClickAction={handleNext}
+            uploadClickAction={handlePublish}
+            backClickAction={handleBack}
+            type={currentStep}
+            title={titleForHeader}
+            onClickAction={handleCloseClick}
+          />
+          <div
+            className={clsx(
+              s.supermodalContent,
+              currentStep === 'filters' && s.filtersStep,
+              currentStep === 'publish' && s.publishStep
+            )}
+          >
+            {currentStep === 'upload' && (
+              <ImageUploader handleOpenDraft={handleOpendraft} onUpload={handleImageUpload} />
+            )}
 
-      if (filterConfig && filterConfig.filter !== 'normal') {
-        const filter = filters.find(f => f.name === filterConfig.filter)
-        const cssFilter = getFilterWithIntensity(
-          filter?.cssFilter || 'none',
-          filterConfig.intensity
-        )
-        const newFile = await applyFilterToImage(file, cssFilter)
-        processedFiles.push(newFile)
-      } else {
-        processedFiles.push(file)
-      }
-    }
-
-    return processedFiles
-  }
-
-  const createPostWithData = async (formData: typeof publishFormData, images: Images[]) => {
-    const postData = {
-      description: formData.description.trim(),
-      location: formData.location.trim(),
-      childrenMetadata: images.map(image => ({
-        uploadId: image.uploadId,
-      })),
-      userId: userData?.userId,
-    }
-
-    await createPost(postData).unwrap()
-  }
-
-  // === RENDER HELPERS ===
-  const getTitleForHeader = (): string => {
-    const titles: Record<Step, string> = {
-      upload: title,
-      edit: 'Cropping',
-      filters: 'Filters',
-      publish: 'Publication',
-      noevents: title,
-    }
-
-    return titles[currentStep]
-  }
-
-  const renderCurrentStep = () => {
-    const stepComponents = {
-      upload: (
-        <ImageUploader
-          handleOpenDraft={handleOpendraft}
-          onUpload={handleImageUpload}
-        />
-      ),
-      edit: (
-        <ImageEditor
-          deletePost={handleDeletePosts}
-          onUpload={handleImageUpload}
-          isLoading={isLoading}
-          images={uploadedImages || []}
-          selectedImage={selectedImage}
-          onSelectImage={setSelectedImage}
-          onImageUpdate={handleImageUpdateByCrop}
-        />
-      ),
-      filters: (
-        <FiltersPanel
-          images={uploadedImages || []}
-          selectedImage={selectedImage}
-          onSelectImage={setSelectedImage}
-          selectedFilter={getCurrentFilter().filter}
-          filterIntensity={getCurrentFilter().intensity}
-          onFilterSelect={handleFilterSelect}
-        />
-      ),
-      publish: (
-        <PublishForm
-          images={uploadedImages || []}
-          selectedImage={selectedImage}
-          onSelectImage={setSelectedImage}
-          appliedFilter={getCurrentFilter().filter}
-          filterIntensity={getCurrentFilter().intensity}
-          imageFilters={imageFilters}
-          onFormDataChange={handlePublishFormDataChange}
-          user={userData ? {
-            userName: userData.userName,
-            avatarUrl: userProfile?.avatars?.[0]?.url || null
-          } : undefined}
-        />
-      ),
-      noevents: null,
-    }
-
-    return stepComponents[currentStep]
-  }
-
-  // === RENDER ===
-  return (
-    <div className={s.overlay} onClick={handleOverlayClick}>
-      <div className={s.modal} ref={modalRef}>
-        <ModalHeader
-          isLoading={isLoading}
-          forwardClickAction={handleNext}
-          uploadClickAction={handlePublish}
-          backClickAction={handleBack}
-          type={currentStep}
-          title={getTitleForHeader()}
-          onClickAction={handleCloseClick}
-        />
-        <div
-          className={clsx(
-            s.supermodalContent,
-            currentStep === 'filters' && s.filtersStep,
-            currentStep === 'publish' && s.publishStep
-          )}
-        >
-          {renderCurrentStep()}
-        </div>
-      </div>
-
-      {exitModalIsOpen && (
-        <Modal title={currentLanguageArray.settings.close} onClick={handleExitingModal}>
-          <SideBarWarning>
-            {currentLanguageArray.modals.closeModalWarningBegin}
-            <br />
-            {currentLanguageArray.modals.closeModalwarningQSecondPart}
-          </SideBarWarning>
-          <div className={clsx(s.buttonWrapper, s.buttonWrapperforPhoto)}>
-            <Button variant={'outline'} onClick={handleDiscard}>
-              {currentLanguageArray.modals.discard}
-            </Button>
-            <Button onClick={handlerModalCloseWithSave}>
-              {currentLanguageArray.settings.save}
-            </Button>
+            {currentStep === 'edit' && (
+              <ImageEditor
+                deletePost={handleDeletePosts}
+                onUpload={handleImageUpload}
+                isLoading={isLoading}
+                images={uploadedImages || []}
+                selectedImage={selectedImage}
+                onSelectImage={setSelectedImage}
+                onImageUpdate={handleImageUpdateByCrop}
+              />
+            )}
+            {currentStep === 'filters' && (
+              <FiltersPanel
+                images={uploadedImages || []}
+                selectedImage={selectedImage}
+                onSelectImage={setSelectedImage}
+                selectedFilter={getCurrentFilter().filter}
+                filterIntensity={getCurrentFilter().intensity}
+                onFilterSelect={handleFilterSelect}
+              />
+            )}
+            {currentStep === 'publish' && (
+              <PublishForm
+                images={uploadedImages || []}
+                selectedImage={selectedImage}
+                onSelectImage={setSelectedImage}
+                appliedFilter={getCurrentFilter().filter}
+                filterIntensity={getCurrentFilter().intensity}
+                imageFilters={imageFilters}
+                onFormDataChange={handlePublishFormDataChange}
+                user={userData ? {
+                  userName: userData.userName,
+                  avatarUrl: userProfile?.avatars?.[0]?.url || null
+                } : undefined}
+              />
+            )}
           </div>
-        </Modal>
-      )}
-    </div>
-  )
-}
+        </div>
+        {exitModalIsOpen && (
+          <Modal title={currentLanguageArray.settings.close} onClick={handleExitingModal}>
+            <SideBarWarning>
+              {currentLanguageArray.modals.closeModalWarningBegin}
+              <br />
+              {currentLanguageArray.modals.closeModalwarningQSecondPart}
+            </SideBarWarning>
+            <div className={clsx(s.buttonWrapper, s.buttonWrapperforPhoto)}>
+              <Button variant={'outline'} onClick={handleDiscard}>
+                {currentLanguageArray.modals.discard}
+              </Button>
+              <Button onClick={handlerModalCloseWithSave}>
+                {currentLanguageArray.settings.save}
+              </Button>
+            </div>
+          </Modal>
+        )}
+      </div>
+    )
+  }

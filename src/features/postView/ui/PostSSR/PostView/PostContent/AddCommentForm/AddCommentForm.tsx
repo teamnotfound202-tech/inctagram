@@ -1,22 +1,23 @@
 'use client'
-import { useAppSelector } from '@/shared/lib/hooks/hooks';
-import { useState } from 'react';
+import {useAppSelector} from '@/shared/lib/hooks/hooks';
+import {useState} from 'react';
 import {selectCurrentMessages} from "@/shared/api/appSlice";
-import {useCreateCommentMutation} from "@/features/postView/api/postApi";
 import s from "./AddCommentForm.module.scss";
 import {Button} from "@/shared/ui";
 import {From} from "@/features/postView/api/types";
 import {AlertToast} from "@/shared/ui/Alerts/Alerts";
+import {useCreateCommentMutation} from "@/features/posts/api/posts-api";
+import {toast} from "sonner";
 
-type AddCommentFormProps= {
+type AddCommentFormProps = {
     postId: number, // ID поста, к которому добавляется комментарий
     user: From      //user типа From (т.к. для оптимистичного update нужна вся структура типа From)
 }
 
-export const AddCommentForm = ({ postId, user }: AddCommentFormProps) => {
+export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
     const currentLanguage = useAppSelector(selectCurrentMessages);
     const [content, setContent] = useState(''); // состояние для input
-    const [createComment, { isLoading, error, isSuccess }] = useCreateCommentMutation();
+    const [createComment, {isLoading, error, isSuccess}] = useCreateCommentMutation();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,12 +26,12 @@ export const AddCommentForm = ({ postId, user }: AddCommentFormProps) => {
             return;
         }
 
-       createComment({
-                postId,
-                user,
-                content: content.trim()
-            })
-            setContent('');
+        createComment({
+            postId,
+            user,
+            content: content.trim()
+        })
+        setContent('');
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,11 +57,15 @@ export const AddCommentForm = ({ postId, user }: AddCommentFormProps) => {
 
             {/* Отображение ошибок */}
             {error && (
-                <AlertToast description={'Ошибка при отправке комментария'}/>
+                toast.custom(() => (
+                    <AlertToast description={'Ошибка при отправке комментария'}/>
+                ))
             )}
 
             {isSuccess && (
-                <AlertToast description={'Комментарий успешно добавлен!'} variant={"success"}/>
+                toast.custom(() => (
+                    <AlertToast description={'Комментарий успешно добавлен!'} variant={"success"}/>
+                ))
             )}
         </form>
     );

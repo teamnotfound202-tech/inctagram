@@ -1,7 +1,1 @@
-'use client'
-
-export default function Page() {
-    return <div>
-        Profile page
-    </div>
-}
+export {ProfileRedirect as default} from '@/views/profileRedirect/profileRedirect'

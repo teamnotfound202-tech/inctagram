@@ -10,6 +10,7 @@ import {useFetchMyProfileQuery} from "@/features/postView/api/postApi";
 import { useState } from 'react'
 import { PostEditForm } from '@/features/postView/ui/PostEditForm/PostEditForm'
 import { EditCancelModal } from '@/features/postView/ui/EditCancelModal/EditCancelModal'
+import {useFetchMyProfileQuery} from "@/features/publicUserApi/publicUserApi";
 
 type Props = {
     post: Post

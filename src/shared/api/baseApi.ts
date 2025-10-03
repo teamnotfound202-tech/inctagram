@@ -4,7 +4,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 export const baseApi = createApi({
   reducerPath: 'inctagramApi',
   baseQuery: baseQueryWithReAuth,
-  tagTypes: ['User', 'Comment', 'Post'],
+  tagTypes: ['UserPosts', 'User', 'UserProfile', 'Me','Posts', 'Comment'],
   endpoints: () => ({}),
 })
 

@@ -1,3 +1,5 @@
+import { ISOStringFormat } from 'date-fns'
+
 export type ResponsesTypeError = {
   statusCode: number
   messages: [
@@ -45,3 +47,4 @@ export type RequestBodyRegistrationConformation = {
 export type RequestRecoveryPassword = { email: string; baseUrl: string; recaptcha: string }
 export type RequestCreateNewPassword = { newPassword: string; recoveryCode: string }
 export type RequestResendRecoveryPassword = { email: string; baseUrl: string }
+

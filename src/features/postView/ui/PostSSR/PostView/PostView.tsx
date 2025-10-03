@@ -3,7 +3,7 @@ import {PostContent} from "@/features/postView/ui/PostSSR/PostView/PostContent/P
 import s from "./PostView.module.scss"
 import {PostImage} from "@/features/postView/ui/PostSSR/PostView/PostImage/PostImage";
 import {Post} from "@/features/postView/api/types";
-import {useFetchPostQuery} from "@/features/postView/api/postApi";
+import {useFetchPostQuery} from "@/features/posts/api/posts-api";
 
 type Props = {
     post: Post
@@ -17,7 +17,7 @@ export const PostView = ({post}: Props) => {
     const postToRender = postFromCache || post
 
     return (
-        <div className={s.postWrapper}>
+        <div className={s.postWrapper }>
             <PostImage images={postToRender.images}/>{/*TODO: добавить слайдер*/}
             <PostContent post={postToRender}/>
         </div>

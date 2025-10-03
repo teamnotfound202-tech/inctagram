@@ -6,12 +6,12 @@ import PostModal from "@/features/postView/ui/PostModal/PostModal";
 import s from './PostSSR.module.scss'
 
 type Props = {
-    params: Promise<{ id: string }>;
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+    params:{ userId: string },
+    searchParams: { [key: string]: string | string[] | undefined };
 }
 
 export const PostSsr = async ({params, searchParams}: Props) => {
-    const {id} = await params;
+    const {userId} = await params;
     const resolvedSearchParams = await searchParams;
     const postId = resolvedSearchParams.postId as string | undefined;
 
@@ -19,7 +19,7 @@ export const PostSsr = async ({params, searchParams}: Props) => {
     if (postId && resolvedSearchParams.action) {
         const newSearchParams = cleanSearchParams(resolvedSearchParams);
         newSearchParams.set('postId', postId); // Гарантируем что postId останется
-        redirect(`/profile/${id}?${newSearchParams.toString()}`);
+        redirect(`/profile/${userId}?${newSearchParams.toString()}`);
     }
 
     if (!postId) {

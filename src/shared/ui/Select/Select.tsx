@@ -1,9 +1,11 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import styles from './Select.module.scss'
 import clsx from 'clsx'
 import { SelectOption, SelectOptionList } from '@/shared/ui/Select/SelectOptionsList'
+import { LANGUAGE } from '@/shared/lib/constants/constants'
+import { Language } from '@/shared/lib/locale/message'
 
 export type SelectBoxProps = {
   options: SelectOption[]
@@ -40,7 +42,12 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                                                     }) => {
   const [internalValue, setInternalValue] = useState(defaultValue)
   const currentValue = value !== undefined ? value : internalValue
-
+  useEffect(() => {
+    const languageItem = localStorage.getItem(LANGUAGE)
+    const language = (JSON.parse(languageItem  as Language)) || 'en';
+    const optionsValue = language === 'ru' ? 'option1' : 'option2'
+    setInternalValue(optionsValue)
+  }, [])
   const handleValueChange = useCallback(
     (newValue: string) => {
       if (value === undefined) {

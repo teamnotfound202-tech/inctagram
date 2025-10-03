@@ -3,8 +3,7 @@ import {Avatar} from "@/entities/user/ui/Avatar";
 import {useMeQuery} from "@/features/auth/api/authApi";
 import DropdownPostActionsMenu
     from "@/features/postView/ui/PostSSR/PostView/PostContent/PostTitle/DropdownMenuDemo/DropdownPostActionsMenu";
-import {useFetchUserQuery} from "@/features/postView/api/postApi";
-import { Post } from '@/features/postView/api/types'
+import { useFetchUserQuery } from "@/features/publicUserApi/publicUserApi";
 
 type Props = {
     ownerId: number;

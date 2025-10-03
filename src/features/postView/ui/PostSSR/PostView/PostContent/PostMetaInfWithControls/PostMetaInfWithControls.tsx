@@ -3,10 +3,10 @@ import Avatar from "../../../../../../../entities/user/ui/Avatar/Avatar";
 import {timeToTimeZone} from "@/shared/lib/utils/timeToTimeZone";
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectCurrentMessages} from "@/shared/api/appSlice";
-import {useFetchMyProfileQuery} from "@/features/postView/api/postApi";
 import {
     ButtonControls
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostMetaInfWithControls/ButtonControls/ButtonControls";
+import {useFetchMyProfileQuery} from "@/features/publicUserApi/publicUserApi";
 
 type Props = {
     id: number,
