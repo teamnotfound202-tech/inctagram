@@ -1,0 +1,8 @@
+.rt-Theme {
+    --default-font-family: var(--font-inter, Inter, system-ui, sans-serif) !important;
+}
+
+/* Все компоненты Radix */
+[class*="rt-"] {
+    font-family: var(--font-inter, Inter, system-ui, sans-serif) !important;
+}
