@@ -22,16 +22,21 @@ import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { createTempFile } from '@/shared/ui/Modal/SuperModal/ImageEditor/model/TempFile'
 import { filters, getFilterWithIntensity } from '@/shared/ui/Modal/SuperModal/constans/filters'
 import { applyFilterToImage } from '@/shared/ui/Modal/model/utils'
+import { ModalSkeleton } from '@/shared/ui/Modal/SuperModal/Skeleton/Skeleton'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   title: string
   callback: (type: TypeOfModalWindow) => void
+  userId:number | undefined
+
 }
 export type Step = 'upload' | 'edit' | 'filters' | 'publish' | 'noevents'
-export const SuperModal = ({ title, callback }: Props) => {
+export const SuperModal = ({ title, callback,userId }: Props) => {
   const [uploadImage, { data, isLoading }] = useUploadPostsImagesMutation()
   const [deletePosts] = useDeletePostsImageMutation()
   const [createPost] = useCreatePostMutation()
+  const router = useRouter()
   const { data: userData } = useMeQuery()
   const { data: userProfile } = useGetUserFollowingAndFollowersQuery(
     { userName: userData?.userName || '' },
@@ -53,7 +58,9 @@ export const SuperModal = ({ title, callback }: Props) => {
     description: '',
     location: '',
   })
-
+  useEffect(() => {
+    router.replace(`/profile/${userId}?action=create`)
+  }, [])
   // Используем ref для хранения актуальных данных
   const publishFormDataRef = useRef(publishFormData)
 
@@ -176,6 +183,7 @@ export const SuperModal = ({ title, callback }: Props) => {
   const handleOverlayClick = (event: MouseEvent<HTMLElement>) => {
     if (event.target === event.currentTarget) {
       setExitModalIsOpen(true)
+
     }
   }
 
@@ -187,11 +195,14 @@ export const SuperModal = ({ title, callback }: Props) => {
 
   const handlerModalCloseWithSave = async () => {
     handleExitingModal()
-    await uploadImage(localFiles).finally(() => callback(null))
+    callback(null)
+    document.body.style.overflow = ''
+    await uploadImage(localFiles)
   }
 
   const handleExitingModal = () => {
     setExitModalIsOpen(false)
+
   }
 
   const handleDiscard = () => {
@@ -271,8 +282,7 @@ export const SuperModal = ({ title, callback }: Props) => {
         ? 'Filters'
         : 'Publication'
 
-    //добавил стили в дивку ниже когда currentStep === 'filters' или 'publish'
-    // тогда s.filtersStep или s.publishStep (Женя)
+
     return (
       <div className={s.overlay} onClick={handleOverlayClick}>
         <div className={s.modal} ref={modalRef}>
