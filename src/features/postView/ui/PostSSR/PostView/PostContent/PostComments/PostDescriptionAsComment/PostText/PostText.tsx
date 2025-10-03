@@ -1,5 +1,3 @@
-// @flow
-import * as React from 'react';
 import s from "./PostText.module.scss";
 import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
 

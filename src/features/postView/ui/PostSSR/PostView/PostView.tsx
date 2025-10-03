@@ -17,7 +17,7 @@ export const PostView = ({post}: Props) => {
     const postToRender = postFromCache || post
 
     return (
-        <div className={s.postWrapper}>
+        <div className={s.postWrapper }>
             <PostImage images={postToRender.images}/>{/*TODO: добавить слайдер*/}
             <PostContent post={postToRender}/>
         </div>
