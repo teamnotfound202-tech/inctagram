@@ -1,0 +1,57 @@
+@use '@/shared/styles/variables' as *;
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.center {
+  justify-content: center;
+}
+
+.spinner {
+  width: var(--size, 24px);
+  height: var(--size, 24px);
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: var(--thickness, 3px) solid transparent;
+  border-top-color: currentColor;
+  animation: spin var(--speed, 0.8s) linear infinite;
+}
+
+.primary {
+  color: $accent-500
+}
+
+.secondary {
+  color: $light-900;
+}
+
+.label {
+  font-size: 0.875rem;
+  opacity: 0.8;
+  user-select: none;
+  color: $light-900;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

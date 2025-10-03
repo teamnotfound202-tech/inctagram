@@ -1,0 +1,71 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+  position: absolute;
+  bottom: 50px;
+  left: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background-color: rgba($dark-500, 0.8);
+  border-radius: 2px;
+  width: 156px;
+}
+
+.ratioButtons {
+  display: flex;
+  width: 100%;
+  color: $light-900;
+  font-size: 16px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &.active {
+    color: $light-100;
+    }
+}
+.originalIcon{
+  width: 18px;
+  height: 18px;
+}
+.ratiocontent {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.iconSquare,
+.iconPortrait,
+.iconLandscape {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.iconSquare {
+  width: 20px;
+  height: 20px;
+}
+
+.iconPortrait {
+  width: 16px;
+  height: 20px;
+}
+
+.iconLandscape {
+  width: 24px;
+  height: 14px;
+}
+.onetoone {
+  width: 18px;
+  height: 18px;
+}
+.fourtofive{
+  width: 18px;
+  height: 26px;
+}
+.sixteentonine{
+  width: 26px;
+  height: 20px;
+}

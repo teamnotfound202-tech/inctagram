@@ -1,0 +1,36 @@
+@use '@/shared/styles/variables' as *;
+.item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.userInfoWrapper{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userName{
+  cursor: pointer;
+  & > span{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: $light-100;
+  }
+}
+
+.modalButtons{
+  min-width: 118px;
+ }
+
+.modalDeleteButton{
+  margin-left: 35px;
+  min-width: 118px;
+  color: $light-100;
+  &:disabled{
+    border: none;
+    color: $dark-100;
+  }
+}
