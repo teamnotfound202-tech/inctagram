@@ -6,7 +6,6 @@ import s from "./AddCommentForm.module.scss";
 import {Button} from "@/shared/ui";
 import {AlertToast} from "@/shared/ui/Alerts/Alerts";
 import {useCreateCommentMutation} from "@/features/posts/api/posts-api";
-import {toast} from "sonner";
 import {From} from "@/features/publicUserApi/types";
 
 type AddCommentFormProps = {
@@ -57,15 +56,11 @@ export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
 
             {/* Отображение ошибок */}
             {error && (
-                toast.custom(() => (
-                    <AlertToast description={'Ошибка при отправке комментария'}/>
-                ))
+                <AlertToast description={'Ошибка при отправке комментария'}/>//TODO: нужно пофиксить тосты
             )}
 
             {isSuccess && (
-                toast.custom(() => (
-                    <AlertToast description={'Комментарий успешно добавлен!'} variant={"success"}/>
-                ))
+                <AlertToast description={'Комментарий успешно добавлен!'} variant={"success"}/>
             )}
         </form>
     );
