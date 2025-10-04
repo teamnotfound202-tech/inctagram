@@ -3,17 +3,18 @@ import { Header } from '@/widgets/Header/Header';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
-import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
 import { Toaster } from 'sonner';
 import { AlertsProvider } from '@/shared/ui';
 import { AppWrapper } from '@/shared/lib/components/AppWrapper/AppWrapper'
+import '@radix-ui/themes/styles.css';
+import './globals.css';
+import '../styles/radix-overrides.css';
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ['400', '500', '600', '700']
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <body className={inter.variable}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
           <Theme appearance={'dark'}>
