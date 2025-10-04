@@ -1,4 +1,3 @@
-import {Post} from "@/features/postView/api/types";
 import s from "./PostContent.module.scss"
 import {PostTitle} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostTitle/PostTitle";
 import {
@@ -7,6 +6,7 @@ import {
 import {AddCommentForm} from "@/features/postView/ui/PostSSR/PostView/PostContent/AddCommentForm/AddCommentForm";
 import {PostComments} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComments";
 import {useFetchMyProfileQuery} from "@/features/publicUserApi/publicUserApi";
+import {Post} from "@/features/publicUserApi/types";
 
 type Props = {
     post: Post
@@ -17,7 +17,6 @@ export const PostContent = ({post}: Props) => {
     return (
         <div className={s.postContentWrapper}>
             <PostTitle ownerId={post.ownerId}
-                       avatarOwner={post.avatarOwner}
                        firstName={post.owner.firstName}
                        lastName={post.owner.lastName}/>
             <PostComments post={post}/>

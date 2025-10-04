@@ -1,23 +1,16 @@
-// Import necessary Swiper components, modules and styles
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import {ImagePost} from "@/features/postView/api/types";
+import {ImagePost} from "@/features/publicUserApi/types";
 
 type Props = {
     imagesArray: ImagePost[]
 }
 
-// Define your component
 export default function ImageCarousel({imagesArray}:Props) {
-    // Example array of image URLs
-   /* const images = [
-        '/path/to/your/image1.jpg',
-        '/path/to/your/image2.jpg',
-        '/path/to/your/image3.jpg',
-    ];*/
     const images = imagesArray.map(imagePost=>imagePost.url)
 
     return (

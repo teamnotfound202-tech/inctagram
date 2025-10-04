@@ -5,10 +5,9 @@ import {
   UserItem,
   UserProfileResponse,
 } from '@/features/publicUserApi/types'
-import { baseApi } from '@/shared/api'
-import { PAGINATION } from '@/shared/constants/pagination'
-import {CommentsResponse, User} from "@/features/postView/api/types";
-
+import {baseApi} from '@/shared/api'
+import {PAGINATION} from '@/shared/constants/pagination'
+import {User} from "@/features/postView/api/types";
 
 export const publicUserApi = baseApi.injectEndpoints({
   endpoints: builder => ({

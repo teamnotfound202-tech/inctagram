@@ -6,10 +6,9 @@
   margin: 0 auto;
 }
 
-.postImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.postSlider {
+  min-width: 100%;
+  max-height: 100%;
 }
 
 //Здесь стили протестить
@@ -20,19 +19,14 @@
   max-height: 100%;*/
 }
 
-
 .postImageWrapper:hover .navigationButton {
   opacity: 1;
-}
-
-.postSlider {
-  min-width: 100%;
-  max-height: 100%;
 }
 
 .postImage {
   width: 100%;
   height: auto;
+  object-fit: cover;
 }
 
 .navigationButton {
@@ -68,7 +62,6 @@
 .navigationButtonNext {
   right: 0;
 }
-
 
 //Пагинация
 // Pagination Container
@@ -144,28 +137,4 @@
 
 .bulletActive {
   display: none;
-}
-
-// Loading state
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  color: #666;
-  font-size: 16px;
-  border-radius: 12px;
-}
-
-// Error state
-.error {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffe6e6;
-  color: #d63031;
-  font-size: 16px;
-  text-align: center;
-  padding: 20px;
-  border-radius: 12px;
 }

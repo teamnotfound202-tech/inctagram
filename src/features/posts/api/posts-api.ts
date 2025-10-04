@@ -1,6 +1,6 @@
 import {baseApi} from '@/shared/api'
 import {CreatePostInput, ImagesResponse, PostImage} from '@/shared/lib/sсhemas/posts'
-import {Comment, CommentsResponse, From, LikeStatus, Post, User} from "@/features/postView/api/types";
+import {Comment, CommentsResponse, From, LikeStatus, Post} from "@/features/publicUserApi/types";
 
 type CreatePostWithUserId = CreatePostInput & { userId?: number }
 

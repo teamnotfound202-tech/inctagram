@@ -7,17 +7,17 @@ import { useFetchUserQuery } from "@/features/publicUserApi/publicUserApi";
 
 type Props = {
     ownerId: number;
-    avatarOwner: string
     firstName: string
     lastName: string
 };
-export const PostTitle = ({avatarOwner, firstName, lastName, ownerId}: Props) => {
+export const PostTitle = ({firstName, lastName, ownerId}: Props) => {
     const {data} = useMeQuery()
     const {data:user} = useFetchUserQuery(ownerId)
+
     return (
         <div className={s.postTitle}>
             <div className={s.ownerInf}>
-                <Avatar src={user?.avatars[0]?.url|| '/'} alt={'avatar'}/> {/*TODO: надо пофиксить путь*/}
+                <Avatar src={user?.avatars[0]?.url} alt={'avatar'}/>
                 <div className={s.ownerName}>{firstName + ' ' + lastName}</div>
             </div>
             {data?.userId && <DropdownPostActionsMenu isPostOwner={true}/>}

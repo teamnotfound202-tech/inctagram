@@ -4,14 +4,18 @@ export type GetPublicUsers = {
   totalCount: number
 }
 
-
-type ImagePost = {
+export type ImagePost = {
   createdAt: ISOStringFormat
   fileSize: number
   height: number
   uploadId: string
   url: string
   width: number
+}
+
+export type Owner = {
+  firstName: string;
+  lastName: string;
 }
 
 export type Post = {
@@ -22,11 +26,8 @@ export type Post = {
   images: ImagePost[]
   isLiked: boolean
   likesCount: number
-  location: null
-  owner: {
-    firstName: string,
-    lastName: string
-  }
+  location: null    //TODO: может что-то сюда будет приходить?
+  owner: Owner
   ownerId: number
   updatedAt: ISOStringFormat
   userName: string
@@ -107,4 +108,35 @@ export type CursorPage<T> = {
   prevCursor: number | null
   nextCursor: number | null
   items: T[]
+}
+
+//Для feature - Comments
+export type From = {
+  id: number;
+  username: string;
+  avatars: Avatar[];
+}
+
+export type Comment = {
+  id: number;
+  postId: number;
+  from: From;
+  content: string;
+  createdAt: string;
+  answerCount: number;
+  likeCount: number;
+  isLiked: boolean;
+}
+
+export type CommentsResponse = {
+  pageSize: number;
+  totalCount: number;
+  notReadCount: number;
+  items: Comment[];
+}
+
+export enum LikeStatus {
+  NONE = 'NONE',
+  LIKE = 'LIKE',
+  DISLIKE = 'DISLIKE'
 }

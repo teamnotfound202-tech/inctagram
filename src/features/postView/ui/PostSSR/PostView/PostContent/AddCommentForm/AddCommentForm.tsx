@@ -4,10 +4,10 @@ import {useState} from 'react';
 import {selectCurrentMessages} from "@/shared/api/appSlice";
 import s from "./AddCommentForm.module.scss";
 import {Button} from "@/shared/ui";
-import {From} from "@/features/postView/api/types";
 import {AlertToast} from "@/shared/ui/Alerts/Alerts";
 import {useCreateCommentMutation} from "@/features/posts/api/posts-api";
 import {toast} from "sonner";
+import {From} from "@/features/publicUserApi/types";
 
 type AddCommentFormProps = {
     postId: number, // ID поста, к которому добавляется комментарий

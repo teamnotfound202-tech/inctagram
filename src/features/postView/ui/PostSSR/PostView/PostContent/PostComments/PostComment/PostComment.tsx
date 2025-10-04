@@ -1,13 +1,13 @@
 'use client'
 import s from "./PostComment.module.scss";
 import Avatar from "../../../../../../../../entities/user/ui/Avatar/Avatar";
-import {Comment, LikeStatus} from "@/features/postView/api/types";
 import {LikeButton} from "@/features/postView/ui/PostSSR/PostView/PostContent/LikeButton/LikeButton";
 import {useMeQuery} from "@/features/auth/api/authApi";
 import {
     CommentText
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentText/CommentText";
 import {useUpdateCommentLikeStatusMutation} from "@/features/posts/api/posts-api";
+import {LikeStatus, Comment} from "@/features/publicUserApi/types";
 
 type Props = {
     comment: Comment,
