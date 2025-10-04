@@ -1,7 +1,5 @@
-// @flow
-import * as React from 'react';
 import s
-    from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentText/CommentText.module.scss";
+    from "./CommentText.module.scss";
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectCurrentMessages} from "@/shared/api/appSlice";
 import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
