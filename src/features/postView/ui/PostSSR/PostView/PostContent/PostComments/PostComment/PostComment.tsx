@@ -32,7 +32,7 @@ export const PostComment = ({comment, postId}: Props) => {
                          likeCount={comment.likeCount}
                          username={comment.from.username}
                          answerCount={comment.answerCount}/>
-            <LikeButton isLiked={comment.isLiked} onClick={likeHandler} disabled={!meUser?.userId}/>
+            <LikeButton isLiked={comment.isLiked} onClick={likeHandler} disabled={!meUser?.userId}/> {/*TODO: проверить дизейбл кнопок, если не залогинен*/}
         </article>
 
     );
