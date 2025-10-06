@@ -19,9 +19,9 @@ type Props = {
   initialDescription: string
   authorName: string
   avatarUrl: string
-  descriptionCreationTime: string
   onCancel: (hasChanges: boolean) => void
   onSave: () => void
+
 }
 
 export const PostEditForm = ({
@@ -29,7 +29,6 @@ export const PostEditForm = ({
                                initialDescription,
                                authorName,
                                avatarUrl,
-                               descriptionCreationTime,
                                onCancel,
                                onSave
                              }: Props) => {
@@ -58,8 +57,6 @@ export const PostEditForm = ({
 
   return (
     <>
-
-
       <div className={s.editForm}>
         <div className={s.header}>
           <Button
@@ -95,8 +92,6 @@ export const PostEditForm = ({
             </Button>
           </div>
         </div>
-
-
       </div>
 
     </>

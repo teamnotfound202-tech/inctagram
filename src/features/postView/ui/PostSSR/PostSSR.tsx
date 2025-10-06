@@ -46,8 +46,6 @@ export const PostSsr = async ({params, searchParams}: Props) => {
     }
 
     return (
-        <PostModal>
             <PostView post={post}/>
-        </PostModal>
     );
 };

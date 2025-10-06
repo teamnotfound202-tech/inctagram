@@ -14,9 +14,11 @@ type Props = {
     postId: number
     onEdit?: () => void
     onCancel?: (hasChanges: boolean) => void
+    deleteHandler:(value:boolean)=>void
+    isDeleteModalOpen:boolean
 
 };
-export const PostTitle = ({ avatarOwner, firstName, lastName, ownerId, postId,  onEdit, onCancel}: Props) => {
+export const PostTitle = ({ avatarOwner, firstName, lastName, ownerId, postId,  onEdit, onCancel, deleteHandler, isDeleteModalOpen}: Props) => {
     const {data} = useMeQuery()
     const {data:user} = useFetchUserQuery(ownerId)
 
@@ -29,7 +31,8 @@ export const PostTitle = ({ avatarOwner, firstName, lastName, ownerId, postId,  
                 <Avatar src={user?.avatars[0]?.url|| '/'} alt={'avatar'}/> {/*TODO: надо пофиксить путь*/}
                 <div className={s.ownerName}>{firstName + ' ' + lastName}</div>
             </div>
-            {data?.userId && <DropdownPostActionsMenu isPostOwner={true} postId={postId} onEdit={onEdit} onCancel={onCancel} />}
+            {data?.userId && <DropdownPostActionsMenu isPostOwner={true} postId={postId} onEdit={onEdit} onCancel={onCancel} deleteHandler={deleteHandler}
+                                                      isDeleteModalOpen={isDeleteModalOpen}/>}
         </div>
     );
 };

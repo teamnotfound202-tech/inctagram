@@ -13,31 +13,35 @@ import {useFetchMyProfileQuery} from "@/features/publicUserApi/publicUserApi";
 
 type Props = {
     post: Post
+  editingHandler:(value:boolean)=>void
+  isEditing:boolean
+  deleteHandler:(value:boolean)=>void
+  isDeleteModalOpen:boolean
 };
-export const PostContent = ({post}: Props) => {
+export const PostContent = ({post, editingHandler, isEditing, deleteHandler, isDeleteModalOpen }: Props) => {
     const {data: userMe, isLoading} = useFetchMyProfileQuery()
-  const [isEditing, setIsEditing] = useState(false)
+
   const [showCancelModal, setShowCancelModal] = useState(false)
 
   const handleStartEdit = () => {
-    setIsEditing(true)
+    editingHandler(true)
   }
 
   const handleCancelEdit = (hasChanges: boolean) => {
     if (hasChanges) {
       setShowCancelModal(true)
     } else {
-      setIsEditing(false)
+      editingHandler(false)
     }
   }
 
   const handleConfirmCancel = () => {
-    setIsEditing(false)
+    editingHandler(false)
     setShowCancelModal(false)
   }
 
   const handleSaveEdit = () => {
-    setIsEditing(false)
+    editingHandler(false)
   }
 
   const handleCloseCancelModal = () => {
@@ -55,6 +59,8 @@ export const PostContent = ({post}: Props) => {
                        postId={post.id}
                        onEdit={handleStartEdit}
                        onCancel={handleCancelEdit}
+                      deleteHandler={deleteHandler}
+                      isDeleteModalOpen={isDeleteModalOpen}
                        />}
           {isEditing ? (
               <PostEditForm
@@ -62,9 +68,9 @@ export const PostContent = ({post}: Props) => {
                 initialDescription={post.description}
                 authorName={post.owner.firstName + ' ' + post.owner.lastName}
                 avatarUrl={post.avatarOwner}
-                descriptionCreationTime={post.createdAt}
                 onCancel={handleCancelEdit}
                 onSave={handleSaveEdit}
+
               />
             ) :
             (<>

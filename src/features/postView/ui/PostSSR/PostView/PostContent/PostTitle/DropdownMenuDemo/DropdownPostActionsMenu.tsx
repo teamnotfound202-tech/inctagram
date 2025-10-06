@@ -18,20 +18,21 @@ type Props = {
     postId: number
     onEdit?: () => void
   onCancel?: (hasChanges: boolean) => void
-
+  deleteHandler:(value:boolean)=>void
+  isDeleteModalOpen:boolean
 }
 
 
-const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel }: Props) => {
+const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel, deleteHandler, isDeleteModalOpen }: Props) => {
     const currentLanguage = useAppSelector(selectCurrentMessages)
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
 
     const editHandler = () => {
       if (onEdit) {
         onEdit()
     }}
-    const deleteHandler = () => {
-        setIsDeleteModalOpen(true)
+    const deletenHandler = () => {
+      deleteHandler(true)
     }
     const unfollowHandler = () => {
     }
@@ -39,7 +40,7 @@ const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel }: Props
     }
 
     const handleCloseDeleteModal = () => {
-        setIsDeleteModalOpen(false)
+      deleteHandler(false)
     }
 
 
@@ -60,7 +61,7 @@ const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel }: Props
                           <div><Edit/></div>
                           {currentLanguage.posts.dropdownMenu.editPost}
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item className={s.Item} onClick={deleteHandler}>
+                      <DropdownMenu.Item className={s.Item} onClick={deletenHandler}>
                           <div><Bucket/></div>
                           {currentLanguage.posts.dropdownMenu.deletePost}
                       </DropdownMenu.Item>
