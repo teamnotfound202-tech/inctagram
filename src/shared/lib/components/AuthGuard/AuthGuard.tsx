@@ -1,5 +1,5 @@
 'use client'
-import {Loader} from '@/shared/ui/Loader/Loader';
+
 import { useRouter } from 'next/navigation'
 import { type ReactNode, useEffect, useState } from 'react'
 import { Path } from '@/shared/config'
@@ -18,7 +18,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     }
   }, [router])
 
-  if (isChecking) return <Loader/>
+  if (isChecking) return
 
   return <>{children}</>
 }
