@@ -1,39 +1,46 @@
+@use '@/shared/styles/variables' as *;
 .content {
   padding: 1rem 0;
+  max-width: 486px;
 }
 
 .message {
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
+  margin-bottom: 1.7rem;
+  margin-left: 0.85rem;
+  font-size: 1.1rem;
   line-height: 1.5;
-  color: var(--color-text-primary, #333);
-  text-align: center;
+  color: $light-100;
+  text-align: start;
 }
 
 .actions {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
+  gap: 1.5rem;
+  justify-content: end;
 }
 
 .cancelButton,
 .confirmButton {
   min-width: 80px;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2.5rem;
 }
 
 .confirmButton {
-  background-color: var(--color-primary, #007bff);
-  border-color: var(--color-primary, #007bff);
+
 
   &:hover:not(:disabled) {
-    background-color: var(--color-primary-hover, #0056b3);
-    border-color: var(--color-primary-hover, #0056b3);
+    background-color: $accent-700;
+    border-color: $accent-700;
+    color:$light-100;
   }
 }
 
 .cancelButton {
+
+
   &:hover:not(:disabled) {
-    background-color: var(--color-light, #f8f9fa);
+    background-color:$accent-700;
+    border-color: $accent-700;
+    color:$light-100;
   }
 }

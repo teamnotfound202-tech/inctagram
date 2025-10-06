@@ -1,8 +1,10 @@
+@use '@/shared/styles/variables' as *;
+
 .editForm {
+
   padding: 1rem;
-  border: 1px solid var(--color-border, #e1e5e9);
-  border-radius: 8px;
-  background-color: var(--color-background, #fff);
+  border: 1px solid $dark-100;
+  background-color: $dark-300;
 }
 
 .header {
@@ -31,15 +33,17 @@
 
 .content {
   margin-bottom: 1rem;
+  color:$light-900;
 }
 
 .textarea {
   width: 100%;
-  min-height: 100px;
-  resize: vertical;
+  min-height: 120px;
+  resize: none;
   font-family: inherit;
   font-size: 0.875rem;
   line-height: 1.5;
+  color:$light-100;
 }
 
 .actions {

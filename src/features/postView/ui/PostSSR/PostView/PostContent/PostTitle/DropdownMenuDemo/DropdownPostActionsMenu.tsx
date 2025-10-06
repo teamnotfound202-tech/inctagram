@@ -10,15 +10,19 @@ import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectCurrentMessages} from "@/shared/api/appSlice";
 import { useState } from 'react'
 import { DeletePostModal } from '@/features/postView/ui/DeletePostModal/DeletePostModal'
+import { CloseIcon } from '@/shared/ui/Alerts/CloseIcon/CloseIcon'
+import { Button } from '@/shared/ui'
 
 type Props = {
     isPostOwner: boolean;
     postId: number
     onEdit?: () => void
+  onCancel?: (hasChanges: boolean) => void
+
 }
 
 
-const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit }: Props) => {
+const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel }: Props) => {
     const currentLanguage = useAppSelector(selectCurrentMessages)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
@@ -38,13 +42,16 @@ const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit }: Props) => {
         setIsDeleteModalOpen(false)
     }
 
+
     return (
       <>
           <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
               <button className={s.IconButton} aria-label="Customise options">
-                  <DotsHorizontalIcon/>
+                 <DotsHorizontalIcon/>
               </button>
+
+
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>

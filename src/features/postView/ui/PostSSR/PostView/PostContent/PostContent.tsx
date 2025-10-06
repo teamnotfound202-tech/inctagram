@@ -6,7 +6,6 @@ import {
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostMetaInfWithControls/PostMetaInfWithControls";
 import {AddCommentForm} from "@/features/postView/ui/PostSSR/PostView/PostContent/AddCommentForm/AddCommentForm";
 import {PostComments} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComments";
-import {useFetchMyProfileQuery} from "@/features/postView/api/postApi";
 import { useState } from 'react'
 import { PostEditForm } from '@/features/postView/ui/PostEditForm/PostEditForm'
 import { EditCancelModal } from '@/features/postView/ui/EditCancelModal/EditCancelModal'
@@ -47,13 +46,16 @@ export const PostContent = ({post}: Props) => {
 
     return (
         <div className={s.postContentWrapper}>
-            <PostTitle ownerId={post.ownerId}
+          {!isEditing && <PostTitle
+
+            ownerId={post.ownerId}
                        avatarOwner={post.avatarOwner}
                        firstName={post.owner.firstName}
                        lastName={post.owner.lastName}
                        postId={post.id}
                        onEdit={handleStartEdit}
-                       />
+                       onCancel={handleCancelEdit}
+                       />}
           {isEditing ? (
               <PostEditForm
                 postId={post.id}

@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { Button } from '@/shared/ui/Button/Button'
-import { useDeletePostMutation } from '@/features/postView/api/postApi'
+
 import s from './DeletePostModal.module.scss'
+import { useDeletePostMutation } from '@/features/posts/api/posts-api'
 
 type Props = {
   postId: number
@@ -22,7 +23,7 @@ export const DeletePostModal = ({ postId, isOpen, onClose }: Props) => {
       await deletePost({postId}).unwrap()
 
       // Перенаправляем пользователя на домашнюю страницу
-      router.push('/')
+      router.push('/profile')
       onClose()
     } catch (error) {
       console.error('Ошибка при удалении поста:', error)
@@ -33,12 +34,20 @@ export const DeletePostModal = ({ postId, isOpen, onClose }: Props) => {
   if (!isOpen) return null
 
   return (
-    <Modal title="Удалить публикацию" onClick={onClose}>
+    <Modal title="Delete Post" onClick={onClose}>
       <div className={s.content}>
         <p className={s.message}>
-          Вы уверены, что хотите удалить эту публикацию?
+          Are you sure you want to delete this post?
         </p>
         <div className={s.actions}>
+          <Button
+            variant="outline"
+            onClick={handleDeletePost}
+            disabled={isDeleting}
+            className={s.deleteButton}
+          >
+            {isDeleting ? 'Удаление...' : 'Yes'}
+          </Button>
           <Button
             variant="outline"
             onClick={onClose}
@@ -47,14 +56,7 @@ export const DeletePostModal = ({ postId, isOpen, onClose }: Props) => {
           >
             No
           </Button>
-          <Button
-            variant="primary"
-            onClick={handleDeletePost}
-            disabled={isDeleting}
-            className={s.deleteButton}
-          >
-            {isDeleting ? 'Удаление...' : 'Yes'}
-          </Button>
+
         </div>
       </div>
     </Modal>

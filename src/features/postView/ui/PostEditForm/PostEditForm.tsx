@@ -1,14 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useUpdatePostMutation } from '@/features/postView/api/postApi'
+
 import { Button } from '@/shared/ui/Button/Button'
 import { TextArea } from '@/shared/ui/TextArea/TextArea'
 import Avatar from '@/entities/user/ui/Avatar/Avatar'
 import s from './PostEditForm.module.scss'
 import { CloseIcon } from '@/shared/ui/Alerts/CloseIcon/CloseIcon'
+import { useUpdatePostMutation } from '@/features/posts/api/posts-api'
+import * as React from 'react'
 
 type Props = {
+
   postId: number
   initialDescription: string
   authorName: string
@@ -52,17 +55,19 @@ export const PostEditForm = ({
 
   return (
     <>
-      <Button
-        variant="outline"
-        onClick={handleCancel}
-        disabled={isLoading}
-      >
-        <CloseIcon/>
-      </Button>
-      <div className={s.editForm}>
 
+
+
+      <div className={s.editForm}>
+        <Button
+          variant="outline"
+          onClick={handleCancel}
+        >
+          <CloseIcon/>
+        </Button>
 
         <div className={s.content}>
+          <p>Add publication descriptions</p>
           <TextArea
             value={description}
             onChange={(e) => setDescription(e.target.value)}

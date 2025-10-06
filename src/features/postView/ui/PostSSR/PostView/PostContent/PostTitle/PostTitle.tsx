@@ -4,6 +4,7 @@ import {useMeQuery} from "@/features/auth/api/authApi";
 import DropdownPostActionsMenu
     from "@/features/postView/ui/PostSSR/PostView/PostContent/PostTitle/DropdownMenuDemo/DropdownPostActionsMenu";
 import { useFetchUserQuery } from "@/features/publicUserApi/publicUserApi";
+import { Post } from '@/features/publicUserApi/types'
 
 type Props = {
     ownerId: number;
@@ -12,9 +13,10 @@ type Props = {
     lastName: string
     postId: number
     onEdit?: () => void
+    onCancel?: (hasChanges: boolean) => void
 
 };
-export const PostTitle = ({ avatarOwner, firstName, lastName, ownerId, postId,  onEdit}: Props) => {
+export const PostTitle = ({ avatarOwner, firstName, lastName, ownerId, postId,  onEdit, onCancel}: Props) => {
     const {data} = useMeQuery()
     const {data:user} = useFetchUserQuery(ownerId)
 
@@ -27,7 +29,7 @@ export const PostTitle = ({ avatarOwner, firstName, lastName, ownerId, postId,  
                 <Avatar src={user?.avatars[0]?.url|| '/'} alt={'avatar'}/> {/*TODO: надо пофиксить путь*/}
                 <div className={s.ownerName}>{firstName + ' ' + lastName}</div>
             </div>
-            {data?.userId && <DropdownPostActionsMenu isPostOwner={true} postId={postId} onEdit={onEdit}/>}
+            {data?.userId && <DropdownPostActionsMenu isPostOwner={true} postId={postId} onEdit={onEdit} onCancel={onCancel} />}
         </div>
     );
 };

@@ -141,9 +141,12 @@ export const postsApi = baseApi.injectEndpoints({
                 url: `posts/${postId}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (result, error, {postId}) => [
-                {type: 'Post', id: postId},
-                {type: 'Post', id: 'LIST'}
+            invalidatesTags: (result, error, { postId }) => [
+                { type: 'Posts', id: postId },
+                { type: 'Posts', id: 'LIST' },
+                { type: 'UserPosts', id: 'LIST' },
+                'UserPosts', // Инвалидируем все посты пользователей
+                'UserProfile' // Обновляем профиль пользователя (счетчик постов)
             ],
         }),
 
@@ -154,7 +157,7 @@ export const postsApi = baseApi.injectEndpoints({
                 body: {description},
             }),
             invalidatesTags: (result, error, {postId}) => [
-                {type: 'Post', id: postId}
+                {type: 'Posts', id: postId}
             ],
             // Оптимистичное обновление
             onQueryStarted: async ({postId, description}, {dispatch, queryFulfilled, getState}) => {
