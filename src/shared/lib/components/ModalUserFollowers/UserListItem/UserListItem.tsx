@@ -62,7 +62,7 @@ export const UserListItem = ({ user, isLoading, type }: Props) => {
       <div className={s.userInfoWrapper}>
         <Avatar src={user?.avatars?.[0]?.url} alt="Avatar Image" size="small" />
 
-        <Link className={s.userName} href={`/profile/${user.userId}`} target={"_blank"} prefetch>
+        <Link onClick={()=>document.body.style.overflow = ''} className={s.userName} href={`/profile/${user.userId}`} prefetch={true}>
           <span>{user.userName}</span>
         </Link>
       </div>

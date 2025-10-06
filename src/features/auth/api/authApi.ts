@@ -33,12 +33,14 @@ export const authApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: args
             }),
+            invalidatesTags: ['Me']
         }),
         logout: builder.mutation<void, void>({
             query: () => ({method: "post", url: "auth/logout"}),
         }),
         me: builder.query<ResponsesMe, void>({
             query: () => "auth/me",
+            providesTags: ['Me']
         }),
         myProfile: builder.query<UserDataResponse, void>({
             query: () => "users/profile",
