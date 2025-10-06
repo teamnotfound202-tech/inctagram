@@ -5,12 +5,10 @@ import {cleanSearchParams} from "@/features/postView/utils/url-utils";
 import PostModal from "@/features/postView/ui/PostModal/PostModal";
 import s from './PostSSR.module.scss'
 
-type Props = {
-    params:{ userId: string },
-    searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export const PostSsr = async ({params, searchParams}: Props) => {
+export const PostSsr = async ({params, searchParams}: {
+  params:{ userId: string },
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
     const {userId} = await params;
     const resolvedSearchParams = await searchParams;
     const postId = resolvedSearchParams.postId as string | undefined;
