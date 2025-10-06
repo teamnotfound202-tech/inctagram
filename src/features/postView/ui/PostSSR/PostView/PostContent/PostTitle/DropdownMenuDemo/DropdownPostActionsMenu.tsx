@@ -53,7 +53,6 @@ const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel }: Props
 
 
           </DropdownMenu.Trigger>
-
           <DropdownMenu.Portal>
               <DropdownMenu.Content className={s.Content} align={'end'} alignOffset={0}>
                   {isPostOwner && <>

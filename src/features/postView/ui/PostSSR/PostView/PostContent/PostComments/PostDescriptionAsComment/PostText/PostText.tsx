@@ -3,7 +3,7 @@ import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
 
 type Props = {
     authorName: string;
-    postContent: string;
+    postContent?: string;
     descriptionCreationTime: string;
 };
 export const PostText = ({authorName, postContent,descriptionCreationTime}: Props) => {

@@ -9,6 +9,9 @@ import s from './PostEditForm.module.scss'
 import { CloseIcon } from '@/shared/ui/Alerts/CloseIcon/CloseIcon'
 import { useUpdatePostMutation } from '@/features/posts/api/posts-api'
 import * as React from 'react'
+import {
+  PostText
+} from '@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostText/PostText'
 
 type Props = {
 
@@ -57,16 +60,23 @@ export const PostEditForm = ({
     <>
 
 
-
       <div className={s.editForm}>
-        <Button
+        <div className={s.header}>
+          <Button
           variant="outline"
           onClick={handleCancel}
+          disabled={isLoading}
+          className={s.buttonClose}
         >
           <CloseIcon/>
         </Button>
-
+        </div>
         <div className={s.content}>
+          <article className={s.comment}>
+            <Avatar src={avatarUrl} alt={'avatar'} size={"small"}/>
+            <p>{authorName}</p>
+
+          </article>
           <p>Add publication descriptions</p>
           <TextArea
             value={description}
@@ -75,18 +85,18 @@ export const PostEditForm = ({
             className={s.textarea}
             rows={4}
           />
+          <div className={s.actions}>
+            <Button
+              variant="primary"
+              onClick={handleSave}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Сохранение...' : 'Save Changes'}
+            </Button>
+          </div>
         </div>
 
-        <div className={s.actions}>
 
-          <Button
-            variant="primary"
-            onClick={handleSave}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Сохранение...' : 'Save Changes'}
-          </Button>
-        </div>
       </div>
 
     </>
