@@ -126,7 +126,7 @@ export const SuperModal = ({ title, callback }: Props) => {
     }
     //deletePosts({ uploadId: postsId })
   }
-
+//ergr
   const handleOpendraft = async () => {
 
     setCurrentStep('edit')
