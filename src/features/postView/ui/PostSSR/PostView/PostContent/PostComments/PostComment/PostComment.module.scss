@@ -1,0 +1,21 @@
+@use '@/shared/styles/variables' as *;
+
+.likeButton {
+  cursor: pointer;
+  /*margin-right: 8px;*/
+}
+
+.disabled {
+  opacity: .5;
+
+  &:hover {
+    cursor: auto;
+  }
+}
+
+.comment {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: start;
+}
+

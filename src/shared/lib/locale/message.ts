@@ -124,6 +124,17 @@ export interface Messages {
     unsavePost: string;
     postDeleted: string;
     noPostsYet: string;
+    addAComment: string;
+    publish:string;
+    publishing:string;
+    answer: string;
+    addComment:string;
+    dropdownMenu:{
+      editPost:string,
+      deletePost:string,
+      unfollow:string,
+      copyLink:string,
+    },
   };
 
   // Уведомления
@@ -332,6 +343,18 @@ export const messages: Record<Language, Messages> = {
       unsavePost: 'Unsave Post',
       postDeleted: 'Post deleted',
       noPostsYet: 'No posts yet',
+      addAComment: 'Add a comment',
+      publish:'Publish',
+      publishing:'Publishing',
+      answer: 'Answer',
+      addComment:'Add a Comment...',
+      dropdownMenu:{
+        editPost:'Edit Post',
+        deletePost:'Delete Post',
+        unfollow:'Unfollow',
+        copyLink:'Copy Link'
+      }
+
     },
 
     notifications: {
@@ -533,6 +556,17 @@ export const messages: Record<Language, Messages> = {
       unsavePost: 'Убрать из сохраненных',
       postDeleted: 'Публикация удалена',
       noPostsYet: 'Пока нет публикаций',
+      addAComment: 'Добавить комментарий',
+      publish:'Опубликовать',
+      publishing:'Публикуется',
+      answer: 'Ответить',
+      addComment:'Добавить комментарий...',
+      dropdownMenu:{
+        editPost:'Редактировать пост',
+        deletePost:'Удалить пост',
+        unfollow:'Отписаться',
+        copyLink:'Копировать ссылку'
+      }
     },
 
     notifications: {

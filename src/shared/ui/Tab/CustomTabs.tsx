@@ -58,7 +58,6 @@ export const CustomTabs: React.FC<TabsProps> = ({
   )
 }
 
-//TODO: Нужно ли вынести в отдельный комопонет??? Если выносить, почему-то не работает
 // Вспомогательный компонент для контента табов
 interface TabContentProps {
   value: string

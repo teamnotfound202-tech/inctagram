@@ -1,0 +1,17 @@
+.addCommentForm {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 25px;
+}
+
+.createCommentInput {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.createCommentInput:focus-visible {
+  outline: none;
+}
+
+.publishButton {
+}

@@ -5,9 +5,9 @@ import {
   UserItem,
   UserProfileResponse,
 } from '@/features/publicUserApi/types'
-import { baseApi } from '@/shared/api'
-import { PAGINATION } from '@/shared/constants/pagination'
-
+import {baseApi} from '@/shared/api'
+import {PAGINATION} from '@/shared/constants/pagination'
+import {User} from "@/features/postView/api/types";
 
 export const publicUserApi = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -72,6 +72,12 @@ export const publicUserApi = baseApi.injectEndpoints({
 
       serializeQueryArgs: ({ queryArgs: { userId } }) => `userPosts-${userId}`,
     }),
+    fetchUser: builder.query<User, number>({
+      query: (profileId) => `public-user/profile/${profileId}`,
+    }),
+    fetchMyProfile: builder.query<User, void>({
+      query: () => `users/profile`,
+    }),
   }),
 })
 
@@ -82,6 +88,8 @@ export const {
   useUnFollowingUserMutation,
   useLazyFollowingsUserQuery,
   useLazyFollowersUserQuery,
-  useGetPostsForUserInfiniteQuery
+  useGetPostsForUserInfiniteQuery,
+  useFetchUserQuery,
+  useFetchMyProfileQuery,
 } = publicUserApi
 export const publicUserReducer = publicUserApi.reducer
