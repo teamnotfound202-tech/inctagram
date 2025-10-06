@@ -37,3 +37,7 @@ ul {
   flex-direction: column;
   padding-top: 60px;
 }
+
+.swiper-pagination {
+    display: none !important;
+}

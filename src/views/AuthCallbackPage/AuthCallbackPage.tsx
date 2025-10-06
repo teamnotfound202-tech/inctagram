@@ -45,7 +45,7 @@ function CallbackContent({useOAuthHook}: CallbackContentProps) {
     }
 
     return <>
-    {status === 'loading' && <Loader/>}
+      {status === 'loading' && <div style={{margin: '0 auto'}}><Loader/></div>}
     </>;
 }
 

@@ -7,24 +7,27 @@ import {
 import {useFetchUserQuery} from "@/features/publicUserApi/publicUserApi";
 
 type Props = {
-    authorName: string
+    authorName: string | null
     postContent: string
     descriptionCreationTime: string
     ownerId: number
+    postUserName: string
 };
 
 export const PostDescriptionAsComment = ({
-                                             authorName,
-                                             descriptionCreationTime,
-                                             postContent,
-                                             ownerId
-                                         }: Props) => {
+    authorName,
+    descriptionCreationTime,
+    postContent,
+    ownerId,
+    postUserName
+}: Props) => {
 
     const {data: user} = useFetchUserQuery(ownerId)
     return (
         <article className={s.comment}>
             <Avatar src={user?.avatars[0]?.url} alt={'avatar'} size={"small"}/>
             <PostText authorName={authorName}
+                      postUserName={postUserName}
                       postContent={postContent}
                       descriptionCreationTime={descriptionCreationTime}/>
         </article>

@@ -11,13 +11,14 @@ import {
 } from '@/features/auth/api/authApi'
 import { Path } from '@/shared/config'
 import { Card } from '@/shared/ui/Card/Card'
-import {useState} from 'react'
+import { useRef, useState} from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { getTypedErrorData } from '@/shared/api/utils'
 import { ResponsesTypeError } from '@/shared/api'
 import { EmailInputType, LoginInputs, loginSchema } from '@/shared/lib/sсhemas/auth'
+import type { ReCAPTCHA as ReCAPTCHAType } from 'react-google-recaptcha'
 
 export const ForgotPasswordForm = () => {
   const [recoveryPassword] = useRecoveryPasswordMutation()
@@ -27,6 +28,7 @@ export const ForgotPasswordForm = () => {
   const [isLetterSent, setLetterSent] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const captchaRef = useRef<ReCAPTCHAType | null>(null)
 
   const {
     register,
@@ -117,6 +119,7 @@ export const ForgotPasswordForm = () => {
           {!isLetterSent && (
             <div className={s.captchaBlock}>
               <ReCAPTCHA
+                ref={captchaRef}
                 sitekey={'6LdHxG4qAAAAAPKRxEHrlV5VvLFHIf2BO5NMI8YM'}
                 theme={'dark'}
                 onChange={handleCaptchaChange}
@@ -124,7 +127,7 @@ export const ForgotPasswordForm = () => {
             </div>
           )}
           <div className={s.buttonsBlock}>
-            <Button fullWidth type={'submit'} disabled={!userEmail && !captchaToken}>
+            <Button fullWidth type={'submit'} disabled={!userEmail && !captchaToken} onClick={() => captchaRef.current?.reset()}>
               {!isLetterSent ? 'Send Link' : 'Send Link Again'}
             </Button>
             <Button variant={'text'}>
