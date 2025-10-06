@@ -125,16 +125,6 @@
   transform: scale(1.3);
 }
 
-// Swiper Default Pagination (hidden)
-:global(.swiper-pagination) {
-  display: none !important;
-}
-
-// Swiper Bullet Styles (for default pagination - hidden)
-.bullet {
-  display: none;
-}
-
 .bulletActive {
   display: none;
 }
