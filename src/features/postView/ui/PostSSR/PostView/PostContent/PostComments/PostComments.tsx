@@ -17,10 +17,12 @@ export const PostComments = ({post}: Props) => {
 
     return (
         <div className={s.commentsWrapper}>
-            <PostDescriptionAsComment authorName={post.owner.firstName + ' ' + post.owner.lastName}
+            <PostDescriptionAsComment authorName={post.owner.firstName && post.owner.lastName ?  post.owner.firstName + ' ' + post.owner.lastName : null}
                                       postContent={post.description}
                                       descriptionCreationTime={post.createdAt}
-                                      ownerId={post.ownerId}/>
+                                      ownerId={post.ownerId}
+                                      postUserName={post.userName}
+            />
             {data?.items.map(comment => (
                 <PostComment key={comment.id} comment={comment} postId={post.id}/>
             ))}

@@ -6,11 +6,11 @@ import PostModal from "@/features/postView/ui/PostModal/PostModal";
 import s from './PostSSR.module.scss'
 
 export const PostSsr = async ({params, searchParams}: {
-  params:{ userId: string },
+  params: { userId: string },
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-    const {userId} = await params;
-    const resolvedSearchParams = await searchParams;
+    const {userId} = params;
+    const resolvedSearchParams = searchParams;
     const postId = resolvedSearchParams.postId as string | undefined;
 
     // Проверяем конфликт параметров и делаем редирект если нужно
