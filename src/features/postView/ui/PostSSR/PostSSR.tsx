@@ -4,11 +4,10 @@ import {redirect} from "next/navigation";
 import {cleanSearchParams} from "@/features/postView/utils/url-utils";
 import PostModal from "@/features/postView/ui/PostModal/PostModal";
 import s from './PostSSR.module.scss'
-import { Suspense } from 'react'
 
 export const PostSsr = async ({params, searchParams}: {
-  params: { userId: string },
-  searchParams: { [key: string]: string | string[] | undefined };
+    params: { userId: string },
+    searchParams: { [key: string]: string | string[] | undefined };
 }) => {
     const {userId} = params;
     const resolvedSearchParams = searchParams;
