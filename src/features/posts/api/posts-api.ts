@@ -1,7 +1,8 @@
 import {baseApi} from '@/shared/api'
 import {CreatePostInput, ImagesResponse, PostImage} from '@/shared/lib/sсhemas/posts'
 import {Comment, CommentsResponse, From, LikeStatus, Post, User} from "@/features/postView/api/types";
-
+import { publicUserApi } from '@/features/publicUserApi/publicUserApi';
+import { ResponsesPosts } from '@/features/publicUserApi/types'
 type CreatePostWithUserId = CreatePostInput & { userId?: number }
 
 export const postsApi = baseApi.injectEndpoints({
@@ -136,7 +137,7 @@ export const postsApi = baseApi.injectEndpoints({
             },
         }),
 
-        deletePost: builder.mutation<void, {postId:number}>({
+        deletePost: builder.mutation<void, {postId:number, userId?: string }>({
             query: ({postId}) => ({
                 url: `posts/${postId}`,
                 method: 'DELETE',
@@ -148,6 +149,60 @@ export const postsApi = baseApi.injectEndpoints({
                 'UserPosts', // Инвалидируем все посты пользователей
                 'UserProfile' // Обновляем профиль пользователя (счетчик постов)
             ],
+            // Оптимистичное обновление
+            onQueryStarted: async ({ postId, userId }, { dispatch, queryFulfilled }) => {
+                const patchResults: any[] = [];
+
+                // Обновляем кэш getPostsForUser если передан userId
+                if (userId) {
+                    const patchResult = dispatch(
+                      publicUserApi.util.updateQueryData('getPostsForUser', { userId }, (draft) => {
+                          if (draft.pages) {
+                              draft.pages.forEach((page: ResponsesPosts) => {
+                                  page.items = page.items.filter((post: any) => post.id !== postId);
+                                  page.totalCount = Math.max(0, page.totalCount - 1);
+                              });
+                          }
+                      })
+                    );
+                    patchResults.push(patchResult);
+                }
+
+                // Обновляем кэш fetchPost - помечаем как удаленный
+                const postPatchResult = dispatch(
+                  postsApi.util.updateQueryData('fetchPost', postId, (draft) => {
+                      // Можно пометить пост как удаленный или очистить данные
+                      Object.assign(draft, { deleted: true });
+                  })
+                );
+                patchResults.push(postPatchResult);
+
+                try {
+                    await queryFulfilled;
+                } catch (error: unknown) {
+                    // Типизируем ошибку
+                    const rtqError = error as {
+                        error?: {
+                            status?: number;
+                            data?: {
+                                statusCode?: number;
+                            };
+                        };
+                    };
+
+                    // Если пост не найден (404), считаем это успешным удалением
+                    const isPostNotFound = rtqError?.error?.status === 404 ||
+                      rtqError?.error?.data?.statusCode === 404;
+
+                    if (!isPostNotFound) {
+                        // Откатываем изменения только если это не 404 ошибка
+                        patchResults.forEach(patchResult => patchResult.undo());
+                        // Перебрасываем ошибку для обработки в UI
+                        throw error;
+                    }
+                    // Если 404 - не откатываем изменения, пост уже удален
+                }
+            },
         }),
 
         updatePost: builder.mutation<Post, { postId: number; description: string }>({

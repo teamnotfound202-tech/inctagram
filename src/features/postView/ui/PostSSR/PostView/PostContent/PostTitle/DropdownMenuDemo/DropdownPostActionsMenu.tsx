@@ -8,10 +8,7 @@ import s from "./DropdownPostActionsMenu.module.scss";
 import DotsHorizontalIcon from "@/features/postView/ui/PostSSR/PostView/Icons/DotsHorizontal.svg";
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectCurrentMessages} from "@/shared/api/appSlice";
-import { useState } from 'react'
 import { DeletePostModal } from '@/features/postView/ui/DeletePostModal/DeletePostModal'
-import { CloseIcon } from '@/shared/ui/Alerts/CloseIcon/CloseIcon'
-import { Button } from '@/shared/ui'
 
 type Props = {
     isPostOwner: boolean;
@@ -21,7 +18,6 @@ type Props = {
   deleteHandler:(value:boolean)=>void
   isDeleteModalOpen:boolean
 }
-
 
 const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel, deleteHandler, isDeleteModalOpen }: Props) => {
     const currentLanguage = useAppSelector(selectCurrentMessages)
@@ -43,7 +39,6 @@ const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel, deleteH
       deleteHandler(false)
     }
 
-
     return (
       <>
           <DropdownMenu.Root>
@@ -51,7 +46,6 @@ const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel, deleteH
               <button className={s.IconButton} aria-label="Customise options">
                  <DotsHorizontalIcon/>
               </button>
-
 
           </DropdownMenu.Trigger>
           <DropdownMenu.Portal>
@@ -85,9 +79,7 @@ const DropdownPostActionsMenu = ({isPostOwner, postId, onEdit, onCancel, deleteH
             isOpen={isDeleteModalOpen}
             onClose={handleCloseDeleteModal}
           />
-
       </>
-
     );
 };
 
