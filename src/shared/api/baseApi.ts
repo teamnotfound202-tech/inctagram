@@ -1,10 +1,10 @@
-import { baseQueryWithReAuth } from '@/shared/api/baseQueryWithReauth'
 import { createApi } from '@reduxjs/toolkit/query/react'
+import { baseQueryWithReAuth } from '@/shared/api/baseQueryWithReauth' // [CHANGED]
 
 export const baseApi = createApi({
   reducerPath: 'inctagramApi',
-  baseQuery: baseQueryWithReAuth,
-  tagTypes: ['UserPosts', 'User', 'UserProfile', 'Me','Posts', 'Comment'],
+  baseQuery: baseQueryWithReAuth, // [CHANGED] — единый базовый запрос
+  tagTypes: ['UserPosts', 'User', 'UserProfile', 'Me', 'Posts', 'Comment'],
   endpoints: () => ({}),
 })
 

@@ -27,6 +27,13 @@ type Props = {
 
 const PAGE_SIZE = 12
 
+// утилита дедупликации по id
+function uniqById<T extends { id: number | string }>(arr: T[]): T[] {
+  const map = new Map<string | number, T>()
+  for (const item of arr) map.set(item.id, item)
+  return Array.from(map.values())
+}
+
 export const ModalUsers = ({ type, isOpen, onCloseAction, userName, userStats }: Props) => {
   const [getUserFollowings, followingsState] = useLazyFollowingsUserQuery()
   const [getUserFollowers, followersState] = useLazyFollowersUserQuery()
@@ -36,7 +43,6 @@ export const ModalUsers = ({ type, isOpen, onCloseAction, userName, userStats }:
   const [title, setTitle] = useState('')
   const [users, setUsers] = useState<UserItem[]>([])
   const [skeletonCount, setSkeletonCount] = useState<number>(0)
-
 
   const [nextCursor, setNextCursor] = useState<number | null>(null)
   const [hasMore, setHasMore] = useState(true)
@@ -56,7 +62,12 @@ export const ModalUsers = ({ type, isOpen, onCloseAction, userName, userStats }:
   const isFetching = followingsState.isFetching || followersState.isFetching
   const isLoading = bootLoading || (isFetching && users.length === 0)
 
-  // единая функция запроса
+  // защита от частых триггеров IO
+  const loadingGateRef = useRef(false)
+  // запоминаем последний запрошенный курсор, чтобы не дёргать одну и ту же страницу
+  const lastRequestedCursorRef = useRef<number | null>(null)
+
+  // общий раннер запроса
   const runQuery = useCallback(
     async (args: { pageSize: number; cursor?: number | 0; search?: string }) => {
       if (type === 'following') {
@@ -73,6 +84,8 @@ export const ModalUsers = ({ type, isOpen, onCloseAction, userName, userStats }:
     setUsers([])
     setHasMore(true)
     setNextCursor(null)
+    lastRequestedCursorRef.current = null
+
     if (type === 'following') {
       setSkeletonCount(Math.min(PAGE_SIZE, userStats.followingCount))
       setTitle(`${userStats.followingCount} ${messages.profile.following}`)
@@ -84,47 +97,81 @@ export const ModalUsers = ({ type, isOpen, onCloseAction, userName, userStats }:
     try {
       const res = await runQuery({ pageSize: PAGE_SIZE, cursor: 0, search: debounced || undefined })
       const items: UserItem[] = Array.isArray(res.items) ? res.items : []
-      setUsers(items)
+      const unique = uniqById(items)
+      setUsers(unique)
       setNextCursor(res.nextCursor ?? null)
-      setHasMore(items.length === PAGE_SIZE && !!res.nextCursor && res.nextCursor !== 0)
+      setHasMore(unique.length === PAGE_SIZE && !!res.nextCursor && res.nextCursor !== 0)
     } finally {
       setBootLoading(false)
     }
-  }, [runQuery, debounced, type, userStats])
+  }, [runQuery, debounced, type, userStats, messages.profile.following, messages.profile.followers])
 
   // догрузка следующих пачек
   const loadNext = useCallback(async () => {
     if (nextCursor == null) return
     if (!hasMore || nextLoading || bootLoading) return
+
+    // 1) Частые срабатывания IO и защита от одинакового курсора
+    if (loadingGateRef.current) return
+    if (lastRequestedCursorRef.current === nextCursor) return
+
+    loadingGateRef.current = true
+    lastRequestedCursorRef.current = nextCursor
     setNextLoading(true)
+
     try {
-      const res = await runQuery({ pageSize: PAGE_SIZE, cursor: nextCursor ?? 0, search: debounced || undefined })
+      const res = await runQuery({
+        pageSize: PAGE_SIZE,
+        cursor: nextCursor,
+        search: debounced || undefined,
+      })
+
       const items: UserItem[] = Array.isArray(res.items) ? res.items : []
-      setUsers(prev => [...prev, ...items])
-      setNextCursor(res.nextCursor ?? null)
-      setHasMore(items.length === PAGE_SIZE && !!res.nextCursor && res.nextCursor !== 0)
+      const newCursor = res.nextCursor ?? null
+
+      // 2) Склеиваем и проверяем, стало ли элементов больше
+      let increased = false
+      setUsers(prev => {
+        const merged = uniqById([...prev, ...items])
+        increased = merged.length > prev.length
+        return merged
+      })
+
+      // 3) Решаем, есть ли ещё страницы
+      //    — есть курсор для следующего запроса
+      //    — и пришла полная страница
+      if (increased && newCursor && newCursor !== nextCursor && items.length === PAGE_SIZE) {
+        setNextCursor(newCursor)
+        setHasMore(true)
+      } else {
+        // либо новых записей нет, либо курсора нет/не сменился, либо страница неполная — стоп
+        setNextCursor(newCursor)
+        setHasMore(false)
+      }
     } finally {
       setNextLoading(false)
+      loadingGateRef.current = false
     }
   }, [hasMore, nextLoading, bootLoading, runQuery, nextCursor, debounced])
-
   // стартовая загрузка и перезапуск
   useEffect(() => {
     if (isOpen) loadFirst()
   }, [isOpen, type, userName, debounced, loadFirst])
 
+  // IntersectionObserver для подгрузки
   useEffect(() => {
     if (!isOpen || !sentinelRef.current || !scrollBoxRef.current) return
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) loadNext()
       },
-      { root: scrollBoxRef.current, rootMargin: '0px 0px 100px 0px', threshold: 0.01 }
+      { root: scrollBoxRef.current, rootMargin: '0px 0px 300px 0px', threshold: 0.01 }
     )
     io.observe(sentinelRef.current)
     return () => io.disconnect()
   }, [isOpen, loadNext])
 
+  const keyPrefix = type
   if (!isOpen) return null
 
   return (
@@ -159,7 +206,12 @@ export const ModalUsers = ({ type, isOpen, onCloseAction, userName, userStats }:
           )}
 
           {users.map(user => (
-            <UserListItem user={user} key={user.id} isLoading={false} type={type} />
+            <UserListItem
+              key={`${keyPrefix}-${user.id}`}
+              user={user}
+              isLoading={false}
+              type={type}
+            />
           ))}
 
           {nextLoading && <Spinner type="secondary" size={16} label={messages.common.loading} fullWidth center />}

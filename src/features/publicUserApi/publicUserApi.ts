@@ -5,58 +5,66 @@ import {
   UserItem,
   UserProfileResponse,
 } from '@/features/publicUserApi/types'
-import {baseApi} from '@/shared/api'
-import {PAGINATION} from '@/shared/constants/pagination'
-import {User} from "@/features/postView/api/types";
+import { baseApi } from '@/shared/api'
+import { PAGINATION } from '@/shared/constants/pagination'
+import { User } from '@/features/postView/api/types'
 
 export const publicUserApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getTotalRegisteredUsers: builder.query<GetPublicUsers, void>({
-      query: () => '/public-user',
+      query: () => 'proxy/public-user', // [CHANGED]
     }),
-    getUserFollowingAndFollowers: builder.query<UserProfileResponse, { userName: string }>({
-      query: ({ userName }) => ({ url: `/users/${userName}`, method: 'GET' }),
+
+    getUserFollowingAndFollowers: builder.query<
+      UserProfileResponse,
+      { userName: string }
+    >({
+      query: ({ userName }) => ({ url: `proxy/users/${userName}`, method: 'GET' }), // [CHANGED]
       providesTags: (result, error, { userName }) =>
         result ? [{ type: 'UserProfile', id: userName }] : ['UserProfile'],
     }),
 
-    followingUser: builder.mutation<void, { selectedUserId: number, userName: string }>({
-      query: body => ({ url: `/users/following`, method: 'POST', body }),
+    followingUser: builder.mutation<void, { selectedUserId: number; userName: string }>({
+      query: body => ({ url: 'proxy/users/following', method: 'POST', body }), // [CHANGED]
       invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
     }),
 
-    unFollowingUser: builder.mutation<void, { userId: number, userName:string }>({
-      query: ({ userId }) => ({ url: `/users/follower/${userId}`, method: 'DELETE' }),
+    unFollowingUser: builder.mutation<void, { userId: number; userName: string }>({
+      query: ({ userId }) => ({ url: `proxy/users/follower/${userId}`, method: 'DELETE' }), // [CHANGED]
       invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
     }),
-    followersUser: builder.query<CursorPage<UserItem>, { userName: string; cursor?: number | null; pageSize?: number; search?: string }
+
+    followersUser: builder.query<
+      CursorPage<UserItem>,
+      { userName: string; cursor?: number | null; pageSize?: number; search?: string }
     >({
       query: ({ userName, ...params }) => ({
-        url: `/users/${userName}/followers`,
+        url: `proxy/users/${userName}/followers`, // [CHANGED]
         method: 'GET',
         params,
       }),
     }),
 
-    followingsUser: builder.query<CursorPage<UserItem>, { userName: string; cursor?: number; pageSize?: number; search?: string }
+    followingsUser: builder.query<
+      CursorPage<UserItem>,
+      { userName: string; cursor?: number; pageSize?: number; search?: string }
     >({
       query: ({ userName, ...params }) => ({
-        url: `/users/${userName}/following`,
+        url: `proxy/users/${userName}/following`, // [CHANGED]
         method: 'GET',
         params,
       }),
     }),
+
     getPostsForUser: builder.infiniteQuery<
       ResponsesPosts,
       { userId: string },
       string | undefined
     >({
-      query: ({ queryArg, pageParam }) => {
-        return {
-          url: `/posts/user/${queryArg.userId}/${pageParam || ''}`,
-          params: { pageSize: PAGINATION.DEFAULT_PAGE_SIZE  + 1 },
-        }
-      },
+      query: ({ queryArg, pageParam }) => ({
+        url: `proxy/posts/user/${queryArg.userId}/${pageParam || ''}`, // [CHANGED]
+        params: { pageSize: PAGINATION.DEFAULT_PAGE_SIZE + 1 },
+      }),
       infiniteQueryOptions: {
         initialPageParam: undefined,
         getNextPageParam: (lastPage, allPages) => {
@@ -64,19 +72,19 @@ export const publicUserApi = baseApi.injectEndpoints({
           if (totalCountPosts < lastPage.totalCount && lastPage.items[lastPage.items.length - 1]?.id) {
             return lastPage.items[lastPage.items.length - 1].id.toString()
           }
-
           return null
         },
       },
       providesTags: (_result, _error, { userId }) => [{ type: 'UserPosts', id: userId }],
-
       serializeQueryArgs: ({ queryArgs: { userId } }) => `userPosts-${userId}`,
     }),
+
     fetchUser: builder.query<User, number>({
-      query: (profileId) => `public-user/profile/${profileId}`,
+      query: (profileId) => `proxy/public-user/profile/${profileId}`, // [CHANGED]
     }),
+
     fetchMyProfile: builder.query<User, void>({
-      query: () => `users/profile`,
+      query: () => 'proxy/users/profile', // [CHANGED]
     }),
   }),
 })
@@ -92,4 +100,5 @@ export const {
   useFetchUserQuery,
   useFetchMyProfileQuery,
 } = publicUserApi
+
 export const publicUserReducer = publicUserApi.reducer
