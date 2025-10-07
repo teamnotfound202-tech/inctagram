@@ -32,7 +32,7 @@ export const PostView = ({post}: Props) => {
       <PostModal isEditing={isEditing} isDeleteModalOpen={isDeleteModalOpen}>
         {isEditing  && <p className={s.readTitle}>Edit Post</p>}
         <div className={s.postWrapper }>
-          <PostImage images={postToRender.images}/>{/*TODO: добавить слайдер*/}
+          <PostImage images={postToRender.images}/>
           <PostContent post={postToRender} editingHandler={editingHandler} isEditing={isEditing} deleteHandler={deleteHandler} isDeleteModalOpen={isDeleteModalOpen} />
         </div>
       </PostModal>

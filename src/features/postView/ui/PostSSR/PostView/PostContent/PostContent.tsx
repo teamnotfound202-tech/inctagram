@@ -70,6 +70,7 @@ export const PostContent = ({
       {isEditing ? (
         <PostEditForm
           postId={post.id}
+          ownerId={post.ownerId}
           initialDescription={post.description}
           authorName={post.owner.firstName + ' ' + post.owner.lastName}
           avatarUrl={post?.avatarOwner}

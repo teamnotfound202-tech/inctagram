@@ -12,6 +12,7 @@ import * as React from 'react'
 import {
   PostText
 } from '@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostText/PostText'
+import { useFetchUserQuery } from '@/features/publicUserApi/publicUserApi'
 
 type Props = {
 
@@ -21,6 +22,7 @@ type Props = {
   avatarUrl: string
   onCancel: (hasChanges: boolean) => void
   onSave: () => void
+  ownerId:number
 
 }
 
@@ -28,12 +30,13 @@ export const PostEditForm = ({
                                postId,
                                initialDescription,
                                authorName,
-                               avatarUrl,
                                onCancel,
-                               onSave
+                               onSave,
+                               ownerId
                              }: Props) => {
   const [description, setDescription] = useState(initialDescription)
   const [updatePost, { isLoading }] = useUpdatePostMutation()
+  const { data: user } = useFetchUserQuery(ownerId)
 
   const hasChanges = description !== initialDescription
 
@@ -70,8 +73,9 @@ export const PostEditForm = ({
         </div>
         <div className={s.content}>
           <article className={s.comment}>
-            <Avatar src={avatarUrl} alt={'avatar'} size={"small"}/>
-            <p>{authorName}</p>
+            <Avatar src={user?.avatars[0]?.url} alt={'avatar'} />
+            {<p>{user?.firstName && user.lastName ? user.firstName + ' ' + user.lastName : user?.userName}</p>}
+
 
           </article>
           <p>Add publication descriptions</p>
