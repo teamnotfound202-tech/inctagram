@@ -7,14 +7,13 @@ import {Swiper, SwiperSlide} from 'swiper/react';
 import type {Swiper as SwiperType} from 'swiper';
 import {Navigation} from 'swiper/modules';
 import 'swiper/css';
-import {useRef, useState, MouseEvent, useEffect} from 'react'
+import {MouseEvent, useEffect, useRef, useState} from 'react'
 import ArrowLeftIcon from '@/shared/assets/icons/arrowLeft.svg'
 import ArrowRightIcon from '@/shared/assets/icons/arrowRight.svg'
 import Link from 'next/link'
 import {usePathname, useSearchParams} from 'next/navigation'
 import {Loader} from "@/shared/ui/Loader/Loader";
 import PostModal from "@/features/postView/ui/PostModal/PostModal";
-import {useRouter} from 'next/navigation';
 
 type Props = {
     post: Post
@@ -28,10 +27,7 @@ export const PostItem = ({post}: Props) => {
     const [path, setPath] = useState('');
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const router = useRouter();
     const [isLinkClicked, setIsLinkClicked] = useState(false);
-    const [isPostOpen, setIsPostOpen] = useState(false);
-
 
     const handlePrevClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -54,7 +50,7 @@ export const PostItem = ({post}: Props) => {
 
     const linkClickHandler = () => {
         setIsLinkClicked(true)
-        window.location.href=path           //делает перезагрузку страницы, поэтому выключается Loader
+        window.location.href = path           //делает перезагрузку страницы, поэтому выключается Loader
     }
 
     return (
