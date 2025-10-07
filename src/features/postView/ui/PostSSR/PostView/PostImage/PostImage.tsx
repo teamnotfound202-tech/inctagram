@@ -1,16 +1,12 @@
 import s from "./PostImage.module.scss";
-import {ImagePost} from "@/features/postView/api/types";
-import EmblaCarousel from "@/features/postView/ui/PostSSR/PostView/PostImage/EmblaCarousel/EmblaCarousel";
-import {EmblaOptionsType} from "embla-carousel";
-import {MouseEvent, useEffect, useRef, useState} from "react";
+import {MouseEvent, useRef, useState} from "react";
 import type {Swiper as SwiperType} from "swiper";
-import {usePathname, useSearchParams} from "next/navigation";
-import Link from "next/link";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {A11y, Navigation, Pagination} from "swiper/modules";
 import Image from "next/image";
 import ArrowLeftIcon from "@/shared/assets/icons/arrowLeft.svg";
 import ArrowRightIcon from "@/shared/assets/icons/arrowRight.svg";
+import {ImagePost} from "@/features/publicUserApi/types";
 
 
 type Props = {
@@ -24,9 +20,6 @@ export const PostImage = ({images}: Props) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const isPrevDisabled = currentIndex === 0
     const isNextDisabled = currentIndex === imagesUrl.length - 1
-    /* const [path, setPath] = useState('');
-     const pathname = usePathname();
-     const searchParams = useSearchParams();*/
 
     const handlePrevClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -46,17 +39,10 @@ export const PostImage = ({images}: Props) => {
         }
     };
 
-    const handleDotClick = (index:number) => {
+    const handleDotClick = (index: number) => {
         slideTo(index)
         setCurrentIndex(index)
     }
-
-    /* useEffect(() => {
-         const currentSearchParams = new URLSearchParams(searchParams.toString());
-         currentSearchParams.set('postId', post.id.toString());
-
-         setPath(`${pathname}?${currentSearchParams.toString()}`);
-     }, [pathname, searchParams, post.id]);*/
 
     return (
         <div className={s.postImageWrapper}>
@@ -115,7 +101,7 @@ export const PostImage = ({images}: Props) => {
                                 className={`${s.paginationDot} ${
                                     index === currentIndex ? s.paginationDotActive : ''
                                 }`}
-                                onClick={()=>handleDotClick(index)}
+                                onClick={() => handleDotClick(index)}
                                 aria-label={`Перейти к слайду ${index + 1}`}
                                 aria-current={index === currentIndex ? 'true' : 'false'}
                             />
@@ -140,21 +126,4 @@ export const PostImage = ({images}: Props) => {
                 )}
         </div>
     )
-
-    /*const carouselOptions: EmblaOptionsType = {
-        loop: true,
-        align: 'center',
-        skipSnaps: false,
-        duration: 20, // скорость анимации
-    };
-    return (
-        <div className={s.postImageWrapper}>
-            <div style={{maxWidth: '800px', margin: '0 auto'}}>
-                <EmblaCarousel slides={imagesUrl} options={carouselOptions}/>
-            </div>
-            {/!*<ImageCarousel imagesArray={images}/>TODO: удалить лишние карусели и библиотеки*!/}
-            {/!*<Carousel imagesArray={images}/>*!/}
-            {/!* <img src={imageUrl} alt={'postImage'} className={s.postImage}/>*!/}
-        </div>
-    );*/
 };

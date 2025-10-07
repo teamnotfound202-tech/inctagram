@@ -1,8 +1,10 @@
 import {baseApi} from '@/shared/api'
 import {CreatePostInput, ImagesResponse, PostImage} from '@/shared/lib/sсhemas/posts'
-import {Comment, CommentsResponse, From, LikeStatus, Post, User} from "@/features/postView/api/types";
 import { publicUserApi } from '@/features/publicUserApi/publicUserApi';
 import { ResponsesPosts } from '@/features/publicUserApi/types'
+import {Comment, CommentsResponse, From, LikeStatus, Post} from "@/features/publicUserApi/types";
+import { ISOStringFormat } from 'date-fns'
+
 type CreatePostWithUserId = CreatePostInput & { userId?: number }
 
 export const postsApi = baseApi.injectEndpoints({
@@ -219,7 +221,7 @@ export const postsApi = baseApi.injectEndpoints({
                 const patchResult = dispatch(
                   postsApi.util.updateQueryData('fetchPost', postId, (draft) => {
                       draft.description = description
-                      draft.updatedAt = new Date().toISOString()
+                      draft.updatedAt = (new Date()).toISOString() as ISOStringFormat
                   })
                 );
 
@@ -270,5 +272,3 @@ export const {
     useDeletePostMutation,
     useUpdatePostMutation
 } = postsApi
-
-

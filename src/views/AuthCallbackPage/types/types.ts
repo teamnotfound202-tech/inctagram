@@ -5,6 +5,7 @@ export type OAuthHookResult  = {
     error: string | null
 }
 
+
 export type CallbackContentProps = {
     useOAuthHook: (params: ReadonlyURLSearchParams) => OAuthHookResult
 }

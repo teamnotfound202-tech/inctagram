@@ -3,9 +3,9 @@ import {PostComment} from "@/features/postView/ui/PostSSR/PostView/PostContent/P
 import {
     PostDescriptionAsComment
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostDescriptionAsComment";
-import {Post} from "@/features/postView/api/types";
 import {Loader} from "@/shared/ui/Loader/Loader";
 import {useFetchPostCommentsQuery} from "@/features/posts/api/posts-api";
+import {Post} from "@/features/publicUserApi/types";
 
 type Props = {
     post: Post
@@ -17,10 +17,12 @@ export const PostComments = ({post}: Props) => {
 
     return (
         <div className={s.commentsWrapper}>
-            <PostDescriptionAsComment authorName={post.owner.firstName + ' ' + post.owner.lastName}
-                                      avatarUrl={post.avatarOwner}
+            <PostDescriptionAsComment authorName={post.owner.firstName && post.owner.lastName ?  post.owner.firstName + ' ' + post.owner.lastName : null}
                                       postContent={post.description}
-                                      descriptionCreationTime={post.createdAt}/>
+                                      descriptionCreationTime={post.createdAt}
+                                      ownerId={post.ownerId}
+                                      postUserName={post.userName}
+            />
             {data?.items.map(comment => (
                 <PostComment key={comment.id} comment={comment} postId={post.id}/>
             ))}

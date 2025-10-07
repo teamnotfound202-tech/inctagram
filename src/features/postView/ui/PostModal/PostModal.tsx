@@ -3,6 +3,7 @@
 import {useRouter} from 'next/navigation';
 import s from "./PostModal.module.scss"
 import Close from "./Icons/Close.svg"
+import {useEffect} from "react";
 
 interface PostModalProps {
   children: React.ReactNode;
@@ -20,6 +21,13 @@ export default function PostModal({ children, isEditing, isDeleteModalOpen}: Pos
         router.back();
       }
     };
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden'
+        return () => {
+            document.body.style.overflow = 'unset'
+        }
+    }, [])
 
     return (
         <div className={s.modalWrapper}>

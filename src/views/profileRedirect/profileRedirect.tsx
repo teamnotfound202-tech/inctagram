@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import s from './profileRedirect.module.scss'
+import { Loader } from '@/shared/ui/Loader/Loader'
 
 export const ProfileRedirect = () => {
   const { data, isLoading, isFetching } = useMeQuery()
@@ -22,21 +23,8 @@ export const ProfileRedirect = () => {
   }, [isLoading, isFetching, data?.userId, router])
 
   return (
-    <div style={{ width: '100%' }}>
-      <Skeleton
-        className={s.skeletonProfileHeader}
-        baseColor="rgba(23, 23, 23, 0.6)"
-        highlightColor="rgba(40, 40, 40, 0.8)"
-      />
-      <div className={s.skeletonWrapper}>
-        <Skeleton
-          baseColor="rgba(23, 23, 23, 0.6)"
-          highlightColor="rgba(40, 40, 40, 0.8)"
-          width={228}
-          height={228}
-          count={8}
-        />
+      <div style={{display:'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+        <Loader/>
       </div>
-    </div>
   )
 }

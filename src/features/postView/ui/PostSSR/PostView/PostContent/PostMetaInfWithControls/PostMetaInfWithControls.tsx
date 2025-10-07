@@ -16,17 +16,30 @@ type Props = {
     isLiked: boolean
 };
 
+const AVATARS_COUNT_TO_PREVIEW_LIKE_STANDART = 5
+
 export const PostMetaInfWithControls = ({avatars, likesCount, updatedAt, isLiked, id}: Props) => {
     const currentLanguage = useAppSelector(selectCurrentMessages)
     const postUpdateTime = timeToTimeZone(updatedAt)
     const {data: meUser} = useFetchMyProfileQuery()
 
+    //Выбираем аватарки последних лайкнувших пост
+    const avatarsCountToPreview = (likesCount<AVATARS_COUNT_TO_PREVIEW_LIKE_STANDART)?
+        likesCount : //если количество лайков меньше стандарта, то покажи количество аватарок, равное количеству лайков
+        AVATARS_COUNT_TO_PREVIEW_LIKE_STANDART                              //
+
+    const avatarsWhoLikesPost = []
+    for (let i = avatars.length - 1 - avatarsCountToPreview; i <
+    avatars.length - 1; i++) {
+        avatarsWhoLikesPost.push(avatars[i])
+    }
+
     return (
         <div className={s.postMetaInf}>
             {meUser?.id && <ButtonControls postId={id} isLiked={isLiked}/>}
             <div className={s.avatarsWhoLikesWrapper}>
-                {avatars.map((avatar) => (
-                    <div key={avatar} className={s.avatars}>
+                {avatarsWhoLikesPost.map((avatar, index) => (
+                    <div key={avatar+index.toString()} className={s.avatars}>
                         <Avatar src={avatar} alt={'avatarsWhoLikes'} size={'very_small'}/>
                     </div>
                 ))}

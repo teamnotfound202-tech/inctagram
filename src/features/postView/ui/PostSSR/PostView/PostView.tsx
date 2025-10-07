@@ -2,10 +2,10 @@
 import {PostContent} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostContent";
 import s from "./PostView.module.scss"
 import {PostImage} from "@/features/postView/ui/PostSSR/PostView/PostImage/PostImage";
-import {Post} from "@/features/postView/api/types";
 import {useFetchPostQuery} from "@/features/posts/api/posts-api";
 import { useState } from 'react'
 import PostModal from '@/features/postView/ui/PostModal/PostModal'
+import {Post} from "@/features/publicUserApi/types";
 
 type Props = {
     post: Post

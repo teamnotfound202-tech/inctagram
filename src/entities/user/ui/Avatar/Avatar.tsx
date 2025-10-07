@@ -1,7 +1,6 @@
 import { FC } from 'react'
-
 import s from './Avatar.module.scss'
-import placeholder from './ava.png'
+import Image from 'next/image'
 
 type AvatarProps = {
   src?: string
@@ -11,11 +10,18 @@ type AvatarProps = {
 }
 
 const Avatar: FC<AvatarProps> = ({ src, alt, size = 'medium', withStatus = false }) => {
-  const imgSrc = src ?? placeholder.src
+  const imgSrc = src ?? '/images/ava.png'
   return (
     <div className={`${s.avatar} ${s[`avatar--${size}`]}`}>
       <div className={s.avatar__container}>
-        <img src={imgSrc} alt={alt} className={s.avatar__image} loading={'lazy'} />
+        <Image
+          src={imgSrc}
+          alt={alt}
+          className={s.avatar__image}
+          loading="lazy"
+          width={204}
+          height={204}
+        />
       </div>
       {withStatus && <div className={s.avatar__status} />}
     </div>
