@@ -4,7 +4,6 @@ import s from "./PostView.module.scss"
 import {PostImage} from "@/features/postView/ui/PostSSR/PostView/PostImage/PostImage";
 import {useFetchPostQuery} from "@/features/posts/api/posts-api";
 import {Post} from "@/features/publicUserApi/types";
-import { Loader } from '@/shared/ui/Loader/Loader'
 
 type Props = {
     post: Post
