@@ -18,23 +18,22 @@ import type {
 import type { UserDataResponse } from '@/features/publicUserApi/types'
 
 export const authApi = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
-
+  endpoints: builder => ({
     // Регистрация и подтверждения — просто проксируем на бэк
     registration: builder.mutation<void, RegistrationData>({
-      query: (body) => ({ method: 'POST', url: 'proxy/auth/registration', body }),
+      query: body => ({ method: 'POST', url: 'proxy/auth/registration', body }),
     }),
     registrationConfirmation: builder.mutation<void, RequestBodyRegistrationConformation>({
-      query: (body) => ({ method: 'POST', url: 'proxy/auth/registration-confirmation', body }),
+      query: body => ({ method: 'POST', url: 'proxy/auth/registration-confirmation', body }),
     }),
     registrationEmailResending: builder.mutation<void, RequestBodyResending>({
-      query: (body) => ({ method: 'POST', url: 'proxy/auth/registration-email-resending', body }),
+      query: body => ({ method: 'POST', url: 'proxy/auth/registration-email-resending', body }),
     }),
 
     // Логин — идём на BFF-ручку (она положит токены в HttpOnly-куки)
-    login: builder.mutation<ResponsesLogin, RequestBodyLogin>({
-      query: (args) => ({
-        url: 'auth/login',    // это /api/bff/auth/login (см. baseUrl в baseQuery)
+    login: builder.mutation<{ ok:boolean }, RequestBodyLogin>({
+      query: args => ({
+        url: 'auth/login', // это /api/bff/auth/login (см. baseUrl в baseQuery)
         method: 'POST',
         body: args,
       }),
@@ -60,7 +59,7 @@ export const authApi = baseApi.injectEndpoints({
     // Google login (если это чистый POST на API) — проксируем
     // (если у вас OAuth-редирект — это отдельная тема, но POST так ок)
     googleLogin: builder.mutation<ResponseGoogleLogin, RequestBodyGoogleLogin>({
-      query: (args) => ({
+      query: args => ({
         url: 'proxy/auth/google/login',
         method: 'POST',
         body: args,
@@ -69,34 +68,33 @@ export const authApi = baseApi.injectEndpoints({
 
     // Восстановление пароля — все эндпоинты через прокси
     recoveryPassword: builder.mutation<void, RequestRecoveryPassword>({
-      query: (body) => ({
+      query: body => ({
         url: 'proxy/auth/password-recovery',
         method: 'POST',
         body,
       }),
     }),
     createNewPassword: builder.mutation<void, RequestCreateNewPassword>({
-      query: (body) => ({
+      query: body => ({
         url: 'proxy/auth/new-password',
         method: 'POST',
         body,
       }),
     }),
     resendRecoveryPassword: builder.mutation<void, RequestResendRecoveryPassword>({
-      query: (body) => ({
+      query: body => ({
         url: 'proxy/auth/password-recovery-resending',
         method: 'POST',
         body,
       }),
     }),
     checkRecoveryCode: builder.mutation<void, { recoveryCode: string }>({
-      query: (body) => ({
+      query: body => ({
         url: 'proxy/auth/check-recovery-code',
         method: 'POST',
         body,
       }),
     }),
-
   }),
 })
 

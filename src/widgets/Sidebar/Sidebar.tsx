@@ -41,7 +41,7 @@ export const Sidebar = () => {
       .unwrap()
       .then(() => {
         router.replace(Path.Home)
-        localStorage.removeItem(ACCESS_TOKEN)
+
         dispatch(baseApi.util.resetApiState())
       })
       .catch(() => {

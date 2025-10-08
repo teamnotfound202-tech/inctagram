@@ -38,8 +38,7 @@ export const LoginForm = () => {
     const onSubmit: SubmitHandler<RequestBodyLogin> = async (data) => {
         try {
             const res = await login(data).unwrap();
-            if (res.accessToken) {
-                localStorage.setItem(ACCESS_TOKEN, res.accessToken);
+            if (res.ok) {
                 router.replace(Path.Home)
                 reset();
             } else {
