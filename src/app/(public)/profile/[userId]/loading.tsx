@@ -4,7 +4,7 @@ export default function Loading() {
   debugger
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', position:'absolute', left:'0', right:'0', top:'0', bottom:'0'}}>
-            <Loader/>   {/*TODO: дважды срабатывает Loader при перезапросе поста по ссылке*/}
+            <Loader/>
         </div>
     )
 }
