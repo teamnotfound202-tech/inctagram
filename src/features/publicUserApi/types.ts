@@ -19,6 +19,7 @@ export type Owner = {
 }
 
 export type Post = {
+  avatarOwner:string
   avatarWhoLikes: string[]
   createdAt: ISOStringFormat
   description: string

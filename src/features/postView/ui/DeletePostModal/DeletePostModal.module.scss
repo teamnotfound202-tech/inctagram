@@ -1,0 +1,44 @@
+@use '@/shared/styles/variables' as *;
+
+.content {
+  padding: 1rem 0;
+}
+
+.message {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: $light-100;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: end;
+}
+
+.cancelButton,
+.deleteButton {
+  min-width: 80px;
+  padding: 0.5rem 1rem;
+}
+
+.deleteButton {
+
+
+  &:hover:not(:disabled) {
+    background-color:$accent-700;
+    border-color: $accent-700;
+    color: $light-100;
+
+  }
+}
+
+.cancelButton {
+  &:hover:not(:disabled) {
+    background-color: $accent-700;
+    border-color: $accent-700;
+    color: $light-100;
+  }
+}

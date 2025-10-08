@@ -3,6 +3,8 @@ import {PostContent} from "@/features/postView/ui/PostSSR/PostView/PostContent/P
 import s from "./PostView.module.scss"
 import {PostImage} from "@/features/postView/ui/PostSSR/PostView/PostImage/PostImage";
 import {useFetchPostQuery} from "@/features/posts/api/posts-api";
+import { useState } from 'react'
+import PostModal from '@/features/postView/ui/PostModal/PostModal'
 import {Post} from "@/features/publicUserApi/types";
 
 type Props = {
@@ -15,12 +17,26 @@ export const PostView = ({post}: Props) => {
     //При первой отрисовке берутся данные с сервера(post), а потом делается запрос с помощью useFetchPostQuery за актуальными данными,
     //для которых важна авторизация (например, isLiked для поста), и кладутся в кэш (postFromCache)
     const postToRender = postFromCache || post
+  const [isEditing, setIsEditing] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+  const deleteHandler = (value:boolean) => {
+    setIsDeleteModalOpen(value)
+  }
+
+  const editingHandler=(value:boolean)=>{
+    setIsEditing(value)
+  }
 
     return (
+      <PostModal isEditing={isEditing} isDeleteModalOpen={isDeleteModalOpen}>
+        {isEditing  && <p className={s.readTitle}>Edit Post</p>}
         <div className={s.postWrapper }>
-            <PostImage images={postToRender.images}/>
-            <PostContent post={postToRender}/>
+          <PostImage images={postToRender.images}/>
+          <PostContent post={postToRender} editingHandler={editingHandler} isEditing={isEditing} deleteHandler={deleteHandler} isDeleteModalOpen={isDeleteModalOpen} />
         </div>
+      </PostModal>
+
     );
 };
 

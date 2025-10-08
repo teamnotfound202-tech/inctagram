@@ -69,10 +69,10 @@
     cursor: pointer;
   }
 
-  &:focus {
-    box-shadow: 0 0 0 2px black;
-    color: $accent-500;
-  }
+  //&:focus {
+  //  box-shadow: 0 0 0 2px black;
+  //  color: $accent-500;
+  //}
 }
 
 @keyframes slideUpAndFade {
