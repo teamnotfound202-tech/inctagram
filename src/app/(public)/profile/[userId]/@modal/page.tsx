@@ -1,11 +1,14 @@
 import {PostSsr} from "@/features/postView";
 
 export default async function ModalLayer({params, searchParams}: {
-    params: { userId: string },
-    searchParams: { postId?: string }
+    params: Promise<{ userId: string }>,
+    searchParams: Promise<{ postId?: string }>
 }) {
-    if (!searchParams.postId) return null
-    return <PostSsr params={params} searchParams={searchParams}/>
-
+    const awaitedSearchParams = await searchParams;
+    const awaitedParams = await params;
+    if (!awaitedSearchParams?.postId) return null
+    return <PostSsr params={awaitedParams} searchParams={awaitedSearchParams}/>
 }
+
+
 
