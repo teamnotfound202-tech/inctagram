@@ -19,12 +19,11 @@ export const DeletePostModal = ({ postId, isOpen, onClose }: Props) => {
 
   const handleDeletePost = async () => {
     try {
-      setIsDeleting(true)
-      await deletePost({postId}).unwrap()
-
-      // Перенаправляем пользователя на домашнюю страницу
-      router.push('/profile')
       onClose()
+      setIsDeleting(true)
+      router.push('/profile')
+      await deletePost({postId}).unwrap()
+      // Перенаправляем пользователя на домашнюю страницу
     } catch (error) {
       console.error('Ошибка при удалении поста:', error)
       setIsDeleting(false)
