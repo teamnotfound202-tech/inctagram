@@ -53,10 +53,7 @@ export const postsApi = baseApi.injectEndpoints({
             },
         }),
         fetchPost: builder.query<Post, number>({
-            query: (postId) => `posts/id/${postId}`,
-            providesTags: (result, error, postId) => [
-                {type: 'Posts', id: postId}
-            ],
+            query: (postId) => `posts/id/${postId}`
         }),
         fetchPostComments: builder.query<CommentsResponse, number>({
             query: (postId) => `posts/${postId}/comments`,
