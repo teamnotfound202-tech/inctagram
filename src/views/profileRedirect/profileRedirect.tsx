@@ -3,8 +3,6 @@
 import { useMeQuery } from '@/features/auth/api/authApi'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef } from 'react'
-import Skeleton from 'react-loading-skeleton'
-import s from './profileRedirect.module.scss'
 import { Loader } from '@/shared/ui/Loader/Loader'
 
 export const ProfileRedirect = () => {

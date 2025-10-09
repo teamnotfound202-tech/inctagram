@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, ReactNode } from 'react'
 import s from './Input.module.scss'
 import { TextField } from '@radix-ui/themes'
 import { unstable_PasswordToggleField as PasswordToggleField } from 'radix-ui'
@@ -10,8 +10,8 @@ import { Label } from '@radix-ui/react-label'
 type InputProps = {
   placeholder?: string
   type: 'email' | 'password' | 'search' | 'text'
-  id?: string
-  label?: string
+  id: string
+  label?: string | ReactNode
   error?: string
   isDisabled?: boolean
 
