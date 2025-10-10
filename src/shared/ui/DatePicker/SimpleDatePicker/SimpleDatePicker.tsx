@@ -13,7 +13,7 @@ import { formatDate, isWeekend } from '@/shared/ui/DatePicker/utils/utils'
 import { CustomMonthDropdown } from '@/shared/ui/DatePicker/CustomCaption/CustomCaption'
 
 export type DatePickerSingleProps = {
-  value?: Date
+  value?: Date | string
   onDateChange?: (date: Date | string) => void
   label?: string
   error?: boolean
@@ -30,25 +30,34 @@ export const SimpleDatePicker = ({
   const [opened, setIsOpened] = useState<boolean | undefined>(false)
   const [error, setError] = useState<string>('')
   const [dateValue, setDateValue] = useState<Date>(new Date())
-  const [currentMonth, setCurrentMonth] = useState<Date>(value || new Date())
+  const [currentMonth, setCurrentMonth] = useState<Date |string>(value || new Date())
   const [disabled, setIsDisabled] = useState(false)
+  console.log(value)
   const handleOpen = (event: boolean) => {
     setIsOpened(event)
     /*  if (dateValue) {
         setCurrentMonth(dateValue)
       }*/
   }
+const dateFormatterForServer = (date: Date ) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
+  const dateFormat = new Date(Date.UTC(year, month, day)).toISOString()
+return dateFormat
+  }
+  const formatDateFromServer = (dateString:string) => {
+    const [datePart] = dateString.split('T');
+    const [year, month, day] = datePart.split('-');
+
+    return `${day}.${month}.${year}`;
+  };
   const handleSelect = (date: Date | undefined) => {
     if (date) {
       setDateValue(date)
-      setCurrentMonth(date)
-      const year = date.getFullYear()
-      const month = date.getMonth()
-      const day = date.getDate()
-      const dateFormat = new Date(Date.UTC(year, month, day)).toISOString()
-      if (onDateChange) {
-        onDateChange(dateFormat)
 
+      if (onDateChange) {
+        onDateChange(dateFormatterForServer(date))
         handleOpen(false)
       }
     }
@@ -63,7 +72,7 @@ export const SimpleDatePicker = ({
             tabIndex={0}
             className={clsx(s.datePicker, { [s.error]: error }, { [s.disabled]: disabled })}
           >
-            <div> {dateValue ? formatDate(dateValue) : formatDate(new Date())}</div>
+            <div> {value ? formatDateFromServer(value as string) : formatDate(new Date())}</div>
             {!opened ? <CalendarOutline /> : <CalendarOpened />}
           </div>
         </Popover.Trigger>
