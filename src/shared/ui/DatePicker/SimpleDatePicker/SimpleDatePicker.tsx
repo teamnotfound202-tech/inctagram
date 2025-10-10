@@ -14,7 +14,7 @@ import { CustomMonthDropdown } from '@/shared/ui/DatePicker/CustomCaption/Custom
 
 export type DatePickerSingleProps = {
   value?: Date
-  onDateChange?: (date: Date) => void
+  onDateChange?: (date: Date | string) => void
   label?: string
   error?: boolean
   disabled?: boolean
@@ -44,6 +44,13 @@ export const SimpleDatePicker = ({
     if (date) {
       setDateValue(date)
       setCurrentMonth(date)
+      const year = date.getFullYear()
+      const month = date.getMonth()
+      const day = date.getDate()
+      const dateFormat = new Date(Date.UTC(year, month, day)).toISOString();
+      if (onDateChange){
+        onDateChange(dateFormat)
+      }
     }
   }
   const handleMonthChange = (newMonth: Date) => {
