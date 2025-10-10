@@ -131,7 +131,6 @@ export const SettingPageInfo = () => {
   return (
     <div className={s.settingPageInfo}>
       <form onSubmit={handleSubmit(onSubmit)} className={s.settingPageInfoForm}>
-
         <div className={s.formWrapper}>
           <div className={s.settingPageInfoPhotoWrapper}>
             <div className={s.avatarIconWrapper}>
