@@ -110,7 +110,7 @@ export const {
   useGetPostsForUserInfiniteQuery,
   useFetchUserQuery,
   useFetchMyProfileQuery,
-  useUpdateAvatarMutation
+  useUpdateAvatarMutation,
   useUpdateMyProfileMutation
 } = publicUserApi
 export const publicUserReducer = publicUserApi.reducer
