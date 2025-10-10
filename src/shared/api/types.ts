@@ -46,3 +46,12 @@ export type RequestRecoveryPassword = { email: string; baseUrl: string; recaptch
 export type RequestCreateNewPassword = { newPassword: string; recoveryCode: string }
 export type RequestResendRecoveryPassword = { email: string; baseUrl: string }
 
+export type GeneralInformaitionValues = {
+  userName: string
+  firstName: string
+  lastName: string
+  dateOfBirth: Date | string
+  country: string
+  city: string
+  aboutMe: string
+}
