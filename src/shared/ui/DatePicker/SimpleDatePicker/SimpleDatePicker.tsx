@@ -28,7 +28,7 @@ export const SimpleDatePicker = ({
   ...restProps
 }: DatePickerSingleProps) => {
   const [opened, setIsOpened] = useState<boolean | undefined>(false)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState<string>('')
   const [dateValue, setDateValue] = useState<Date>(new Date())
   const [currentMonth, setCurrentMonth] = useState<Date>(value || new Date())
   const [disabled, setIsDisabled] = useState(false)
@@ -38,7 +38,6 @@ export const SimpleDatePicker = ({
         setCurrentMonth(dateValue)
       }*/
   }
-
   const handleSelect = (date: Date | undefined) => {
     if (date) {
       setDateValue(date)
@@ -54,7 +53,7 @@ export const SimpleDatePicker = ({
       }
     }
   }
-  console.log(opened)
+
   return (
     <div>
       <div className={s.text}>{label}</div>
@@ -68,13 +67,12 @@ export const SimpleDatePicker = ({
             {!opened ? <CalendarOutline /> : <CalendarOpened />}
           </div>
         </Popover.Trigger>
-        {error && <div className={s.errorMessage}>Error</div>}
+        {!!error && <div className={s.errorMessage}>{error}</div>}
         <Popover.Portal>
           <Popover.Content>
             <div className={s.wrapperCalendar}>
               {opened && (
                 <DayPicker
-
                   mode="single"
                   selected={dateValue}
                   captionLayout="dropdown"
