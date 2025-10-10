@@ -27,20 +27,18 @@ export const SimpleDatePicker = ({
   label = 'Select Date',
   ...restProps
 }: DatePickerSingleProps) => {
-  const [opened, setIsOpened] = useState(false)
+  const [opened, setIsOpened] = useState<boolean | undefined>(false)
   const [error, setError] = useState(false)
   const [dateValue, setDateValue] = useState<Date>(new Date())
-  const [yearChangerIsOpened, setYearChangerIsOpened] = useState(false)
   const [currentMonth, setCurrentMonth] = useState<Date>(value || new Date())
   const [disabled, setIsDisabled] = useState(false)
-  const handleOpen = () => {
-    setIsOpened(prev => !prev)
-    setYearChangerIsOpened(prev => !prev)
-    if (dateValue) {
-      setCurrentMonth(dateValue)
-
-    }
+  const handleOpen = (event: boolean) => {
+    setIsOpened(event)
+    /*  if (dateValue) {
+        setCurrentMonth(dateValue)
+      }*/
   }
+
   const handleSelect = (date: Date | undefined) => {
     if (date) {
       setDateValue(date)
@@ -48,20 +46,19 @@ export const SimpleDatePicker = ({
       const year = date.getFullYear()
       const month = date.getMonth()
       const day = date.getDate()
-      const dateFormat = new Date(Date.UTC(year, month, day)).toISOString();
-      if (onDateChange){
+      const dateFormat = new Date(Date.UTC(year, month, day)).toISOString()
+      if (onDateChange) {
         onDateChange(dateFormat)
+
+        handleOpen(false)
       }
     }
-
   }
-  const handleMonthChange = (newMonth: Date) => {
-    setCurrentMonth(newMonth)
-  }
+  console.log(opened)
   return (
     <div>
       <div className={s.text}>{label}</div>
-      <Popover.Root onOpenChange={handleOpen}>
+      <Popover.Root open={opened} onOpenChange={handleOpen}>
         <Popover.Trigger asChild>
           <div
             tabIndex={0}
@@ -75,23 +72,20 @@ export const SimpleDatePicker = ({
         <Popover.Portal>
           <Popover.Content>
             <div className={s.wrapperCalendar}>
-              {/*{yearChangerIsOpened && (
-                <CustomMonthDropdown date={currentMonth} onChange={handleMonthChange} />
-              )}*/}
-              <DayPicker
-                mode="single"
-                selected={dateValue}
-                captionLayout="dropdown"
-                onSelect={handleSelect}
-               /* month={currentMonth} // ✅ Контролируем отображаемый месяц
-                onMonthChange={setCurrentMonth}*/ // ✅ Обновляем при ручной навигации
-                ISOWeek
-                showOutsideDays
-                modifiers={{ weekend: isWeekend }}
-                modifiersClassNames={{ weekend: 'rdp-day_weekend' }}
-                classNames={sharedDatePickerClassNames}
-                {...restProps}
-              />
+              {opened && (
+                <DayPicker
+                  mode="single"
+                  selected={dateValue}
+                  captionLayout="dropdown"
+                  onSelect={handleSelect}
+                  ISOWeek
+                  showOutsideDays
+                  modifiers={{ weekend: isWeekend }}
+                  modifiersClassNames={{ weekend: 'rdp-day_weekend' }}
+                  classNames={sharedDatePickerClassNames}
+                  {...restProps}
+                />
+              )}
             </div>
           </Popover.Content>
         </Popover.Portal>

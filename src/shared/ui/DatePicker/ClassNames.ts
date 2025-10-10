@@ -24,4 +24,8 @@ export const sharedDatePickerClassNames = {
   outside: s.rdpOutside,
   today: s.rdpToday,
   weekend: s.rdpDay_weekend,
+  caption_dropdowns: s.rdpCaption_dropdowns,
+  dropdown_month: s.rdpDropdown_month,
+  dropdown_year: s.rdpDropdown_year,
+  dropdown_icon: s.rdpDropdown_icon,
 } as const

@@ -18,9 +18,7 @@
 
 .datePicker {
   cursor: pointer;
-
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -277,6 +275,9 @@
 
   svg {
     fill: $light-100;
+    &:hover{
+      transform: rotate(180deg);
+    }
   }
 }
 
@@ -315,38 +316,88 @@
   background-color: $accent-900;
 }
 // DatePicker.module.scss
-.customDropdowns {
+
+
+.popoverContent {
+  z-index: 1000;
+}
+.dropdownContainer {
   display: flex;
   gap: 8px;
-  padding: 12px;
-  border-bottom: 1px solid #e2e8f0;
-  background: #f8fafc;
+  justify-content: center;
+  margin-bottom: 16px;
+  padding: 0 12px;
+  border: 1px solid $dark-300;
+}
+.rdpMonth{
+
+}
+// Контейнер для dropdown'ов месяца и года
+.rdpCaption_dropdowns {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+  padding: 10px 12px;
 }
 
-.monthSelect,
-.yearSelect {
+// Общие стили для всех dropdown'ов
+.rdpDropdown {
   padding: 8px 12px;
-  border: 1px solid #cbd5e0;
   border-radius: 6px;
-  background: white;
+  background-color: $dark-500;
   font-size: 14px;
+  color: $light-100;
   cursor: pointer;
+  border:none;
+  transition: all 0.2s ease;
+  appearance: none; // Убираем стандартный стиль браузера
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
 
   &:focus {
     outline: none;
-    border-color: #3182ce;
+    border-color: $accent-900;
     box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
   }
 }
 
-.monthSelect {
-  flex: 2;
+// Специфичные стили для dropdown месяца
+.rdpDropdown_month {
+  min-width: 120px;
+  padding-right: 32px;
 }
 
-.yearSelect {
-  flex: 1;
+// Специфичные стили для dropdown года
+.rdpDropdown_year {
+  min-width: 90px;
+  padding-right: 32px;
 }
 
-.popoverContent {
-  z-index: 1000;
+// Стили для иконки dropdown (если нужно кастомизировать)
+.rdpDropdown_icon {
+  color: #6b7280;
+}
+
+// Дополнительные стили для опций внутри select
+.rdpDropdown option {
+  padding: 18px;
+  background: transparent;
+border: none;
+  &:hover {
+    background: #f7fafc;
+  }
+}
+
+// Стили для контейнера dropdown
+.rdpDropdown_root {
+  position: relative;
+}
+
+// Стили для контейнера всех dropdown'ов
+.rdpDropdowns {
+  display: flex;
+  gap: 10px;
 }
