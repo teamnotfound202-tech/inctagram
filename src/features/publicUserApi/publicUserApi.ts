@@ -78,6 +78,21 @@ export const publicUserApi = baseApi.injectEndpoints({
     fetchMyProfile: builder.query<User, void>({
       query: () => `users/profile`,
     }),
+    updateAvatar: builder.mutation<
+      { avatars: { url: string }[] },
+      File
+    >({
+      query: (file) => {
+        const formData = new FormData()
+        formData.append('file', file) // имя поля как в curl
+
+        return {
+          url: '/users/profile/avatar',
+          method: 'POST',
+          body: formData,
+        }
+      },
+    }),
   }),
 })
 
@@ -91,5 +106,6 @@ export const {
   useGetPostsForUserInfiniteQuery,
   useFetchUserQuery,
   useFetchMyProfileQuery,
+  useUpdateAvatarMutation
 } = publicUserApi
 export const publicUserReducer = publicUserApi.reducer
