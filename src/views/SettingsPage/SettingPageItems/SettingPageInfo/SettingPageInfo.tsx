@@ -56,7 +56,7 @@ export const SettingPageInfo = () => {
     try {
       const response = await updateAvatar(avatarPreview.file).unwrap()
       const uploadedUrl = response.avatars?.[0]?.url
-      if (!uploadedUrl) throw new Error('Invalid server response')
+      if (!uploadedUrl) console.error('Invalid server response')
 
       setAvatarPreview({ file: avatarPreview.file, url: uploadedUrl })
       setIsUploadModalOpen(false)
