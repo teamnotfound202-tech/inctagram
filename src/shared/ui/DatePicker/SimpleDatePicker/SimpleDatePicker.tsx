@@ -74,6 +74,7 @@ export const SimpleDatePicker = ({
             <div className={s.wrapperCalendar}>
               {opened && (
                 <DayPicker
+
                   mode="single"
                   selected={dateValue}
                   captionLayout="dropdown"
