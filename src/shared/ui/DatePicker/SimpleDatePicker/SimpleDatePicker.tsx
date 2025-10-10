@@ -38,6 +38,7 @@ export const SimpleDatePicker = ({
     setYearChangerIsOpened(prev => !prev)
     if (dateValue) {
       setCurrentMonth(dateValue)
+
     }
   }
   const handleSelect = (date: Date | undefined) => {
@@ -45,6 +46,7 @@ export const SimpleDatePicker = ({
       setDateValue(date)
       setCurrentMonth(date)
     }
+
   }
   const handleMonthChange = (newMonth: Date) => {
     setCurrentMonth(newMonth)
@@ -58,7 +60,7 @@ export const SimpleDatePicker = ({
             tabIndex={0}
             className={clsx(s.datePicker, { [s.error]: error }, { [s.disabled]: disabled })}
           >
-            <div>{dateValue ? formatDate(dateValue) : formatDate(new Date())}</div>
+            <div> {dateValue ? formatDate(dateValue) : formatDate(new Date())}</div>
             {!opened ? <CalendarOutline /> : <CalendarOpened />}
           </div>
         </Popover.Trigger>
@@ -66,17 +68,18 @@ export const SimpleDatePicker = ({
         <Popover.Portal>
           <Popover.Content>
             <div className={s.wrapperCalendar}>
-              {yearChangerIsOpened && (
+              {/*{yearChangerIsOpened && (
                 <CustomMonthDropdown date={currentMonth} onChange={handleMonthChange} />
-              )}
+              )}*/}
               <DayPicker
                 mode="single"
                 selected={dateValue}
+                captionLayout="dropdown"
                 onSelect={handleSelect}
-                month={currentMonth} // ✅ Контролируем отображаемый месяц
-                onMonthChange={setCurrentMonth} // ✅ Обновляем при ручной навигации
+               /* month={currentMonth} // ✅ Контролируем отображаемый месяц
+                onMonthChange={setCurrentMonth}*/ // ✅ Обновляем при ручной навигации
                 ISOWeek
-                               showOutsideDays
+                showOutsideDays
                 modifiers={{ weekend: isWeekend }}
                 modifiersClassNames={{ weekend: 'rdp-day_weekend' }}
                 classNames={sharedDatePickerClassNames}
