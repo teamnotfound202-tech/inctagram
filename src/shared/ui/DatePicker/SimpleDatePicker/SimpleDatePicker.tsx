@@ -16,7 +16,7 @@ export type DatePickerSingleProps = {
   value?: Date | string
   onDateChange?: (date: Date | string) => void
   label?: string
-  error?: boolean
+  error?: string
   disabled?: boolean
 } & Omit<DayPickerProps, 'mode' | 'selected' | 'onSelect'>
 
@@ -32,7 +32,6 @@ export const SimpleDatePicker = ({
   const [dateValue, setDateValue] = useState<Date>(new Date())
   const [currentMonth, setCurrentMonth] = useState<Date |string>(value || new Date())
   const [disabled, setIsDisabled] = useState(false)
-  console.log(value)
   const handleOpen = (event: boolean) => {
     setIsOpened(event)
     /*  if (dateValue) {

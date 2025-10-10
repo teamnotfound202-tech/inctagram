@@ -2,21 +2,19 @@ import s from './SettingPageInfo.module.scss'
 import AvatarIcon from './icons/avatarIcon.svg'
 import { Button, Input, SelectBox, SimpleDatePicker, TextArea } from '@/shared/ui'
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form'
-import { useFetchMyProfileQuery } from '@/features/publicUserApi/publicUserApi'
-import { use, useEffect } from 'react'
-
-type GeneralInformaitionFormValues = {
-  username: string
-  firstName: string
-  lastName: string
-  dateOfBirth: Date | string
-  country: string
-  city: string
-  aboutMe: string
-}
+import {
+  useFetchMyProfileQuery,
+  useUpdateMyProfileMutation,
+} from '@/features/publicUserApi/publicUserApi'
+import {useEffect } from 'react'
+import { GeneralInformaitionValues } from '@/shared/api/types'
+import { toast } from 'sonner'
+import { AlertToast } from '@/shared/ui/Alerts/Alerts'
+import { validateAtLeast13 } from '@/shared/lib/utils/isAtLeastYear'
 
 export const SettingPageInfo = () => {
   const {data:userData} = useFetchMyProfileQuery()
+  const [updateUserInfo] = useUpdateMyProfileMutation()
   const {
     register,
     handleSubmit,
@@ -24,14 +22,13 @@ export const SettingPageInfo = () => {
     watch,
     control,
     reset,
-  } = useForm<GeneralInformaitionFormValues>({
+  } = useForm<GeneralInformaitionValues>({
     mode: 'all',
   })
-  console.log(userData)
   useEffect(() => {
       if(userData){
       reset({
-        username: userData?.userName,
+        userName: userData?.userName,
         firstName: userData?.firstName,
         lastName: userData?.lastName,
         dateOfBirth: userData?.dateOfBirth,
@@ -40,15 +37,19 @@ export const SettingPageInfo = () => {
         aboutMe: userData?.aboutMe
       })
     }
-  }, [userData])
-  const onSubmit: SubmitHandler<GeneralInformaitionFormValues> = data => {
-    // const values = {
-    //   Username: data.username,
-    //   email: data.email,
-    //   password: data.password,
-    // };
-
-    console.log(data)
+  }, [userData, reset])
+  const onSubmit: SubmitHandler<GeneralInformaitionValues> = data => {
+    updateUserInfo(data)
+      .unwrap()
+      .then(() => {
+      toast.custom(() => (
+        <AlertToast variant='success' title={`Success`} description={'Your settings are saved!'} />
+      ))
+    }).catch(()=>{
+      toast.custom(() => (
+        <AlertToast variant='error' title={`Error!`} description={'Server is not available!'} />
+      ))
+    })
   }
   return (
     <div className={s.settingPageInfo}>
@@ -72,7 +73,7 @@ export const SettingPageInfo = () => {
                   <span className={s.textRed}>*</span>
                 </>
               }
-              {...register('username', {
+              {...register('userName', {
                 required: 'Enter your username',
                 minLength: { value: 6, message: 'Minimum number of characters 6' },
                 maxLength: { value: 30, message: 'Maximum number of characters 30' },
@@ -127,12 +128,18 @@ export const SettingPageInfo = () => {
 
               <Controller control={control}
                           name={'dateOfBirth'}
-                          render={({field})=>(
-                            <SimpleDatePicker value={field.value}
-                                              onDateChange={(d: Date | string ) => field.onChange(d)}
-                                              label={'Date of birth'}
-                                              className={s.settingPageInfoDatePicker} />
-                          )}/>
+                          rules={{
+                            validate: validateAtLeast13
+                          }}
+                          render={({field})=>{
+                            return (
+                              <SimpleDatePicker value={field.value}
+                                                onDateChange={(d: Date | string ) => field.onChange(d)}
+                                                label={'Date of birth'}
+                                                error={errors?.dateOfBirth || ''}
+                                                className={s.settingPageInfoDatePicker} />
+                            )
+                          }}/>
             </fieldset>
 
             <fieldset className={s.countryWrapper}>

@@ -8,6 +8,7 @@ import {
 import {baseApi} from '@/shared/api'
 import {PAGINATION} from '@/shared/constants/pagination'
 import {User} from "@/features/postView/api/types";
+import { GeneralInformaitionValues } from '@/shared/api/types'
 
 export const publicUserApi = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -78,6 +79,9 @@ export const publicUserApi = baseApi.injectEndpoints({
     fetchMyProfile: builder.query<User, void>({
       query: () => `users/profile`,
     }),
+    updateMyProfile: builder.mutation<void, GeneralInformaitionValues>({
+      query: body => ({ url: `/users/profile`, method: 'PUT', body })
+    }),
   }),
 })
 
@@ -91,5 +95,6 @@ export const {
   useGetPostsForUserInfiniteQuery,
   useFetchUserQuery,
   useFetchMyProfileQuery,
+  useUpdateMyProfileMutation
 } = publicUserApi
 export const publicUserReducer = publicUserApi.reducer
