@@ -4,7 +4,8 @@ import { Button, Input, SelectBox, SimpleDatePicker, TextArea } from '@/shared/u
 
 
 export const SettingPageInfo = () => {
-  return (
+
+    return (
     <div className={s.settingPageInfo}>
       <form className={s.settingPageInfoForm}>
         <div className={s.settingPageInfoPhotoWrapper}>

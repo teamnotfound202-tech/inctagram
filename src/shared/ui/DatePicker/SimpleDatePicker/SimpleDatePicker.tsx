@@ -10,6 +10,7 @@ import { sharedDatePickerClassNames } from '@/shared/ui/DatePicker/ClassNames'
 import { useState } from 'react'
 import { CalendarOpened } from '@/shared/ui/DatePicker/icons/CalendarOpened'
 import { formatDate, isWeekend } from '@/shared/ui/DatePicker/utils/utils'
+import { CustomMonthDropdown } from '@/shared/ui/DatePicker/CustomCaption/CustomCaption'
 
 export type DatePickerSingleProps = {
   value?: Date
@@ -28,14 +29,25 @@ export const SimpleDatePicker = ({
 }: DatePickerSingleProps) => {
   const [opened, setIsOpened] = useState(false)
   const [error, setError] = useState(false)
+  const [dateValue, setDateValue] = useState<Date>(new Date())
+  const [yearChangerIsOpened, setYearChangerIsOpened] = useState(false)
+  const [currentMonth, setCurrentMonth] = useState<Date>(value || new Date())
   const [disabled, setIsDisabled] = useState(false)
   const handleOpen = () => {
     setIsOpened(prev => !prev)
+    setYearChangerIsOpened(prev => !prev)
+    if (dateValue) {
+      setCurrentMonth(dateValue)
+    }
   }
   const handleSelect = (date: Date | undefined) => {
     if (date) {
-      onDateChange?.(date)
+      setDateValue(date)
+      setCurrentMonth(date)
     }
+  }
+  const handleMonthChange = (newMonth: Date) => {
+    setCurrentMonth(newMonth)
   }
   return (
     <div>
@@ -46,7 +58,7 @@ export const SimpleDatePicker = ({
             tabIndex={0}
             className={clsx(s.datePicker, { [s.error]: error }, { [s.disabled]: disabled })}
           >
-            <div>{value ? formatDate(value) : formatDate(new Date())}</div>
+            <div>{dateValue ? formatDate(dateValue) : formatDate(new Date())}</div>
             {!opened ? <CalendarOutline /> : <CalendarOpened />}
           </div>
         </Popover.Trigger>
@@ -54,12 +66,17 @@ export const SimpleDatePicker = ({
         <Popover.Portal>
           <Popover.Content>
             <div className={s.wrapperCalendar}>
+              {yearChangerIsOpened && (
+                <CustomMonthDropdown date={currentMonth} onChange={handleMonthChange} />
+              )}
               <DayPicker
                 mode="single"
-                selected={new Date()}
+                selected={dateValue}
                 onSelect={handleSelect}
+                month={currentMonth} // ✅ Контролируем отображаемый месяц
+                onMonthChange={setCurrentMonth} // ✅ Обновляем при ручной навигации
                 ISOWeek
-                showOutsideDays
+                               showOutsideDays
                 modifiers={{ weekend: isWeekend }}
                 modifiersClassNames={{ weekend: 'rdp-day_weekend' }}
                 classNames={sharedDatePickerClassNames}
