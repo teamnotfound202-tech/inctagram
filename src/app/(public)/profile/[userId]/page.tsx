@@ -8,7 +8,7 @@ export default async function ProfilePage (props: {
   params: Promise<{ userId: string }>,
 })  {
   const params = await props.params;
-  const resp = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + `/posts/user/${params.userId}/,?pageSize=${PAGINATION.DEFAULT_PAGE_SIZE}`)
+  const resp = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + `/posts/user/${params.userId}/?pageSize=${PAGINATION.DEFAULT_PAGE_SIZE}`)
   const postsData = await resp.json()
 
   const userData = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + `/public-user/profile/${params.userId}`)
