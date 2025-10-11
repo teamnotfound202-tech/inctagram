@@ -227,7 +227,7 @@ export const SettingPageInfo = () => {
                               <SimpleDatePicker value={field.value}
                                                 onDateChange={(d: Date | string ) => field.onChange(d)}
                                                 label={'Date of birth'}
-                                                error={errors?.dateOfBirth || ''}
+                                                error={(errors?.dateOfBirth || '') as string}
                                                 className={s.settingPageInfoDatePicker} />
                             )
                           }}/>

@@ -228,8 +228,11 @@
   display: flex;
   flex-wrap: wrap;
   max-width: fit-content;
-}
 
+}
+ .rdpMonths option:hover{
+    background-color: $accent-900;
+  }
 .rdpWeekdays {
   color: $light-900;
 }

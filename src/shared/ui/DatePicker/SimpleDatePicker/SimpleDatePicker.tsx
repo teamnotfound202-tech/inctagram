@@ -10,7 +10,6 @@ import { sharedDatePickerClassNames } from '@/shared/ui/DatePicker/ClassNames'
 import { useState } from 'react'
 import { CalendarOpened } from '@/shared/ui/DatePicker/icons/CalendarOpened'
 import { formatDate, isWeekend } from '@/shared/ui/DatePicker/utils/utils'
-import { CustomMonthDropdown } from '@/shared/ui/DatePicker/CustomCaption/CustomCaption'
 
 export type DatePickerSingleProps = {
   value?: Date | string
