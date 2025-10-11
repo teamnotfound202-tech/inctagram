@@ -130,6 +130,7 @@ export const ModalUsers = ({ type, isOpen, onCloseAction, userName, userStats }:
   return (
     <Modal title={title} onClick={onCloseAction}>
       <Input
+        id={'inputSearch'}
         className={s.searchInput}
         type="search"
         placeholder={messages.navigation.search}
