@@ -19,7 +19,7 @@ type Props = {
 
 export const AvatarUser = ({ avatarURL }: Props) => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
-  const [avatarPreviewURL, setAvatarPreviewURL] = useState<string | undefined>(undefined)
+  const [avatarPreviewURL, setAvatarPreviewURL] = useState<string | undefined>(avatarURL)
   const [avatarPreviewFile, setAvatarPreviewFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [uploadError, setUploadError] = useState<string>('')

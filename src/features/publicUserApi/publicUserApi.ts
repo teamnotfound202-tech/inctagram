@@ -94,6 +94,7 @@ export const publicUserApi = baseApi.injectEndpoints({
           body: formData,
         }
       },
+      invalidatesTags:['Profile']
     }),
     deleteAvatar: builder.mutation<void, void>({
       query: () => ({url: '/users/profile/avatar', method: 'DELETE'}),
