@@ -88,7 +88,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
       {displayError && <div className={styles.errorMessage}>{displayError}</div>}
 
       {/* Скрытое поле для форм */}
-      {name && <input type="hidden" name={name} value={currentValue} disabled={disabled} />}
+      {name && <input type="hidden" name={name} value={currentValue ? currentValue : ''} disabled={disabled} onChange={() => {}} />}
     </div>
   )
 }

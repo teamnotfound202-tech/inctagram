@@ -10,7 +10,7 @@ type Props = {
   text: string
 }
 
-export const SettingNavLinkItem = ({ href = '/settings?part=info', text }: Props) => {
+export const SettingNavLinkItem = ({ href, text }: Props) => {
   const searchParams = useSearchParams()
   const path = useMemo(() => searchParams.get('part'), [searchParams])
 

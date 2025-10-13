@@ -1,5 +1,6 @@
 import type { Validate } from 'react-hook-form'
 import { GeneralInformaitionValues } from '@/shared/api/types'
+import { Path } from '@/shared/config'
 
 // ≥ N лет: принимает string (ISO) ИЛИ Date
 const makeAtLeastYears =
@@ -29,7 +30,9 @@ const makeAtLeastYears =
       const today = new Date()
       const cutoff = new Date(today.getFullYear() - n, today.getMonth(), today.getDate())
 
-      return dob <= cutoff || `Вам должно быть не менее ${n} лет`
+      return (
+        dob <= cutoff || `A user under ${n} cannot create a profile.`
+      )
     }
 
 // частный случай: 13 лет

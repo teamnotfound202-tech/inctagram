@@ -7,9 +7,11 @@ import 'react-day-picker/style.css'
 import s from '../DatePicker.module.scss'
 import { CalendarOutline } from '@/shared/ui/DatePicker/icons/CalendarOutline'
 import { sharedDatePickerClassNames } from '@/shared/ui/DatePicker/ClassNames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CalendarOpened } from '@/shared/ui/DatePicker/icons/CalendarOpened'
 import { formatDate, isWeekend } from '@/shared/ui/DatePicker/utils/utils'
+import { Path } from '@/shared/config'
+import Link from 'next/link'
 
 export type DatePickerSingleProps = {
   value?: Date | string
@@ -22,34 +24,33 @@ export type DatePickerSingleProps = {
 export const SimpleDatePicker = ({
   value,
   onDateChange,
-
+  error: errorMessage,
   label = 'Select Date',
   ...restProps
 }: DatePickerSingleProps) => {
   const [opened, setIsOpened] = useState<boolean | undefined>(false)
-  const [error, setError] = useState<string>('')
+  const [error, setError] = useState<string | undefined>(errorMessage)
   const [dateValue, setDateValue] = useState<Date>(new Date())
-  const [currentMonth, setCurrentMonth] = useState<Date |string>(value || new Date())
+  const [currentMonth, setCurrentMonth] = useState<Date | string>(value || new Date())
   const [disabled, setIsDisabled] = useState(false)
   const handleOpen = (event: boolean) => {
     setIsOpened(event)
-    /*  if (dateValue) {
-        setCurrentMonth(dateValue)
-      }*/
   }
-const dateFormatterForServer = (date: Date ) => {
-  const year = date.getFullYear()
-  const month = date.getMonth()
-  const day = date.getDate()
-  const dateFormat = new Date(Date.UTC(year, month, day)).toISOString()
-return dateFormat
-  }
-  const formatDateFromServer = (dateString:string) => {
-    const [datePart] = dateString.split('T');
-    const [year, month, day] = datePart.split('-');
 
-    return `${day}.${month}.${year}`;
-  };
+  const dateFormatterForServer = (date: Date) => {
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const day = date.getDate()
+    return new Date(Date.UTC(year, month, day)).toISOString()
+  }
+
+  const formatDateFromServer = (dateString: string) => {
+    const [datePart] = dateString.split('T')
+    const [year, month, day] = datePart.split('-')
+
+    return `${day}.${month}.${year}`
+  }
+
   const handleSelect = (date: Date | undefined) => {
     if (date) {
       setDateValue(date)
@@ -60,6 +61,10 @@ return dateFormat
       }
     }
   }
+
+  useEffect(() => {
+    setError(errorMessage)
+  }, [errorMessage])
 
   return (
     <div>
@@ -74,7 +79,11 @@ return dateFormat
             {!opened ? <CalendarOutline /> : <CalendarOpened />}
           </div>
         </Popover.Trigger>
-        {!!error && <div className={s.errorMessage}>{error}</div>}
+        {!!error && (
+          <div className={s.errorMessage}>
+            {error} <Link className={s.linkPolicy} href={Path.PrivatePolicy}>Privacy Policy</Link>
+          </div>
+        )}
         <Popover.Portal>
           <Popover.Content>
             <div className={s.wrapperCalendar}>

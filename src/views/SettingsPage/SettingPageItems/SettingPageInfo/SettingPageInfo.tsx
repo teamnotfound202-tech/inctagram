@@ -1,11 +1,5 @@
 import s from './SettingPageInfo.module.scss'
-import AvatarIcon from './icons/avatarIcon.svg'
 import { Button, Input, SelectBox, SimpleDatePicker, TextArea } from '@/shared/ui'
-import { ChangeEvent, useRef, useState } from 'react'
-import { CloseIcon } from '@/shared/ui/Alerts/CloseIcon/CloseIcon'
-import Image from 'next/image'
-import { useUpdateAvatarMutation, } from '@/features/publicUserApi/publicUserApi'
-
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form'
 import {
   useFetchMyProfileQuery,
@@ -16,22 +10,11 @@ import { GeneralInformaitionValues } from '@/shared/api/types'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { validateAtLeast13 } from '@/shared/lib/utils/isAtLeastYear'
-
-// Тип для предварительного просмотра аватара
-interface AvatarPreview {
-  file: File
-  url: string
-}
+import { AvatarUser } from '@/views/SettingsPage/SettingPageItems/SettingPageInfo/AvatarUser/AvatarUser'
 
 export const SettingPageInfo = () => {
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
-  const [avatarPreview, setAvatarPreview] = useState<AvatarPreview | null>(null)
-  const [uploadError, setUploadError] = useState<string>('')
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const {data:userData} = useFetchMyProfileQuery()
+  const {data: userData} = useFetchMyProfileQuery()
   const [updateUserInfo] = useUpdateMyProfileMutation()
-  const [updateAvatar] = useUpdateAvatarMutation()
 
   const {
     register,
@@ -57,6 +40,7 @@ export const SettingPageInfo = () => {
       })
     }
   }, [userData, reset])
+
   const onSubmit: SubmitHandler<GeneralInformaitionValues> = data => {
     updateUserInfo(data)
       .unwrap()
@@ -71,86 +55,17 @@ export const SettingPageInfo = () => {
     })
   }
 
-  // Обработчик выбора файла
-  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    setUploadError('')
-
-    if (!file) return
-
-    // Валидация формата
-    if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-      setUploadError('Error! The format of the uploaded photo must be\n' + 'PNG and JPEG')
-      return
-    }
-
-    // Валидация размера (10 МБ)
-    if (file.size > 10 * 1024 * 1024) {
-      setUploadError('Error! Photo size must be less than 10 MB!')
-      return
-    }
-
-    // Создание URL для предварительного просмотра
-    const previewUrl = URL.createObjectURL(file)
-    setAvatarPreview({ file, url: previewUrl })
-  }
-
-  // Обработчик загрузки с компьютера
-  const handleSelectFromComputer = () => {
-    fileInputRef.current?.click()
-  }
-
-  // Обработчик сохранения аватара
-  const handleSaveAvatar = async () => {
-    if (!avatarPreview) return
-
-    try {
-      const response = await updateAvatar(avatarPreview.file).unwrap()
-      const uploadedUrl = response.avatars?.[0]?.url
-      if (!uploadedUrl) console.error('Invalid server response')
-
-      setAvatarPreview({ file: avatarPreview.file, url: uploadedUrl })
-      setIsUploadModalOpen(false)
-    } catch (error) {
-      setUploadError('Failed to upload avatar. Please try again.')
-    }
-  }
-
-  // Обработчик закрытия модального окна
-  const handleCloseModal = () => {
-    setIsUploadModalOpen(false)
-    setAvatarPreview(null)
-    setUploadError('')
-
-    // Очистка input файла
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
-  }
-
   return (
     <div className={s.settingPageInfo}>
-      <form onSubmit={handleSubmit(onSubmit)} className={s.settingPageInfoForm}>
+      <form
+        onSubmit={e => {
+          e.preventDefault()
+          handleSubmit(onSubmit)
+        }}
+        className={s.settingPageInfoForm}
+      >
         <div className={s.formWrapper}>
-          <div className={s.settingPageInfoPhotoWrapper}>
-            <div className={s.avatarIconWrapper}>
-              {/* Показываем превью или иконку по умолчанию */}
-              {avatarPreview ? (
-                <Image
-                  src={avatarPreview.url}
-                  alt="Profile preview"
-                  className={s.avatarPreview}
-                  width={300}
-                  height={300}
-                />
-              ) : (
-                <AvatarIcon />
-              )}
-            </div>
-            <Button variant={'outline'} type="button" onClick={() => setIsUploadModalOpen(true)}>
-              Select Profile Photo
-            </Button>
-          </div>
+          <AvatarUser avatarURL={userData?.avatars?.[0]?.url} />
 
           {/* Остальная форма */}
           <div className={s.settingPageInfoContent}>
@@ -216,21 +131,25 @@ export const SettingPageInfo = () => {
             />
 
             <fieldset className={s.datePickerWrapper}>
-
-              <Controller control={control}
-                          name={'dateOfBirth'}
-                          rules={{
-                            validate: validateAtLeast13
-                          }}
-                          render={({field})=>{
-                            return (
-                              <SimpleDatePicker value={field.value}
-                                                onDateChange={(d: Date | string ) => field.onChange(d)}
-                                                label={'Date of birth'}
-                                                error={(errors?.dateOfBirth || '') as string}
-                                                className={s.settingPageInfoDatePicker} />
-                            )
-                          }}/>
+              <Controller
+                control={control}
+                name={'dateOfBirth'}
+                rules={{
+                  validate: validateAtLeast13,
+                }}
+                render={({ field }) => {
+                  console.log(errors)
+                  return (
+                    <SimpleDatePicker
+                      value={field.value}
+                      onDateChange={(d: Date | string) => field.onChange(d)}
+                      label={'Date of birth'}
+                      error={(errors?.dateOfBirth?.message || '') as string}
+                      className={s.settingPageInfoDatePicker}
+                    />
+                  )
+                }}
+              />
             </fieldset>
 
             <fieldset className={s.countryWrapper}>
@@ -286,79 +205,15 @@ export const SettingPageInfo = () => {
           </div>
         </div>
 
-        <Button type={'submit'} variant={'primary'} className={s.settingPageInfoSubmitButton}>
+        <Button
+          type={'submit'}
+          variant={'primary'}
+          className={s.settingPageInfoSubmitButton}
+          disabled={!isValid}
+        >
           Save Changes
         </Button>
       </form>
-      {/* Модальное окно загрузки фото */}
-      {isUploadModalOpen && (
-        <div className={s.modalOverlay}>
-          <div className={s.uploadModal}>
-            {/* Заголовок с кнопкой закрытия */}
-            <div className={s.modalHeader}>
-              <h3 className={s.modalTitle}>Add a Profile Photo</h3>
-              <Button
-                className={s.closeButton}
-                onClick={handleCloseModal}
-                type="button"
-                variant={'text'}
-              >
-                <CloseIcon />
-              </Button>
-            </div>
-
-            {/* Сообщения об ошибках */}
-            {uploadError && <div className={s.errorMessage}>{uploadError}</div>}
-
-            {/* Область предварительного просмотра */}
-            <div className={s.previewContent}>
-              <div className={s.previewArea}>
-                {avatarPreview ? (
-                  <div className={s.previewContainer}>
-                    <Image
-                      src={avatarPreview.url}
-                      alt="Avatar preview"
-                      className={s.previewImage}
-                      width={300}
-                      height={300}
-                    />
-                  </div>
-                ) : (
-                  <div className={s.placeholder}>
-                    <AvatarIcon className={s.placeholderIcon} />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Основная кнопка действия */}
-            <div className={s.mainActionButton}>
-              {avatarPreview ? (
-                <Button variant={'primary'} onClick={handleSaveAvatar} className={s.saveButton}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  variant={'primary'}
-                  onClick={handleSelectFromComputer}
-                  className={s.selectButton}
-                >
-                  Select from Computer
-                </Button>
-              )}
-            </div>
-
-            {/* Скрытый input для выбора файла */}
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileSelect}
-              accept=".jpg,.jpeg,.png"
-              className={s.hiddenFileInput}
-            />
-          </div>
-        </div>
-      )}
     </div>
   )
 }

@@ -21,16 +21,18 @@ export const publicUserApi = baseApi.injectEndpoints({
         result ? [{ type: 'UserProfile', id: userName }] : ['UserProfile'],
     }),
 
-    followingUser: builder.mutation<void, { selectedUserId: number, userName: string }>({
+    followingUser: builder.mutation<void, { selectedUserId: number; userName: string }>({
       query: body => ({ url: `/users/following`, method: 'POST', body }),
       invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
     }),
 
-    unFollowingUser: builder.mutation<void, { userId: number, userName:string }>({
+    unFollowingUser: builder.mutation<void, { userId: number; userName: string }>({
       query: ({ userId }) => ({ url: `/users/follower/${userId}`, method: 'DELETE' }),
       invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
     }),
-    followersUser: builder.query<CursorPage<UserItem>, { userName: string; cursor?: number | null; pageSize?: number; search?: string }
+    followersUser: builder.query<
+      CursorPage<UserItem>,
+      { userName: string; cursor?: number | null; pageSize?: number; search?: string }
     >({
       query: ({ userName, ...params }) => ({
         url: `/users/${userName}/followers`,
@@ -39,7 +41,9 @@ export const publicUserApi = baseApi.injectEndpoints({
       }),
     }),
 
-    followingsUser: builder.query<CursorPage<UserItem>, { userName: string; cursor?: number; pageSize?: number; search?: string }
+    followingsUser: builder.query<
+      CursorPage<UserItem>,
+      { userName: string; cursor?: number; pageSize?: number; search?: string }
     >({
       query: ({ userName, ...params }) => ({
         url: `/users/${userName}/following`,
@@ -47,22 +51,21 @@ export const publicUserApi = baseApi.injectEndpoints({
         params,
       }),
     }),
-    getPostsForUser: builder.infiniteQuery<
-      ResponsesPosts,
-      { userId: string },
-      string | undefined
-    >({
+    getPostsForUser: builder.infiniteQuery<ResponsesPosts, { userId: string }, string | undefined>({
       query: ({ queryArg, pageParam }) => {
         return {
           url: `/posts/user/${queryArg.userId}/${pageParam || ''}`,
-          params: { pageSize: PAGINATION.DEFAULT_PAGE_SIZE  + 1 },
+          params: { pageSize: PAGINATION.DEFAULT_PAGE_SIZE + 1 },
         }
       },
       infiniteQueryOptions: {
         initialPageParam: undefined,
         getNextPageParam: (lastPage, allPages) => {
           const totalCountPosts = allPages.flatMap(page => page.items).length
-          if (totalCountPosts < lastPage.totalCount && lastPage.items[lastPage.items.length - 1]?.id) {
+          if (
+            totalCountPosts < lastPage.totalCount &&
+            lastPage.items[lastPage.items.length - 1]?.id
+          ) {
             return lastPage.items[lastPage.items.length - 1].id.toString()
           }
 
@@ -74,16 +77,14 @@ export const publicUserApi = baseApi.injectEndpoints({
       serializeQueryArgs: ({ queryArgs: { userId } }) => `userPosts-${userId}`,
     }),
     fetchUser: builder.query<User, number>({
-      query: (profileId) => `public-user/profile/${profileId}`,
+      query: profileId => `public-user/profile/${profileId}`,
     }),
     fetchMyProfile: builder.query<User, void>({
       query: () => `users/profile`,
+      providesTags: ['Profile']
     }),
-    updateAvatar: builder.mutation<
-      { avatars: { url: string }[] },
-      File
-    >({
-      query: (file) => {
+    updateAvatar: builder.mutation<{ avatars: { url: string }[] }, File>({
+      query: file => {
         const formData = new FormData()
         formData.append('file', file) // имя поля как в curl
 
@@ -94,8 +95,12 @@ export const publicUserApi = baseApi.injectEndpoints({
         }
       },
     }),
+    deleteAvatar: builder.mutation<void, void>({
+      query: () => ({url: '/users/profile/avatar', method: 'DELETE'}),
+      invalidatesTags: ['Profile']
+    }),
     updateMyProfile: builder.mutation<void, GeneralInformaitionValues>({
-      query: body => ({ url: `/users/profile`, method: 'PUT', body })
+      query: body => ({ url: `/users/profile`, method: 'PUT', body }),
     }),
   }),
 })
@@ -111,6 +116,7 @@ export const {
   useFetchUserQuery,
   useFetchMyProfileQuery,
   useUpdateAvatarMutation,
-  useUpdateMyProfileMutation
+  useUpdateMyProfileMutation,
+  useDeleteAvatarMutation
 } = publicUserApi
 export const publicUserReducer = publicUserApi.reducer
