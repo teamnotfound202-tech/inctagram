@@ -3,7 +3,7 @@
 import { SettingsNavLinks } from '@/views/SettingsPage/SettingsNavLinks/SettingsNavLinks'
 import s from './SettingsPage.module.scss'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { SettingPageInfo } from '@/views/SettingsPage/SettingPageItems/SettingPageInfo/SettingPageInfo'
 import { SettingPageDevices } from '@/views/SettingsPage/SettingPageItems/SettingPageDevices/SettingPageDevices'
 import {
@@ -12,7 +12,7 @@ import {
 import { SettingPagePayments } from '@/views/SettingsPage/SettingPageItems/SettingPagePayments/SettingPagePayments'
 export const SettingsPage = () => {
   const searchParams = useSearchParams()
-  const path = useMemo(() => searchParams.get('part'), [searchParams])
+  const path = searchParams.get('part')
   const router = useRouter()
 
   useEffect(() => {
