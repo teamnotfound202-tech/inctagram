@@ -60,7 +60,7 @@ export const SettingPageInfo = () => {
       <form
         onSubmit={e => {
           e.preventDefault()
-          handleSubmit(onSubmit)
+          handleSubmit(onSubmit)()
         }}
         className={s.settingPageInfoForm}
       >
@@ -138,7 +138,6 @@ export const SettingPageInfo = () => {
                   validate: validateAtLeast13,
                 }}
                 render={({ field }) => {
-                  console.log(errors)
                   return (
                     <SimpleDatePicker
                       value={field.value}
@@ -194,6 +193,7 @@ export const SettingPageInfo = () => {
             <TextArea
               title={'About Me'}
               placeholder={''}
+              error={errors.aboutMe?.message}
               {...register('aboutMe', {
                 maxLength: { value: 200, message: 'Maximum number of characters 200' },
                 pattern: {

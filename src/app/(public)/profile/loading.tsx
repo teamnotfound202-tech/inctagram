@@ -1,4 +1,4 @@
-import { Loader } from '@/shared/ui/Loader/Loader'
+import s from '@/shared/ui/Loader/Loader.module.scss'
 
 export default function Loading() {
   return (
@@ -15,7 +15,9 @@ export default function Loading() {
         bottom: '0',
       }}
     >
-      <Loader />
+
+        <div>Закройте глаза и представте свою страницу .... </div>
+
     </div>
   )
 }
