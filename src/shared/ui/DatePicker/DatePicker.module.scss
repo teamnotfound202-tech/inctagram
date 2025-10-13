@@ -25,8 +25,8 @@
   align-items: center;
   justify-content: space-between;
 
-  width: 262px;
-  min-height: 36px;
+  //width: 262px;
+  height: 36px;
   padding: 6px 12px;
   border: 1px solid $dark-300;
   border-radius: 2px;
@@ -36,7 +36,7 @@
   line-height: 24px;
   color: $light-100;
 
-  background-color: $dark-500;
+  background-color: transparent;
   outline: 1px solid transparent;
 
   &:focus,
@@ -228,6 +228,7 @@
   display: flex;
   flex-wrap: wrap;
   max-width: fit-content;
+
 }
 
 .rdpWeekdays {
@@ -313,4 +314,9 @@
 .rdpRange_end:not(.rdpRange_start) {
   border-radius: 0 18px 18px 0;
   background-color: $accent-900;
+}
+
+.linkPolicy {
+  cursor: pointer;
+  text-decoration: underline;
 }

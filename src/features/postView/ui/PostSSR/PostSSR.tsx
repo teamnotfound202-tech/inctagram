@@ -9,8 +9,8 @@ export const PostSsr = async ({params, searchParams}: {
     params: { userId: string },
     searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-    const {userId} = params;
-    const resolvedSearchParams = searchParams;
+    const {userId} =  params;
+    const resolvedSearchParams = await searchParams;
     const postId = resolvedSearchParams.postId as string | undefined;
 
     // Проверяем конфликт параметров и делаем редирект если нужно

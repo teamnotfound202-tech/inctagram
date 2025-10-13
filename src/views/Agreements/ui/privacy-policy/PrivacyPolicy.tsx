@@ -1,6 +1,4 @@
 "use client";
-
-import {Path} from '@/shared/config';
 import s from '../../styles/styleAgreements.module.scss'
 import ArrowBack from '@/views/Agreements/icon/ArrowBack.svg'
 import {useRouter} from "next/navigation";
@@ -9,7 +7,7 @@ export const PrivacyPolicy = () => {
     const router = useRouter();
     return (
         <div className={s.wrapper}>
-            <button className={s.btn} onClick={() => router.push(Path.SignUp)}>
+            <button className={s.btn} onClick={() => router.back()}>
                 <div className={s.iconWrapper}>
                     <ArrowBack/>
                 </div>

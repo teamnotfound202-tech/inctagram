@@ -10,6 +10,7 @@ import { ProfileHeadersStats } from '@/features/profile/ProfileHeadersStats/Prof
 import Skeleton from 'react-loading-skeleton'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
+import Link from 'next/link'
 
 type Props = {
   user: UserDataResponse
@@ -58,17 +59,28 @@ export const ProfileHeader = ({ user, userStats }: Props) => {
                 />
               )}
 
-              {!isLoading && currentUser?.userId &&
-                (isOwnProfile  ? (
-                  <Button variant={'secondary'}>{messages.profile.profileSettings}</Button>
+              {!isLoading &&
+                currentUser?.userId &&
+                (isOwnProfile ? (
+                  <Button variant={'secondary'} asChild>
+                    <Link href={'/settings?part=info'}>{messages.profile.profileSettings}</Link>
+                  </Button>
                 ) : (
                   <div className={s.foreignProfileButtons}>
                     {freshProfileData?.isFollowing ? (
-                      <Button variant={'outline'} onClick={unFollowHandler} disabled={isLoadingButtons}>
+                      <Button
+                        variant={'outline'}
+                        onClick={unFollowHandler}
+                        disabled={isLoadingButtons}
+                      >
                         {showLoading ? messages.common.loading : messages.profile.unFollow}
                       </Button>
                     ) : (
-                      <Button variant={'primary'} onClick={followHandler} disabled={isLoadingButtons}>
+                      <Button
+                        variant={'primary'}
+                        onClick={followHandler}
+                        disabled={isLoadingButtons}
+                      >
                         {showLoading ? messages.common.loading : messages.profile.follow}
                       </Button>
                     )}
@@ -78,14 +90,12 @@ export const ProfileHeader = ({ user, userStats }: Props) => {
             </div>
           </div>
 
-          <ProfileHeadersStats data={dataForRender} userName={user.userName}/>
+          <ProfileHeadersStats data={dataForRender} userName={user.userName} />
 
           <div className={s.userAbout}>
             <p>{user.aboutMe}</p>
           </div>
-
         </div>
-
       </div>
     </div>
   )

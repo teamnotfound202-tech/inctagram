@@ -7,64 +7,100 @@ import 'react-day-picker/style.css'
 import s from '../DatePicker.module.scss'
 import { CalendarOutline } from '@/shared/ui/DatePicker/icons/CalendarOutline'
 import { sharedDatePickerClassNames } from '@/shared/ui/DatePicker/ClassNames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CalendarOpened } from '@/shared/ui/DatePicker/icons/CalendarOpened'
 import { formatDate, isWeekend } from '@/shared/ui/DatePicker/utils/utils'
+import { Path } from '@/shared/config'
+import Link from 'next/link'
 
 export type DatePickerSingleProps = {
-  value?: Date
-  onDateChange?: (date: Date) => void
+  value?: Date | string
+  onDateChange?: (date: Date | string) => void
   label?: string
-  error?: boolean
+  error?: string
   disabled?: boolean
 } & Omit<DayPickerProps, 'mode' | 'selected' | 'onSelect'>
 
 export const SimpleDatePicker = ({
   value,
   onDateChange,
-
+  error: errorMessage,
   label = 'Select Date',
   ...restProps
 }: DatePickerSingleProps) => {
-  const [opened, setIsOpened] = useState(false)
-  const [error, setError] = useState(false)
+  const [opened, setIsOpened] = useState<boolean | undefined>(false)
+  const [error, setError] = useState<string | undefined>(errorMessage)
+  const [dateValue, setDateValue] = useState<Date>(new Date())
+  const [currentMonth, setCurrentMonth] = useState<Date | string>(value || new Date())
   const [disabled, setIsDisabled] = useState(false)
-  const handleOpen = () => {
-    setIsOpened(prev => !prev)
+  const handleOpen = (event: boolean) => {
+    setIsOpened(event)
   }
+
+  const dateFormatterForServer = (date: Date) => {
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const day = date.getDate()
+    return new Date(Date.UTC(year, month, day)).toISOString()
+  }
+
+  const formatDateFromServer = (dateString: string) => {
+    const [datePart] = dateString.split('T')
+    const [year, month, day] = datePart.split('-')
+
+    return `${day}.${month}.${year}`
+  }
+
   const handleSelect = (date: Date | undefined) => {
     if (date) {
-      onDateChange?.(date)
+      setDateValue(date)
+
+      if (onDateChange) {
+        onDateChange(dateFormatterForServer(date))
+        handleOpen(false)
+      }
     }
   }
+
+  useEffect(() => {
+    setError(errorMessage)
+  }, [errorMessage])
+
   return (
     <div>
       <div className={s.text}>{label}</div>
-      <Popover.Root onOpenChange={handleOpen}>
+      <Popover.Root open={opened} onOpenChange={handleOpen}>
         <Popover.Trigger asChild>
           <div
             tabIndex={0}
             className={clsx(s.datePicker, { [s.error]: error }, { [s.disabled]: disabled })}
           >
-            <div>{value ? formatDate(value) : formatDate(new Date())}</div>
+            <div> {value ? formatDateFromServer(value as string) : formatDate(new Date())}</div>
             {!opened ? <CalendarOutline /> : <CalendarOpened />}
           </div>
         </Popover.Trigger>
-        {error && <div className={s.errorMessage}>Error</div>}
+        {!!error && (
+          <div className={s.errorMessage}>
+            {error} <Link className={s.linkPolicy} href={Path.PrivatePolicy}>Privacy Policy</Link>
+          </div>
+        )}
         <Popover.Portal>
           <Popover.Content>
             <div className={s.wrapperCalendar}>
-              <DayPicker
-                mode="single"
-                selected={new Date()}
-                onSelect={handleSelect}
-                ISOWeek
-                showOutsideDays
-                modifiers={{ weekend: isWeekend }}
-                modifiersClassNames={{ weekend: 'rdp-day_weekend' }}
-                classNames={sharedDatePickerClassNames}
-                {...restProps}
-              />
+              {opened && (
+                <DayPicker
+                  mode="single"
+                  selected={dateValue}
+                  captionLayout="dropdown"
+                  onSelect={handleSelect}
+                  ISOWeek
+                  showOutsideDays
+                  modifiers={{ weekend: isWeekend }}
+                  modifiersClassNames={{ weekend: 'rdp-day_weekend' }}
+                  classNames={sharedDatePickerClassNames}
+                  {...restProps}
+                />
+              )}
             </div>
           </Popover.Content>
         </Popover.Portal>
