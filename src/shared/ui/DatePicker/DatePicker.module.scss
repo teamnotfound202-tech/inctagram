@@ -49,10 +49,11 @@
   &.error {
     border-color: $danger-500 !important;
     color: $danger-500;
-
+    outline: none!important;
     &:focus,
     &:focus-visible {
       border: 2px solid $danger-300 !important;
+      outline: none!important;
     }
   }
 
