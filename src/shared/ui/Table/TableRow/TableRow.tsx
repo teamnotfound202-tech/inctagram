@@ -4,7 +4,7 @@ import s from './TableRow.module.scss'
 export const TableRow = forwardRef<HTMLTableRowElement,
     ComponentPropsWithoutRef<'tr'>
 >(({className, ...rest}, ref) => {
-    const computedStyles = s.tableHead + (className ? ` ${className}` : '')
+    const computedStyles = s.tableRow + (className ? ` ${className}` : '')
     return (
         <tr ref={ref} {...rest} className={computedStyles}>
 
