@@ -1,0 +1,11 @@
+.tableH{
+  text-align: left;
+  padding: 0;
+  width: auto;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.tableH + .tableH {
+  padding-left: 72px;
+}
