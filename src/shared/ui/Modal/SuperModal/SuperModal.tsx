@@ -164,6 +164,7 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
 
   const handlePublishFormDataChange = (data: { description: string; location: string }) => {
     setPublishFormData(data)
+    document.body.style.overflowY = ''
   }
 
   // === NAVIGATION ===
@@ -203,8 +204,9 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
 
   const handleCloseClick = (event: MouseEvent<HTMLButtonElement>): void => {
     document.body.style.overflow = ''
-    event.stopPropagation()
     callback(null)
+    event.stopPropagation()
+
   }
 
   const handlerModalCloseWithSave = async () => {
@@ -255,9 +257,11 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
       await createPostWithData(currentFormData, uploadResult.images)
 
       callback(null)
+      //здесь не было
+      document.body.style.overflow = ''
       toast.success('Post published successfully!')
     } catch (err) {
-      console.error('❌ Error publishing post:', err)
+
       toast.error('Failed to publish post. Please try again.')
     }
   }
