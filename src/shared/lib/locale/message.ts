@@ -6,224 +6,236 @@ export type Language = 'en' | 'ru';
 export interface Messages {
   // Общие элементы
   common: {
-    loading: string;
-    cancel: string;
-    confirm: string;
-    yes: string;
-    no: string;
-    ok: string;
-    save: string;
-    delete: string;
-    edit: string;
-    close: string;
-    back: string;
-    next: string;
-    previous: string;
-    search: string;
-    error: string;
-    success: string;
-  };
+    loading: string
+    cancel: string
+    confirm: string
+    yes: string
+    no: string
+    ok: string
+    save: string
+    delete: string
+    edit: string
+    close: string
+    back: string
+    next: string
+    previous: string
+    search: string
+    error: string
+    success: string
+    saveChanges: string
+    selectProfilePhoto: string
+  }
 
   // Навигация и заголовки
   navigation: {
-    home: string;
-    profile: string;
-    feed: string;
-    create: string;
-    messenger: string;
-    statistics: string;
-    favorites: string;
-    search: string;
-    settings: string;
-    logOut: string;
-  };
+    home: string
+    profile: string
+    feed: string
+    create: string
+    messenger: string
+    statistics: string
+    favorites: string
+    search: string
+    settings: string
+    logOut: string
+  }
 
   // Аутентификация
   auth: {
-    signIn: string;
-    signUp: string;
-    signOut: string;
-    logIn: string;
-    register: string;
-    forgotPassword: string;
-    resetPassword: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    username: string;
-    enterEmail: string;
-    enterPassword: string;
-    enterUsername: string;
-    repeatPassword: string;
-    rememberMe: string;
-    doYouHaveAccount: string;
-    dontHaveAccount: string;
-    emailSent: string;
-    emailSentDescription: string;
-    invalidEmail: string;
-    invalidPassword: string;
-    passwordMismatch: string;
-    passwordRequirements: string;
-    usernameRequirements: string;
-    agreeToTerms: string;
-    termsOfService: string;
-    privacyPolicy: string;
-    emailVerification: string;
-    verifyEmail: string;
-    resendCode: string;
-    accountCreated: string;
-  };
+    signIn: string
+    signUp: string
+    signOut: string
+    logIn: string
+    register: string
+    forgotPassword: string
+    resetPassword: string
+    email: string
+    password: string
+    confirmPassword: string
+    username: string
+    enterEmail: string
+    enterPassword: string
+    enterUsername: string
+    repeatPassword: string
+    rememberMe: string
+    doYouHaveAccount: string
+    dontHaveAccount: string
+    emailSent: string
+    emailSentDescription: string
+    invalidEmail: string
+    invalidPassword: string
+    passwordMismatch: string
+    passwordRequirements: string
+    usernameRequirements: string
+    agreeToTerms: string
+    termsOfService: string
+    privacyPolicy: string
+    emailVerification: string
+    verifyEmail: string
+    resendCode: string
+    accountCreated: string
+  }
 
   // Профиль пользователя
   profile: {
-    myProfile: string;
-    editProfile: string;
-    profileSettings: string;
-    avatar: string;
-    changeAvatar: string;
-    firstName: string;
-    lastName: string;
-    bio: string;
-    location: string;
-    website: string;
-    birthDate: string;
-    followers: string;
-    following: string;
-    posts: string;
-    accountType: string;
-    publicAccount: string;
-    privateAccount: string;
-    noSearchUsers:string;
-    noUsersShow:string;
-    thatsAll: string;
-    publications:string;
-    follow:string;
-    unFollow:string;
-    delete:string;
-    sendMessage: string;
-  };
+    myProfile: string
+    editProfile: string
+    profileSettings: string
+    avatar: string
+    changeAvatar: string
+    firstName: string
+    lastName: string
+    bio: string
+    location: string
+    website: string
+    birthDate: string
+    followers: string
+    following: string
+    posts: string
+    accountType: string
+    publicAccount: string
+    privateAccount: string
+    noSearchUsers: string
+    noUsersShow: string
+    thatsAll: string
+    publications: string
+    follow: string
+    unFollow: string
+    delete: string
+    sendMessage: string
+    generalInformation: string
+    devices: string
+    accountManagement: string
+    myPayments: string
+    country: string
+    city: string
+    aboutMe: string
+  }
 
   // Посты и контент
   posts: {
-    newPost: string;
-    createPost: string;
+    newPost: string
+    createPost: string
     addPhoto: string
-    editPost: string;
-    deletePost: string;
-    post: string;
-    posts: string;
-    caption: string;
-    addCaption: string;
-    like: string;
-    likes: string;
-    comment: string;
-    comments: string;
-    share: string;
-    report: string;
-    savePost: string;
-    unsavePost: string;
-    postDeleted: string;
-    noPostsYet: string;
-    addAComment: string;
-    publish:string;
-    publishing:string;
-    answer: string;
-    addComment:string;
-    dropdownMenu:{
-      editPost:string,
-      deletePost:string,
-      unfollow:string,
-      copyLink:string,
-    },
-  };
+    editPost: string
+    deletePost: string
+    post: string
+    posts: string
+    caption: string
+    addCaption: string
+    like: string
+    likes: string
+    comment: string
+    comments: string
+    share: string
+    report: string
+    savePost: string
+    unsavePost: string
+    postDeleted: string
+    noPostsYet: string
+    addAComment: string
+    publish: string
+    publishing: string
+    answer: string
+    addComment: string
+    dropdownMenu: {
+      editPost: string
+      deletePost: string
+      unfollow: string
+      copyLink: string
+    }
+  }
 
   // Уведомления
   notifications: {
-    notification: string;
-    notifications: string;
-    newFollower: string;
-    newLike: string;
-    newComment: string;
-    newMessage: string;
-    markAllRead: string;
-    noNotifications: string;
-  };
+    notification: string
+    notifications: string
+    newFollower: string
+    newLike: string
+    newComment: string
+    newMessage: string
+    markAllRead: string
+    noNotifications: string
+  }
 
   // Мессенджер
   messenger: {
-    messages: string;
-    newMessage: string;
-    sendMessage: string;
-    typeMessage: string;
-    conversation: string;
-    conversations: string;
-    online: string;
-    offline: string;
-    lastSeen: string;
-    deleteConversation: string;
-    noMessages: string;
-  };
+    messages: string
+    newMessage: string
+    sendMessage: string
+    typeMessage: string
+    conversation: string
+    conversations: string
+    online: string
+    offline: string
+    lastSeen: string
+    deleteConversation: string
+    noMessages: string
+  }
 
   // Настройки
   settings: {
-    settings: string;
-    accountSettings: string;
-    privacySettings: string;
-    notificationSettings: string;
-    languageSettings: string;
-    changeLanguage: string;
-    darkMode: string;
-    lightMode: string;
-    theme: string;
-    deleteAccount: string;
-    deactivateAccount: string;
+    settings: string
+    accountSettings: string
+    privacySettings: string
+    notificationSettings: string
+    languageSettings: string
+    changeLanguage: string
+    darkMode: string
+    lightMode: string
+    theme: string
+    deleteAccount: string
+    deactivateAccount: string
     close: string
     save: string
-  };
+  }
 
   // Ошибки и валидация
   errors: {
-    requiredField: string;
-    invalidFormat: string;
-    tooShort: string;
-    tooLong: string;
-    passwordTooWeak: string;
-    emailExists: string;
-    usernameExists: string;
-    userNotFound: string;
-    wrongPassword: string;
-    networkError: string;
-    serverError: string;
-    sessionExpired: string;
-    accessDenied: string;
-    fileTooBig: string;
-    invalidFileType: string;
-  };
+    requiredField: string
+    invalidFormat: string
+    tooShort: string
+    tooLong: string
+    passwordTooWeak: string
+    emailExists: string
+    usernameExists: string
+    userNotFound: string
+    wrongPassword: string
+    networkError: string
+    serverError: string
+    sessionExpired: string
+    accessDenied: string
+    fileTooBig: string
+    invalidFileType: string
+  }
 
   // Модальные окна
   modals: {
-    confirmLogout: string;
-    confirmDelete: string;
-    confirmLogoutMessage: string;
-    confirmDeleteMessage: string;
-    areYouSure: string;
-    thisActionCannotBeUndone: string;
-    unfollowConfirm: string;
-    deleteFollowConfirm: string;
-    deleteFollowing: string;
+    confirmLogout: string
+    confirmDelete: string
+    confirmLogoutMessage: string
+    confirmDeleteMessage: string
+    areYouSure: string
+    thisActionCannotBeUndone: string
+    unfollowConfirm: string
+    deleteFollowConfirm: string
+    deleteFollowing: string
     closeModalWarningBegin: string
     closeModalwarningQSecondPart: string
-    discard: string;
-    selectPhoto:string
-    openDraft: string;
-  };
+    discard: string
+    selectPhoto: string
+    openDraft: string
+    deleteAvatarTitle: string
+    deleteAvatarText: string
+    addPhotoProfile: string
+  }
 
   // Языки
   languages: {
-    english: string;
-    russian: string;
-    selectLanguage: string;
-  };
+    english: string
+    russian: string
+    selectLanguage: string
+  }
 }
 
 export const messages: Record<Language, Messages> = {
@@ -245,6 +257,8 @@ export const messages: Record<Language, Messages> = {
       search: 'Search',
       error: 'Error',
       success: 'Success',
+      saveChanges: 'Save changes',
+      selectProfilePhoto: 'Select Profile Photo',
     },
 
     navigation: {
@@ -278,7 +292,7 @@ export const messages: Record<Language, Messages> = {
       repeatPassword: 'Repeat your password',
       rememberMe: 'Remember me',
       doYouHaveAccount: 'Do you have an account?',
-      dontHaveAccount: 'Don\'t have an account?',
+      dontHaveAccount: "Don't have an account?",
       emailSent: 'Email sent',
       emailSentDescription: 'We have sent a link to confirm your email to',
       invalidEmail: 'The email must match the format example@example.com',
@@ -313,14 +327,21 @@ export const messages: Record<Language, Messages> = {
       accountType: 'Account Type',
       publicAccount: 'Public Account',
       privateAccount: 'Private Account',
-      noSearchUsers:'No users match your search',
-      noUsersShow:'No users to show',
-      thatsAll:'That’s all',
-      publications:'publications',
-      follow:'Follow',
-      unFollow:'Unfollow',
-      delete:'Delete',
+      noSearchUsers: 'No users match your search',
+      noUsersShow: 'No users to show',
+      thatsAll: 'That’s all',
+      publications: 'publications',
+      follow: 'Follow',
+      unFollow: 'Unfollow',
+      delete: 'Delete',
       sendMessage: 'Send Message',
+      generalInformation: 'General information',
+      devices: 'Devices',
+      accountManagement: 'Account Management',
+      myPayments: 'My payments',
+      country: 'Select your country',
+      city: 'Select your city',
+      aboutMe: 'About me',
     },
 
     posts: {
@@ -344,17 +365,16 @@ export const messages: Record<Language, Messages> = {
       postDeleted: 'Post deleted',
       noPostsYet: 'No posts yet',
       addAComment: 'Add a comment',
-      publish:'Publish',
-      publishing:'Publishing',
+      publish: 'Publish',
+      publishing: 'Publishing',
       answer: 'Answer',
-      addComment:'Add a Comment...',
-      dropdownMenu:{
-        editPost:'Edit Post',
-        deletePost:'Delete Post',
-        unfollow:'Unfollow',
-        copyLink:'Copy Link'
-      }
-
+      addComment: 'Add a Comment...',
+      dropdownMenu: {
+        editPost: 'Edit Post',
+        deletePost: 'Delete Post',
+        unfollow: 'Unfollow',
+        copyLink: 'Copy Link',
+      },
     },
 
     notifications: {
@@ -423,14 +443,17 @@ export const messages: Record<Language, Messages> = {
       confirmDeleteMessage: 'Are you sure you want to delete this item?',
       areYouSure: 'Are you sure?',
       thisActionCannotBeUndone: 'This action cannot be undone',
-      unfollowConfirm:'Do you really want to Unfollow from this user ',
-      deleteFollowConfirm:'Do you really want to delete a Following ',
+      unfollowConfirm: 'Do you really want to Unfollow from this user ',
+      deleteFollowConfirm: 'Do you really want to delete a Following ',
       deleteFollowing: 'Delete Following',
       closeModalWarningBegin: 'Do you really want to close the creation of a publication?',
       closeModalwarningQSecondPart: 'If you close everything will be deleted',
       discard: 'Discard',
-      selectPhoto:'Select from Computer',
-      openDraft:'Open draft'
+      selectPhoto: 'Select from Computer',
+      openDraft: 'Open draft',
+      deleteAvatarTitle: 'Delete Photo',
+      deleteAvatarText: 'Are you sure you want to delete the photo?',
+      addPhotoProfile: 'Add a Profile Photo',
     },
 
     languages: {
@@ -458,6 +481,8 @@ export const messages: Record<Language, Messages> = {
       search: 'Поиск',
       error: 'Ошибка',
       success: 'Успех',
+      saveChanges: 'Сохранить изменения',
+      selectProfilePhoto: 'Выбрать фото профиля',
     },
 
     navigation: {
@@ -526,14 +551,21 @@ export const messages: Record<Language, Messages> = {
       accountType: 'Тип аккаунта',
       publicAccount: 'Публичный аккаунт',
       privateAccount: 'Приватный аккаунт',
-      noSearchUsers:'Нет пользователей, соответствующих вашему поиску',
-      noUsersShow:'Нет пользователей для отображения',
-      thatsAll:'Все загружено',
-      publications:'Публикаций',
-      follow:'Подписаться',
-      unFollow:'Отписаться',
-      delete:'Удалить',
-      sendMessage: 'Отправить сообщение'
+      noSearchUsers: 'Нет пользователей, соответствующих вашему поиску',
+      noUsersShow: 'Нет пользователей для отображения',
+      thatsAll: 'Все загружено',
+      publications: 'Публикаций',
+      follow: 'Подписаться',
+      unFollow: 'Отписаться',
+      delete: 'Удалить',
+      sendMessage: 'Отправить сообщение',
+      generalInformation: 'Основная информация',
+      devices: 'Устройства',
+      accountManagement: 'Управлеие аккаунтом',
+      myPayments: 'Мои платежи',
+      country: 'Выберите страну',
+      city: 'Выберите город',
+      aboutMe: 'Обо мне',
     },
 
     posts: {
@@ -557,16 +589,16 @@ export const messages: Record<Language, Messages> = {
       postDeleted: 'Публикация удалена',
       noPostsYet: 'Пока нет публикаций',
       addAComment: 'Добавить комментарий',
-      publish:'Опубликовать',
-      publishing:'Публикуется',
+      publish: 'Опубликовать',
+      publishing: 'Публикуется',
       answer: 'Ответить',
-      addComment:'Добавить комментарий...',
-      dropdownMenu:{
-        editPost:'Редактировать пост',
-        deletePost:'Удалить пост',
-        unfollow:'Отписаться',
-        copyLink:'Копировать ссылку'
-      }
+      addComment: 'Добавить комментарий...',
+      dropdownMenu: {
+        editPost: 'Редактировать пост',
+        deletePost: 'Удалить пост',
+        unfollow: 'Отписаться',
+        copyLink: 'Копировать ссылку',
+      },
     },
 
     notifications: {
@@ -635,14 +667,17 @@ export const messages: Record<Language, Messages> = {
       confirmDeleteMessage: 'Вы уверены, что хотите удалить этот элемент?',
       areYouSure: 'Вы уверены?',
       thisActionCannotBeUndone: 'Это действие нельзя отменить',
-      unfollowConfirm:'Вы действительно хотите отписаться от этого пользователя ',
-      deleteFollowConfirm:'Вы действительно хотите удалить подписку ',
-      deleteFollowing:'Удалить подписку',
+      unfollowConfirm: 'Вы действительно хотите отписаться от этого пользователя ',
+      deleteFollowConfirm: 'Вы действительно хотите удалить подписку ',
+      deleteFollowing: 'Удалить подписку',
       closeModalWarningBegin: 'Вы действительно хотите закрыть создание публикации?',
       closeModalwarningQSecondPart: 'Если вы закроете, все будет удалено',
       discard: 'Сбросить',
-      selectPhoto:'Выбрать на компьютере',
-      openDraft:'Открыть черновик'
+      selectPhoto: 'Выбрать на компьютере',
+      openDraft: 'Открыть черновик',
+      deleteAvatarTitle: 'Удалить фото',
+      deleteAvatarText: 'Вы уверены что хотите удалить фотографию?',
+      addPhotoProfile: 'Добавить фото профиля',
     },
 
     languages: {
@@ -651,7 +686,7 @@ export const messages: Record<Language, Messages> = {
       selectLanguage: 'Выберите язык',
     },
   },
-};
+}
 
 // Функция для получения сообщений по языку
 export const getMessages = (language: Language): Messages => {

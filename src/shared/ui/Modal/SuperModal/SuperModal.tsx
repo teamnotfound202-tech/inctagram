@@ -195,12 +195,14 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
 
   // === MODAL CONTROLS ===
   const handleOverlayClick = (event: MouseEvent<HTMLElement>) => {
+    document.body.style.overflow = ''
     if (event.target === event.currentTarget) {
       setExitModalIsOpen(true)
     }
   }
 
   const handleCloseClick = (event: MouseEvent<HTMLButtonElement>): void => {
+    document.body.style.overflow = ''
     event.stopPropagation()
     callback(null)
   }
@@ -208,13 +210,14 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
   const handlerModalCloseWithSave = async () => {
     handleExitingModal()
     callback(null)
-    document.body.style.overflow = ''
     await uploadImage(localFiles)
   }
 
   const handleExitingModal = () => {
+    document.body.style.overflow = ''
     setExitModalIsOpen(false)
   }
+  console.log(document.body.style.overflow)
 
   const handleDiscard = () => {
     setCurrentStep('upload')

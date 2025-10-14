@@ -14,7 +14,6 @@ export const SettingsPage = () => {
   const searchParams = useSearchParams()
   const path = searchParams.get('part')
   const router = useRouter()
-
   useEffect(() => {
     router.replace('?part=info')
   },[router])
@@ -22,10 +21,10 @@ export const SettingsPage = () => {
   return (
     <div className={s.settingsPage}>
       <SettingsNavLinks />
-      {path === 'info' && <SettingPageInfo />}
-      {path === 'devices' && <SettingPageDevices />}
-      {path === 'subscriptions' && <SettingPageSubscriptions />}
-      {path === 'payments' && <SettingPagePayments/>}
+        {path === 'info' && <SettingPageInfo />}
+        {path === 'devices' && <SettingPageDevices />}
+        {path === 'subscriptions' && <SettingPageSubscriptions />}
+        {path === 'payments' && <SettingPagePayments/>}
     </div>
   )
 }
