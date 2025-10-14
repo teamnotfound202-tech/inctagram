@@ -15,8 +15,12 @@ export const SettingsPage = () => {
   const path = searchParams.get('part')
   const router = useRouter()
   useEffect(() => {
-    router.replace('?part=info')
-  },[router])
+    if(path){
+      router.replace(`?part=${path}`)
+    } else {
+      router.replace('?part=info')
+    }
+  },[router,path])
 
   return (
     <div className={s.settingsPage}>
