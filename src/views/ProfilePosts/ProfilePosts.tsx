@@ -66,7 +66,6 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
           </div>
         )
       }
-      {!hasNextPage && userPostData && userPostData.length !== 0 && <p>Nothing more to load</p>}
     </div>
   )
 }

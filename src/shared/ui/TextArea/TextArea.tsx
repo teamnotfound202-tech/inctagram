@@ -2,6 +2,7 @@
 
 import React, { ChangeEvent, forwardRef, TextareaHTMLAttributes } from 'react'
 import s from './TextArea.module.scss'
+import clx from 'classnames'
 
 type Props = {
   title?: string
@@ -30,7 +31,9 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
       <textarea
         id={id}
         ref={ref}
-        className={`${s.textarea} ${className} ${error ? s.error : ''}`}
+        className={clx(s.textarea, className, {
+          [s.error]: error,
+        })}
         onChange={handleChange}
         {...rest}
         disabled={disabled}
