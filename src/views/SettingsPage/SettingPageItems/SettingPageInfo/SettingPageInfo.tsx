@@ -14,17 +14,17 @@ import { AvatarUser } from '@/views/SettingsPage/SettingPageItems/SettingPageInf
 
 export const SettingPageInfo = () => {
   const {data: userData} = useFetchMyProfileQuery()
-  const [updateUserInfo] = useUpdateMyProfileMutation()
+  const [updateUserInfo,{isLoading}] = useUpdateMyProfileMutation()
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-    watch,
+    formState: { errors, isValid, isDirty },
     control,
+    getValues,
     reset,
   } = useForm<GeneralInformaitionValues>({
-    mode: 'all',
+    mode: 'onChange',
   })
 
   useEffect(() => {
@@ -45,6 +45,7 @@ export const SettingPageInfo = () => {
     updateUserInfo(data)
       .unwrap()
       .then(() => {
+        reset(getValues())
       toast.custom(() => (
         <AlertToast variant='success' title={`Success`} description={'Your settings are saved!'} />
       ))
@@ -73,6 +74,8 @@ export const SettingPageInfo = () => {
               className={s.settingPageInfoInput}
               type={'text'}
               id={'Username'}
+              error={errors.userName?.message}
+              isDisabled={isLoading}
               label={
                 <>
                   <span>Username</span>
@@ -93,6 +96,8 @@ export const SettingPageInfo = () => {
               className={s.settingPageInfoInput}
               type={'text'}
               id={'First Name'}
+              error={errors.firstName?.message}
+              isDisabled={isLoading}
               label={
                 <>
                   <span>First Name</span>
@@ -113,6 +118,8 @@ export const SettingPageInfo = () => {
               className={s.settingPageInfoInput}
               type={'text'}
               id={'Last Name'}
+              error={errors.lastName?.message}
+              isDisabled={isLoading}
               label={
                 <>
                   <span>Last Name</span>
@@ -158,6 +165,7 @@ export const SettingPageInfo = () => {
                 render={({ field }) => (
                   <SelectBox
                     defaultValue={'Country'}
+                    disabled={isLoading}
                     placeholder={'Country'}
                     label={'Select your country'}
                     name={field.name}
@@ -177,6 +185,7 @@ export const SettingPageInfo = () => {
                 render={({ field }) => (
                   <SelectBox
                     defaultValue={'City'}
+                    disabled={isLoading}
                     placeholder={'City'}
                     label={'Select your city'}
                     name={field.name}
@@ -193,6 +202,7 @@ export const SettingPageInfo = () => {
             <TextArea
               title={'About Me'}
               placeholder={''}
+              disabled={isLoading}
               error={errors.aboutMe?.message}
               {...register('aboutMe', {
                 maxLength: { value: 200, message: 'Maximum number of characters 200' },
@@ -209,9 +219,9 @@ export const SettingPageInfo = () => {
           type={'submit'}
           variant={'primary'}
           className={s.settingPageInfoSubmitButton}
-          disabled={!isValid}
+          disabled={!isDirty || !isValid || isLoading}
         >
-          Save Changes
+          {isLoading ?'Loading...': 'Save Changes'}
         </Button>
       </form>
     </div>
