@@ -5,16 +5,19 @@ import {
   useFetchMyProfileQuery,
   useUpdateMyProfileMutation,
 } from '@/features/publicUserApi/publicUserApi'
-import {useEffect } from 'react'
+import { useEffect } from 'react'
 import { GeneralInformaitionValues } from '@/shared/api/types'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { validateAtLeast13 } from '@/shared/lib/utils/isAtLeastYear'
 import { AvatarUser } from '@/views/SettingsPage/SettingPageItems/SettingPageInfo/AvatarUser/AvatarUser'
+import { useAppSelector } from '@/shared/lib/hooks/hooks'
+import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 export const SettingPageInfo = () => {
-  const {data: userData} = useFetchMyProfileQuery()
-  const [updateUserInfo,{isLoading}] = useUpdateMyProfileMutation()
+  const { data: userData } = useFetchMyProfileQuery()
+  const [updateUserInfo, { isLoading }] = useUpdateMyProfileMutation()
+  const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
   const {
     register,
@@ -28,7 +31,7 @@ export const SettingPageInfo = () => {
   })
 
   useEffect(() => {
-      if(userData){
+    if (userData) {
       reset({
         userName: userData?.userName,
         firstName: userData?.firstName,
@@ -36,7 +39,7 @@ export const SettingPageInfo = () => {
         dateOfBirth: userData?.dateOfBirth,
         country: userData?.country,
         city: userData?.city,
-        aboutMe: userData?.aboutMe
+        aboutMe: userData?.aboutMe,
       })
     }
   }, [userData, reset])
@@ -46,28 +49,26 @@ export const SettingPageInfo = () => {
       .unwrap()
       .then(() => {
         reset(getValues())
-      toast.custom(() => (
-        <AlertToast variant='success' title={`Success`} description={'Your settings are saved!'} />
-      ))
-    }).catch(()=>{
-      toast.custom(() => (
-        <AlertToast variant='error' title={`Error!`} description={'Server is not available!'} />
-      ))
-    })
+        toast.custom(() => (
+          <AlertToast
+            variant="success"
+            title={`Success`}
+            description={'Your settings are saved!'}
+          />
+        ))
+      })
+      .catch(() => {
+        toast.custom(() => (
+          <AlertToast variant="error" title={`Error!`} description={'Server is not available!'} />
+        ))
+      })
   }
 
   return (
     <div className={s.settingPageInfo}>
-      <form
-        onSubmit={e => {
-          e.preventDefault()
-          handleSubmit(onSubmit)()
-        }}
-        className={s.settingPageInfoForm}
-      >
-        <div className={s.formWrapper}>
-          <AvatarUser avatarURL={userData?.avatars?.[0]?.url} />
-
+      <div className={s.formWrapper}>
+        <AvatarUser avatarURL={userData?.avatars?.[0]?.url} />
+        <form onSubmit={handleSubmit(onSubmit)} className={s.settingPageInfoForm}>
           {/* Остальная форма */}
           <div className={s.settingPageInfoContent}>
             <Input
@@ -78,7 +79,7 @@ export const SettingPageInfo = () => {
               isDisabled={isLoading}
               label={
                 <>
-                  <span>Username</span>
+                  <span>{currentLanguageArray.auth.username}</span>
                   <span className={s.textRed}>*</span>
                 </>
               }
@@ -100,7 +101,7 @@ export const SettingPageInfo = () => {
               isDisabled={isLoading}
               label={
                 <>
-                  <span>First Name</span>
+                  <span>{currentLanguageArray.profile.firstName}</span>
                   <span className={s.textRed}>*</span>
                 </>
               }
@@ -122,7 +123,7 @@ export const SettingPageInfo = () => {
               isDisabled={isLoading}
               label={
                 <>
-                  <span>Last Name</span>
+                  <span>{currentLanguageArray.profile.lastName}</span>
                   <span className={s.textRed}>*</span>
                 </>
               }
@@ -149,7 +150,7 @@ export const SettingPageInfo = () => {
                     <SimpleDatePicker
                       value={field.value}
                       onDateChange={(d: Date | string) => field.onChange(d)}
-                      label={'Date of birth'}
+                      label={currentLanguageArray.profile.birthDate}
                       error={(errors?.dateOfBirth?.message || '') as string}
                       className={s.settingPageInfoDatePicker}
                     />
@@ -167,7 +168,7 @@ export const SettingPageInfo = () => {
                     defaultValue={'Country'}
                     disabled={isLoading}
                     placeholder={'Country'}
-                    label={'Select your country'}
+                    label={currentLanguageArray.profile.country}
                     name={field.name}
                     value={field.value}
                     onValueChange={field.onChange}
@@ -187,7 +188,7 @@ export const SettingPageInfo = () => {
                     defaultValue={'City'}
                     disabled={isLoading}
                     placeholder={'City'}
-                    label={'Select your city'}
+                    label={currentLanguageArray.profile.city}
                     name={field.name}
                     value={field.value}
                     onValueChange={field.onChange}
@@ -200,8 +201,9 @@ export const SettingPageInfo = () => {
               />
             </fieldset>
             <TextArea
-              title={'About Me'}
+              title={currentLanguageArray.profile.aboutMe}
               placeholder={''}
+              id={'About Me'}
               disabled={isLoading}
               error={errors.aboutMe?.message}
               {...register('aboutMe', {
@@ -213,17 +215,17 @@ export const SettingPageInfo = () => {
               })}
             />
           </div>
-        </div>
 
-        <Button
-          type={'submit'}
-          variant={'primary'}
-          className={s.settingPageInfoSubmitButton}
-          disabled={!isDirty || !isValid || isLoading}
-        >
-          {isLoading ?'Loading...': 'Save Changes'}
-        </Button>
-      </form>
+          <Button
+            type={'submit'}
+            variant={'primary'}
+            className={s.settingPageInfoSubmitButton}
+            disabled={!isDirty || !isValid || isLoading}
+          >
+            {isLoading ? 'Loading...' : currentLanguageArray.common.saveChanges}
+          </Button>
+        </form>
+      </div>
     </div>
   )
 }

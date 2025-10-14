@@ -12,6 +12,9 @@ import DeleteAvatar from './icons/deleteAvatar.svg'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { Loader } from '@/shared/ui/Loader/Loader'
+import { Modal } from '@/shared/ui/Modal/Modal'
+import { useAppSelector } from '@/shared/lib/hooks/hooks'
+import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 type Props = {
   avatarURL: string | undefined
@@ -23,12 +26,15 @@ export const AvatarUser = ({ avatarURL }: Props) => {
   const [avatarPreviewFile, setAvatarPreviewFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [uploadError, setUploadError] = useState<string>('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [updateAvatar, {isLoading}] = useUpdateAvatarMutation()
-  const [deleteAvatar] = useDeleteAvatarMutation()
+  const [deleteAvatar, {isLoading: loadingDelete}] = useDeleteAvatarMutation()
+  const currentLanguageArray = useAppSelector(selectCurrentMessages)
 
 
   // Обработчик выбора файла
   const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation()
     const file = event.target.files?.[0]
     setUploadError('')
 
@@ -102,6 +108,7 @@ export const AvatarUser = ({ avatarURL }: Props) => {
       .then(() => {
         setAvatarPreviewURL(undefined)
         setAvatarPreviewFile(null)
+        setIsModalOpen(false)
         toast.custom(() => (
           <AlertToast
             variant="success"
@@ -131,7 +138,7 @@ export const AvatarUser = ({ avatarURL }: Props) => {
                 height={300}
                 priority
               />
-              <button className={s.deleteBtn} onClick={handleDeleteAvatar}>
+              <button className={s.deleteBtn} onClick={() => setIsModalOpen(true)}>
                 <DeleteAvatar />
               </button>
             </div>
@@ -142,7 +149,7 @@ export const AvatarUser = ({ avatarURL }: Props) => {
           )}
         </div>
         <Button variant={'outline'} type="button" onClick={() => setIsUploadModalOpen(true)}>
-          Select Profile Photo
+          {currentLanguageArray.common.selectProfilePhoto}
         </Button>
       </div>
       {/* Модальное окно загрузки фото */}
@@ -156,7 +163,7 @@ export const AvatarUser = ({ avatarURL }: Props) => {
             )}
             {/* Заголовок с кнопкой закрытия */}
             <div className={s.modalHeader}>
-              <h3 className={s.modalTitle}>Add a Profile Photo</h3>
+              <h3 className={s.modalTitle}>{currentLanguageArray.modals.addPhotoProfile}</h3>
               <Button
                 className={s.closeButton}
                 onClick={handleCloseModal}
@@ -195,7 +202,7 @@ export const AvatarUser = ({ avatarURL }: Props) => {
             <div className={s.mainActionButton}>
               {avatarPreviewFile ? (
                 <Button variant={'primary'} onClick={handleSaveAvatar} className={s.saveButton}>
-                  Save
+                  {currentLanguageArray.common.save}
                 </Button>
               ) : (
                 <Button
@@ -203,7 +210,7 @@ export const AvatarUser = ({ avatarURL }: Props) => {
                   onClick={handleSelectFromComputer}
                   className={s.selectButton}
                 >
-                  Select from Computer
+                  {currentLanguageArray.modals.selectPhoto}
                 </Button>
               )}
             </div>
@@ -219,6 +226,22 @@ export const AvatarUser = ({ avatarURL }: Props) => {
             />
           </div>
         </div>
+      )}
+      {isModalOpen && (
+        <Modal
+          title={currentLanguageArray.modals.deleteAvatarTitle}
+          onClick={() => setIsModalOpen(false)}
+        >
+          <p>{currentLanguageArray.modals.deleteAvatarText}</p>
+          <div className={s.modalDeleteBtnWrapper}>
+            <Button onClick={handleDeleteAvatar} variant={'outline'} disabled={loadingDelete}>
+              {currentLanguageArray.common.yes}
+            </Button>
+            <Button onClick={() => setIsModalOpen(false)} disabled={loadingDelete}>
+              {currentLanguageArray.common.no}
+            </Button>
+          </div>
+        </Modal>
       )}
     </>
   )

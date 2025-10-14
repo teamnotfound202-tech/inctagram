@@ -5,8 +5,6 @@ import {Mutex} from 'async-mutex'
 import {ACCESS_TOKEN} from '@/shared/lib'
 import {ResponsesLogin} from '@/shared/api/types'
 import {handleError} from '@/shared/lib/utils'
-import {useAppDispatch} from '@/shared/lib/hooks/hooks'
-import {baseApi} from '@/shared/api/baseApi'
 
 const mutex = new Mutex()
 
@@ -34,7 +32,7 @@ export const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, Fetch
             const release = await mutex.acquire()
             try {
                 const refreshResult = await startBaseQuery(
-                    {url: '/auth/update-tokens', method: 'POST'}, api, extraOptions
+                    {url: '/auth/update', method: 'POST'}, api, extraOptions
                 )
 
                 if (refreshResult?.data) {
