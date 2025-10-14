@@ -66,6 +66,7 @@ export const SettingPageInfo = () => {
 
   return (
     <div className={s.settingPageInfo}>
+
       <div className={s.formWrapper}>
         <AvatarUser avatarURL={userData?.avatars?.[0]?.url} />
         <form onSubmit={handleSubmit(onSubmit)} className={s.settingPageInfoForm}>
