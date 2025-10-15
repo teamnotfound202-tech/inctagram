@@ -1,0 +1,7 @@
+@use '@/shared/styles/variables' as *;
+
+.table{
+  border: 1px solid $dark-500;
+  width: 100%;
+  border-collapse: collapse;
+}

@@ -1,0 +1,11 @@
+.tableDataSell{
+  width: auto;
+  font-weight: 400;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 24px;
+}
+
+.tableDataSell + .tableDataSell {
+  padding-left: 72px;
+}

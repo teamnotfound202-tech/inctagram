@@ -46,7 +46,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className={`${s.container} ${isOpen ? s.open : ''}`} ref={selectRef}>
       <div className={s.header} onClick={() => setIsOpen(!isOpen)}>
         <span className={s.selectedValue}>
-          {selectedOption ? selectedOption.label : placeholder}
+          {selectedOption ? selectedOption.label : options[0].label}
         </span>
         <span className={s.arrow}>
           <ArrowIcon />
