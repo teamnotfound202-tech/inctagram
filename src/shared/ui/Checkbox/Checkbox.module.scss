@@ -35,6 +35,7 @@
   background-color: transparent;
   outline: none;
   box-shadow: none;
+  cursor: pointer;
 
   &[data-disabled] {
     border-color: $light-900;

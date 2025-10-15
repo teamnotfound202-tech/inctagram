@@ -194,7 +194,7 @@ useEffect(() => {
       {success === 'false' && (
         <Modal title={currentLanguageArray.common.error} onClick={handleModalClose}>
           <p className={s.modalContent}>{currentLanguageArray.settings.errorMessageSubsriptions}</p>
-          <div>
+          <div className={s.buttonsModal}>
             <Button type={'button'} fullWidth onClick={handleModalClose} className={s.buttonModal}>
               {currentLanguageArray.settings.backToPayment}
             </Button>
