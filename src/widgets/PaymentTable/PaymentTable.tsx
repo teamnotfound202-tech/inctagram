@@ -203,14 +203,14 @@ export const PaymentTable = () => {
         setPage(page);
         setItemsCount(count);
     }
-
+  console.log(payments)
     const shownPayments = []
     let i: number = (page - 1) * itemsCount
     if (payments) {
         //берем из пришедшего массива оплат только нужную порцию, чтобы отрисовать
         while (i <= page * itemsCount - 1 && i < payments.length) {
             shownPayments.push(
-                <TableRow key={payments[i].id}>
+                <TableRow key={payments[i].subscriptionId}>
                     <TableDataCell>{new Date(payments[i].dateOfPayment).toLocaleDateString('ru')}</TableDataCell>
                     <TableDataCell>{new Date(payments[i].endDateOfSubscription).toLocaleDateString('ru')}</TableDataCell>
                     <TableDataCell>$ {payments[i].price}</TableDataCell>

@@ -9,8 +9,6 @@ import {baseApi} from '@/shared/api'
 import {PAGINATION} from '@/shared/constants/pagination'
 import {User} from "@/features/postView/api/types";
 import {
-  CreatePaymentsSubscription,
-  CreatePaymentsSubscriptionResponse,
   GeneralInformaitionValues,
 } from '@/shared/api/types'
 
@@ -106,10 +104,7 @@ export const publicUserApi = baseApi.injectEndpoints({
     }),
     updateMyProfile: builder.mutation<void, GeneralInformaitionValues>({
       query: body => ({ url: `/users/profile`, method: 'PUT', body }),
-    }),
-    createSubscription: builder.mutation<CreatePaymentsSubscriptionResponse, CreatePaymentsSubscription>({
-      query: body => ({ url: `/subscriptions`, method: 'POST', body }),
-    }),
+    })
   }),
 })
 
@@ -126,6 +121,5 @@ export const {
   useUpdateAvatarMutation,
   useUpdateMyProfileMutation,
   useDeleteAvatarMutation,
-  useCreateSubscriptionMutation
 } = publicUserApi
 export const publicUserReducer = publicUserApi.reducer

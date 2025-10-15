@@ -9,9 +9,11 @@ import s from './RadioButtons.module.scss'
  }
 
 export const RadioButtons = ({ children, defaultValue, changesValue }: Values) => {
+  console.log(defaultValue)
   return (
     <>
       <RadioGroup.Root
+        key={defaultValue}
         className={s.Root}
         defaultValue={defaultValue}
         aria-label="View density"

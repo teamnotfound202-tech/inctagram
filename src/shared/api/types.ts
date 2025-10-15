@@ -55,12 +55,3 @@ export type GeneralInformaitionValues = {
   city: string
   aboutMe: string
 }
-export type CreatePaymentsSubscription = {
-  "typeSubscription": 'MONTHLY' |'DAY'| 'WEEKLY',
-  "paymentType": "STRIPE" | 'PAYPAL',
-  "amount": number,
-  "baseUrl": string
-}
-export type CreatePaymentsSubscriptionResponse = {
- url: string
-}

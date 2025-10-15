@@ -13,14 +13,15 @@ import { SettingPagePayments } from '@/views/SettingsPage/SettingPageItems/Setti
 export const SettingsPage = () => {
   const searchParams = useSearchParams()
   const path = searchParams.get('part')
+  const success = searchParams.get('success')
   const router = useRouter()
   useEffect(() => {
     if(path){
-      router.replace(`?part=${path}`)
+      router.replace(`?part=${path}${success ? `&success=${success}`:''}`)
     } else {
       router.replace('?part=info')
     }
-  },[router,path])
+  },[router,path,success])
 
   return (
     <div className={s.settingsPage}>
