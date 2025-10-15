@@ -104,39 +104,42 @@ useEffect(() => {
 },[isLoading, data])
   return (
     <div className={s.settingPageSubscriptions}>
-
-      {data && (
+      {data && data.data?.length > 0 && (
         <div className={s.currentSubscription}>
-        <h2 className={s.title}>{currentLanguageArray.settings.currentSubscription}</h2>
-        <Card>
-          <div className={s.currentSubscriptionInfo}>
-            <div className={s.infoGroup}>
-              <span className={s.infoTitle}>{currentLanguageArray.settings.expireAt}</span>
-              <span className={s.infoDate}>{dateExpireAt(data)}</span>
+          <h2 className={s.title}>{currentLanguageArray.settings.currentSubscription}</h2>
+          <Card>
+            <div className={s.currentSubscriptionInfo}>
+              <div className={s.infoGroup}>
+                <span className={s.infoTitle}>{currentLanguageArray.settings.expireAt}</span>
+                <span className={s.infoDate}>{dateExpireAt(data)}</span>
+              </div>
+              <div className={s.infoGroup}>
+                <span className={s.infoTitle}>{currentLanguageArray.settings.nextPayment}</span>
+                <span className={s.infoDate}>{dateNextPayments(data)}</span>
+              </div>
             </div>
-            <div className={s.infoGroup}>
-              <span className={s.infoTitle}>{currentLanguageArray.settings.nextPayment}</span>
-              <span className={s.infoDate}>{dateNextPayments(data)}</span>
-            </div>
-          </div>
-        </Card>
-        <CustomCheckbox id={'autoRenewal'}
-                        className={s.checkBoxReneval}
-                        text={currentLanguageArray.settings.autoReneval}
-                         checked={data.hasAutoRenewal}
-                        onChangeAction={()=>handlerChangeAutoRenewal(data)} />
-      </div>
+          </Card>
+          <CustomCheckbox
+            id={'autoRenewal'}
+            className={s.checkBoxReneval}
+            text={currentLanguageArray.settings.autoReneval}
+            checked={data.hasAutoRenewal}
+            onChangeAction={() => handlerChangeAutoRenewal(data)}
+          />
+        </div>
       )}
 
-      {!isLoading && <div className={s.accountType}>
-        <h2 className={s.title}>{currentLanguageArray.settings.accountType}</h2>
-        <Card>
-          <RadioButtons defaultValue={accountId} changesValue={handleChangeAccountType}>
-            <RadioItem text={currentLanguageArray.settings.personal} id={'1'} />
-            <RadioItem text={currentLanguageArray.settings.business} id={'2'} />
-          </RadioButtons>
-        </Card>
-      </div>}
+      {!isLoading && (
+        <div className={s.accountType}>
+          <h2 className={s.title}>{currentLanguageArray.settings.accountType}</h2>
+          <Card>
+            <RadioButtons defaultValue={accountId} changesValue={handleChangeAccountType}>
+              <RadioItem text={currentLanguageArray.settings.personal} id={'1'} />
+              <RadioItem text={currentLanguageArray.settings.business} id={'2'} />
+            </RadioButtons>
+          </Card>
+        </div>
+      )}
 
       {accountId === '2' && (
         <>
@@ -152,11 +155,19 @@ useEffect(() => {
           </div>
 
           <div className={s.buttonWrapper}>
-            <Button variant={'secondary'} className={s.stripeButton} onClick={handlePayPalButtonClick}>
+            <Button
+              variant={'secondary'}
+              className={s.stripeButton}
+              onClick={handlePayPalButtonClick}
+            >
               <PayPalIcon />
             </Button>
 
-            <Button variant={'secondary'} className={s.stripeButton} onClick={handleStripeButtonClick}>
+            <Button
+              variant={'secondary'}
+              className={s.stripeButton}
+              onClick={handleStripeButtonClick}
+            >
               <StripeIcon />
             </Button>
           </div>
@@ -174,7 +185,9 @@ useEffect(() => {
         <Modal title={currentLanguageArray.common.success} onClick={handleModalClose}>
           <p className={s.modalContent}>{currentLanguageArray.settings.succesfullPaymentMessage}</p>
           <div className={s.buttonsModal}>
-            <Button type={'button'} onClick={handleModalClose}>ОК</Button>
+            <Button type={'button'} onClick={handleModalClose}>
+              ОК
+            </Button>
           </div>
         </Modal>
       )}
@@ -182,7 +195,7 @@ useEffect(() => {
         <Modal title={currentLanguageArray.common.error} onClick={handleModalClose}>
           <p className={s.modalContent}>{currentLanguageArray.settings.errorMessageSubsriptions}</p>
           <div>
-            <Button type={'button'}  fullWidth onClick={handleModalClose} className={s.buttonModal}>
+            <Button type={'button'} fullWidth onClick={handleModalClose} className={s.buttonModal}>
               {currentLanguageArray.settings.backToPayment}
             </Button>
           </div>
