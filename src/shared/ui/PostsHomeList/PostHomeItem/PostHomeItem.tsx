@@ -9,6 +9,7 @@ import {usePathname, useSearchParams} from 'next/navigation'
 import {LinkContent} from "@/views/ProfilePosts/PostItem/LinkContent/LinkContent";
 import Avatar from '../../../../entities/user/ui/Avatar/Avatar'
 import { getTimeDifference } from '@/shared/lib/utils/getTimeDifference'
+import { Button } from '@/shared/ui'
 
 type Props = {
   post: Post
@@ -44,7 +45,9 @@ export const PostHomeItem = ({post}: Props) => {
 
       <p className={s.description}>
         {post.description}
-
+        <Button variant={'text'} className={s.showMoreButton}>
+         Show more
+        </Button>
       </p>
     </li>
   );
