@@ -5,7 +5,6 @@ import { type ReactNode } from 'react'
 import { Sidebar } from '@/widgets/Sidebar/Sidebar'
 import s from './AppWrapper.module.scss'
 import { Container } from '@/shared/ui'
-import { ProfileRedirect } from '@/views/profileRedirect/profileRedirect'
 
 export const AppWrapper = ({ children }: { children: ReactNode }) => {
   const { data} = useMeQuery()
@@ -15,7 +14,6 @@ export const AppWrapper = ({ children }: { children: ReactNode }) => {
       <Container>
         <div className={s.appInner}>
           {data?.userId && <Sidebar />}
-          <ProfileRedirect/>
             {children}
         </div>
       </Container>
