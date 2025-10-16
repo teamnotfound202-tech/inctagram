@@ -5,7 +5,6 @@ import {Post} from '@/features/publicUserApi/types'
 import 'swiper/css';
 import {useState} from 'react'
 import Link from 'next/link'
-// import {usePathname, useSearchParams} from 'next/navigation'
 import {LinkContent} from "@/views/ProfilePosts/PostItem/LinkContent/LinkContent";
 import Avatar from '../../../../entities/user/ui/Avatar/Avatar'
 import { getTimeDifference } from '@/shared/lib/utils/getTimeDifference'
@@ -46,7 +45,7 @@ export const PostHomeItem = ({post}: Props) => {
 
   return (
     <li className={s.postItem}>
-      <Link href={path +`/profile/${post.ownerId}/post/${post.id}`} prefetch={false}>
+      <Link href={`/profile/${post.ownerId}/post/${post.id}`} prefetch={false}>
         {/* Передаем управление дочернему компоненту */}
         <LinkContent post={post} />
       </Link>
