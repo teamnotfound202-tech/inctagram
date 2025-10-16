@@ -14,19 +14,18 @@ type Props = {
   post: Post
 }
 
-const countLetter = 40
-const maxLetters = 150
+const countLetter = 150
+const maxLetters = 300
 
 export const PostHomeItem = ({post}: Props) => {
   // const [path, setPath] = useState('');
   // const pathname = usePathname();
   // const searchParams = useSearchParams();
-  const [text, setText] = useState('Show more')
+  const [text, setText] = useState('Show less')
   const postDescriptionLength =
-    post && post.description &&
-    post.description.length > countLetter ?
-      post.description.slice(0, maxLetters) + '...' :
-      post.description
+    post && post.description && post.description.length > countLetter
+      ? post.description.slice(0, countLetter) + '...'
+      : post.description
   const [textDescription, setTextDescription] = useState(postDescriptionLength)
   // TODO нужен ли этот useEffect?
   // useEffect(() => {
@@ -39,7 +38,7 @@ export const PostHomeItem = ({post}: Props) => {
     if (value){
       setTextDescription(post.description.slice(0, value) + '...')
     } else {
-      setTextDescription(post.description.slice(0, maxLetters) + '...')
+      setTextDescription(post.description.slice(0, countLetter) + '...')
     }
   }
 
@@ -67,7 +66,7 @@ export const PostHomeItem = ({post}: Props) => {
             className={s.showMoreButton}
             onClick={() => {
               if (text === 'Show less') {
-                handleChangeHeightText(countLetter)
+                handleChangeHeightText(maxLetters)
                 setText('Show more')
               } else {
                 handleChangeHeightText()
