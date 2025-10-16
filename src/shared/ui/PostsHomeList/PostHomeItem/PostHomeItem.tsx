@@ -15,7 +15,7 @@ type Props = {
 }
 
 const countLetter = 82
-const maxLetters = 230
+const maxLetters = 210
 
 export const PostHomeItem = ({post}: Props) => {
 
@@ -27,8 +27,12 @@ export const PostHomeItem = ({post}: Props) => {
   const [textDescription, setTextDescription] = useState(postDescriptionLength)
 
   const handleChangeHeightText = (value?: number) => {
+
     if (value){
-      setTextDescription(post.description.slice(0, value) + '...')
+        setTimeout(()=>{
+            setTextDescription(post.description.slice(0, value) + '...')
+        },390)
+
     } else {
       setTextDescription(post.description.slice(0, countLetter) + '...')
     }
@@ -36,10 +40,11 @@ export const PostHomeItem = ({post}: Props) => {
 
   return (
     <li className={s.postItem}>
-      <Link href={`/profile/${post.ownerId}/post/${post.id}`} prefetch={false}>
-        {/* Передаем управление дочернему компоненту */}
-        <LinkContent post={post} />
-      </Link>
+      <div className={s.postImageWraper}>
+        <Link href={`/profile/${post.ownerId}/post/${post.id}`} prefetch={false}>
+          <LinkContent post={post} isTrim={text} />
+        </Link>
+      </div>
 
       <div className={s.userInfo}>
         <Avatar src={post.avatarOwner} alt="Avatar Image" size="small" />

@@ -49,4 +49,29 @@
   width: 100%;
   cursor: pointer;
   max-height: 100% !important;
+  transition: all 0.4s ease-out;
+
+  @keyframes show-image {
+    from {
+      height: 120px !important;
+    }
+    to {
+      height: 100% !important;
+    }
+  }
+}
+
+.trimPostImage{
+  height: 120px !important;
+  object-fit: cover;
+  transition: all 0.4s ease-in;
+
+  @keyframes less-image {
+    from {
+      height: 100% !important;
+    }
+    to {
+      height: 120px !important;
+    }
+  }
 }

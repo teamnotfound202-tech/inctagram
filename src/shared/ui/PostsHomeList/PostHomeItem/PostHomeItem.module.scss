@@ -38,4 +38,9 @@
   margin-left: 5px;
   padding: 0;
   border: none;
+
+  &:focus,&:active{
+    outline: none;
+    border: none;
+  }
 }
