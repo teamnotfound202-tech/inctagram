@@ -16,6 +16,7 @@ type Props = {
 }
 
 const countLetter = 40
+const maxLetters = 150
 
 export const PostHomeItem = ({post}: Props) => {
   const [path, setPath] = useState('');
@@ -25,7 +26,7 @@ export const PostHomeItem = ({post}: Props) => {
   const postDescriptionLength =
     post && post.description &&
     post.description.length > countLetter ?
-      post.description.slice(0, countLetter) + '...' :
+      post.description.slice(0, maxLetters) + '...' :
       post.description
   const [textDescription, setTextDescription] = useState(postDescriptionLength)
 
@@ -39,7 +40,7 @@ export const PostHomeItem = ({post}: Props) => {
     if (value){
       setTextDescription(post.description.slice(0, value) + '...')
     } else {
-      setTextDescription(post.description.slice(0))
+      setTextDescription(post.description.slice(0, maxLetters) + '...')
     }
   }
 
