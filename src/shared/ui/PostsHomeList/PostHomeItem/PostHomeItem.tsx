@@ -15,17 +15,33 @@ type Props = {
   post: Post
 }
 
+const countLetter = 40
+
 export const PostHomeItem = ({post}: Props) => {
   const [path, setPath] = useState('');
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [text, setText] = useState('Show more')
+  const postDescriptionLength =
+    post && post.description &&
+    post.description.length > countLetter ?
+      post.description.slice(0, countLetter) + '...' :
+      post.description
+  const [textDescription, setTextDescription] = useState(postDescriptionLength)
 
   useEffect(() => {
     const currentSearchParams = new URLSearchParams(searchParams.toString());
     currentSearchParams.set('postId', post.id.toString());
     setPath(`${pathname}?${currentSearchParams.toString()}`);
-    console.log(currentSearchParams)
   }, [pathname, searchParams, post.id]);
+
+  const handleChangeHeightText = (value?: number) => {
+    if (value){
+      setTextDescription(post.description.slice(0, value) + '...')
+    } else {
+      setTextDescription(post.description.slice(0))
+    }
+  }
 
   return (
     <li className={s.postItem}>
@@ -44,11 +60,25 @@ export const PostHomeItem = ({post}: Props) => {
       <span className={s.time}>{getTimeDifference(post.createdAt)}</span>
 
       <p className={s.description}>
-        {post.description}
-        <Button variant={'text'} className={s.showMoreButton}>
-         Show more
-        </Button>
+        {textDescription}
+        {textDescription.length > countLetter &&
+          <Button
+            variant={'text'}
+            className={s.showMoreButton}
+            onClick={() => {
+              if (text === 'Show less') {
+                handleChangeHeightText(countLetter)
+                setText('Show more')
+              } else {
+                handleChangeHeightText()
+                setText('Show less')
+              }
+            }}
+          >
+            {text}
+          </Button>
+        }
       </p>
     </li>
-  );
+  )
 }
