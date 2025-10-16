@@ -38,7 +38,7 @@ export function LinkContent({ post, isTrim }: { post: Post, isTrim?: string}) {
         swiperRef.current?.slideNext();
         setCurrentIndex(prevState => prevState + 1);
     };
-  console.log(isTrim)
+
     return (
         <>
             {pending && (
@@ -90,10 +90,6 @@ export function LinkContent({ post, isTrim }: { post: Post, isTrim?: string}) {
                     alt={'post image'}
                     width={224}
                     height={228}
-                    style={{
-                        width: '100%',
-                        height: 'auto'
-                    }}
                     priority
                 />
             )}
