@@ -3,9 +3,9 @@
 import s from './PostHomeItem.module.scss'
 import {Post} from '@/features/publicUserApi/types'
 import 'swiper/css';
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import Link from 'next/link'
-import {usePathname, useSearchParams} from 'next/navigation'
+// import {usePathname, useSearchParams} from 'next/navigation'
 import {LinkContent} from "@/views/ProfilePosts/PostItem/LinkContent/LinkContent";
 import Avatar from '../../../../entities/user/ui/Avatar/Avatar'
 import { getTimeDifference } from '@/shared/lib/utils/getTimeDifference'
@@ -19,9 +19,9 @@ const countLetter = 40
 const maxLetters = 150
 
 export const PostHomeItem = ({post}: Props) => {
-  const [path, setPath] = useState('');
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // const [path, setPath] = useState('');
+  // const pathname = usePathname();
+  // const searchParams = useSearchParams();
   const [text, setText] = useState('Show more')
   const postDescriptionLength =
     post && post.description &&
@@ -29,12 +29,12 @@ export const PostHomeItem = ({post}: Props) => {
       post.description.slice(0, maxLetters) + '...' :
       post.description
   const [textDescription, setTextDescription] = useState(postDescriptionLength)
-
-  useEffect(() => {
-    const currentSearchParams = new URLSearchParams(searchParams.toString());
-    currentSearchParams.set('postId', post.id.toString());
-    setPath(`${pathname}?${currentSearchParams.toString()}`);
-  }, [pathname, searchParams, post.id]);
+  // TODO нужен ли этот useEffect?
+  // useEffect(() => {
+  //   const currentSearchParams = new URLSearchParams(searchParams.toString());
+  //   currentSearchParams.set('postId', post.id.toString());
+  //   setPath(`${pathname}?${currentSearchParams.toString()}`);
+  // }, [pathname, searchParams, post.id]);
 
   const handleChangeHeightText = (value?: number) => {
     if (value){
@@ -46,18 +46,14 @@ export const PostHomeItem = ({post}: Props) => {
 
   return (
     <li className={s.postItem}>
-      <Link href={path} prefetch={false}>
+      <Link href={path +`/profile/${post.ownerId}/post/${post.id}`} prefetch={false}>
         {/* Передаем управление дочернему компоненту */}
         <LinkContent post={post} />
       </Link>
 
       <div className={s.userInfo}>
         <Avatar src={post.avatarOwner} alt="Avatar Image" size="small" />
-        <Link
-          className={s.userName}
-          href={`/profile/${post.ownerId}/post/${post.id}`}
-          prefetch={true}
-        >
+        <Link className={s.userName} href={`/profile/${post.ownerId}`} prefetch={true}>
           <span className={s.userName}>{post.userName}</span>
         </Link>
       </div>
