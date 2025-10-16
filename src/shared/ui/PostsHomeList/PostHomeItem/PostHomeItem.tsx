@@ -21,7 +21,7 @@ export const PostHomeItem = ({post}: Props) => {
   // const [path, setPath] = useState('');
   // const pathname = usePathname();
   // const searchParams = useSearchParams();
-  const [text, setText] = useState('Show less')
+  const [text, setText] = useState('Show more')
   const postDescriptionLength =
     post && post.description && post.description.length > countLetter
       ? post.description.slice(0, countLetter) + '...'
@@ -65,12 +65,12 @@ export const PostHomeItem = ({post}: Props) => {
             variant={'text'}
             className={s.showMoreButton}
             onClick={() => {
-              if (text === 'Show less') {
+              if (text === 'Show more') {
                 handleChangeHeightText(maxLetters)
-                setText('Show more')
+                setText('Show less')
               } else {
                 handleChangeHeightText()
-                setText('Show less')
+                setText('Show more')
               }
             }}
           >
