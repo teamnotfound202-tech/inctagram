@@ -1,0 +1,5 @@
+@use '@/shared/styles/variables' as *;
+
+.tableRow{
+  border: 1px solid $dark-500;
+}

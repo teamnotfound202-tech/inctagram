@@ -1,0 +1,17 @@
+.modalContent {
+  display: inline-block;
+  min-width: 376px;
+  max-width: 330px;
+  margin-bottom: 18px;
+}
+
+.buttonsGroup {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.buttonModal {
+ display: block;
+  width: 100%;
+}

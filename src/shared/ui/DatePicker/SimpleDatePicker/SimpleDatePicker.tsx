@@ -12,6 +12,7 @@ import { CalendarOpened } from '@/shared/ui/DatePicker/icons/CalendarOpened'
 import { formatDate, isWeekend } from '@/shared/ui/DatePicker/utils/utils'
 import { Path } from '@/shared/config'
 import Link from 'next/link'
+import { dateFormatterForServer, formatDateFromServer } from '@/shared/api/utils'
 
 export type DatePickerSingleProps = {
   value?: Date | string
@@ -35,20 +36,6 @@ export const SimpleDatePicker = ({
   const [disabled, setIsDisabled] = useState(false)
   const handleOpen = (event: boolean) => {
     setIsOpened(event)
-  }
-
-  const dateFormatterForServer = (date: Date) => {
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    const day = date.getDate()
-    return new Date(Date.UTC(year, month, day)).toISOString()
-  }
-
-  const formatDateFromServer = (dateString: string) => {
-    const [datePart] = dateString.split('T')
-    const [year, month, day] = datePart.split('-')
-
-    return `${day}.${month}.${year}`
   }
 
   const handleSelect = (date: Date | undefined) => {

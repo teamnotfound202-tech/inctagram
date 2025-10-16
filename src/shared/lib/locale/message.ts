@@ -188,6 +188,22 @@ export interface Messages {
     deactivateAccount: string
     close: string
     save: string
+    accountType:string
+    subscriptionCosts:string
+    personal:string
+    business:string
+    dayli:string
+    weekly:string
+    monthly:string
+    createPayment:string
+    autoRenewalModals:string
+    errorMessageSubsriptions:string
+    backToPayment:string
+    succesfullPaymentMessage:string
+    currentSubscription:string
+    expireAt:string
+    nextPayment:string
+    autoReneval: string
   }
 
   // Ошибки и валидация
@@ -227,7 +243,8 @@ export interface Messages {
     openDraft: string
     deleteAvatarTitle: string
     deleteAvatarText: string
-    addPhotoProfile: string
+    addPhotoProfile: string,
+    agree: string
   }
 
   // Языки
@@ -416,6 +433,23 @@ export const messages: Record<Language, Messages> = {
       deactivateAccount: 'Deactivate Account',
       close: 'Close',
       save: 'Save draft',
+      accountType: 'Account type:',
+      subscriptionCosts: 'Your subscription costs:',
+      personal: 'Personal',
+      business: 'Business',
+      dayli: '$10 per 1 Day',
+      weekly: '$50 per 7 Day',
+      monthly: '$100 per month',
+      createPayment: 'Create payment',
+      autoRenewalModals:
+        'Auto-renewal will be enabled with this payment. You can disable it anytime in your profile settings',
+      errorMessageSubsriptions: 'Transaction failed. Please, write to support',
+      backToPayment: 'Back to payment',
+      succesfullPaymentMessage: 'Payment was successful!',
+      currentSubscription: 'Current Subscription:',
+      expireAt: 'Expire at',
+      nextPayment: 'Next payment',
+      autoReneval:'Auto-Renewal'
     },
 
     errors: {
@@ -454,6 +488,7 @@ export const messages: Record<Language, Messages> = {
       deleteAvatarTitle: 'Delete Photo',
       deleteAvatarText: 'Are you sure you want to delete the photo?',
       addPhotoProfile: 'Add a Profile Photo',
+      agree: 'I agree',
     },
 
     languages: {
@@ -561,7 +596,7 @@ export const messages: Record<Language, Messages> = {
       sendMessage: 'Отправить сообщение',
       generalInformation: 'Основная информация',
       devices: 'Устройства',
-      accountManagement: 'Управлеие аккаунтом',
+      accountManagement: 'Управление аккаунтом',
       myPayments: 'Мои платежи',
       country: 'Выберите страну',
       city: 'Выберите город',
@@ -640,6 +675,23 @@ export const messages: Record<Language, Messages> = {
       deactivateAccount: 'Деактивировать аккаунт',
       close: 'Закрыть',
       save: 'Сохранить черновик',
+      accountType: 'Тип аккаунта:',
+      subscriptionCosts: 'Стоимость вашей подписки:',
+      personal: 'Личный',
+      business: 'Бизнес',
+      dayli: '$10 за 1 день',
+      weekly: '$50 за 7 дней',
+      monthly: '$100 за месяц',
+      createPayment: 'Создать платеж',
+      autoRenewalModals:
+        'Автоматическое продление будет включено с этим платежом. Вы можете отключить его в любое время в настройках своего профиля',
+      errorMessageSubsriptions: 'Транзакция не удалась. Пожалуйста, напишите в службу поддержки.',
+      backToPayment: 'Вернуться к оплате',
+      succesfullPaymentMessage: 'Оплата прошла успешно!',
+      currentSubscription: 'Текущая подписка:',
+      expireAt: 'Срок действия истекает',
+      nextPayment: 'Следующий платеж',
+      autoReneval: 'Автоматическое продление',
     },
 
     errors: {
@@ -678,6 +730,7 @@ export const messages: Record<Language, Messages> = {
       deleteAvatarTitle: 'Удалить фото',
       deleteAvatarText: 'Вы уверены что хотите удалить фотографию?',
       addPhotoProfile: 'Добавить фото профиля',
+      agree: 'Я согласен',
     },
 
     languages: {

@@ -219,7 +219,6 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
     document.body.style.overflow = ''
     setExitModalIsOpen(false)
   }
-  console.log(document.body.style.overflow)
 
   const handleDiscard = () => {
     setCurrentStep('upload')

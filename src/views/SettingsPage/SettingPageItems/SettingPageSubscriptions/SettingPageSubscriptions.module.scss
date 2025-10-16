@@ -1,3 +1,84 @@
+@use '@/shared/styles/variables' as *;
+
 .settingPageSubscriptions {
   padding-top: 30px;
+}
+.accountType{
+  margin-bottom: 42px;
+}
+
+.subscriptionsType{
+  margin-bottom: 24px;
+}
+
+.title{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  margin-bottom: 6px;
+}
+
+.stripeButton{
+  padding: 0;
+  height:64px;
+  width: 96px;
+  border: 1px solid $dark-300;
+  background-color: $dark-500;
+  border-radius: 6px;
+}
+
+.buttonWrapper{
+  display: flex;
+  justify-content: flex-end;
+  gap: 50px;
+}
+
+.currentSubscriptionInfo{
+  display: flex;
+  flex-direction: row;
+  gap: 45px;
+}
+
+.infoGroup{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.infoTitle{
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  color: $light-900;
+}
+
+.infoDate{
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 171%;
+  color: $light-100;
+}
+
+.checkBoxReneval{
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  color: $light-100;
+
+  margin-top: 12px;
+  margin-bottom: 18px;
+}
+
+.modalContent {
+  display: inline-block;
+  min-width: 376px;
+  max-width: 330px;
+  margin-bottom: 18px;
+}
+
+.buttonsModal {
+  min-width: 100%;
+  button {
+    min-width: 100%;
+  }
 }

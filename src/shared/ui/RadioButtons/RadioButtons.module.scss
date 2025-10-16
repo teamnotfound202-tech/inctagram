@@ -2,5 +2,6 @@
 
 .Root {
   display: flex;
-  gap: 44px;
+  flex-direction: column;
+  gap: 24px;
 }
