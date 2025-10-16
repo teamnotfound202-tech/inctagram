@@ -14,25 +14,17 @@ type Props = {
   post: Post
 }
 
-const countLetter = 150
-const maxLetters = 300
+const countLetter = 82
+const maxLetters = 230
 
 export const PostHomeItem = ({post}: Props) => {
-  // const [path, setPath] = useState('');
-  // const pathname = usePathname();
-  // const searchParams = useSearchParams();
+
   const [text, setText] = useState('Show more')
   const postDescriptionLength =
     post && post.description && post.description.length > countLetter
       ? post.description.slice(0, countLetter) + '...'
       : post.description
   const [textDescription, setTextDescription] = useState(postDescriptionLength)
-  // TODO нужен ли этот useEffect?
-  // useEffect(() => {
-  //   const currentSearchParams = new URLSearchParams(searchParams.toString());
-  //   currentSearchParams.set('postId', post.id.toString());
-  //   setPath(`${pathname}?${currentSearchParams.toString()}`);
-  // }, [pathname, searchParams, post.id]);
 
   const handleChangeHeightText = (value?: number) => {
     if (value){
