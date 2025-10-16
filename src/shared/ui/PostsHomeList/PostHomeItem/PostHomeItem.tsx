@@ -53,7 +53,11 @@ export const PostHomeItem = ({post}: Props) => {
 
       <div className={s.userInfo}>
         <Avatar src={post.avatarOwner} alt="Avatar Image" size="small" />
-        <Link className={s.userName} href={`/profile/${post.ownerId}`} prefetch={true}>
+        <Link
+          className={s.userName}
+          href={`/profile/${post.ownerId}/post/${post.id}`}
+          prefetch={true}
+        >
           <span className={s.userName}>{post.userName}</span>
         </Link>
       </div>
@@ -62,7 +66,7 @@ export const PostHomeItem = ({post}: Props) => {
 
       <p className={s.description}>
         {textDescription}
-        {textDescription.length > countLetter &&
+        {textDescription.length > countLetter && (
           <Button
             variant={'text'}
             className={s.showMoreButton}
@@ -78,7 +82,7 @@ export const PostHomeItem = ({post}: Props) => {
           >
             {text}
           </Button>
-        }
+        )}
       </p>
     </li>
   )
