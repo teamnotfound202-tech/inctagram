@@ -122,4 +122,3 @@ export const {
   useUpdateMyProfileMutation,
   useDeleteAvatarMutation,
 } = publicUserApi
-export const publicUserReducer = publicUserApi.reducer
