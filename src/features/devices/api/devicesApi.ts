@@ -18,8 +18,9 @@ export const devicesApi = baseApi.injectEndpoints({
       query: ({ deviceId }) => ({
         url: `/sessions/${deviceId}`,
         method: 'DELETE',
-        params: {deviceId}
+        params: { deviceId },
       }),
+      invalidatesTags: ['GetDevice'],
     }),
   }),
 })

@@ -40,6 +40,7 @@ export const ActiveSessionCard = ({activeDevice}: Props) => {
       <div className={s.activeDeviceInfo}>
         <p className={s.activeDeviceName}>{activeDevice.deviceName}</p>
         <p className={s.activeDeviceIp}>IP: {activeDevice.ip}</p>
+        <p className={s.activeDeviceBrowserName}>{activeDevice.browserName}</p>
         <p className={s.activeDeviceLastVisit}>
           {currentLanguageArray.devices.lastVisit}: {formatDateFromServer(activeDevice.lastActive)}
         </p>

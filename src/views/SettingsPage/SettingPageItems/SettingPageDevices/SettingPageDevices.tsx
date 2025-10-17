@@ -17,7 +17,7 @@ export  const SettingPageDevices = () => {
         />
       )}
       {devicesData && <CurrentDevice currentDevice={devicesData.current} />}
-      {devicesData && <ActiveSessions activeDevices={devicesData.others} />}
+      {devicesData && <ActiveSessions activeDevices={devicesData.others} currentDeviceId={devicesData.current.deviceId} />}
     </div>
   )
 }
