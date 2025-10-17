@@ -11,6 +11,7 @@ import { Path } from '@/shared/config'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
+import { formatDateFromServer } from '@/shared/api/utils'
 
 type Props = {
   activeDevice: OtherDevice
@@ -40,7 +41,7 @@ export const ActiveSessionCard = ({activeDevice}: Props) => {
         <p className={s.activeDeviceName}>{activeDevice.deviceName}</p>
         <p className={s.activeDeviceIp}>IP: {activeDevice.ip}</p>
         <p className={s.activeDeviceLastVisit}>
-          {currentLanguageArray.devices.lastVisit}: {activeDevice.lastActive}
+          {currentLanguageArray.devices.lastVisit}: {formatDateFromServer(activeDevice.lastActive)}
         </p>
       </div>
       <div className={s.activeDeviceBtnWrapper}>
