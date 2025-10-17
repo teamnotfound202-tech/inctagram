@@ -1,24 +1,12 @@
 import {PostView} from "@/features/postView/ui/PostSSR/PostView/PostView";
 import {getPost} from "@/features/postView/utils/getPost";
-import {redirect} from "next/navigation";
-import {cleanSearchParams} from "@/features/postView/utils/url-utils";
 import PostModal from "@/features/postView/ui/PostModal/PostModal";
 import s from './PostSSR.module.scss'
 
-export const PostSsr = async ({params, searchParams}: {
-    params: { userId: string },
-    searchParams: { [key: string]: string | string[] | undefined };
+export const PostSsr = async ({params}: {
+    params: { postId: string },
 }) => {
-    const {userId} =  params;
-    const resolvedSearchParams = await searchParams;
-    const postId = resolvedSearchParams.postId as string | undefined;
-
-    // Проверяем конфликт параметров и делаем редирект если нужно
-    if (postId && resolvedSearchParams.action) {
-        const newSearchParams = cleanSearchParams(resolvedSearchParams);
-        newSearchParams.set('postId', postId); // Гарантируем что postId останется
-        redirect(`/profile/${userId}?${newSearchParams.toString()}`);
-    }
+    const {postId} = await params;
 
     if (!postId) {
         return null;
@@ -44,6 +32,6 @@ export const PostSsr = async ({params, searchParams}: {
     }
 
     return (
-            <PostView post={post}/>
+        <PostView post={post}/>
     );
 };
