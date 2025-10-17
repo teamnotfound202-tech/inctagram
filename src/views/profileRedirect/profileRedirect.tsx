@@ -21,8 +21,8 @@ export const ProfileRedirect = () => {
   }, [isLoading, isFetching, data?.userId, router])
 
   return (
-      <div style={{display:'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
-        <Loader/>
-      </div>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+      <Loader />
+    </div>
   )
 }

@@ -1,33 +1,36 @@
 type Locale = 'en' | 'ru' | 'de' | 'fr' | 'es';
 
-export function getTimeDifference(
-    postDate: string | Date,
-    locale: Locale = 'en'
-): string {
-    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+export function getTimeDifference(postDate: string | Date, locale: Locale = 'en'): string {
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
 
-    const now = new Date();
-    const postTime = new Date(postDate);
-    const diffInMs = postTime.getTime() - now.getTime();
+  const now = new Date();
+  const then = new Date(postDate);
+  if (isNaN(then.getTime())) return locale === 'ru' ? 'Неверная дата' : 'Invalid date';
 
-    const diffInSeconds = Math.floor(diffInMs / 1000);
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    const diffInDays = Math.floor(diffInHours / 24);
-    const diffInMonths = Math.floor(diffInDays / 30);
-    const diffInYears = Math.floor(diffInDays / 365);
+  // diff < 0 => past, diff > 0 => future
+  const diffMs = then.getTime() - now.getTime();
+  const absMs = Math.abs(diffMs);
 
-    if (Math.abs(diffInYears) > 0) {
-        return rtf.format(diffInYears, 'year');
-    } else if (Math.abs(diffInMonths) > 0) {
-        return rtf.format(diffInMonths, 'month');
-    } else if (Math.abs(diffInDays) > 0) {
-        return rtf.format(diffInDays, 'day');
-    } else if (Math.abs(diffInHours) > 0) {
-        return rtf.format(diffInHours, 'hour');
-    } else if (Math.abs(diffInMinutes) > 0) {
-        return rtf.format(diffInMinutes, 'minute');
-    } else {
+  // Средняя длина месяца ~30.44 дня — меньше скачков "11 мес" ↔ "1 год"
+  const units: [Intl.RelativeTimeFormatUnit, number][] = [
+    ['year',   1000 * 60 * 60 * 24 * 365],
+    ['month',  1000 * 60 * 60 * 24 * 30.4375],
+    ['day',    1000 * 60 * 60 * 24],
+    ['hour',   1000 * 60 * 60],
+    ['minute', 1000 * 60],
+    ['second', 1000],
+  ];
+
+  for (const [unit, ms] of units) {
+    // выбираем первый подходящий юнит по порогу
+    if (absMs >= ms || unit === 'second') {
+      const value = Math.round(diffMs / ms); // округляем к ближайшему, а не floor
+      if (unit === 'second' && Math.abs(value) < 10) {
         return locale === 'ru' ? 'Только что' : 'Just now';
+      }
+      return rtf.format(value, unit);
     }
+  }
+
+  return locale === 'ru' ? 'Только что' : 'Just now';
 }

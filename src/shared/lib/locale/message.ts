@@ -188,21 +188,21 @@ export interface Messages {
     deactivateAccount: string
     close: string
     save: string
-    accountType:string
-    subscriptionCosts:string
-    personal:string
-    business:string
-    dayli:string
-    weekly:string
-    monthly:string
-    createPayment:string
-    autoRenewalModals:string
-    errorMessageSubsriptions:string
-    backToPayment:string
-    succesfullPaymentMessage:string
-    currentSubscription:string
-    expireAt:string
-    nextPayment:string
+    accountType: string
+    subscriptionCosts: string
+    personal: string
+    business: string
+    dayli: string
+    weekly: string
+    monthly: string
+    createPayment: string
+    autoRenewalModals: string
+    errorMessageSubsriptions: string
+    backToPayment: string
+    succesfullPaymentMessage: string
+    currentSubscription: string
+    expireAt: string
+    nextPayment: string
     autoReneval: string
   }
 
@@ -243,8 +243,16 @@ export interface Messages {
     openDraft: string
     deleteAvatarTitle: string
     deleteAvatarText: string
-    addPhotoProfile: string,
+    addPhotoProfile: string
     agree: string
+  }
+
+  devices: {
+    currentDevice: string
+    terminateAllOtherSession: string
+    lastVisit: string
+    notDevice: string
+    activeSessions: string
   }
 
   // Языки
@@ -449,7 +457,7 @@ export const messages: Record<Language, Messages> = {
       currentSubscription: 'Current Subscription:',
       expireAt: 'Expire at',
       nextPayment: 'Next payment',
-      autoReneval:'Auto-Renewal'
+      autoReneval: 'Auto-Renewal',
     },
 
     errors: {
@@ -489,6 +497,13 @@ export const messages: Record<Language, Messages> = {
       deleteAvatarText: 'Are you sure you want to delete the photo?',
       addPhotoProfile: 'Add a Profile Photo',
       agree: 'I agree',
+    },
+    devices: {
+      currentDevice: 'Current device',
+      terminateAllOtherSession: 'Terminate all other session',
+      lastVisit: 'Last visit',
+      notDevice: 'You have not yet logged in from other devices',
+      activeSessions: 'Active sessions',
     },
 
     languages: {
@@ -731,6 +746,13 @@ export const messages: Record<Language, Messages> = {
       deleteAvatarText: 'Вы уверены что хотите удалить фотографию?',
       addPhotoProfile: 'Добавить фото профиля',
       agree: 'Я согласен',
+    },
+    devices: {
+      currentDevice: 'Текущие устройства',
+      terminateAllOtherSession: 'Завершить все сессии',
+      lastVisit: 'Последнее посещение',
+      notDevice: 'Нет устройств',
+      activeSessions: 'Активные устройства',
     },
 
     languages: {

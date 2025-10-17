@@ -20,7 +20,7 @@ export const PostItem = ({post}: Props) => {
     useEffect(() => {
         const currentSearchParams = new URLSearchParams(searchParams.toString());
         currentSearchParams.set('postId', post.id.toString());
-        setPath(`${pathname}?${currentSearchParams.toString()}`);
+        setPath(`${pathname}/post/${post.id}`);
     }, [pathname, searchParams, post.id]);
 
     return (
