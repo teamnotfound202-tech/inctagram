@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({children}: Readonly<{children: React.ReactNode} >) {
+export default function RootLayout({children, modal}: Readonly<{children: React.ReactNode, modal: React.ReactNode,} >) {
   return (
     <html lang="en" className={inter.variable}>
       <body className={inter.variable}>
@@ -40,6 +40,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
                   <main className={'main'}>
                     <AppWrapper>
                       {children}
+                      {modal}
                     </AppWrapper>
                     <Toaster />
                   </main>

@@ -36,7 +36,7 @@ export function ConfirmModal({ isOpen, kind, confirmAction, closeAction, user}: 
           <Avatar src={user.avatarUrl} alt="Avatar Image" size="small" />
           <div>
             <span className={s.text}>{question}</span>
-            <Link className={s.userName} href={`/profile/${user.userId}`} prefetch target={'_blank'}>
+            <Link className={s.userName} href={`/(.)profile/${user.userId}`} prefetch target={'_blank'}>
               <span>{user.userName}?</span>
             </Link>
           </div>

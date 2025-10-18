@@ -18,7 +18,11 @@ export default function PostModal({children, isEditing, isDeleteModalOpen, onClo
 
     const onClose = () => {
         if (!isEditing && !isDeleteModalOpen) {
-            router.push(onCloseRedirectUrl || '/')
+            if (onCloseRedirectUrl) {
+                router.push(onCloseRedirectUrl)
+            } else {
+                router.back()
+            }
         }
     };
 
