@@ -1,11 +1,13 @@
 @use '@/shared/styles/variables' as *;
 
 .commentsWrapper {
+  scrollbar-width: none;
+
+  overflow-x: hidden;
+  flex-grow: 1;
+
+  max-height: 500px;
+  padding: 25px 25px 8px;
   border-top: 1px solid $dark-100;
   border-bottom: 1px solid $dark-100;
-  padding: 25px 25px 8px 25px;
-  flex-grow: 1;
-  max-height: 500px;
-  scrollbar-width: none;
-  overflow-x: hidden;
 }

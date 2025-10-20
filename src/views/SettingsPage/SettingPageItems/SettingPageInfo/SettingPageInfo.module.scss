@@ -1,31 +1,35 @@
 @use '@/shared/styles/variables' as *;
 
 .settingPageInfo {
-  padding-top: 24px;
   display: flex;
   flex-direction: column;
   align-items: end;
+  padding-top: 24px;
 }
 
 .settingPageInfoForm {
+  position: relative;
+
   display: flex;
+  flex-direction: column;
   gap: 36px;
+  align-items: flex-end;
+
   width: 100%;
   margin-bottom: 24px;
   padding-bottom: 24px;
-  flex-direction: column;
-  align-items: flex-end;
-  position: relative;
 
 }
 
-.settingPageInfoForm:after {
+.settingPageInfoForm::after {
   content: '';
-  border-bottom: 1px solid  $dark-300;
+
   position: absolute;
-  bottom: 70px;
   right: 0;
+  bottom: 70px;
+
   min-width: 130%;
+  border-bottom: 1px solid  $dark-300;
 }
 
 .settingPageInfoContent {
@@ -42,16 +46,17 @@
 
 .datePickerWrapper {
   margin-bottom: 24px;
-  border: none;
   padding: 0;
+  border: none;
 }
 
 .countryWrapper {
-  border: none;
-  padding: 0;
   display: flex;
   gap: 24px;
+
   margin-bottom: 24px;
+  padding: 0;
+  border: none;
 }
 
 .formWrapper {

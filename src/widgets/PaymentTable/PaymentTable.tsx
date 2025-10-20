@@ -203,7 +203,7 @@ export const PaymentTable = () => {
         setPage(page);
         setItemsCount(count);
     }
-  console.log(payments)
+
     const shownPayments = []
     let i: number = (page - 1) * itemsCount
     if (payments) {

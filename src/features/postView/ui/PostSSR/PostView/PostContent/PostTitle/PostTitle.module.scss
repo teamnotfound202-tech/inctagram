@@ -2,16 +2,16 @@
 
 .postTitle {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 25px;
 }
 
 .ownerInf {
   display: flex;
-  justify-content: start;
-  align-items: center;
   gap: 12px;
+  align-items: center;
+  justify-content: start;
 }
 
 .avatar {

@@ -1,12 +1,14 @@
 @use '@/shared/styles/variables' as *;
+
 .content {
-  padding: 1rem 0;
   max-width: 486px;
+  padding: 1rem 0;
 }
 
 .message {
   margin-bottom: 1.7rem;
   margin-left: 0.85rem;
+
   font-size: 1.1rem;
   line-height: 1.5;
   color: $light-100;
@@ -26,21 +28,17 @@
 }
 
 .confirmButton {
-
-
   &:hover:not(:disabled) {
-    background-color: $accent-700;
     border-color: $accent-700;
     color:$light-100;
+    background-color: $accent-700;
   }
 }
 
 .cancelButton {
-
-
   &:hover:not(:disabled) {
-    background-color:$accent-700;
     border-color: $accent-700;
     color:$light-100;
+    background-color:$accent-700;
   }
 }

@@ -1,8 +1,9 @@
 @use '@/shared/styles/variables' as *;
+
 .root {
   display: inline-flex;
-  align-items: center;
   gap: 8px;
+  align-items: center;
 }
 
 .fullWidth {
@@ -14,12 +15,13 @@
 }
 
 .spinner {
+  box-sizing: border-box;
   width: var(--size, 24px);
   height: var(--size, 24px);
-  border-radius: 50%;
-  box-sizing: border-box;
   border: var(--thickness, 3px) solid transparent;
-  border-top-color: currentColor;
+  border-top-color: currentcolor;
+  border-radius: 50%;
+
   animation: spin var(--speed, 0.8s) linear infinite;
 }
 
@@ -32,22 +34,26 @@
 }
 
 .label {
-  font-size: 0.875rem;
-  opacity: 0.8;
   user-select: none;
+  font-size: 0.875rem;
   color: $light-900;
+  opacity: 0.8;
 }
 
 .srOnly {
   position: absolute;
+
+  overflow: hidden;
+
   width: 1px;
   height: 1px;
   margin: -1px;
   padding: 0;
   border: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
+
   white-space: nowrap;
+
+  clip: rect(0 0 0 0);
 }
 
 @keyframes spin {

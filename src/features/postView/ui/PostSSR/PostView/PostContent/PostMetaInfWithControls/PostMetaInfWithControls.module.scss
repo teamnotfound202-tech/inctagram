@@ -1,7 +1,7 @@
 @use '@/shared/styles/variables' as *;
 
 .postMetaInf {
-  padding: 16px 25px 6px 25px;
+  padding: 16px 25px 6px;
   border-bottom: 1px solid $dark-100;
 }
 
@@ -26,8 +26,8 @@
 }
 
 .postCreationTime {
-  font-weight: 400;
   font-size: 12px;
+  font-weight: 400;
   line-height: 133%;
   color: $light-900;
 }

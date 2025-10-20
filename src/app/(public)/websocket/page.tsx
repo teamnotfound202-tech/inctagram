@@ -11,7 +11,7 @@ const ERROR = 'error'// Event for handling errors.
 
 // URL вашего сервера
 const URL = 'https://inctagram.work';
-const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc2MDk2MDc5OSwiZXhwIjoxNzYwOTY0Mzk5fQ.3Gsn53hSuUJtSYqyHdgyyG-cq5KjieWFVIKOHdwHNTs"; // Лучше получать токен динамически, например, из localStorage или cookie
+const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc2MDk2ODc4MiwiZXhwIjoxNzYwOTcyMzgyfQ.eWNQGDzhHUqCZxtcRZXif0VY5W8qWRW4iqXziSFFZg8"; // Лучше получать токен динамически, например, из localStorage или cookie
 
 const socket = io(URL, {
     // Отключаем авто-подключение, чтобы иметь контроль над моментом установки соединения
@@ -22,8 +22,8 @@ const socket = io(URL, {
 });
 
 type MessageSendRequest = {
-    "message": "string",
-    "receiverId": "number"
+    "message": string,
+    "receiverId": number
 }
 
 const Page = () => {
@@ -48,6 +48,21 @@ const Page = () => {
             console.log('msg ', msg)
         });
 
+        socket.on(MESSAGE_SEND, (incomingMessage, callback) => {
+            console.log('📩 Получено новое сообщение от другого пользователя:', incomingMessage);
+
+            // Отображаем сообщение в UI...
+
+            // Сразу же отправляем подтверждение о доставке, как требует задание
+            console.log('Отправка подтверждения о доставке...');
+            if (typeof callback === 'function') {
+                callback({
+                    message: incomingMessage, // Тело сообщения
+                    receiverId: 26 // ID текущего пользователя (получателя)
+                });
+            }
+        });
+
         // Отписываемся от события при размонтировании компонента
         return () => {
             socket.off(RECEIVE_MESSAGE);
@@ -59,8 +74,9 @@ const Page = () => {
         if (message) {
             const newMessageConstruction: MessageSendRequest = {
                 message,
-                receiverId: 5
+                receiverId: 26
             }
+
             socket.emit(MESSAGE_SEND, newMessageConstruction);
             console.log('message sent', newMessageConstruction)
             setMessage('');

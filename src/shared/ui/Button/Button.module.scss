@@ -2,12 +2,13 @@
 
 .button {
   cursor: pointer;
- white-space: nowrap;
+
   padding: 4px 22px;
   border: 2px solid transparent;
   border-radius: 2px;
 
   line-height: 1.5;
+ white-space: nowrap;
 
   transition: 0.25s;
 }

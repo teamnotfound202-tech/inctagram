@@ -23,6 +23,8 @@
 }
 
 .checkboxRoot {
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +37,6 @@
   background-color: transparent;
   outline: none;
   box-shadow: none;
-  cursor: pointer;
 
   &[data-disabled] {
     border-color: $light-900;

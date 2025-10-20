@@ -3,11 +3,11 @@
   height: 200px;
   margin-bottom: 50px;
 }
+
 .skeletonWrapper{
   & span{
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     gap: 4px;
   }
 }

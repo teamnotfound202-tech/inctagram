@@ -6,6 +6,7 @@
 
 .message {
   margin-bottom: 1.5rem;
+
   font-size: 1rem;
   line-height: 1.5;
   color: $light-100;
@@ -25,20 +26,18 @@
 }
 
 .deleteButton {
-
-
   &:hover:not(:disabled) {
-    background-color:$accent-700;
     border-color: $accent-700;
     color: $light-100;
+    background-color:$accent-700;
 
   }
 }
 
 .cancelButton {
   &:hover:not(:disabled) {
-    background-color: $accent-700;
     border-color: $accent-700;
     color: $light-100;
+    background-color: $accent-700;
   }
 }

@@ -4,9 +4,11 @@
   position: relative;
   display: flex;
   flex-direction: column;
+
   & div {
-    outline: none !important;
     --text-field-border-width: none;
+
+    outline: none !important;
   }
 
   &:has(input:not(:disabled)):active .searchIcon {
@@ -51,27 +53,31 @@
   flex-direction: row-reverse;
   justify-content: center;
 
+  box-sizing: border-box;
+  min-height: 36px;
+  max-height: 36px;
   padding: 6px 12px !important;
   border: 1px solid $dark-100;
   border-radius: 2px !important;
-  background-color: transparent !important;
 
   font-family: inherit !important;
   font-size: 16px !important;
   font-weight: 400 !important;
   line-height: 150%;
-  min-height: 36px;
-  max-height: 36px;
-  box-sizing: border-box;
+
+  background-color: transparent !important;
   outline: none;
 
   transition: 0.25s;
+
   & input {
-    background-color: transparent  !important;
-    text-indent: 0;
-    line-height: 150% !important;
     padding: 4px 0 !important;
     border: transparent !important;
+
+    line-height: 150% !important;
+    text-indent: 0;
+
+    background-color: transparent  !important;
     outline: none !important;
 
     &:hover {
@@ -86,6 +92,7 @@
       cursor: not-allowed;
       border-color: $dark-100;
     }
+
     &:focus-within {
       border-color: $light-100 !important;
     }
@@ -153,14 +160,15 @@
   position: absolute;
   bottom: -19px;
 
+  overflow: hidden;
+
+  width: 100%;
+
   font-size: 14px;
   color: $danger-500;
-  letter-spacing: -0.9px;
-
-  white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%;
+  letter-spacing: -0.9px;
+  white-space: nowrap;
 }
 
 .inputError {

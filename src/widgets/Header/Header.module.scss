@@ -2,26 +2,29 @@
 
 .header {
   position: fixed;
+  z-index: 10;
+
   width: 100%;
   border-bottom: 1px solid $dark-100;
-  z-index: 10;
+
   background-color: $dark-700;
 }
 
 .headerWrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 0;
 }
 
 .headerTitle {
+  cursor: pointer;
+
   font-family: inherit;
-  font-weight: 600;
   font-size: 26px;
+  font-weight: 600;
   line-height: 138%;
   color: $light-100;
-  cursor: pointer;
 }
 
 .headerGroupContainer {
@@ -32,25 +35,31 @@
 
 .buttonNotification {
   all: unset;
+
   cursor: pointer;
+
+  position: relative;
+
   width: 24px;
   height: 24px;
-  position: relative;
   margin-right: 45px;
 }
 
 .notificationCount {
   position: absolute;
-  bottom: 15px;
   right: -2px;
+  bottom: 15px;
+
   width: 15px;
   height: 15px;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 80%;
-  text-align: center;
   padding-top: 3px;
   border-radius: 50%;
+
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 80%;
+  text-align: center;
+
   background-color: $danger-500;
 }
 
