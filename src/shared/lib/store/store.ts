@@ -2,8 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { baseApi } from '@/shared/api/baseApi'
 import { appReducer, appSlice } from '@/shared/api/appSlice'
-import { publicUserApi } from '@/features'
-import { publicUserReducer } from '@/features/publicUserApi/publicUserApi'
+
 export const store = configureStore({
   reducer: {
     [appSlice.name]: appReducer,
