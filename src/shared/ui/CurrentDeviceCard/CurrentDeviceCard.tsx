@@ -14,7 +14,7 @@ import YandexIcon from './icons/yandex.svg'
 const devices = {
   'Brave': BraveIcon,
   'Chrome': ChromeIcon,
-  'Microsoft Edge': MicEdgeIcon,
+  'Edge': MicEdgeIcon,
   'Firefox': FireFoxIcon,
   'Explorer': IEIcon,
   'Opera': OperaIcon,
