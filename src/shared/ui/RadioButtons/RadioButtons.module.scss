@@ -1,0 +1,7 @@
+@use '@/shared/styles/variables' as *;
+
+.Root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

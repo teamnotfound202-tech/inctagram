@@ -1,0 +1,32 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  border-right: 1px solid $dark-300;
+  padding-top: 36px;
+  min-height: 100vh;
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 24px;
+}
+.buttonWrapperforPhoto {
+  margin-top: 15px;
+  width: 100%;
+  justify-content: space-between;
+}
+.contentTextModal {
+  width: 100%;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  color: $light-100;
+
+  & span {
+    font-weight: 700;
+  }
+}

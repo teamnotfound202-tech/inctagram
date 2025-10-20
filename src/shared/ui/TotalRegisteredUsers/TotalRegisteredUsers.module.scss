@@ -1,0 +1,55 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 12px 24px;
+  border: 1px solid $dark-300;
+  border-radius: 2px;
+
+  background-color: $dark-500;
+  margin-bottom: 36px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 133%;
+  color: $light-100;
+}
+
+.numbersContainer {
+  overflow: hidden;
+  display: flex;
+
+  padding: 12px;
+  border: 1px solid $dark-300;
+  border-radius: 2px;
+
+  background: $dark-700;
+}
+
+.digit {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+  border-right: solid 1px $dark-300;
+
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 133%;
+  color: $light-100;
+  text-align: center;
+
+  &:last-child {
+    border-right: none;
+  }
+}

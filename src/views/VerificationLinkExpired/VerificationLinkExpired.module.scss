@@ -1,0 +1,48 @@
+@use '@/shared/styles/variables' as *;
+
+.verificationWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-height: 100vh;
+  padding-top: 95px;
+
+  color: $light-100;
+  text-align: center;
+}
+
+.verificationTitle {
+  margin-bottom: 19px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+.verificationText {
+  max-width: 294px;
+  margin-bottom: 30px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.verificationForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  min-width: 229px;
+  margin-bottom: 36px;
+}
+
+.verificationInput {
+  text-align: start;
+}
+
+.verificationIcon {
+  width: 100%;
+  max-width: 473px;
+  height: 352px;
+}

@@ -1,0 +1,140 @@
+@use '../../../shared/styles/variables' as *;
+
+.containerForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 380px;
+  padding: 24px;
+
+  background-color: $dark-500;
+}
+
+.registrationFormTitle {
+  margin-bottom: 13px;
+  text-align: center;
+}
+
+.oAuthIconContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+}
+
+.oAuthIconContainer a {
+  cursor: pointer;
+}
+
+.authorizationLink {
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form {
+  & > div:not(:last-child, .fogrotBtnContainer) {
+    margin-bottom: 24px;
+  }
+}
+
+.form > div > div {
+  margin-bottom: 0;
+}
+
+.form > div:nth-child(4) {
+  margin-bottom: 12px;
+}
+
+.form > div:nth-child(5) {
+  margin-bottom: 12px;
+}
+
+.checkBoxContainer {
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px;
+}
+
+.checkBoxLabel {
+  display: flex;
+  gap: 4px;
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 133%;
+  color: $light-100;
+}
+
+.loginSpan {
+  margin-top: 18px;
+  margin-bottom: 6px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.registerCheckbox {
+  div > button {
+    cursor: pointer;
+  }
+}
+
+.checkBoxErrorText {
+  position: absolute;
+  bottom: -13px;
+  left: 14px;
+
+  font-size: 14px;
+  color: $danger-500;
+}
+
+.linkForm {
+  cursor: pointer;
+  color: $accent-300;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+}
+
+.formBtn {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+}
+
+.forgotBtn {
+  cursor: pointer;
+
+  padding: 0;
+  border: none;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 170%;
+  color: $light-900;
+
+  background-color: transparent;
+}
+
+.forgotBtn:hover {
+  background-color: transparent;
+}
+
+.fogrotBtnContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}

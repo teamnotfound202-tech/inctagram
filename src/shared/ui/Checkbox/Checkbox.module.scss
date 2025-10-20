@@ -1,0 +1,109 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.checkboxWrapper {
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.checkboxInner {
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.label {
+  cursor: pointer;
+  color: $light-500;
+}
+
+.labelDisabled {
+  color: $light-900;
+}
+
+.checkboxRoot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+  border: 2px solid $light-500;
+  border-radius: 2px;
+
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+
+  &[data-disabled] {
+    border-color: $light-900;
+  }
+}
+
+.checkboxIcon {
+  width: 14px;
+  height: 14px;
+  color: $dark-900;
+}
+
+.checkboxIndicator {
+  cursor: pointer;
+
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  background: $light-500;
+
+  &[data-disabled] {
+    background: $light-900;
+
+    .checkboxIcon {
+      color: $light-700;
+    }
+  }
+}
+
+.circle {
+  pointer-events: none;
+
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  transition: all 0.3s;
+}
+
+.checkboxRoot[data-state='checked']:active ~ .circle,
+.checkboxRoot[data-state='checked']:hover ~ .circle {
+  background-color: rgb(76 76 76 / 50%);
+}
+
+.checkboxRoot[data-state='checked']:focus ~ .circle {
+  background-color: rgb(23 23 23 / 50%);
+}
+
+.checkboxRoot[data-state='checked'] {
+  &.checkboxIcon {
+    color: $light-100;
+  }
+}
+
+.checkboxRoot[data-disabled] {
+  cursor: not-allowed;
+
+  ~ .circle {
+    display: none;
+  }
+}

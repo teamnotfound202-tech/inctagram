@@ -1,0 +1,46 @@
+@use '@/shared/styles/variables' as *;
+
+.postItem {
+  position: relative;
+  width: 234px;
+}
+
+.userInfo{
+  margin-top: 12px;
+  margin-bottom: 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userName{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  cursor: pointer;
+}
+
+.time{
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-900;
+}
+
+.description{
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  text-overflow: ellipsis;
+}
+.showMoreButton{
+  margin-left: 5px;
+  padding: 0;
+  border: none;
+
+  &:focus,&:active{
+    outline: none;
+    border: none;
+  }
+}

@@ -1,0 +1,82 @@
+@use '@/shared/styles/variables' as *;
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  background-color: $dark-300;
+}
+
+.header {
+  margin: 1rem 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  justify-content:end;
+}
+.buttonClose{
+  border:none;
+  width:24px;
+  height:24px;
+}
+.comment{
+  display: flex;
+  align-items:center ;
+  color: $light-100;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.authorName {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-text-primary, #333);
+}
+
+.creationTime {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #666);
+}
+
+.content {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  color:$light-900;
+  border: 1px solid $dark-100;
+  padding: 1.5rem 1rem;
+  height: 100%;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color:$light-100;
+}
+
+.actions {
+  position: absolute;
+  display: flex;
+  gap: 0.75rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+

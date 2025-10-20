@@ -1,0 +1,12 @@
+.gitHubAuthButton {
+  height: 36px;
+  padding: 0;
+  border: none;
+
+  &:hover,
+  &:active,
+  &:focus {
+    border:none;
+    background: none;
+  }
+}

@@ -1,0 +1,21 @@
+@use '@/shared/styles/variables' as *;
+
+.postTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 25px;
+}
+
+.ownerInf {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+}
+
+.ownerName {
+}

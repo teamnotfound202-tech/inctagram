@@ -1,0 +1,25 @@
+@use '@/shared/styles/variables' as *;
+
+.postWrapper {
+  display: flex;
+  background: $dark-300;
+  border: 1px solid $dark-100;
+  width: 100%;
+  min-width: 1000px;
+  max-width: 1124px;
+  max-height: 560px;
+  border-radius: 1px;
+  overflow: hidden;
+}
+.readTitle{
+  position: absolute;
+  background:$dark-300;
+  width: 50%;
+  padding: 1.1rem;
+  border-bottom: 1px solid $dark-100;
+  border-left: 1px solid $dark-100;
+  border-top: 1px solid $dark-100;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+

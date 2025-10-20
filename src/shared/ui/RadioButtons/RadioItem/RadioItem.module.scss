@@ -1,0 +1,107 @@
+@use '@/shared/styles/variables' as *;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.Item {
+  all: unset;
+
+  cursor: pointer;
+
+  position: relative;
+
+  width: 20px;
+  height: 20px;
+  border: 2px solid $light-100;
+  border-radius: 100%;
+
+  background-color: transparent;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+
+    opacity: 0;
+
+    transition: all 0.4s;
+  }
+
+  &:hover::before {
+    opacity: 1;
+    background-color: $dark-300;
+  }
+
+  &:active::before {
+    opacity: 1;
+    background-color: $dark-100;
+  }
+
+  &:focus::before {
+    opacity: 1;
+    background-color: $dark-500;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    border-color: $dark-100;
+
+    & .Indicator {
+      &::after {
+        background-color: $dark-100;
+      }
+    }
+
+    & ~ .Label {
+      cursor: not-allowed;
+      color: $dark-100;
+    }
+  }
+
+  &:disabled::before {
+    opacity: 0;
+  }
+}
+
+.Indicator {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  &::after {
+    content: '';
+
+    display: block;
+
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    background-color: $light-100;
+  }
+}
+
+.Label {
+  cursor: pointer;
+
+  padding-left: 15px;
+
+  font-size: 15px;
+  line-height: 1;
+  color: white;
+}

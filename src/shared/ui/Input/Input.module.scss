@@ -1,0 +1,168 @@
+@use '@/shared/styles/variables' as *;
+
+.Root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  & div {
+    outline: none !important;
+    --text-field-border-width: none;
+  }
+
+  &:has(input:not(:disabled)):active .searchIcon {
+    color: $light-100;
+    transition: 0.25s;
+  }
+
+  &:has(input:not(:disabled)):active ::placeholder {
+    color: $light-100;
+    transition: 0.25s;
+  }
+
+  &:has(input:disabled) .searchIcon {
+    color: $dark-100;
+  }
+
+  &:has(input:disabled) .inputLabel {
+    color: $dark-100;
+  }
+
+  &:has(input:disabled) ::placeholder {
+    color: $dark-100;
+  }
+
+  & input {
+    flex: 1;
+  }
+}
+
+.inputLabel {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 170%;
+  color: $light-900;
+}
+
+.Input{
+  all: unset;
+
+  display: flex !important;
+  flex-direction: row-reverse;
+  justify-content: center;
+
+  padding: 6px 12px !important;
+  border: 1px solid $dark-100;
+  border-radius: 2px !important;
+  background-color: transparent !important;
+
+  font-family: inherit !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 150%;
+  min-height: 36px;
+  max-height: 36px;
+  box-sizing: border-box;
+  outline: none;
+
+  transition: 0.25s;
+  & input {
+    background-color: transparent  !important;
+    text-indent: 0;
+    line-height: 150% !important;
+    padding: 4px 0 !important;
+    border: transparent !important;
+    outline: none !important;
+
+    &:hover {
+      border-color: $light-900;
+    }
+
+    &:active {
+      border-color: $light-100 !important;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      border-color: $dark-100;
+    }
+    &:focus-within {
+      border-color: $light-100 !important;
+    }
+  }
+
+  &:focus-within {
+    border-color: $accent-500;
+  }
+
+  &:hover {
+    border-color: $light-900;
+  }
+
+  &:active {
+    border-color: $light-100;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    border-color: $dark-100;
+  }
+}
+
+.Input:has(input:disabled) {
+  cursor: not-allowed;
+  border-color: $dark-100;
+
+  &:hover {
+    border-color: $dark-100;
+  }
+}
+
+.Input:disabled ~ .Toggle .EyePasswordIcon {
+  cursor: not-allowed;
+  color: $dark-100;
+}
+
+.Toggle {
+  all: unset;
+
+  cursor: pointer;
+
+  position: absolute;
+  right: 12px;
+  bottom: 7px;
+
+  width: 24px;
+  height: 24px;
+
+  color: inherit;
+}
+
+.searchIcon {
+  position: relative;
+  top: -5px;
+  right: 5px;
+  color: $light-900;
+}
+
+.EyePasswordIcon {
+  color: $light-100;
+}
+
+.inputErrorText {
+  position: absolute;
+  bottom: -19px;
+
+  font-size: 14px;
+  color: $danger-500;
+  letter-spacing: -0.9px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.inputError {
+  border: 1px solid $danger-500;
+}

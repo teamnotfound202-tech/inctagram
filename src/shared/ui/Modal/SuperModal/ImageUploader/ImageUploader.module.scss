@@ -1,0 +1,56 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+  background-color: $dark-500;
+  border-radius: 2px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  height: 222px;
+
+  &:hover {
+
+    background-color: $dark-900;
+  }
+}
+
+.dragOver {
+
+  background-color: $dark-900;
+}
+
+.fileInput {
+  display: none;
+}
+
+.modalWrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 222px;
+  width: 222px;
+  margin-top: 72px;
+  margin-bottom: 58px;
+  gap: 60px;
+}
+
+.buttonUploadContainer {
+  display: flex;
+  gap: 24px;
+  flex-direction: column;
+}
+
+.buttonUploadItem {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.photoUploadBg{
+  width: 36px;
+  height: 36px;
+  color: white;
+}
