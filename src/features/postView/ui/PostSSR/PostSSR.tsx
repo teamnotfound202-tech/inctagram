@@ -4,7 +4,10 @@ import PostModal from "@/features/postView/ui/PostModal/PostModal";
 import s from './PostSSR.module.scss'
 
 export const PostSsr = async ({params}: {
-    params: { postId: string },
+    params: Promise<{
+      userId: string,
+      postId: string
+    }>
 }) => {
     const {postId} = await params;
 
