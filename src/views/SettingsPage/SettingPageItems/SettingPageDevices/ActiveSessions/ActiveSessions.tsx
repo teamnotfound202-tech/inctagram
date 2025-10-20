@@ -41,13 +41,13 @@ export const ActiveSessions = ({ activeDevices, currentDeviceId }: Props) => {
       })
   }
 
-  const filtredActiveDevices = useMemo(
+  const filteredActiveDevices = useMemo(
     () => activeDevices.filter(device => device.deviceId !== currentDeviceId),
     [activeDevices, currentDeviceId]
   )
   return (
     <div className={s.activeDeviceWrapper}>
-      {activeDevices && activeDevices.length > 1 && (
+      {filteredActiveDevices && filteredActiveDevices.length > 0 && (
         <Button
           className={s.activeDeviceBtn}
           variant={'outline'}
@@ -59,9 +59,9 @@ export const ActiveSessions = ({ activeDevices, currentDeviceId }: Props) => {
       )}
       <h3 className={s.activeDeviceBtnTitle}>{currentLanguageArray.devices.activeSessions}</h3>
 
-      {activeDevices && activeDevices.length > 0 && (
+      {filteredActiveDevices && filteredActiveDevices.length > 0 && (
         <ul>
-          {filtredActiveDevices.map(device => (
+          {filteredActiveDevices.map(device => (
             <li key={device.deviceId}>
               <ActiveSessionCard activeDevice={device} />
             </li>
