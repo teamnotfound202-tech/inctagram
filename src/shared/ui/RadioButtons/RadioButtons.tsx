@@ -1,4 +1,3 @@
-import { RadioItem } from '@/shared/ui/RadioButtons/RadioItem/RadioItem'
 import { RadioGroup } from 'radix-ui'
 import s from './RadioButtons.module.scss'
 
@@ -9,7 +8,6 @@ import s from './RadioButtons.module.scss'
  }
 
 export const RadioButtons = ({ children, defaultValue, changesValue }: Values) => {
-  console.log(defaultValue)
   return (
     <>
       <RadioGroup.Root

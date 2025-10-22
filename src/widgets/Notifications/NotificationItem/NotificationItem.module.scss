@@ -1,0 +1,38 @@
+@use '@/shared/styles/variables' as *;
+
+.Notification{
+  padding-bottom: 12px;
+  margin-top: 12px;
+  border-bottom: 1px solid $dark-100
+}
+
+.notificationTitle{
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 171%;
+  color: $light-100;
+
+  //position: relative;
+  display: inline-block;
+}
+
+.notificationIsRead{
+  font-weight: 400;
+  font-size: 12px;
+  color: $accent-500;
+  margin-left: 12px;
+}
+
+.notificationMessage{
+  font-weight: 400;
+  font-size: 14px;
+  color: $light-100;
+  display: block;
+}
+
+.notificationDate{
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-900;
+}
