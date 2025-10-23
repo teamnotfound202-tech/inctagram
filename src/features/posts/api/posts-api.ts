@@ -1,9 +1,13 @@
 import {baseApi} from '@/shared/api'
 import {CreatePostInput, ImagesResponse, PostImage} from '@/shared/lib/sсhemas/posts'
-import { publicUserApi } from '@/features/publicUserApi/publicUserApi';
-import { ResponsesPosts } from '@/features/publicUserApi/types'
+import {publicUserApi} from '@/features/publicUserApi/publicUserApi';
+import {ResponsesPosts} from '@/features/publicUserApi/types'
 import {Comment, CommentsResponse, From, LikeStatus, Post} from "@/features/publicUserApi/types";
-import { ISOStringFormat } from 'date-fns'
+import {ISOStringFormat} from 'date-fns'
+import {newNotification, NotificationsResponse} from "@/features/notificationsApi/notificationsTypes";
+import {PAGINATION} from "@/features/notificationsApi/notificationsConstants";
+import {subscribeToEvent} from "@/shared/lib/socket/subscribeToEvent";
+import {SOCKET_EVENTS} from "@/shared/lib/constants/constants";
 
 type CreatePostWithUserId = CreatePostInput & { userId?: number }
 
@@ -60,6 +64,36 @@ export const postsApi = baseApi.injectEndpoints({
             providesTags: (result, error, postId) => [
                 {type: 'Comment', id: postId}
             ],
+        }),
+        fetchInfinityPostComments: builder.infiniteQuery<
+            CommentsResponse,
+            { postId: number, pageSize?: number; pageNumber?: number; sortDirection?: 'asc' | 'desc'; sortBy?: string },
+            number | undefined
+        >({
+            query: ({queryArg, pageParam}) => {
+                const {postId, pageSize, pageNumber, sortDirection, sortBy} = queryArg
+                return {
+                    url: `posts/${postId}/comments`,
+                    params: {
+                        pageSize: pageSize ?? PAGINATION.DEFAULT_PAGE_SIZE,
+                        sortDirection: sortDirection ?? 'desc',
+                        pageNumber: pageParam ?? 1,
+                        sortBy: sortBy ?? ''
+                    },
+                }
+            },
+
+            infiniteQueryOptions: {
+                initialPageParam: undefined,
+                getNextPageParam: (lastPage, allPages) => {
+                    const nextPage = allPages.length + 1; // следующая страница = количество уже загруженных + 1
+                    if (lastPage.items.length === 0) {
+                        return undefined; // больше страниц нет
+                    }
+                    return nextPage;
+                },
+            },
+            providesTags: () => ['Comment'],
         }),
         createComment: builder.mutation<CommentsResponse, { postId: number; user: From, content: string }>({
             query: ({postId, content}) => ({
@@ -136,43 +170,43 @@ export const postsApi = baseApi.injectEndpoints({
             },
         }),
 
-        deletePost: builder.mutation<void, {postId:number, userId?: string }>({
+        deletePost: builder.mutation<void, { postId: number, userId?: string }>({
             query: ({postId}) => ({
                 url: `posts/${postId}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (result, error, { postId }) => [
-                { type: 'Posts', id: postId },
-                { type: 'Posts', id: 'LIST' },
-                { type: 'UserPosts', id: 'LIST' },
+            invalidatesTags: (result, error, {postId}) => [
+                {type: 'Posts', id: postId},
+                {type: 'Posts', id: 'LIST'},
+                {type: 'UserPosts', id: 'LIST'},
                 'UserPosts', // Инвалидируем все посты пользователей
                 'UserProfile' // Обновляем профиль пользователя (счетчик постов)
             ],
             // Оптимистичное обновление
-            onQueryStarted: async ({ postId, userId }, { dispatch, queryFulfilled }) => {
+            onQueryStarted: async ({postId, userId}, {dispatch, queryFulfilled}) => {
                 const patchResults: any[] = [];
 
                 // Обновляем кэш getPostsForUser если передан userId
                 if (userId) {
                     const patchResult = dispatch(
-                      publicUserApi.util.updateQueryData('getPostsForUser', { userId }, (draft) => {
-                          if (draft.pages) {
-                              draft.pages.forEach((page: ResponsesPosts) => {
-                                  page.items = page.items.filter((post: any) => post.id !== postId);
-                                  page.totalCount = Math.max(0, page.totalCount - 1);
-                              });
-                          }
-                      })
+                        publicUserApi.util.updateQueryData('getPostsForUser', {userId}, (draft) => {
+                            if (draft.pages) {
+                                draft.pages.forEach((page: ResponsesPosts) => {
+                                    page.items = page.items.filter((post: any) => post.id !== postId);
+                                    page.totalCount = Math.max(0, page.totalCount - 1);
+                                });
+                            }
+                        })
                     );
                     patchResults.push(patchResult);
                 }
 
                 // Обновляем кэш fetchPost - помечаем как удаленный
                 const postPatchResult = dispatch(
-                  postsApi.util.updateQueryData('fetchPost', postId, (draft) => {
-                      // Можно пометить пост как удаленный или очистить данные
-                      Object.assign(draft, { deleted: true });
-                  })
+                    postsApi.util.updateQueryData('fetchPost', postId, (draft) => {
+                        // Можно пометить пост как удаленный или очистить данные
+                        Object.assign(draft, {deleted: true});
+                    })
                 );
                 patchResults.push(postPatchResult);
 
@@ -191,7 +225,7 @@ export const postsApi = baseApi.injectEndpoints({
 
                     // Если пост не найден (404), считаем это успешным удалением
                     const isPostNotFound = rtqError?.error?.status === 404 ||
-                      rtqError?.error?.data?.statusCode === 404;
+                        rtqError?.error?.data?.statusCode === 404;
 
                     if (!isPostNotFound) {
                         // Откатываем изменения только если это не 404 ошибка
@@ -216,10 +250,10 @@ export const postsApi = baseApi.injectEndpoints({
             // Оптимистичное обновление
             onQueryStarted: async ({postId, description}, {dispatch, queryFulfilled, getState}) => {
                 const patchResult = dispatch(
-                  postsApi.util.updateQueryData('fetchPost', postId, (draft) => {
-                      draft.description = description
-                      draft.updatedAt = (new Date()).toISOString() as ISOStringFormat
-                  })
+                    postsApi.util.updateQueryData('fetchPost', postId, (draft) => {
+                        draft.description = description
+                        draft.updatedAt = (new Date()).toISOString() as ISOStringFormat
+                    })
                 );
 
                 try {
@@ -267,5 +301,6 @@ export const {
     useUpdateCommentLikeStatusMutation,
     useUpdatePostLikeStatusMutation,
     useDeletePostMutation,
-    useUpdatePostMutation
+    useUpdatePostMutation,
+    useFetchInfinityPostCommentsInfiniteQuery
 } = postsApi
