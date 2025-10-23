@@ -65,6 +65,7 @@ export function LinkContent({post, isTrim}: { post: Post, isTrim?: string }) {
                                 width={224}
                                 height={228}
                                 priority={index <= 7}
+                                style={{height: 'auto'}}
                             />
                         </SwiperSlide>
                     ))}
@@ -90,6 +91,7 @@ export function LinkContent({post, isTrim}: { post: Post, isTrim?: string }) {
                     alt={'post image'}
                     width={224}
                     height={228}
+                    style={{height: 'auto'}}
                     priority
                 />
             )}
