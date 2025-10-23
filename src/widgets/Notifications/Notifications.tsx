@@ -61,17 +61,6 @@ export const Notifications = () => {
   //const socketRef = useRef<Socket | null>(null)
   const messages = useAppSelector(selectCurrentMessages)
 
-  // useEffect(() => {
-  //     const socket = createSocket()
-  //     socketRef.current = socket
-  //     socket.on('notifications', (data: NotificationType) => {
-  //         setNotifications(prevState => [data.message, ...prevState]) // новые сверху
-  //     })
-  //     return () => {
-  //         socket.disconnect()
-  //         socketRef.current = null
-  //     }
-  // }, [])
 
   useEffect(() => {
     if (!isModalOpen) return
@@ -79,11 +68,14 @@ export const Notifications = () => {
       const root = wrapperRef.current
       if (root && !root.contains(e.target as Node)) {
         setIsModalOpen(false)
-        markAsRead({ ids: arrIds })
-          .unwrap()
-          .then(() => {
-            setArrIds([])
-          })
+        if(arrIds.length > 0){
+          markAsRead({ ids: arrIds })
+            .unwrap()
+            .then(() => {
+              setArrIds([])
+            })
+        }
+
       }
     }
     const prevOverflow = document.body.style.overflow
