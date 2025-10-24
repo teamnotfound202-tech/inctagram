@@ -31,7 +31,7 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
   const {data, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage} = useGetPostsForUserInfiniteQuery({userId}, {
     skip: needHydrateStateRef.current,
   })
-  const {observerRef} = useInfiniteScroll({hasNextPage, isFetching, fetchNextPage})
+  const {observerRef} = useInfiniteScroll({hasNextPage, isFetching, fetchNextPage, enabled: true})
 
   useEffect(() => {
       if (postsData && needHydrateStateRef.current) {
