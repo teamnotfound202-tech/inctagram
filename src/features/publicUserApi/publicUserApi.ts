@@ -109,7 +109,6 @@ export const publicUserApi = baseApi.injectEndpoints({
 })
 
 export const {
-  useGetTotalRegisteredUsersQuery,
   useGetUserFollowingAndFollowersQuery,
   useFollowingUserMutation,
   useUnFollowingUserMutation,

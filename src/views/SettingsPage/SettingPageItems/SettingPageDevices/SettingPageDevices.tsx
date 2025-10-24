@@ -6,7 +6,7 @@ import Skeleton from 'react-loading-skeleton'
 
 export  const SettingPageDevices = () => {
   const {data: devicesData, isLoading: isLoadingCurrent} = useGetCurrentDeviceQuery()
-  console.log(devicesData)
+
   return (
     <div className={s.settingPageDevices}>
       {isLoadingCurrent && (

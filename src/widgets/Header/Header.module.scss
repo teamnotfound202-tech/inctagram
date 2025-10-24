@@ -30,30 +30,6 @@
   justify-content: space-between;
 }
 
-.buttonNotification {
-  all: unset;
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  position: relative;
-  margin-right: 45px;
-}
-
-.notificationCount {
-  position: absolute;
-  bottom: 15px;
-  right: -2px;
-  width: 15px;
-  height: 15px;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 80%;
-  text-align: center;
-  padding-top: 3px;
-  border-radius: 50%;
-  background-color: $danger-500;
-}
-
 .buttonGroupLogin {
   display: flex;
 

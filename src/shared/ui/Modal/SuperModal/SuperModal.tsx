@@ -249,7 +249,6 @@ export const SuperModal = ({ title, callback, userId }: Props) => {
       const uploadResult = await uploadImage(processedFiles).unwrap()
 
       if (!uploadResult?.images) {
-        console.log('❌ Failed to upload images to server')
         return
       }
 
