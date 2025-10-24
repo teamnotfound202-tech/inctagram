@@ -3,7 +3,6 @@ import {PostComment} from "@/features/postView/ui/PostSSR/PostView/PostContent/P
 import {
     PostDescriptionAsComment
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostDescriptionAsComment";
-import {Loader} from "@/shared/ui/Loader/Loader";
 import {useFetchInfinityPostCommentsInfiniteQuery} from "@/features/posts/api/posts-api";
 import {Post} from "@/features/publicUserApi/types";
 import {useMemo, useRef} from "react";
@@ -17,61 +16,57 @@ type Props = {
     post: Post
 };
 export const PostComments = ({post}: Props) => {
-    //const {data, isLoading} = useFetchPostCommentsQuery(post.id)
     const messages = useAppSelector(selectCurrentMessages)
 
     const {data, hasNextPage, fetchNextPage, isFetching} = useFetchInfinityPostCommentsInfiniteQuery({
         postId: post.id,
         pageSize: PAGINATION.DEFAULT_PAGE_SIZE,
-        sortDirection: 'desc'})
+        sortDirection: 'desc'
+    })
 
     const commentsDataRaw = useMemo(() => data?.pages.flatMap(p => p.items) ?? [], [data?.pages])
-    //TODO: загружаются сразу 2 страницы, не работает ref для infinity scroll, на кнопку работает???
+
     const scrollRef = useRef<HTMLDivElement | null>(null)
 
-    const { observerRef } = useInfiniteScroll({
+    const {observerRef} = useInfiniteScroll({
         hasNextPage,
         isFetching,
         fetchNextPage,
         rootRef: scrollRef,
         enabled: true,
-        rootMargin: '0px 0px 100px 0px',
+        rootMargin: '0px 0px 0px 0px',
         threshold: 0.01,
     })
 
     return (
-        <div className={s.commentsWrapper}>
-            <PostDescriptionAsComment authorName={post.owner.firstName && post.owner.lastName ?  post.owner.firstName + ' ' + post.owner.lastName : null}
-                                      postContent={post.description}
-                                      descriptionCreationTime={post.createdAt}
-                                      ownerId={post.ownerId}
-                                      postUserName={post.userName}
+        <div className={s.commentsWrapper} ref={scrollRef}>
+            <PostDescriptionAsComment
+                authorName={post.owner.firstName && post.owner.lastName ? post.owner.firstName + ' ' + post.owner.lastName : null}
+                postContent={post.description}
+                descriptionCreationTime={post.createdAt}
+                ownerId={post.ownerId}
+                postUserName={post.userName}
             />
 
-            <div className={s.scrollArea} ref={scrollRef}>
-                {commentsDataRaw.map(comment => (
-                    <PostComment key={comment.id} comment={comment} postId={post.id}/>
-                ))}
-                <button onClick={fetchNextPage}>next</button>
-                {hasNextPage && (
-                    <div ref={observerRef} className={s.sentinel} style={{border:'1px solid red'}}>
-                        {isFetching ? (
-                            <Spinner
-                                type="secondary"
-                                size={10}
-                                label={messages.common.loading}
-                                fullWidth
-                                center
-                            />
-                        ) : (
-                            ''
-                        )}
-                    </div>
-                )}
-            </div>
+            {commentsDataRaw.map(comment => (
+                <PostComment key={comment.id} comment={comment} postId={post.id}/>
+            ))}
 
-
-
+            {hasNextPage && (
+                <div ref={observerRef} className={s.sentinel}>
+                    {isFetching ? (
+                        <Spinner
+                            type="secondary"
+                            size={10}
+                            label={messages.common.loading}
+                            fullWidth
+                            center
+                        />
+                    ) : (
+                        ''
+                    )}
+                </div>
+            )}
 
             {/*{data?.items.map(comment => (
                 <PostComment key={comment.id} comment={comment} postId={post.id}/>
