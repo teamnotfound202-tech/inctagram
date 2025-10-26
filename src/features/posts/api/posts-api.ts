@@ -65,6 +65,7 @@ export const postsApi = baseApi.injectEndpoints({
                 {type: 'Comment', id: postId}
             ],
         }),
+
         fetchInfinityPostComments: builder.infiniteQuery<
             CommentsResponse,
             { postId: number, pageSize?: number; pageNumber?: number; sortDirection?: 'asc' | 'desc'; sortBy?: string },
@@ -77,7 +78,7 @@ export const postsApi = baseApi.injectEndpoints({
                     params: {
                         pageSize: pageSize ?? PAGINATION.DEFAULT_PAGE_SIZE,
                         sortDirection: sortDirection ?? 'desc',
-                        pageNumber: pageParam ?? 1,
+                        pageNumber: pageParam ?? 1,     //то значение, которое возвращается из getNextPageParam
                         sortBy: sortBy ?? ''
                     },
                 }
@@ -86,15 +87,14 @@ export const postsApi = baseApi.injectEndpoints({
             infiniteQueryOptions: {
                 initialPageParam: undefined,
                 getNextPageParam: (lastPage, allPages) => {
+                    if ((allPages.length * lastPage.pageSize+1) > lastPage.totalCount) return undefined; // больше страниц нет
                     const nextPage = allPages.length + 1; // следующая страница = количество уже загруженных + 1
-                    if (lastPage.items.length === 0) {
-                        return undefined; // больше страниц нет
-                    }
                     return nextPage;
                 },
             },
             providesTags: () => ['Comment'],
         }),
+
         createComment: builder.mutation<CommentsResponse, { postId: number; user: From, content: string }>({
             query: ({postId, content}) => ({
                 url: `posts/${postId}/comments`,
@@ -103,11 +103,15 @@ export const postsApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['Comment'],
             // Оптимистичное обновление
-            onQueryStarted: async ({postId, user, content}, {dispatch, queryFulfilled, getState}) => {
+            onQueryStarted: async ({postId, user, content}, {dispatch, queryFulfilled}) => {
                 const currentUser = user;
 
                 const patchResult = dispatch(
-                    postsApi.util.updateQueryData('fetchInfinityPostComments', { postId, pageSize: PAGINATION.DEFAULT_PAGE_SIZE, sortDirection: 'desc' }, (draft) => {
+                    postsApi.util.updateQueryData('fetchInfinityPostComments', {
+                        postId,
+                        pageSize: PAGINATION.DEFAULT_PAGE_SIZE,
+                        sortDirection: 'desc'
+                    }, (draft) => {
                         const optimisticComment: Comment = {
                             id: Date.now(),
                             postId,
@@ -130,43 +134,6 @@ export const postsApi = baseApi.injectEndpoints({
                         draft.pages[0].items.unshift(optimisticComment);
                     })
                 );
-
-                /*const optimisticComment: Comment = {
-                    id: Date.now(),
-                    postId,
-                    content,
-                    from: user
-                        ? { id: user.id, username: user.username, avatars: user.avatars || [] }
-                        : { id: 3218, username: 'Anonymous', avatars: [] },
-                    createdAt: new Date().toISOString(),
-                    answerCount: 0,
-                    likeCount: 0,
-                    isLiked: false,
-                };
-
-                const patchResult = dispatch(
-                    postsApi.util.updateQueryData(
-                        'fetchInfinityPostComments',
-                        { postId },                            // те же queryArg, что и в хукe
-                        (draft) => {
-                            // draft: InfiniteData<CommentsResponse, number | undefined>
-                            // Добавим в самую первую страницу
-                            if (!draft.pages?.length) {
-                                draft.pages = [{ items: [optimisticComment], totalCount: 1 } as CommentsResponse];
-                                return;
-                            }
-
-                            // Вставляем в начало первой страницы
-                            const firstPage = draft.pages[0] as CommentsResponse;
-                            // Учитывайте сортировку: у вас sortDirection: 'desc' — новые сверху
-                            firstPage.items.unshift(optimisticComment);
-                            // Опционально поддержать totalCount, если он есть
-                            if (typeof firstPage.totalCount === 'number') {
-                                firstPage.totalCount += 1;
-                            }
-                        }
-                    )
-                );*/
 
                 try {
                     await queryFulfilled;

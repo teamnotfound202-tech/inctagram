@@ -26,6 +26,7 @@ export const PostComments = ({post}: Props) => {
 
     const commentsDataRaw = useMemo(() => data?.pages.flatMap(p => p.items) ?? [], [data?.pages])
 
+    //ref на элемент обертку, относительно которого происходит infinity scroll
     const scrollRef = useRef<HTMLDivElement | null>(null)
 
     const {observerRef} = useInfiniteScroll({
@@ -62,15 +63,9 @@ export const PostComments = ({post}: Props) => {
                             fullWidth
                             center
                         />
-                    ) : (
-                        ''
-                    )}
+                    ) : ('')}
                 </div>
             )}
-
-            {/*{data?.items.map(comment => (
-                <PostComment key={comment.id} comment={comment} postId={post.id}/>
-            ))}*/}
         </div>
     )
 };
