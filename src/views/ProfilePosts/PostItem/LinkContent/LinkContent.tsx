@@ -13,18 +13,18 @@ import ArrowRightIcon from '@/shared/assets/icons/arrowRight.svg'
 import {useLinkStatus} from 'next/link'
 import {Loader} from "@/shared/ui/Loader/Loader";
 import PostModal from "@/features/postView/ui/PostModal/PostModal";
-import { clsx } from 'clsx'
+import {clsx} from 'clsx'
 
 // Создаем отдельный компонент для содержимого ссылки
-export function LinkContent({ post, isTrim }: { post: Post, isTrim?: string}) {
-    const { pending } = useLinkStatus();
+export function LinkContent({post, isTrim}: { post: Post, isTrim?: string }) {
+    const {pending} = useLinkStatus();
     const swiperRef = useRef<SwiperType | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const isPrevDisabled = currentIndex === 0;
     const isNextDisabled = currentIndex === post.images.length - 1;
 
     const imageClassName = clsx(s.postImage, {
-      [s.trimPostImage]: isTrim === 'Show less'
+        [s.trimPostImage]: isTrim === 'Show less'
     })
 
     const handlePrevClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -65,6 +65,7 @@ export function LinkContent({ post, isTrim }: { post: Post, isTrim?: string}) {
                                 width={224}
                                 height={228}
                                 priority={index <= 7}
+                                style={{height: 'auto'}}
                             />
                         </SwiperSlide>
                     ))}
@@ -83,14 +84,14 @@ export function LinkContent({ post, isTrim }: { post: Post, isTrim?: string}) {
                         <ArrowRightIcon/>
                     </button>
                 </Swiper>
-            ) : (
+            ) : (post.images[0] &&
                 <Image
                     src={post.images[0]?.url}
                     className={imageClassName}
                     alt={'post image'}
                     width={224}
                     height={228}
-                    style={{height:'auto'}}
+                    style={{height: 'auto'}}
                     priority
                 />
             )}

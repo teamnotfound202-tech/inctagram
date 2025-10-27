@@ -5,7 +5,7 @@ import {Post} from '@/features/publicUserApi/types'
 import 'swiper/css';
 import {useEffect, useState} from 'react'
 import Link from 'next/link'
-import {usePathname, useSearchParams} from 'next/navigation'
+import {usePathname} from 'next/navigation'
 import {LinkContent} from "@/views/ProfilePosts/PostItem/LinkContent/LinkContent";
 
 type Props = {
@@ -15,13 +15,11 @@ type Props = {
 export const PostItem = ({post}: Props) => {
     const [path, setPath] = useState('');
     const pathname = usePathname();
-    const searchParams = useSearchParams();
 
     useEffect(() => {
-        /*const currentSearchParams = new URLSearchParams(searchParams.toString());
-        currentSearchParams.set('postId', post.id.toString());*/
         setPath(`${pathname}/post/${post.id}`);
-    }, [pathname, searchParams, post.id]);
+
+    }, [pathname, post.id]);
 
     return (
         <li className={s.postItem}>

@@ -14,12 +14,12 @@ type Props = {
 }
 
 export const PostImage = ({images}: Props) => {
-    const imagesUrl = images.map(postImage => postImage.url)
+    const imagesUrl = images?.map(postImage => postImage.url)
 
     const swiperRef = useRef<SwiperType | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const isPrevDisabled = currentIndex === 0
-    const isNextDisabled = currentIndex === imagesUrl.length - 1
+    const isNextDisabled = currentIndex === imagesUrl?.length - 1
 
     const handlePrevClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -46,7 +46,7 @@ export const PostImage = ({images}: Props) => {
 
     return (
         <div className={s.postImageWrapper}>
-            {imagesUrl.length > 1 && (
+            {imagesUrl?.length > 1 && (
                 <Swiper
                     className={s.postSlider}
                     modules={[Navigation, Pagination, A11y]}
@@ -67,7 +67,7 @@ export const PostImage = ({images}: Props) => {
                     }}
                 >
                     {
-                        imagesUrl.map((image, index) => (
+                        imagesUrl?.map((image, index) => (
                             <SwiperSlide key={image} className={s.postSlide}>
                                 <Image
                                     src={image}
@@ -109,7 +109,7 @@ export const PostImage = ({images}: Props) => {
                     </div>
                 </Swiper>
             )}
-            {imagesUrl.length === 1 &&  // если есть только одно изображение, показываем его без слайдера
+            {imagesUrl?.length === 1 &&  // если есть только одно изображение, показываем его без слайдера
                 (
                     <Image
                         src={imagesUrl[0]}
