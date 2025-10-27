@@ -296,7 +296,6 @@ export const {
     useDeletePostsImageMutation,
     useCreatePostMutation,
     useFetchPostQuery,
-    useFetchPostCommentsQuery,
     useCreateCommentMutation,
     useUpdateCommentLikeStatusMutation,
     useUpdatePostLikeStatusMutation,
