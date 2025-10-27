@@ -49,10 +49,11 @@
   &.error {
     border-color: $danger-500 !important;
     color: $danger-500;
-
+    outline: none!important;
     &:focus,
     &:focus-visible {
       border: 2px solid $danger-300 !important;
+      outline: none!important;
     }
   }
 
@@ -100,7 +101,9 @@
 .rdpRoot {
   position: relative;
   box-sizing: border-box;
-
+  min-width: 286px;
+  display: flex;
+  justify-content: center;
   * {
     box-sizing: border-box;
   }
@@ -278,8 +281,10 @@
 
   svg {
     fill: $light-100;
+    margin-left: 3px;
   }
-}
+  }
+
 
 /* Today Styles */
 .rdpToday {

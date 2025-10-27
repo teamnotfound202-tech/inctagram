@@ -10,11 +10,10 @@ import SafariIcon from './icons/safari.svg'
 import UCIcon from './icons/uc.svg'
 import YandexIcon from './icons/yandex.svg'
 
-
 const devices = {
   'Brave': BraveIcon,
   'Chrome': ChromeIcon,
-  'Microsoft Edge': MicEdgeIcon,
+  'Edge': MicEdgeIcon,
   'Firefox': FireFoxIcon,
   'Explorer': IEIcon,
   'Opera': OperaIcon,

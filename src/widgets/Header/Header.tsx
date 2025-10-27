@@ -16,6 +16,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { LANGUAGE } from '@/shared/lib/constants/constants'
 import { useEffect } from 'react'
 import { Language } from '@/shared/lib/locale/message'
+import { Notifications } from '@/widgets/Notifications/Notifications'
 
 type Props = {
   notification: number
@@ -60,10 +61,7 @@ export const Header = ({notification}: Props) => {
 
           {data?.userId && (
             <div className={s.headerGroupContainer}>
-              <button className={s.buttonNotification}>
-                <NotificationIcon />
-                {notification !== 0 && <span className={s.notificationCount}>{notification}</span>}
-              </button>
+              <Notifications/>
               <SelectBox
                 options={[
                   { value: 'option1', icon: <FlagRussia />, label: 'Russia' },

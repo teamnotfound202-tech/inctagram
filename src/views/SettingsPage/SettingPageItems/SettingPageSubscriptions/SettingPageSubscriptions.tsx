@@ -96,8 +96,6 @@ const handlerChangeAutoRenewal = (data:CurrentSubscriptionsResponse) => {
     }
 }
 useEffect(() => {
-  console.log(!isLoading)
-  console.log(data)
   if (!isLoading && data && data.data.length > 0 ){
     setAccountId('2')
   }
