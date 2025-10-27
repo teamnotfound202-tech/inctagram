@@ -1,13 +1,9 @@
 import {baseApi} from '@/shared/api'
 import {CreatePostInput, ImagesResponse, PostImage} from '@/shared/lib/sсhemas/posts'
 import {publicUserApi} from '@/features/publicUserApi/publicUserApi';
-import {ResponsesPosts} from '@/features/publicUserApi/types'
-import {Comment, CommentsResponse, From, LikeStatus, Post} from "@/features/publicUserApi/types";
+import {Comment, CommentsResponse, From, LikeStatus, Post, ResponsesPosts} from '@/features/publicUserApi/types'
 import {ISOStringFormat} from 'date-fns'
-import {newNotification, NotificationsResponse} from "@/features/notificationsApi/notificationsTypes";
 import {PAGINATION} from "@/features/notificationsApi/notificationsConstants";
-import {subscribeToEvent} from "@/shared/lib/socket/subscribeToEvent";
-import {SOCKET_EVENTS} from "@/shared/lib/constants/constants";
 
 type CreatePostWithUserId = CreatePostInput & { userId?: number }
 
@@ -72,7 +68,7 @@ export const postsApi = baseApi.injectEndpoints({
             number | undefined
         >({
             query: ({queryArg, pageParam}) => {
-                const {postId, pageSize, pageNumber, sortDirection, sortBy} = queryArg
+                const {postId, pageSize, sortDirection, sortBy} = queryArg
                 return {
                     url: `posts/${postId}/comments`,
                     params: {
@@ -90,6 +86,7 @@ export const postsApi = baseApi.injectEndpoints({
                     if ((allPages.length * lastPage.pageSize+1) > lastPage.totalCount) return undefined; // больше страниц нет
                     const nextPage = allPages.length + 1; // следующая страница = количество уже загруженных + 1
                     return nextPage;
+
                 },
             },
             providesTags: () => ['Comment'],
