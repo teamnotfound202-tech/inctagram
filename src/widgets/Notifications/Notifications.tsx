@@ -15,7 +15,6 @@ import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 export const Notifications = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const scrollRef = useRef<HTMLDivElement | null>(null)
 
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetNotificationsInfiniteQuery({
@@ -30,9 +29,9 @@ export const Notifications = () => {
     isFetching,
     fetchNextPage,
     rootRef: scrollRef,
-    enabled: isModalOpen,
     rootMargin: '0px 0px 100px 0px',
     threshold: 0.01,
+    enabled: isModalOpen,
   })
 
   const notificationsDataRaw = useMemo(() => data?.pages.flatMap(p => p.items) ?? [], [data?.pages])
@@ -87,7 +86,7 @@ export const Notifications = () => {
       document.removeEventListener('mousedown', onDocPointer, true)
       document.removeEventListener('touchstart', onDocPointer, true)
     }
-  }, [isModalOpen, arrIds, markAsRead])
+  }, [isModalOpen, arrIds, markAsRead, wrapperRef])
 
   return (
     <div className={s.notificationsWrapper} ref={wrapperRef}>
