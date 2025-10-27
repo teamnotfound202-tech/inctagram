@@ -84,7 +84,7 @@ export function LinkContent({post, isTrim}: { post: Post, isTrim?: string }) {
                         <ArrowRightIcon/>
                     </button>
                 </Swiper>
-            ) : (
+            ) : (post.images[0] &&
                 <Image
                     src={post.images[0]?.url}
                     className={imageClassName}

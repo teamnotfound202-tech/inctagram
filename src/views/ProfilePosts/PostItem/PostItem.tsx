@@ -18,6 +18,7 @@ export const PostItem = ({post}: Props) => {
 
     useEffect(() => {
         setPath(`${pathname}/post/${post.id}`);
+
     }, [pathname, post.id]);
 
     return (
