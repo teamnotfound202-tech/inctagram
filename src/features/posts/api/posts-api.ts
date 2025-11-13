@@ -216,7 +216,7 @@ export const postsApi = baseApi.injectEndpoints({
       ],
       // Оптимистичное обновление
       onQueryStarted: async ({ postId, userId }, { dispatch, queryFulfilled }) => {
-        const patchResults: any[] = []
+        const patchResults = []
 
         // Обновляем кэш getPostsForUser если передан userId
         if (userId) {
@@ -224,7 +224,7 @@ export const postsApi = baseApi.injectEndpoints({
             publicUserApi.util.updateQueryData('getPostsForUser', { userId }, draft => {
               if (draft.pages) {
                 draft.pages.forEach((page: ResponsesPosts) => {
-                  page.items = page.items.filter((post: any) => post.id !== postId)
+                  page.items = page.items.filter((post) => post.id !== postId)
                   page.totalCount = Math.max(0, page.totalCount - 1)
                 })
               }
