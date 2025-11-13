@@ -6,20 +6,24 @@ import PaperPlane from "@/features/postView/ui/PostSSR/PostView/Icons/paper-plan
 import Bookmark from "@/features/postView/ui/PostSSR/PostView/Icons/Bookmark.svg";
 import {useUpdatePostLikeStatusMutation} from "@/features/posts/api/posts-api";
 import {LikeStatus} from "@/features/publicUserApi/types";
+import { useMyProfileQuery } from '@/features/auth/api/authApi'
 
 type Props = {
     isLiked:boolean
     postId: number
+
 };
 export const ButtonControls = ({isLiked,postId}: Props) => {
     const [updatePostLikeStatus] = useUpdatePostLikeStatusMutation()
+  const{data}=useMyProfileQuery()
 
     const likeHandler = () => {
         const newLikeStatus = isLiked ? LikeStatus.NONE : LikeStatus.LIKE
-        updatePostLikeStatus({postId, likeStatus: newLikeStatus})
+        updatePostLikeStatus({postId, likeStatus: newLikeStatus, url: data?.avatars[0].url||'' })
     }
+
     return (
-        <div className={s.controls}>
+      <div className={s.controls}>
             <button className={s.likeButton} onClick={likeHandler}>
                 {isLiked ? <BigRedLike/> : <Like/>}
             </button>

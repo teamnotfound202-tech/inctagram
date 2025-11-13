@@ -16,7 +16,7 @@ type Props = {
     isLiked: boolean
 };
 
-const AVATARS_COUNT_TO_PREVIEW_LIKE_STANDART = 5
+const AVATARS_COUNT_TO_PREVIEW_LIKE_STANDART = 3
 
 export const PostMetaInfWithControls = ({avatars, likesCount, updatedAt, isLiked, id}: Props) => {
     const currentLanguage = useAppSelector(selectCurrentMessages)
@@ -29,8 +29,7 @@ export const PostMetaInfWithControls = ({avatars, likesCount, updatedAt, isLiked
         AVATARS_COUNT_TO_PREVIEW_LIKE_STANDART                              //
 
     const avatarsWhoLikesPost = []
-    for (let i = avatars.length - 1 - avatarsCountToPreview; i <
-    avatars.length - 1; i++) {
+    for (let i = avatars.length - avatarsCountToPreview; i < avatars.length; i++) {
         avatarsWhoLikesPost.push(avatars[i])
     }
 
