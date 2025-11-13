@@ -182,7 +182,7 @@ export const postsApi = baseApi.injectEndpoints({
       ) => {
         const patchResult = dispatch(
           postsApi.util.updateQueryData('fetchPostComments', postId, draft => {
-            const newLikeStatus: boolean = likeStatus === LikeStatus.LIKE ? true : false
+            const newLikeStatus: boolean = likeStatus === LikeStatus.LIKE
             draft.items = draft.items.map(comment =>
               comment.id === commentId
                 ? {
@@ -224,7 +224,7 @@ export const postsApi = baseApi.injectEndpoints({
             publicUserApi.util.updateQueryData('getPostsForUser', { userId }, draft => {
               if (draft.pages) {
                 draft.pages.forEach((page: ResponsesPosts) => {
-                  page.items = page.items.filter((post) => post.id !== postId)
+                  page.items = page.items.filter(post => post.id !== postId)
                   page.totalCount = Math.max(0, page.totalCount - 1)
                 })
               }
@@ -294,7 +294,10 @@ export const postsApi = baseApi.injectEndpoints({
       },
     }),
 
-    updatePostLikeStatus: builder.mutation<void, { postId: number; likeStatus: LikeStatus; url: string }>({
+    updatePostLikeStatus: builder.mutation<
+      void,
+      { postId: number; likeStatus: LikeStatus; url: string }
+    >({
       query: ({ postId, likeStatus }) => ({
         url: `posts/${postId}/like-status`,
         method: 'PUT',
@@ -303,16 +306,20 @@ export const postsApi = baseApi.injectEndpoints({
       // Автоматически обновляем кэш
       invalidatesTags: (result, error, { postId }) => [{ type: 'Posts', id: postId }],
       // Оптимистичное обновление
-      onQueryStarted: async ({ postId, likeStatus, url }, { dispatch, queryFulfilled, getState }) => {
+      onQueryStarted: async (
+        { postId, likeStatus, url },
+        { dispatch, queryFulfilled, getState }
+      ) => {
         const patchResult = dispatch(
           postsApi.util.updateQueryData('fetchPost', postId, draft => {
             draft.isLiked = likeStatus === LikeStatus.LIKE
-            if(likeStatus===LikeStatus.LIKE){
-              draft.likesCount +=1
+            if (likeStatus === LikeStatus.LIKE) {
+              draft.likesCount += 1
               draft.avatarWhoLikes.push(url)
-            }else {
-              draft.likesCount -=1
-              draft.avatarWhoLikes.pop()
+            } else {
+              draft.likesCount -= 1
+              const imageId = draft.avatarWhoLikes.findIndex(item => item === url)
+              draft.avatarWhoLikes.splice(imageId, 1)
             }
           })
         )
