@@ -2,6 +2,7 @@ import {baseApi} from '@/shared/api'
 import {CreatePostInput, ImagesResponse, PostImage} from '@/shared/lib/sсhemas/posts'
 import {publicUserApi} from '@/features/publicUserApi/publicUserApi';
 import {
+    Answer,
     Comment,
     CommentsResponse,
     From, InfinityAnswerRequest, InfinityAnswerResponse,
@@ -168,12 +169,15 @@ export const postsApi = baseApi.injectEndpoints({
             }),
 
             // По желанию: можно убрать, чтобы не затирать оптимистику рефетчем
-            invalidatesTags: (result, error, {postId}) => [
+            invalidatesTags: (_result, _error, {postId}) => [
                 {type: 'Comment' as const, id: postId},
             ],
 
             async onQueryStarted({postId, commentId, likeStatus,}, {dispatch, queryFulfilled, getState}) {
                 const newLike = likeStatus === LikeStatus.LIKE;
+
+                //Значение для optimistic update - если ставим like, то количество лайков увеличивается на 1, и наборот
+                const likesCountDifference = likeStatus === LikeStatus.LIKE ? 1 : -1
 
                 // baseArg ДОЛЖНО совпадать с queryArg у infiniteQuery в UI
                 const s = getState() as RootState;
@@ -198,6 +202,7 @@ export const postsApi = baseApi.injectEndpoints({
                                     page.items[idx] = {
                                         ...page.items[idx],
                                         isLiked: newLike,
+                                        likeCount: page.items[idx].likeCount + likesCountDifference,
                                     };
                                     break;
                                 }
@@ -352,9 +357,9 @@ export const postsApi = baseApi.injectEndpoints({
             query: ({queryArg, pageParam}) => {
                 const {postId, commentId, pageSize, sortDirection, sortBy} = queryArg
                 return {
-                    url: `posts/${postId}/comments/${commentId}/answers`, //TODO: остановилась здесь
+                    url: `posts/${postId}/comments/${commentId}/answers`,
                     params: {
-                        pageSize: pageSize ?? PAGINATION.DEFAULT_PAGE_SIZE,
+                        pageSize: PAGINATION.DEFAULT_PAGE_SIZE, //TODO: добавить pageSize вместо харкода
                         sortDirection: sortDirection ?? 'desc',
                         pageNumber: pageParam ?? 1,     //то значение, которое возвращается из getNextPageParam
                         sortBy: sortBy ?? ''
@@ -368,14 +373,70 @@ export const postsApi = baseApi.injectEndpoints({
                     if ((allPages.length * lastPage.pageSize + 1) > lastPage.totalCount) return undefined; // больше страниц нет
                     const nextPage = allPages.length + 1; // следующая страница = количество уже загруженных + 1
                     return nextPage;
-
                 },
             },
-            providesTags: (result, error, {postId}) => [
-                {type: 'Comment', id: postId}
+            providesTags: (result, error, {commentId}) => [
+                {type: 'Answer', id: commentId}
             ],
         }),
 
+        createAnswer: builder.mutation<
+            Answer,
+            { postId: number; commentId: number, user: From, content: string }
+        >({
+            query: ({postId, commentId, content}) => ({
+                url: `posts/${postId}/comments/${commentId}/answers`,
+                method: 'POST',
+                body: {content},
+            }),
+            //invalidatesTags: ['Answer'],
+            invalidatesTags: (result, error, {commentId}) => [
+                {type: 'Answer' as const, id: commentId},
+            ],
+            // Оптимистичное обновление
+            onQueryStarted: async ({postId, commentId, user, content}, {dispatch, queryFulfilled}) => {
+                const currentUser = user
+                const patchResult = dispatch(
+                    postsApi.util.updateQueryData(
+                        'fetchInfinityAnswersForComment',
+                        {
+                            postId,
+                            commentId,
+                            pageSize: PAGINATION.DEFAULT_PAGE_SIZE, //TODO: добавить pageSize вместо харкода
+                            sortDirection: 'desc',
+                        },
+                        draft => {
+                            const optimisticAnswer: Answer = {
+                                id: Date.now(),
+                                commentId,
+                                from: currentUser
+                                    ? {
+                                        id: currentUser.id,
+                                        username: currentUser.username,
+                                        avatars: currentUser.avatars || [],
+                                    }
+                                    : {
+                                        id: 3218,
+                                        username: 'Anonymous',
+                                        avatars: [],
+                                    },
+                                content,
+                                createdAt: new Date().toISOString(),
+                                likeCount: 0,
+                                isLiked: false,
+                            }
+
+                            draft.pages[0].items.unshift(optimisticAnswer);
+                        })
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    patchResult.undo();
+                }
+            },
+        }),
     }),
 })
 
@@ -390,5 +451,6 @@ export const {
     useDeletePostMutation,
     useUpdatePostMutation,
     useFetchInfinityPostCommentsInfiniteQuery,
-    useFetchInfinityAnswersForCommentInfiniteQuery
+    useFetchInfinityAnswersForCommentInfiniteQuery,
+    useCreateAnswerMutation
 } = postsApi

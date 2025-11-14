@@ -50,11 +50,8 @@ export const PostComments = ({post}: Props) => {
                 postUserName={post.userName}
             />
 
-            {commentsDataRaw.map(comment => (
-                <>
-                    <PostComment key={comment.id} comment={comment} postId={post.id}/>
-                    {!!comment.answerCount && <PostAnswers postId={post.id} commentId={comment.id}/>}
-                </>
+            {commentsDataRaw.length && commentsDataRaw.map(comment => (
+                <PostComment key={comment.id} comment={comment} postId={post.id}/>
             ))}
 
             {hasNextPage && (

@@ -8,6 +8,11 @@ import {
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentText/CommentText";
 import {useUpdateCommentLikeStatusMutation} from "@/features/posts/api/posts-api";
 import {LikeStatus, Comment} from "@/features/publicUserApi/types";
+import {useState} from "react";
+import {PostAnswers} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostAnswers/PostAnswers";
+import {
+    CommentMeta
+} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentMeta/CommentMeta";
 
 type Props = {
     comment: Comment,
@@ -19,21 +24,29 @@ export const PostComment = ({comment, postId}: Props) => {
     const [updateCommentLikeStatus] = useUpdateCommentLikeStatusMutation()
     const {data: meUser} = useMeQuery()
 
+    const [isAnswersOpened, setIsAnswersOpened] = useState(false)
+
     const likeHandler = () => {
         const newLikeStatus = comment.isLiked ? LikeStatus.NONE : LikeStatus.LIKE
         updateCommentLikeStatus({commentId: comment.id, postId, likeStatus: newLikeStatus})
     }
 
     return (
-        <article className={s.comment}>
-            <Avatar src={comment.from?.avatars[0]?.url} alt={'avatar'} size={"small"}/>
-            <CommentText content={comment.content}
-                         createdAt={comment.createdAt}
-                         likeCount={comment.likeCount}
-                         username={comment.from.username}
-                         answerCount={comment.answerCount}/>
-            <LikeButton isLiked={comment.isLiked} onClick={likeHandler} disabled={!meUser?.userId}/> {/*TODO: проверить дизейбл кнопок, если не залогинен*/}
-        </article>
-
+        <>
+            <article className={s.comment}>
+                <Avatar src={comment.from?.avatars[0]?.url} alt={'avatar'} size={"small"}/>
+                <CommentText content={comment.content}
+                             createdAt={comment.createdAt}
+                             likeCount={comment.likeCount}
+                             username={comment.from.username}
+                             answerCount={comment.answerCount}
+                             comment={comment}
+                             isAnswersOpened={isAnswersOpened}
+                             setIsAnswersOpened={setIsAnswersOpened}/>
+                <LikeButton isLiked={comment.isLiked} onClick={likeHandler}
+                            disabled={!meUser?.userId}/> {/*TODO: проверить дизейбл кнопок, если не залогинен*/}
+            </article>
+            {isAnswersOpened && <PostAnswers postId={postId} commentId={comment.id}/>}
+        </>
     );
 };

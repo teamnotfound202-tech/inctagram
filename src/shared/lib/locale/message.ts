@@ -134,10 +134,13 @@ export interface Messages {
     postDeleted: string
     noPostsYet: string
     addAComment: string
+    addAnAnswer: string
     publish: string
     publishing: string
     answer: string
     addComment: string
+    addAnswer: string
+    answersCount:string
     dropdownMenu: {
       editPost: string
       deletePost: string
@@ -390,10 +393,13 @@ export const messages: Record<Language, Messages> = {
       postDeleted: 'Post deleted',
       noPostsYet: 'No posts yet',
       addAComment: 'Add a comment',
+      addAnAnswer: 'Add aa answer',
       publish: 'Publish',
       publishing: 'Publishing',
       answer: 'Answer',
       addComment: 'Add a Comment...',
+      addAnswer: 'Add an Answer...',
+      answersCount: 'Answers:',
       dropdownMenu: {
         editPost: 'Edit Post',
         deletePost: 'Delete Post',
@@ -639,10 +645,13 @@ export const messages: Record<Language, Messages> = {
       postDeleted: 'Публикация удалена',
       noPostsYet: 'Пока нет публикаций',
       addAComment: 'Добавить комментарий',
+      addAnAnswer: 'Добавить ответ',
       publish: 'Опубликовать',
       publishing: 'Публикуется',
       answer: 'Ответить',
       addComment: 'Добавить комментарий...',
+      addAnswer: 'Добавить ответ...',
+      answersCount: 'Ответов: ',
       dropdownMenu: {
         editPost: 'Редактировать пост',
         deletePost: 'Удалить пост',
