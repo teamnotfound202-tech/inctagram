@@ -350,9 +350,9 @@ export const postsApi = baseApi.injectEndpoints({
             number | undefined
         >({
             query: ({queryArg, pageParam}) => {
-                const {postId, pageSize, sortDirection, sortBy} = queryArg
+                const {postId, commentId, pageSize, sortDirection, sortBy} = queryArg
                 return {
-                    url: `posts/${postId}/comments`,
+                    url: `posts/${postId}/comments/${commentId}/answers`, //TODO: остановилась здесь
                     params: {
                         pageSize: pageSize ?? PAGINATION.DEFAULT_PAGE_SIZE,
                         sortDirection: sortDirection ?? 'desc',
@@ -390,4 +390,5 @@ export const {
     useDeletePostMutation,
     useUpdatePostMutation,
     useFetchInfinityPostCommentsInfiniteQuery,
+    useFetchInfinityAnswersForCommentInfiniteQuery
 } = postsApi

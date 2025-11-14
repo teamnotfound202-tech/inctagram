@@ -27,10 +27,10 @@ export const CommentText = ({
             <p className={s.commentDescription}>{content}</p>
             <div className={s.commentMeta}>
                 <div className={s.commentCreationTime}>{commentCreationTime}</div>
-                {likeCount && <div className={s.likesCount}>Like: {likeCount}</div>}
+                {!!likeCount && <div className={s.likesCount}>Like: {likeCount}</div>}
                 <span
                     className={s.answerLink}>{currentLanguage.posts.answer}</span> {/*TODO: добавить слова в словарь*/}
-                <div className={s.commentAnswer}> answerCount {answerCount}</div>
+                {!!answerCount && <div className={s.commentAnswer}> answerCount {answerCount}</div>}
                 {/*TODO доделать открытие ответов комментариев*/}
             </div>
         </div>

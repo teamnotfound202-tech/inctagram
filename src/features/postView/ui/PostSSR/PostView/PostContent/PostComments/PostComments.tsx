@@ -11,6 +11,7 @@ import {useInfiniteScroll} from "@/shared/lib/hooks";
 import Spinner from "@/shared/ui/Spinner/Spinner";
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectCurrentMessages} from "@/shared/api/appSlice";
+import {PostAnswers} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostAnswers/PostAnswers";
 
 type Props = {
     post: Post
@@ -50,7 +51,10 @@ export const PostComments = ({post}: Props) => {
             />
 
             {commentsDataRaw.map(comment => (
-                <PostComment key={comment.id} comment={comment} postId={post.id}/>
+                <>
+                    <PostComment key={comment.id} comment={comment} postId={post.id}/>
+                    {!!comment.answerCount && <PostAnswers postId={post.id} commentId={comment.id}/>}
+                </>
             ))}
 
             {hasNextPage && (
