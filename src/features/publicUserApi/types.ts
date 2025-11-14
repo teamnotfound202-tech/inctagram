@@ -34,7 +34,6 @@ export type Post = {
     userName: string
 }
 
-
 export type ResponsesPosts = {
     totalCount: number
     pageSize: number
@@ -129,21 +128,40 @@ export type Comment = {
     isLiked: boolean;
 }
 
-export type CommentsResponse = {
+export type Answer = {
+    id: number;
+    commentId: number;
+    from: From;
+    content: string;
+    createdAt: string;
+    likeCount: number;
+    isLiked: boolean;
+}
+
+export type BaseResponse<T> = {
     pageSize: number;
     totalCount: number;
     notReadCount: number;
-    items: Comment[];
+    items: T[];
 }
 
-export type InfinityPostResponse = {
-    postId: number,
+type Direction =  'asc' | 'desc'
+
+type InfinityPaging = {
     pageSize?: number;
     pageNumber?: number;
-    sortDirection?: 'asc' | 'desc';
-    sortBy?: string
-}
+    sortDirection?: Direction;
+    sortBy?: string;
+};
 
+export type InfinityAnswerRequest = {
+    postId: number;
+    commentId: number;
+} & InfinityPaging;
+
+export type InfinityPostRequest = {
+    postId: number;
+} & InfinityPaging;
 
 export enum LikeStatus {
     NONE = 'NONE',
@@ -151,4 +169,5 @@ export enum LikeStatus {
     DISLIKE = 'DISLIKE'
 }
 
-
+export type CommentsResponse = BaseResponse<Comment>
+export type InfinityAnswerResponse = BaseResponse<Answer>
