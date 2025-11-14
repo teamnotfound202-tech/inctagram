@@ -1,16 +1,18 @@
-import { baseApi } from '@/shared/api'
-import { CreatePostInput, ImagesResponse, PostImage } from '@/shared/lib/sсhemas/posts'
-import { publicUserApi } from '@/features/publicUserApi/publicUserApi'
+import {baseApi} from '@/shared/api'
+import {CreatePostInput, ImagesResponse, PostImage} from '@/shared/lib/sсhemas/posts'
+import {publicUserApi} from '@/features/publicUserApi/publicUserApi';
 import {
-  Comment,
-  CommentsResponse,
-  From,
-  LikeStatus,
-  Post,
-  ResponsesPosts,
+    Comment,
+    CommentsResponse,
+    From,
+    InfinityPostResponse,
+    LikeStatus,
+    Post,
+    ResponsesPosts
 } from '@/features/publicUserApi/types'
-import { ISOStringFormat } from 'date-fns'
-import { PAGINATION } from '@/features/notificationsApi/notificationsConstants'
+import {ISOStringFormat} from 'date-fns'
+import {PAGINATION} from "@/features/notificationsApi/notificationsConstants";
+import {RootState} from "@/shared/lib/store/store";
 
 type CreatePostWithUserId = CreatePostInput & { userId?: number }
 
@@ -67,44 +69,37 @@ export const postsApi = baseApi.injectEndpoints({
       providesTags: (result, error, postId) => [{ type: 'Comment', id: postId }],
     }),
 
-    fetchInfinityPostComments: builder.infiniteQuery<
-      CommentsResponse,
-      {
-        postId: number
-        pageSize?: number
-        pageNumber?: number
-        sortDirection?: 'asc' | 'desc'
-        sortBy?: string
-      },
-      number | undefined
-    >({
-      query: ({ queryArg, pageParam }) => {
-        const { postId, pageSize, sortDirection, sortBy } = queryArg
-        return {
-          url: `posts/${postId}/comments`,
-          params: {
-            pageSize: pageSize ?? PAGINATION.DEFAULT_PAGE_SIZE,
-            sortDirection: sortDirection ?? 'desc',
-            pageNumber: pageParam ?? 1, //то значение, которое возвращается из getNextPageParam
-            sortBy: sortBy ?? '',
-          },
-        }
-      },
+        fetchInfinityPostComments: builder.infiniteQuery<
+            CommentsResponse,
+            InfinityPostResponse,
+            number | undefined
+        >({
+            query: ({queryArg, pageParam}) => {
+                const {postId, pageSize, sortDirection, sortBy} = queryArg
+                return {
+                    url: `posts/${postId}/comments`,
+                    params: {
+                        pageSize: pageSize ?? PAGINATION.DEFAULT_PAGE_SIZE,
+                        sortDirection: sortDirection ?? 'desc',
+                        pageNumber: pageParam ?? 1,     //то значение, которое возвращается из getNextPageParam
+                        sortBy: sortBy ?? ''
+                    },
+                }
+            },
 
-      infiniteQueryOptions: {
-        initialPageParam: undefined,
-        getNextPageParam: (lastPage, allPages) => {
-          if (allPages.length * lastPage.pageSize + 1 > lastPage.totalCount) return undefined // больше страниц нет
-          const nextPage = allPages.length + 1 // следующая страница = количество уже загруженных + 1
-          return nextPage
-        },
-      },
-      providesTags: () => ['Comment'],
-      // providesTags: (result, error, {postId}) => {
-      //   console.log(postId)
-      //   return [{ type: 'Comment', id: postId }]
-      // },
-    }),
+            infiniteQueryOptions: {
+                initialPageParam: undefined,
+                getNextPageParam: (lastPage, allPages) => {
+                    if ((allPages.length * lastPage.pageSize + 1) > lastPage.totalCount) return undefined; // больше страниц нет
+                    const nextPage = allPages.length + 1; // следующая страница = количество уже загруженных + 1
+                    return nextPage;
+
+                },
+            },
+            providesTags: (result, error, {postId}) => [
+                {type: 'Comment', id: postId}
+            ],
+        }),
 
     createComment: builder.mutation<
       CommentsResponse,
@@ -150,57 +145,74 @@ export const postsApi = baseApi.injectEndpoints({
                 isLiked: false,
               }
 
-              draft.pages[0].items.unshift(optimisticComment)
-            }
-          )
-        )
+                        draft.pages[0].items.unshift(optimisticComment);
+                    })
+                );
 
-        try {
-          await queryFulfilled
-        } catch (error) {
-          patchResult.undo()
-        }
-      },
-    }),
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    patchResult.undo();
+                }
+            },
+        }),
 
-    updateCommentLikeStatus: builder.mutation<
-      void,
-      { postId: number; commentId: number; likeStatus: LikeStatus }
-    >({
-      query: ({ postId, commentId, likeStatus }) => ({
-        url: `posts/${postId}/comments/${commentId}/like-status`,
-        method: 'PUT',
-        body: { likeStatus },
-      }),
-      // Автоматически обновляем кэш
-      // invalidatesTags: (result, error, { postId }) => [{ type: 'Comment', id: postId }],
-      invalidatesTags: ['Comment'],
-      // Оптимистичное обновление
-      onQueryStarted: async (
-        { postId, commentId, likeStatus },
-        { dispatch, queryFulfilled, getState }
-      ) => {
-        const patchResult = dispatch(
-          postsApi.util.updateQueryData('fetchPostComments', postId, draft => {
-            const newLikeStatus: boolean = likeStatus === LikeStatus.LIKE
-            draft.items = draft.items.map(comment =>
-              comment.id === commentId
-                ? {
-                    ...comment,
-                    isLiked: newLikeStatus,
-                  }
-                : comment
-            )
-          })
-        )
+        updateCommentLikeStatus: builder.mutation<
+            void,
+            { postId: number; commentId: number; likeStatus: LikeStatus, }
+        >({
+            query: ({postId, commentId, likeStatus}) => ({
+                url: `posts/${postId}/comments/${commentId}/like-status`,
+                method: 'PUT',
+                body: {likeStatus},
+            }),
 
-        try {
-          await queryFulfilled
-        } catch (error) {
-          patchResult.undo()
-        }
-      },
-    }),
+            // По желанию: можно убрать, чтобы не затирать оптимистику рефетчем
+            invalidatesTags: (result, error, {postId}) => [
+                {type: 'Comment' as const, id: postId},
+            ],
+
+            async onQueryStarted({postId, commentId, likeStatus,}, {dispatch, queryFulfilled, getState}) {
+                const newLike = likeStatus === LikeStatus.LIKE;
+
+                // baseArg ДОЛЖНО совпадать с queryArg у infiniteQuery в UI
+                const s = getState() as RootState;
+                const queries = s.inctagramApi.queries;
+                const match = Object.values(queries).find(
+                    (q) =>
+                        q?.endpointName === 'fetchInfinityPostComments' &&
+                        q?.originalArgs?.postId === postId                         // при необходимости сравнить и sortDirection/sortBy/pageSize
+                );
+                const originalArgs = match?.originalArgs;                   //аргументы, с которыми запрашивается infinity endpoint
+                const baseArg = originalArgs as InfinityPostResponse                 //это идет как ключ для кэша
+
+                const patchResult = dispatch(
+                    postsApi.util.updateQueryData(
+                        'fetchInfinityPostComments',
+                        baseArg,
+                        (draft) => {
+                            // draft здесь: { pages: CommentsResponse[]; pageParams: any[] }
+                            for (const page of draft.pages) {
+                                const idx = page.items.findIndex(c => c.id === commentId);
+                                if (idx !== -1) {
+                                    page.items[idx] = {
+                                        ...page.items[idx],
+                                        isLiked: newLike,
+                                    };
+                                    break;
+                                }
+                            }
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+        }),
 
     deletePost: builder.mutation<void, { postId: number; userId?: string }>({
       query: ({ postId }) => ({
