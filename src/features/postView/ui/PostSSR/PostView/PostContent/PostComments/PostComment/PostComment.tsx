@@ -7,12 +7,9 @@ import {
     CommentText
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentText/CommentText";
 import {useUpdateCommentLikeStatusMutation} from "@/features/posts/api/posts-api";
-import {LikeStatus, Comment} from "@/features/publicUserApi/types";
+import {Comment, LikeStatus} from "@/features/publicUserApi/types";
 import {useState} from "react";
 import {PostAnswers} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostAnswers/PostAnswers";
-import {
-    CommentMeta
-} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentMeta/CommentMeta";
 
 type Props = {
     comment: Comment,
@@ -46,7 +43,12 @@ export const PostComment = ({comment, postId}: Props) => {
                 <LikeButton isLiked={comment.isLiked} onClick={likeHandler}
                             disabled={!meUser?.userId}/> {/*TODO: проверить дизейбл кнопок, если не залогинен*/}
             </article>
-            {isAnswersOpened && <PostAnswers postId={postId} commentId={comment.id}/>}
+
+            {isAnswersOpened && <PostAnswers
+                postId={postId}
+                commentId={comment.id}
+                setIsAnswersOpened={setIsAnswersOpened}
+            />}
         </>
     );
 };

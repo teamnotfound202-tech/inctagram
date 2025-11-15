@@ -1,7 +1,11 @@
+@use '@/shared/styles/variables' as *;
+
 .addCommentForm {
   display: flex;
   justify-content: space-between;
   padding: 12px 25px;
+  border-top: 1px solid $dark-100;
+  border-bottom: 1px solid $dark-100;
 }
 
 .createCommentInput {

@@ -18,13 +18,10 @@ export const CommentMeta = ({comment, isAnswersOpened, setIsAnswersOpened}: Prop
     return (
         <div className={s.commentMeta}>
             <div className={s.commentCreationTime}>{commentCreationTime}</div>
-            {!!comment.likeCount && <div className={s.likesCount}>Like: {comment.likeCount}</div>}
+            {!!comment.likeCount && <div className={s.likesCount}>{currentLanguage.posts.like}: {comment.likeCount}</div>}
             <span className={s.answerLink} onClick={() => {
                 setIsAnswersOpened(!isAnswersOpened)
             }}>{currentLanguage.posts.answer}</span>
-            {!!comment.answerCount &&
-                <div
-                    className={s.commentAnswer}>  {`${currentLanguage.posts.answersCount} ${comment.answerCount}`}</div>}
         </div>
     );
 };

@@ -11,7 +11,6 @@ import {useInfiniteScroll} from "@/shared/lib/hooks";
 import Spinner from "@/shared/ui/Spinner/Spinner";
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectCurrentMessages} from "@/shared/api/appSlice";
-import {PostAnswers} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostAnswers/PostAnswers";
 
 type Props = {
     post: Post

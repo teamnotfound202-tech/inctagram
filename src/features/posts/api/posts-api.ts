@@ -180,10 +180,10 @@ export const postsApi = baseApi.injectEndpoints({
                 const likesCountDifference = likeStatus === LikeStatus.LIKE ? 1 : -1
 
                 // baseArg ДОЛЖНО совпадать с queryArg у infiniteQuery в UI
-                const s = getState() as RootState;
+                const s = getState() /*as RootState*/;
                 const queries = s.inctagramApi.queries;
                 const match = Object.values(queries).find(
-                    (q) =>
+                    (q: any) =>                                         //TODO: не знаю, как пофиксить any
                         q?.endpointName === 'fetchInfinityPostComments' &&
                         q?.originalArgs?.postId === postId                         // при необходимости сравнить и sortDirection/sortBy/pageSize
                 );

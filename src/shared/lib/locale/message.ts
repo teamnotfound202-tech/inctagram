@@ -140,7 +140,7 @@ export interface Messages {
     answer: string
     addComment: string
     addAnswer: string
-    answersCount:string
+    hideAnswersCount:string
     dropdownMenu: {
       editPost: string
       deletePost: string
@@ -399,7 +399,7 @@ export const messages: Record<Language, Messages> = {
       answer: 'Answer',
       addComment: 'Add a Comment...',
       addAnswer: 'Add an Answer...',
-      answersCount: 'Answers:',
+      hideAnswersCount: 'Hide Answers',
       dropdownMenu: {
         editPost: 'Edit Post',
         deletePost: 'Delete Post',
@@ -651,7 +651,7 @@ export const messages: Record<Language, Messages> = {
       answer: 'Ответить',
       addComment: 'Добавить комментарий...',
       addAnswer: 'Добавить ответ...',
-      answersCount: 'Ответов: ',
+      hideAnswersCount: 'Скрыть ответы ',
       dropdownMenu: {
         editPost: 'Редактировать пост',
         deletePost: 'Удалить пост',

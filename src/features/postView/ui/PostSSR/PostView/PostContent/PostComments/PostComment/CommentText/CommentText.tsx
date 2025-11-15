@@ -27,7 +27,11 @@ export const CommentText = ({
                 <span className={s.commentAuthorName}>{username}  </span>
                 <p className={s.commentDescription}>{content}</p>
             </div>
-            <CommentMeta comment={comment} isAnswersOpened={isAnswersOpened} setIsAnswersOpened={setIsAnswersOpened}/>
+            <CommentMeta
+                comment={comment}
+                isAnswersOpened={isAnswersOpened}
+                setIsAnswersOpened={setIsAnswersOpened}
+            />
         </div>
 
     );
