@@ -1,5 +1,5 @@
 import s from './PostAnswers.module.scss'
-import {useFetchInfinityAnswersForCommentInfiniteQuery} from "@/features/posts/api/posts-api";
+import {useFetchInfinityAnswersForCommentInfiniteQuery} from "@/features/answers/api/answers-api";
 import {PAGINATION} from "@/shared/constants/pagination";
 import {useFetchMyProfileQuery} from "@/features/publicUserApi/publicUserApi";
 import {
@@ -57,7 +57,7 @@ export const PostAnswers = ({postId, commentId, setIsAnswersOpened}: Props) => {
             {!!answersCount && <HideAnswerBlock answersCount={answersCount || 0} setIsAnswersOpened={setIsAnswersOpened}/>}
 
             {!!answersDataRaw.length && answersDataRaw?.map(answer => (
-                <CommentAnswer key={answer.id} answer={answer} commentId={commentId}/>
+                <CommentAnswer key={answer.id} postId={postId} answer={answer} commentId={commentId}/>
             ))}
 
             {hasNextPage && (

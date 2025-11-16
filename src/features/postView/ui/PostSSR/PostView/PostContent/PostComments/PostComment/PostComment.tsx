@@ -6,7 +6,7 @@ import {useMeQuery} from "@/features/auth/api/authApi";
 import {
     CommentText
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentText/CommentText";
-import {useUpdateCommentLikeStatusMutation} from "@/features/posts/api/posts-api";
+import {useUpdateCommentLikeStatusMutation} from "@/features/comments/api/comments-api";
 import {Comment, LikeStatus} from "@/features/publicUserApi/types";
 import {useState} from "react";
 import {PostAnswers} from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostAnswers/PostAnswers";

@@ -2,7 +2,7 @@ import s
     from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/CommentText/CommentText.module.scss";
 import {type Comment} from '@/features/publicUserApi/types'
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
-import {selectCurrentMessages} from "@/shared/api/appSlice";
+import {selectCurrentMessages, selectLanguage} from "@/shared/api/appSlice";
 import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
 
 type Props = {
@@ -11,17 +11,18 @@ type Props = {
     setIsAnswersOpened: (isAnswersOpened: boolean) => void;
 };
 export const CommentMeta = ({comment, isAnswersOpened, setIsAnswersOpened}: Props) => {
-    const currentLanguage = useAppSelector(selectCurrentMessages)
+    const messages = useAppSelector(selectCurrentMessages)
+    const currentLanguage = useAppSelector(selectLanguage)
 
-    const commentCreationTime = getTimeDifference(comment.createdAt)
+    const commentCreationTime = getTimeDifference(comment.createdAt, currentLanguage)
 
     return (
         <div className={s.commentMeta}>
             <div className={s.commentCreationTime}>{commentCreationTime}</div>
-            {!!comment.likeCount && <div className={s.likesCount}>{currentLanguage.posts.like}: {comment.likeCount}</div>}
+            {!!comment.likeCount && <div className={s.likesCount}>{messages.posts.like}: {comment.likeCount}</div>}
             <span className={s.answerLink} onClick={() => {
                 setIsAnswersOpened(!isAnswersOpened)
-            }}>{currentLanguage.posts.answer}</span>
+            }}>{messages.posts.answer}</span>
         </div>
     );
 };

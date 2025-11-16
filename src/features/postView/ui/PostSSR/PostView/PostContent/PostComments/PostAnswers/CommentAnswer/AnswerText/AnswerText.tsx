@@ -18,13 +18,12 @@ export const AnswerText = ({
                                answer
                            }: Props) => {
     return (
-        <div>
+        <div className={s.answerTextWrapper}>
             <div className={s.answerText}>
                 <span className={s.answerAuthorName}>{username}  </span>
                 <p className={s.answerDescription}>{content}</p>
             </div>
             <AnswerMeta answer={answer} />
-            {/*<CommentMeta comment={comment} isAnswersOpened={isAnswersOpened} setIsAnswersOpened={setIsAnswersOpened}/>*/}
         </div>
 
     );

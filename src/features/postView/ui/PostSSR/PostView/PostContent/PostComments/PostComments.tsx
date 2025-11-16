@@ -3,7 +3,7 @@ import {PostComment} from "@/features/postView/ui/PostSSR/PostView/PostContent/P
 import {
     PostDescriptionAsComment
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostDescriptionAsComment";
-import {useFetchInfinityPostCommentsInfiniteQuery} from "@/features/posts/api/posts-api";
+import {useFetchInfinityPostCommentsInfiniteQuery} from "@/features/comments/api/comments-api";
 import {Post} from "@/features/publicUserApi/types";
 import {useMemo, useRef} from "react";
 import {PAGINATION} from "@/features/notificationsApi/notificationsConstants";

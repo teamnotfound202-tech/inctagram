@@ -38,7 +38,7 @@ export function AlertToast({
   title,
   description,
   variant = 'success',
-  duration = 4000000,
+  duration = 5000,
   open,
   onOpenChange,
   closable = true,

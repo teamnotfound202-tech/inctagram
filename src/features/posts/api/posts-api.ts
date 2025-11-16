@@ -5,7 +5,9 @@ import {
     Answer,
     Comment,
     CommentsResponse,
-    From, InfinityAnswerRequest, InfinityAnswerResponse,
+    From,
+    InfinityAnswerRequest,
+    InfinityAnswerResponse,
     InfinityPostRequest,
     LikeStatus,
     Post,
@@ -13,7 +15,6 @@ import {
 } from '@/features/publicUserApi/types'
 import {ISOStringFormat} from 'date-fns'
 import {PAGINATION} from "@/features/notificationsApi/notificationsConstants";
-import {RootState} from "@/shared/lib/store/store";
 
 type CreatePostWithUserId = CreatePostInput & { userId?: number }
 
@@ -65,12 +66,8 @@ export const postsApi = baseApi.injectEndpoints({
         fetchPost: builder.query<Post, number>({
             query: postId => `posts/id/${postId}`,
         }),
-        fetchPostComments: builder.query<CommentsResponse, number>({
-            query: postId => `posts/${postId}/comments`,
-            providesTags: (result, error, postId) => [{type: 'Comment', id: postId}],
-        }),
 
-        fetchInfinityPostComments: builder.infiniteQuery<
+/*        fetchInfinityPostComments: builder.infiniteQuery<
             CommentsResponse,
             InfinityPostRequest,
             number | undefined
@@ -180,7 +177,7 @@ export const postsApi = baseApi.injectEndpoints({
                 const likesCountDifference = likeStatus === LikeStatus.LIKE ? 1 : -1
 
                 // baseArg ДОЛЖНО совпадать с queryArg у infiniteQuery в UI
-                const s = getState() /*as RootState*/;
+                const s = getState() /!*as RootState*!/;
                 const queries = s.inctagramApi.queries;
                 const match = Object.values(queries).find(
                     (q: any) =>                                         //TODO: не знаю, как пофиксить any
@@ -217,7 +214,7 @@ export const postsApi = baseApi.injectEndpoints({
                     patchResult.undo();
                 }
             },
-        }),
+        }),*/
 
         deletePost: builder.mutation<void, { postId: number; userId?: string }>({
             query: ({postId}) => ({
@@ -340,7 +337,6 @@ export const postsApi = baseApi.injectEndpoints({
                         }
                     })
                 )
-                console.log(patchResult)
                 try {
                     await queryFulfilled
                 } catch (error) {
@@ -349,7 +345,7 @@ export const postsApi = baseApi.injectEndpoints({
             },
         }),
 
-        fetchInfinityAnswersForComment: builder.infiniteQuery<
+       /* fetchInfinityAnswersForComment: builder.infiniteQuery<
             InfinityAnswerResponse,
             InfinityAnswerRequest,
             number | undefined
@@ -382,7 +378,7 @@ export const postsApi = baseApi.injectEndpoints({
 
         createAnswer: builder.mutation<
             Answer,
-            { postId: number; commentId: number, user: From, content: string }
+            { postId: number, commentId: number, user: From, content: string }
         >({
             query: ({postId, commentId, content}) => ({
                 url: `posts/${postId}/comments/${commentId}/answers`,
@@ -437,6 +433,66 @@ export const postsApi = baseApi.injectEndpoints({
                 }
             },
         }),
+
+        updateAnswerLikeStatus: builder.mutation<
+            void,
+            { postId: number, commentId: number, answerId: number, likeStatus: LikeStatus }
+        >({
+            query: ({postId, commentId, answerId, likeStatus}) => ({
+                url: `posts/${postId}/comments/${commentId}/answers/${answerId}/like-status`,
+                method: 'PUT',
+                body: {likeStatus},
+            }),
+            // Автоматически обновляем кэш
+            invalidatesTags: (_result, _error, {commentId}) => [
+                {type: 'Answer' as const, id: commentId},
+            ],
+            // Оптимистичное обновление
+            async onQueryStarted({postId, commentId, answerId, likeStatus,}, {dispatch, queryFulfilled, getState}) {
+                const newLike = likeStatus === LikeStatus.LIKE;
+
+                //Значение для optimistic update - если ставим like, то количество лайков увеличивается на 1, и наборот
+                const likesCountDifference = likeStatus === LikeStatus.LIKE ? 1 : -1
+
+                // baseArg ДОЛЖНО совпадать с queryArg у infiniteQuery в UI
+                const s = getState() /!*as RootState*!/;
+                const queries = s.inctagramApi.queries;
+                const match = Object.values(queries).find(
+                    (q: any) =>                                         //TODO: не знаю, как пофиксить any
+                        q?.endpointName === 'fetchInfinityAnswersForComment' &&
+                        q?.originalArgs?.commentId === commentId                         // при необходимости сравнить и sortDirection/sortBy/pageSize
+                );
+                const originalArgs = match?.originalArgs;                   //аргументы, с которыми запрашивается infinity endpoint
+                const baseArg = originalArgs as InfinityAnswerRequest                 //это идет как ключ для кэша
+
+                const patchResult = dispatch(
+                    postsApi.util.updateQueryData(
+                        'fetchInfinityAnswersForComment',
+                        baseArg,
+                        (draft) => {
+                            // draft здесь: { pages: CommentsResponse[]; pageParams: any[] }
+                            for (const page of draft.pages) {
+                                const idx = page.items.findIndex(c => c.id === answerId);
+                                if (idx !== -1) {
+                                    page.items[idx] = {
+                                        ...page.items[idx],
+                                        isLiked: newLike,
+                                        likeCount: page.items[idx].likeCount + likesCountDifference,
+                                    };
+                                    break;
+                                }
+                            }
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+        }),*/
     }),
 })
 
@@ -445,12 +501,10 @@ export const {
     useDeletePostsImageMutation,
     useCreatePostMutation,
     useFetchPostQuery,
-    useCreateCommentMutation,
-    useUpdateCommentLikeStatusMutation,
     useUpdatePostLikeStatusMutation,
     useDeletePostMutation,
     useUpdatePostMutation,
-    useFetchInfinityPostCommentsInfiniteQuery,
-    useFetchInfinityAnswersForCommentInfiniteQuery,
-    useCreateAnswerMutation
+    /*useFetchInfinityAnswersForCommentInfiniteQuery,
+    useCreateAnswerMutation,
+    useUpdateAnswerLikeStatusMutation*/
 } = postsApi
