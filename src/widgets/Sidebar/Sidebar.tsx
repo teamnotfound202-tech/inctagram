@@ -31,10 +31,14 @@ export const Sidebar = () => {
   const handleModelHandler = (type: TypeOfModalWindow) => {
     if (!type) {
       document.body.style.overflow = ''
+      setModalOpen(type)
             router.replace(pathname)
     }
+    else {
       document.body.style.overflow = 'hidden'
       setModalOpen(type)
+    }
+
 
 
   }
