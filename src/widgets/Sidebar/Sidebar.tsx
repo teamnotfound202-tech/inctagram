@@ -61,9 +61,6 @@ export const Sidebar = () => {
       case 'Create':
         link = `/profile/${data?.userId}?action=create`
         break
-      case 'Feed':
-        link = `/feed`
-        break
       default:
         link = ''
     }
