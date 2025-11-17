@@ -169,5 +169,15 @@ export enum LikeStatus {
     DISLIKE = 'DISLIKE'
 }
 
+export type ResponsePostsFollowersByUser = {
+  totalCount:	number
+  pagesCount:	number
+  page:	number
+  pageSize:	number
+  prevCursor:	number
+  nextCursor:	number
+  items: Post[]
+}
+
 export type CommentsResponse = BaseResponse<Comment>
 export type InfinityAnswerResponse = BaseResponse<Answer>

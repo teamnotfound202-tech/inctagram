@@ -9,7 +9,7 @@ import {useFetchUserQuery} from "@/features/publicUserApi/publicUserApi";
 type Props = {
     authorName: string | null
     postContent: string
-    descriptionCreationTime: string
+    descriptionCreationTime?: string
     ownerId: number
     postUserName: string
 };

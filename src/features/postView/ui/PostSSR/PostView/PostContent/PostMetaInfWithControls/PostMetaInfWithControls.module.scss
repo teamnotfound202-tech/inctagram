@@ -5,26 +5,6 @@
   border-bottom: 1px solid $dark-100;
 }
 
-.avatarsWhoLikesWrapper {
-  display: flex;
-}
-
-.avatars{
-  margin-left: -10px;
-}
-
-.avatars:first-child {
-  margin-left: 0;
-}
-
-.avatars:hover {
-  z-index: 10; /* Поднимает аватар при наведении */
-}
-
-.likesCount {
-  margin-left: 15px;
-}
-
 .postCreationTime {
   font-weight: 400;
   font-size: 12px;

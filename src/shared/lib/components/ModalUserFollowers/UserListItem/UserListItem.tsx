@@ -44,7 +44,11 @@ export const UserListItem = ({ user, isLoading, type }: Props) => {
   const closeModal = useCallback(() => setModalKind(null), [])
 
   const handleFollow = useCallback(async () => {
-    await followUser({ selectedUserId: user.userId, userName: user.userName }).unwrap()
+    await followUser({ selectedUserId: user.userId, userName: user.userName })
+      .unwrap()
+      .then(() => {
+
+      })
     setIsFollowing(true)
   }, [followUser, user.userId, user.userName])
 

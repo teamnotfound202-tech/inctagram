@@ -39,6 +39,18 @@ export function LinkContent({post, isTrim}: { post: Post, isTrim?: string }) {
         setCurrentIndex(prevState => prevState + 1);
     };
 
+    const slideTo = (index: number) => {
+      if (swiperRef.current) {
+        swiperRef.current.slideTo(index);
+      }
+    };
+
+    const handleDotClick = (e:MouseEvent<HTMLButtonElement>, index: number) => {
+      e.preventDefault();
+      slideTo(index)
+      setCurrentIndex(index)
+    }
+
     return (
         <>
             {pending && (
@@ -46,7 +58,7 @@ export function LinkContent({post, isTrim}: { post: Post, isTrim?: string }) {
                     <Loader/>
                 </PostModal>
             )}
-
+            {post.images.length === 0 && <div className={s.imagePlug}>No image</div>}
             {post.images.length > 1 ? (
                 <Swiper
                     className={s.postSlider}
@@ -55,6 +67,17 @@ export function LinkContent({post, isTrim}: { post: Post, isTrim?: string }) {
                         swiperRef.current = swiper;
                     }}
                     slidesPerView={1}
+                    pagination={{
+                      clickable: true,
+                      el: `${s.pagination}`,
+                      bulletClass: s.bullet,
+                      bulletActiveClass: s.bulletActive,
+                    }}
+                    a11y={{
+                      prevSlideMessage: 'Previous slide',
+                      nextSlideMessage: 'Next slide',
+                      paginationBulletMessage: 'Go to slide {{index}}',
+                    }}
                 >
                     {post.images.map((image, index) => (
                         <SwiperSlide key={image.url} className={s.postSlide}>
@@ -83,6 +106,19 @@ export function LinkContent({post, isTrim}: { post: Post, isTrim?: string }) {
                     >
                         <ArrowRightIcon/>
                     </button>
+                    <div className={s.pagination}>
+                      {post.images.map((_, index) => (
+                        <button
+                          key={index}
+                          className={`${s.paginationDot} ${
+                            index === currentIndex ? s.paginationDotActive : ''
+                          }`}
+                          onClick={(e) => handleDotClick(e, index)}
+                          aria-label={`Перейти к слайду ${index + 1}`}
+                          aria-current={index === currentIndex ? 'true' : 'false'}
+                        />
+                      ))}
+                    </div>
                 </Swiper>
             ) : (post.images[0] &&
                 <Image
