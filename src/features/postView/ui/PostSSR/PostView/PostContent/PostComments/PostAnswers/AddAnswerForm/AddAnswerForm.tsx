@@ -2,21 +2,22 @@
 import {useAppSelector} from '@/shared/lib/hooks/hooks';
 import {useState} from 'react';
 import {selectCurrentMessages} from "@/shared/api/appSlice";
-import s from "./AddCommentForm.module.scss";
+import s from "./AddAnswerForm.module.scss";
 import {Button} from "@/shared/ui";
 import {AlertToast} from "@/shared/ui/Alerts/Alerts";
-import {useCreateCommentMutation} from "@/features/comments/api/comments-api";
+import {useCreateAnswerMutation} from "@/features/answers/api/answers-api";
 import {From} from "@/features/publicUserApi/types";
 
 type AddCommentFormProps = {
     postId: number, // ID поста, к которому добавляется комментарий
+    commentId: number, // ID поста, к которому добавляется комментарий
     user: From      //user типа From (т.к. для оптимистичного update нужна вся структура типа From)
 }
 
-export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
+export const AddAnswerForm = ({postId, user, commentId}: AddCommentFormProps) => {
     const currentLanguage = useAppSelector(selectCurrentMessages);
     const [content, setContent] = useState(''); // состояние для input
-    const [createComment, {isLoading, error, isSuccess}] = useCreateCommentMutation();
+    const [createAnswer, {isLoading, error, isSuccess}] = useCreateAnswerMutation();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,8 +26,9 @@ export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
             return;
         }
 
-        createComment({
+        createAnswer({
             postId,
+            commentId,
             user,
             content: content.trim()
         })
@@ -41,7 +43,7 @@ export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
         <form className={s.addCommentForm} onSubmit={handleSubmit}>
             <input
                 className={s.createCommentInput}
-                placeholder={currentLanguage.posts.addComment}
+                placeholder={currentLanguage.posts.addAnswer}
                 value={content}
                 onChange={handleInputChange}
                 disabled={isLoading} // отключаем во время загрузки
@@ -56,11 +58,11 @@ export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
 
             {/* Отображение ошибок */}
             {error && (
-                <AlertToast description={'Ошибка при отправке комментария'}/>//TODO: нужно пофиксить тосты
+                <AlertToast description={'Ошибка при отправке ответа'}/>//TODO: нужно пофиксить тосты
             )}
 
             {isSuccess && (
-                <AlertToast description={'Комментарий успешно добавлен!'} variant={"success"}/>
+                <AlertToast description={'Ответ успешно добавлен!'} variant={"success"}/>
             )}
         </form>
     );

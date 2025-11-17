@@ -1,5 +1,7 @@
 import s from "./PostText.module.scss";
 import {getTimeDifference} from "@/shared/lib/utils/getTimeDifference";
+import {selectLanguage} from "@/shared/api/appSlice";
+import {useAppSelector} from "@/shared/lib/hooks/hooks";
 
 type Props = {
     authorName: string | null
@@ -13,8 +15,8 @@ export const PostText = ({
     descriptionCreationTime,
     postUserName
 }: Props) => {
-
-    const commentCreationTime = getTimeDifference(descriptionCreationTime)
+    const currentLanguage = useAppSelector(selectLanguage)
+    const commentCreationTime = getTimeDifference(descriptionCreationTime, currentLanguage)
 
     return (
         <div className={s.postText}>
