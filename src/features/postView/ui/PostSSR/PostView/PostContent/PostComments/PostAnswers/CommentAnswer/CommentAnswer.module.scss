@@ -13,12 +13,15 @@
   }
 }
 
-.comment {
-  margin-top: 15px;
+.answer {
   margin-bottom: 15px;
+  margin-top: 15px;
   display: flex;
+  flex-direction: column;
 }
 
-
-
+.answerBody{
+  display: flex;
+  align-items: start;
+}
 
