@@ -141,6 +141,7 @@ export interface Messages {
     addComment: string
     addAnswer: string
     hideAnswersCount:string
+    viewAllComments: string
     dropdownMenu: {
       editPost: string
       deletePost: string
@@ -400,6 +401,7 @@ export const messages: Record<Language, Messages> = {
       addComment: 'Add a Comment...',
       addAnswer: 'Add an Answer...',
       hideAnswersCount: 'Hide Answers',
+      viewAllComments: 'View All Comments',
       dropdownMenu: {
         editPost: 'Edit Post',
         deletePost: 'Delete Post',
@@ -652,6 +654,7 @@ export const messages: Record<Language, Messages> = {
       addComment: 'Добавить комментарий...',
       addAnswer: 'Добавить ответ...',
       hideAnswersCount: 'Скрыть ответы ',
+      viewAllComments: 'Показать больше комментариев',
       dropdownMenu: {
         editPost: 'Редактировать пост',
         deletePost: 'Удалить пост',
