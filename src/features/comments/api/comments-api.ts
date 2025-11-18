@@ -33,9 +33,11 @@ export const commentsApi = baseApi.injectEndpoints({
 
                 },
             },
-            providesTags: (result, error, {postId}) => [
+            providesTags: (_result, _error, {postId}) => [
                 {type: 'Comment', id: postId}
             ],
+            //принудительно устанавливаем ключи в кэш
+            serializeQueryArgs: ({queryArgs: {postId}}) => `Comment-${postId}`,
         }),
 
         createComment: builder.mutation<
@@ -55,12 +57,8 @@ export const commentsApi = baseApi.injectEndpoints({
                 const patchResult = dispatch(
                     commentsApi.util.updateQueryData(
                         'fetchInfinityPostComments',
-                        {
-                            postId,
-                            pageSize: PAGINATION.DEFAULT_PAGE_SIZE,
-                            sortDirection: 'desc',
-                        },
-                        draft => {
+                        {postId},
+                        (draft) => {
                             const optimisticComment: Comment = {
                                 id: Date.now(),
                                 postId,
@@ -72,7 +70,7 @@ export const commentsApi = baseApi.injectEndpoints({
                                         avatars: currentUser.avatars || [],
                                     }
                                     : {
-                                        id: 3218,
+                                        id: 9999,
                                         username: 'Anonymous',
                                         avatars: [],
                                     },
@@ -104,7 +102,6 @@ export const commentsApi = baseApi.injectEndpoints({
                 body: {likeStatus},
             }),
 
-            // По желанию: можно убрать, чтобы не затирать оптимистику рефетчем
             invalidatesTags: (_result, _error, {postId}) => [
                 {type: 'Comment' as const, id: postId},
             ],
@@ -115,33 +112,16 @@ export const commentsApi = baseApi.injectEndpoints({
                 //Значение для optimistic update - если ставим like, то количество лайков увеличивается на 1, и наборот
                 const likesCountDifference = likeStatus === LikeStatus.LIKE ? 1 : -1
 
-                // baseArg ДОЛЖНО совпадать с queryArg у infiniteQuery в UI
-                const s = getState() /*as RootState*/;
-                const queries = s.inctagramApi.queries;
-                const match = Object.values(queries).find(
-                    (q: any) =>                                         //TODO: не знаю, как пофиксить any
-                        q?.endpointName === 'fetchInfinityPostComments' &&
-                        q?.originalArgs?.postId === postId                         // при необходимости сравнить и sortDirection/sortBy/pageSize
-                );
-                const originalArgs = match?.originalArgs;                   //аргументы, с которыми запрашивается infinity endpoint
-                const baseArg = originalArgs as InfinityPostRequest                 //это идет как ключ для кэша
-
                 const patchResult = dispatch(
                     commentsApi.util.updateQueryData(
                         'fetchInfinityPostComments',
-                        baseArg,
+                        {postId},
                         (draft) => {
-                            // draft здесь: { pages: CommentsResponse[]; pageParams: any[] }
-                            for (const page of draft.pages) {
-                                const idx = page.items.findIndex(c => c.id === commentId);
-                                if (idx !== -1) {
-                                    page.items[idx] = {
-                                        ...page.items[idx],
-                                        isLiked: newLike,
-                                        likeCount: page.items[idx].likeCount + likesCountDifference,
-                                    };
-                                    break;
-                                }
+                            const commentsItems = draft.pages.flatMap(item => item.items)
+                            const comment = commentsItems.find(comment => comment.id === commentId)
+                            if (comment) {
+                                comment.isLiked = newLike
+                                comment.likeCount = comment.likeCount + likesCountDifference
                             }
                         }
                     )
