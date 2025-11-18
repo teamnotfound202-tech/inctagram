@@ -11,18 +11,16 @@ import { getTimeDifference } from '@/shared/lib/utils/getTimeDifference'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages, selectLanguage } from '@/shared/api/appSlice'
 import s from './FeedPost.module.scss'
-import {
-  PostDescriptionAsComment
-} from '@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostDescriptionAsComment'
+import { PostDescriptionAsComment } from '@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostDescriptionAsComment'
 import Link from 'next/link'
 import { useUpdatePostLikeStatusMutation } from '@/features/posts/api/posts-api'
-import { useMeQuery, useMyProfileQuery } from '@/features/auth/api/authApi'
+import { useMyProfileQuery } from '@/features/auth/api/authApi'
 import { WhoLikesWrapper } from '@/shared/ui/WhoLikesWrapper/WhoLikesWrapper'
 import { useFetchInfinityPostCommentsInfiniteQuery } from '@/features/comments/api/comments-api'
 import { AddCommentForm } from '@/features/postView/ui/PostSSR/PostView/PostContent/AddCommentForm/AddCommentForm'
 import { useState } from 'react'
-import { FeedPopUp } from '@/features/feed/ui/FeedPopUp/FeedPopUp'
 import clx from 'classnames'
+import { PopUpPost } from '@/shared/lib/components/PopUpPost/PopUpPost'
 
 type Props = {
   post: Post
@@ -55,7 +53,7 @@ export const FeedPost = ({post}: Props) => {
         })} onClick={() => setIsPopUpOpen((pervState) => !pervState)}>
           <ThreedotIcon/>
         </button>
-        {isPopUpOpen && <FeedPopUp userName={post.userName} userId={post.ownerId}/>}
+        {isPopUpOpen && <PopUpPost userName={post.userName} userId={post.ownerId}/>}
       </div>
 
       <Link className={s.feedImage} href={`/profile/${post.ownerId}/post/${post.id}`}>
