@@ -38,7 +38,7 @@ export const FeedPost = ({post}: Props) => {
 
   const likeHandler = () => {
     const newLikeStatus = post.isLiked ? LikeStatus.NONE : LikeStatus.LIKE
-    updatePostLikeStatus({postId: post.id, likeStatus: newLikeStatus, url: userData?.avatars[1].url || ''})
+    updatePostLikeStatus({postId: post.id, likeStatus: newLikeStatus, url: userData?.avatars[0].url || ''})
   }
   const totalCount = commentsData ? commentsData.pages[0].totalCount : 0
   return (
