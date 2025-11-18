@@ -26,12 +26,12 @@ export const publicUserApi = baseApi.injectEndpoints({
 
     followingUser: builder.mutation<void, { selectedUserId: number; userName: string }>({
       query: body => ({ url: `/users/following`, method: 'POST', body }),
-      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }, 'getPostsByFollowersUser'],
+      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
     }),
 
     unFollowingUser: builder.mutation<void, { userId: number; userName: string }>({
       query: ({ userId }) => ({ url: `/users/follower/${userId}`, method: 'DELETE' }),
-      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName}, 'getPostsByFollowersUser'],
+      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName}],
     }),
     followersUser: builder.query<
       CursorPage<UserItem>,
@@ -95,7 +95,7 @@ export const publicUserApi = baseApi.injectEndpoints({
         },
       },
       serializeQueryArgs: () => 'getPostsByFollowers',
-      providesTags: ['getPostsByFollowersUser']
+      providesTags: ['GetPostByFollowingUser']
     }),
     fetchUser: builder.query<User, number>({
       query: profileId => `public-user/profile/${profileId}`,
@@ -139,5 +139,7 @@ export const {
   useUpdateAvatarMutation,
   useUpdateMyProfileMutation,
   useDeleteAvatarMutation,
-  useGetPostsByFollowersInfiniteQuery
+  useGetPostsByFollowersInfiniteQuery,
+  useFollowersUserQuery,
+  useFollowingsUserQuery
 } = publicUserApi

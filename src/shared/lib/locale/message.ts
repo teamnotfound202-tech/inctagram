@@ -146,6 +146,7 @@ export interface Messages {
       editPost: string
       deletePost: string
       unfollow: string
+      follow: string
       copyLink: string
     }
   }
@@ -406,6 +407,7 @@ export const messages: Record<Language, Messages> = {
         editPost: 'Edit Post',
         deletePost: 'Delete Post',
         unfollow: 'Unfollow',
+        follow: 'Follow',
         copyLink: 'Copy Link',
       },
     },
@@ -659,6 +661,7 @@ export const messages: Record<Language, Messages> = {
         editPost: 'Редактировать пост',
         deletePost: 'Удалить пост',
         unfollow: 'Отписаться',
+        follow: 'Подписаться',
         copyLink: 'Копировать ссылку',
       },
     },
