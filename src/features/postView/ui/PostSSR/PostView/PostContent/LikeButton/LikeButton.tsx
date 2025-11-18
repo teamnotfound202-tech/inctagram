@@ -13,7 +13,6 @@ export const LikeButton = ({isLiked, onClick, className, disabled}: Props) => {
         onClick()
     }
     const finishClassName = s.likeButton + ' ' + (className ? className : '') + (disabled ? s.disabled : '')
-  console.log(isLiked)
     return (
         <button className={finishClassName} onClick={likeHandler} disabled={disabled || false}>
             {isLiked ? <HeartLike/> : <DisLike/>}
