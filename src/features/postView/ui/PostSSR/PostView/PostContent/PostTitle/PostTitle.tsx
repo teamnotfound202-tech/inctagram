@@ -48,6 +48,9 @@ export const PostTitle = ({
           onCancel={onCancel}
           deleteHandler={deleteHandler}
           isDeleteModalOpen={isDeleteModalOpen}
+          ownerName={postUserName}
+          userName={data?.userName}
+          ownerId={ownerId}
         />
       )}
     </div>

@@ -49,7 +49,7 @@ export const PostComments = ({post}: Props) => {
                 postUserName={post.userName}
             />
 
-            {commentsDataRaw.length && commentsDataRaw.map(comment => (
+            {!!commentsDataRaw.length && commentsDataRaw.map(comment => (
                 <PostComment key={comment.id} comment={comment} postId={post.id}/>
             ))}
 

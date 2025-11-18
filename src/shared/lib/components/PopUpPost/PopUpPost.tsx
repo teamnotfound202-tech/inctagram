@@ -1,4 +1,4 @@
-import s from './FeedPopUp.module.scss'
+import s from './PopUpPost.module.scss'
 import CopyIcon from './icons/copy.svg'
 import FollowIcon from './icons/follow.svg'
 import UnFollowIcon from './icons/unfollow.svg'
@@ -19,7 +19,7 @@ type Props = {
   userId: number | undefined
 }
 
-export const FeedPopUp = ({userName, userId}: Props) => {
+export const PopUpPost = ({userName, userId}: Props) => {
   const messages = useAppSelector(selectCurrentMessages)
   const {data: freshProfileData, isLoading, isFetching } = useGetUserFollowingAndFollowersQuery({ userName: userName || '' })
   const [following] = useFollowingUserMutation()
@@ -30,6 +30,7 @@ export const FeedPopUp = ({userName, userId}: Props) => {
     if (userName && userId){
       setIsLoadingPopUp(true)
       following({ userName, selectedUserId: userId })
+        .unwrap()
         .catch(() => {
           toast.custom(err => (
             <AlertToast
@@ -48,6 +49,7 @@ export const FeedPopUp = ({userName, userId}: Props) => {
     if (userName && userId) {
         setIsLoadingPopUp(true)
         unfollowing({userName, userId})
+          .unwrap()
           .catch(() => {
             toast.custom((err) => (
               <AlertToast variant="error" title="Error unfollowing for user" description={err.toString()} />
