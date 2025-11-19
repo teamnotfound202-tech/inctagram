@@ -48,7 +48,7 @@ export const PostAnswers = ({postId, commentId, setIsAnswersOpened}: Props) => {
         fetchNextPage,
         rootRef: scrollRef,
         enabled: true,
-        rootMargin: '0px 0px 0px 0px',
+        rootMargin: '0px',
         threshold: 0.01,
     })
 
@@ -81,7 +81,7 @@ export const PostAnswers = ({postId, commentId, setIsAnswersOpened}: Props) => {
                     user={{
                         id: userMe.id,
                         username: userMe.userName,
-                        avatars: [...userMe.avatars],
+                        avatars: userMe.avatars,
                     }}
                 />
             )}
