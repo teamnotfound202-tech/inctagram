@@ -35,7 +35,7 @@ export const PostComments = ({post}: Props) => {
         fetchNextPage,
         rootRef: scrollRef,
         enabled: true,
-        rootMargin: '0px 0px 0px 0px',
+        rootMargin: '0px',
         threshold: 0.01,
     })
 
@@ -55,7 +55,7 @@ export const PostComments = ({post}: Props) => {
 
             {hasNextPage && (
                 <div ref={observerRef} className={s.sentinel}>
-                    {isFetching ? (
+                    {isFetching && (
                         <Spinner
                             type="secondary"
                             size={10}
@@ -63,7 +63,7 @@ export const PostComments = ({post}: Props) => {
                             fullWidth
                             center
                         />
-                    ) : ('')}
+                    )}
                 </div>
             )}
         </div>
