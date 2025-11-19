@@ -68,6 +68,9 @@ export const Sidebar = () => {
       case 'Feed':
         link = `/feed`
         break
+      case 'Feed':
+        link = `/feed`
+        break
       default:
         link = ''
     }

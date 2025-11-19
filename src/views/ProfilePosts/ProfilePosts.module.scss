@@ -1,10 +1,15 @@
 .profilePostsWrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .postsText {
   font-size: 30px;
+  text-align: center;
+}
+
+.loadingWrapper {
+  min-width: 100%;
   text-align: center;
 }

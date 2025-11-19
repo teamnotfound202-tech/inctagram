@@ -43,8 +43,10 @@ export const FeedPost = ({post}: Props) => {
     <div className={s.feedPost}>
       <div className={s.userFeedPostTop}>
         <div className={s.userAvatarWrapper}>
+          <Link className={s.userLink} href={`/profile/${post.ownerId}`}>
           <Avatar src={post.avatarOwner} alt={'avatar'} size={'small'}/>
           <span className={s.userName}>{post.userName}</span>
+          </Link>
           <div className={s.userNameDot}></div>
           <span>{getTimeDifference(post.createdAt, currentLanguage)}</span>
         </div>

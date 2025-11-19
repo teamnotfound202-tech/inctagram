@@ -53,7 +53,7 @@ export const sideBarData: SideBarData[] = [
   {
     key: 'Messenger',
     text: 'Messenger',
-    link: '',
+    link: 'messenger',
     isDisabled: false,
     textForLink: {
       en: 'Messenger',
@@ -63,7 +63,7 @@ export const sideBarData: SideBarData[] = [
   {
     key: 'Search',
     text: 'Search',
-    link: '',
+    link: 'search',
     isDisabled: false,
     textForLink: {
       en: 'Search',
@@ -73,7 +73,7 @@ export const sideBarData: SideBarData[] = [
   {
     key: 'Statistics',
     text: 'Statistics',
-    link: '',
+    link: 'statistics',
     isDisabled: false,
     textForLink: {
       en: 'Statistics',
@@ -83,7 +83,7 @@ export const sideBarData: SideBarData[] = [
   {
     key: 'Favorites',
     text: 'Favorites',
-    link: '',
+    link: 'favorites',
     isDisabled: false,
     textForLink: {
       en: 'Favorites',
@@ -93,7 +93,7 @@ export const sideBarData: SideBarData[] = [
   {
     key: 'Log Out',
     text: 'Log Out',
-    link: '',
+    link: 'logout',
     isDisabled: false,
     onclick: true,
     textForLink: {

@@ -12,6 +12,13 @@
   position: relative;
 }
 
+.userLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
 .userAvatarWrapper {
   display: flex;
   align-items: center;

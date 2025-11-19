@@ -10,6 +10,10 @@
   align-items: start;
 }
 
+.commentLink {
+  cursor: pointer;
+}
+
 .postText {
   flex-grow: 1;
   margin-left: 12px;
@@ -24,6 +28,17 @@
 .commentAuthorName {
   font-weight: 700;
 }
+
+.commentLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  color: $light-100;
+}
+
 
 .commentDescription {
   display: inline;
