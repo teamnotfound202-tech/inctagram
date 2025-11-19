@@ -198,7 +198,8 @@ export const postsApi = baseApi.injectEndpoints({
                         post.likesCount += 1
                     } else {
                       const index = post.avatarWhoLikes.findLastIndex(item => item === url)
-
+                      console.log(url)
+                      console.log(index)
                       if (index !== -1) {
                         post.avatarWhoLikes.splice(index,1)
                         post.likesCount -= 1
