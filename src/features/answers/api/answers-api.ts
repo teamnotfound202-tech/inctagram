@@ -16,7 +16,7 @@ export const answersApi = baseApi.injectEndpoints({
                 return {
                     url: `posts/${postId}/comments/${commentId}/answers`,
                     params: {
-                        pageSize: PAGINATION.DEFAULT_PAGE_SIZE, //TODO: добавить pageSize вместо харкода
+                        pageSize: pageSize ?? PAGINATION.DEFAULT_PAGE_SIZE, //TODO: добавить pageSize вместо харкода
                         sortDirection: sortDirection ?? 'desc',
                         pageNumber: pageParam ?? 1,     //то значение, которое возвращается из getNextPageParam
                         sortBy: sortBy ?? ''
@@ -35,6 +35,8 @@ export const answersApi = baseApi.injectEndpoints({
             providesTags: (result, error, {commentId}) => [
                 {type: 'Answer', id: commentId}
             ],
+            //принудительно устанавливаем ключи в кэш
+            serializeQueryArgs: ({queryArgs: {commentId}}) => `Answer-${commentId}`,
         }),
 
         createAnswer: builder.mutation<
@@ -46,8 +48,7 @@ export const answersApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: {content},
             }),
-            //invalidatesTags: ['Answer'],
-            invalidatesTags: (result, error, {commentId}) => [
+            invalidatesTags: (_result, _error, {commentId}) => [
                 {type: 'Answer' as const, id: commentId},
             ],
             // Оптимистичное обновление
@@ -56,12 +57,7 @@ export const answersApi = baseApi.injectEndpoints({
                 const patchResult = dispatch(
                     answersApi.util.updateQueryData(
                         'fetchInfinityAnswersForComment',
-                        {
-                            postId,
-                            commentId,
-                            pageSize: PAGINATION.DEFAULT_PAGE_SIZE, //TODO: добавить pageSize вместо харкода
-                            sortDirection: 'desc',
-                        },
+                        {postId, commentId,},
                         draft => {
                             const optimisticAnswer: Answer = {
                                 id: Date.now(),
@@ -73,7 +69,7 @@ export const answersApi = baseApi.injectEndpoints({
                                         avatars: currentUser.avatars || [],
                                     }
                                     : {
-                                        id: 3218,
+                                        id: 9999,
                                         username: 'Anonymous',
                                         avatars: [],
                                     },
@@ -115,33 +111,16 @@ export const answersApi = baseApi.injectEndpoints({
                 //Значение для optimistic update - если ставим like, то количество лайков увеличивается на 1, и наборот
                 const likesCountDifference = likeStatus === LikeStatus.LIKE ? 1 : -1
 
-                // baseArg ДОЛЖНО совпадать с queryArg у infiniteQuery в UI
-                const s = getState() /*as RootState*/;
-                const queries = s.inctagramApi.queries;
-                const match = Object.values(queries).find(
-                    (q: any) =>                                         //TODO: не знаю, как пофиксить any
-                        q?.endpointName === 'fetchInfinityAnswersForComment' &&
-                        q?.originalArgs?.commentId === commentId                         // при необходимости сравнить и sortDirection/sortBy/pageSize
-                );
-                const originalArgs = match?.originalArgs;                   //аргументы, с которыми запрашивается infinity endpoint
-                const baseArg = originalArgs as InfinityAnswerRequest                 //это идет как ключ для кэша
-
                 const patchResult = dispatch(
                     answersApi.util.updateQueryData(
                         'fetchInfinityAnswersForComment',
-                        baseArg,
+                        {commentId, postId},
                         (draft) => {
-                            // draft здесь: { pages: CommentsResponse[]; pageParams: any[] }
-                            for (const page of draft.pages) {
-                                const idx = page.items.findIndex(c => c.id === answerId);
-                                if (idx !== -1) {
-                                    page.items[idx] = {
-                                        ...page.items[idx],
-                                        isLiked: newLike,
-                                        likeCount: page.items[idx].likeCount + likesCountDifference,
-                                    };
-                                    break;
-                                }
+                            const answerItems = draft.pages.flatMap(item => item.items)
+                            const answer = answerItems.find(answer => answer.id === answerId)
+                            if (answer) {
+                                answer.isLiked = newLike
+                                answer.likeCount = answer.likeCount + likesCountDifference
                             }
                         }
                     )

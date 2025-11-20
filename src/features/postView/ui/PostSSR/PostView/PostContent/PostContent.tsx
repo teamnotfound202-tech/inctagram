@@ -51,7 +51,6 @@ export const PostContent = ({
   const handleCloseCancelModal = () => {
     setShowCancelModal(false)
   }
-
   return (
     <div className={s.postContentWrapper}>
       {!isEditing && post.id &&(

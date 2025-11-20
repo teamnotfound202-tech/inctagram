@@ -7,7 +7,7 @@ import Link from 'next/link'
 import clx from 'classnames'
 import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
 import { sidebarActions } from '@/widgets/Sidebar/SidebarItem/sidebarActions'
-
+import { usePathname } from 'next/navigation'
 type Props = {
   link: string
   text: Text
@@ -24,10 +24,11 @@ export const SidebarItem = ({
   isVisible,
   spanText,
 }: Props) => {
+  const path = usePathname()
   const baseClasses = clx(s.sidebarItemLink, {
     [s.unvisible]: isVisible,
   })
-
+  const linkRout = link && path.includes(link)
   const action = sidebarActions[text] ?? { type: 'link' }
   const superModalHandler = (actionType: TypeOfModalWindow) => {
     onClickAction?.(actionType)
@@ -50,6 +51,7 @@ export const SidebarItem = ({
     <li
       className={clx(s.sidebarItem, {
         [s.disabled]: isDisabled,
+        [s.active]: linkRout
       })}
     >
       {content}

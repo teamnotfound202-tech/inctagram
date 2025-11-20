@@ -32,16 +32,21 @@ export const PostComment = ({comment, postId}: Props) => {
         <>
             <article className={s.comment}>
                 <Avatar src={comment.from?.avatars[0]?.url} alt={'avatar'} size={"small"}/>
-                <CommentText content={comment.content}
-                             createdAt={comment.createdAt}
-                             likeCount={comment.likeCount}
-                             username={comment.from.username}
-                             answerCount={comment.answerCount}
-                             comment={comment}
-                             isAnswersOpened={isAnswersOpened}
-                             setIsAnswersOpened={setIsAnswersOpened}/>
-                <LikeButton isLiked={comment.isLiked} onClick={likeHandler}
-                            disabled={!meUser?.userId}/> {/*TODO: проверить дизейбл кнопок, если не залогинен*/}
+                <CommentText
+                   content={comment.content}
+                   createdAt={comment.createdAt}
+                   likeCount={comment.likeCount}
+                   username={comment.from.username}
+                   answerCount={comment.answerCount}
+                   comment={comment}
+                   isAnswersOpened={isAnswersOpened}
+                   setIsAnswersOpened={setIsAnswersOpened}
+                />
+                <LikeButton
+                  isLiked={comment.isLiked}
+                  onClick={likeHandler}
+                  disabled={!meUser?.userId}
+                />
             </article>
 
             {isAnswersOpened && <PostAnswers

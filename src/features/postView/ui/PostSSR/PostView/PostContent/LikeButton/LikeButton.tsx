@@ -1,5 +1,5 @@
 import s from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostComment/PostComment.module.scss";
-import Heart from "@/features/postView/ui/PostSSR/PostView/Icons/littleLike/heart.svg";
+import HeartLike from "@/features/postView/ui/PostSSR/PostView/Icons/littleLike/heart.svg"
 import DisLike from "@/features/postView/ui/PostSSR/PostView/Icons/littleLike/DisLike.svg";
 
 type Props = {
@@ -13,10 +13,9 @@ export const LikeButton = ({isLiked, onClick, className, disabled}: Props) => {
         onClick()
     }
     const finishClassName = s.likeButton + ' ' + (className ? className : '') + (disabled ? s.disabled : '')
-
     return (
         <button className={finishClassName} onClick={likeHandler} disabled={disabled || false}>
-            {isLiked ? <Heart/> : <DisLike/>}
+            {isLiked ? <HeartLike/> : <DisLike/>}
         </button>
     );
 };

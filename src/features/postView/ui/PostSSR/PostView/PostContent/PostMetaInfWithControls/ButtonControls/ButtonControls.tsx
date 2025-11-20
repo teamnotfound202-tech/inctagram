@@ -14,7 +14,7 @@ type Props = {
 
 };
 export const ButtonControls = ({isLiked,postId}: Props) => {
-    const [updatePostLikeStatus] = useUpdatePostLikeStatusMutation()
+  const [updatePostLikeStatus] = useUpdatePostLikeStatusMutation()
   const{data}=useMyProfileQuery()
 
     const likeHandler = () => {
