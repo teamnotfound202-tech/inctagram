@@ -1,11 +1,12 @@
 import { baseApi } from '@/shared/api'
 import { SidebarItem } from '@/widgets/Sidebar/SidebarItem/SidebarItem'
 import s from './Sidebar.module.scss'
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { Button } from '@/shared/ui'
 import { useLogoutMutation, useMeQuery } from '@/features/auth/api/authApi'
 import { ACCESS_TOKEN } from '@/shared/lib'
+import type { Text } from '@/shared/config/sideBarItems/sideBarData'
 import { sideBarData } from '@/shared/config/sideBarItems/sideBarData'
 import { usePathname, useRouter } from 'next/navigation'
 import { Path } from '@/shared/config'
@@ -13,7 +14,6 @@ import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages, selectLanguage } from '@/shared/api/appSlice'
 import { SuperModal } from '@/shared/ui/Modal/SuperModal/SuperModal'
 import { SideBarWarning } from '@/shared/ui/Modal/SideBarWarning/SideBarWarning'
-import type { Text } from '@/shared/config/sideBarItems/sideBarData'
 
 export type TypeOfModalWindow = 'Logout' | 'AddPhotoModal' | 'exitEditing' | null
 
@@ -63,6 +63,9 @@ export const Sidebar = () => {
         break
       case 'Feed':
         link = `/feed`
+        break
+      case 'Search':
+        link = `/search`
         break
       default:
         link = ''

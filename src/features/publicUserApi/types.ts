@@ -91,6 +91,15 @@ export type UserItem = {
     isFollowedBy: boolean;
 };
 
+export type UserFromSearch = {
+  id: number;
+  userName: string;
+  firstName: string | null;
+  lastName: string | null;
+  avatars: Avatar[];
+  createdAt: string;
+};
+
 export type UsersListResponse = {
     totalCount: number;
     pagesCount: number;
@@ -177,6 +186,16 @@ export type ResponsePostsFollowersByUser = {
   prevCursor:	number
   nextCursor:	number
   items: Post[]
+}
+
+export type ResponseSearchUser = {
+  totalCount:	number
+  pagesCount:	number
+  page:	number
+  pageSize:	number
+  prevCursor:	number
+  nextCursor:	number
+  items: UserFromSearch[]
 }
 
 export type CommentsResponse = BaseResponse<Comment>

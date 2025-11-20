@@ -6,8 +6,7 @@ import s from './SidebarItem.module.scss'
 import Link from 'next/link'
 import clx from 'classnames'
 import { TypeOfModalWindow } from '@/widgets/Sidebar/Sidebar'
-import { SidebarAction, sidebarActions } from '@/widgets/Sidebar/SidebarItem/sidebarActions'
-import { useRouter } from 'next/navigation'
+import { sidebarActions } from '@/widgets/Sidebar/SidebarItem/sidebarActions'
 
 type Props = {
   link: string

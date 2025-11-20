@@ -176,6 +176,7 @@ export interface Messages {
     lastSeen: string
     deleteConversation: string
     noMessages: string
+    noRecentRequests: string
   }
 
   // Настройки
@@ -435,6 +436,7 @@ export const messages: Record<Language, Messages> = {
       lastSeen: 'Last seen',
       deleteConversation: 'Delete Conversation',
       noMessages: 'No messages yet',
+      noRecentRequests: 'Oops! This place looks empty! No recent requests',
     },
 
     settings: {
@@ -689,6 +691,7 @@ export const messages: Record<Language, Messages> = {
       lastSeen: 'Был в сети',
       deleteConversation: 'Удалить беседу',
       noMessages: 'Пока нет сообщений',
+      noRecentRequests: 'Упс! Похоже, здесь пусто! Нет недавних запросов.',
     },
 
     settings: {
