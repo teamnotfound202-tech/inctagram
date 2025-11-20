@@ -1,0 +1,58 @@
+@use '@/shared/styles/variables' as *;
+
+.searchInput{
+  min-width: 100%;
+  margin-bottom: 30px;
+}
+
+.searchPage{
+  width: 100%;
+  position: relative;
+}
+
+.notFoundMessage{
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  color: $light-900;
+}
+
+.title{
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 180%;
+  color: $light-100;
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+
+.user{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.userName{
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 171%;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: $light-100;
+}
+
+.fullName{
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  color: $light-900;
+}
+
+.listTitle{
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 150%;
+  color: $light-100;
+  margin-bottom: 18px;
+}

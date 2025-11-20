@@ -2,6 +2,7 @@ import {
   CursorPage,
   GetPublicUsers,
   ResponsePostsFollowersByUser,
+  ResponseSearchUser,
   ResponsesPosts,
   UserItem,
   UserProfileResponse,
@@ -97,6 +98,24 @@ export const publicUserApi = baseApi.injectEndpoints({
       serializeQueryArgs: () => 'getPostsByFollowers',
       providesTags: ['GetPostByFollowingUser']
     }),
+    getSearchUser: builder.infiniteQuery<ResponseSearchUser, {search:string}, number | undefined>({
+      query: ({ pageParam, queryArg }) => {
+        return {
+          url: `users?search=${queryArg.search}&cursor=${pageParam}`,
+        }
+      },
+      infiniteQueryOptions: {
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => {
+          if (lastPage.nextCursor) {
+            return lastPage.nextCursor
+          }
+          return null
+        },
+      },
+      serializeQueryArgs: () => 'getSearchByUser',
+      providesTags: ['GetUserBySearch']
+    }),
     fetchUser: builder.query<User, number>({
       query: profileId => `public-user/profile/${profileId}`,
     }),
@@ -141,5 +160,6 @@ export const {
   useDeleteAvatarMutation,
   useGetPostsByFollowersInfiniteQuery,
   useFollowersUserQuery,
-  useFollowingsUserQuery
+  useFollowingsUserQuery,
+  useGetSearchUserInfiniteQuery
 } = publicUserApi
