@@ -27,6 +27,7 @@ export const PostView = ({post}: Props) => {
     const editingHandler = (value: boolean) => {
         setIsEditing(value)
     }
+    throw new Error('PostView: PostView has common error')
 
     return (
         <>
