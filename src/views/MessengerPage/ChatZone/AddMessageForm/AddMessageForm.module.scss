@@ -1,0 +1,26 @@
+@use '@/shared/styles/variables' as *;
+
+.addMessageForm {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid $dark-100;
+  border-bottom: 1px solid $dark-100;
+}
+
+.addMessageInput {
+  all: unset;
+  border-color: transparent;
+  background-color: transparent;
+  font-weight: 400;
+  font-size: 14px;
+  color: $light-100;
+  padding: 12px 0 12px 25px;
+}
+
+.addMessageInput::placeholder {
+  color: $light-900;
+}
+
+.addMessageInput:focus-visible {
+  outline: none;
+}

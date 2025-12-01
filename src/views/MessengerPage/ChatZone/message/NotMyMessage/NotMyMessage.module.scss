@@ -1,0 +1,42 @@
+@use '@/shared/styles/variables' as *;
+
+.messageWrapper {
+  align-self: start;
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.messageBlockWrapper {
+  border-radius: 8px;
+  max-width: 275px;
+  width: max-content;
+  height: auto;
+  padding: 7px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  background-color: $dark-300;
+}
+
+.messageMetaInf {
+  align-self: flex-end;
+  display: flex;
+}
+
+.messageText {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  color: $light-100;
+}
+
+.lastMessageTime {
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-900;
+  font-weight: 400;
+
+}

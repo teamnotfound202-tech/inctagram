@@ -1,14 +1,14 @@
 'use client'
-import { Input } from '@/shared/ui'
-import { useEffect, useRef, useState } from 'react'
-import { useAppSelector } from '@/shared/lib/hooks/hooks'
-import { selectCurrentMessages } from '@/shared/api/appSlice'
+import {Input} from '@/shared/ui'
+import {useEffect, useState} from 'react'
+import {useAppSelector} from '@/shared/lib/hooks/hooks'
+import {selectCurrentMessages} from '@/shared/api/appSlice'
 import s from './SearchUsers.module.scss'
 import Spinner from '@/shared/ui/Spinner/Spinner'
-import { useGetSearchUserInfiniteQuery } from '@/features/publicUserApi/publicUserApi'
-import { useInfiniteScroll } from '@/shared/lib/hooks'
-import { UserFromSearch } from '@/features/publicUserApi/types'
-import { UserListItem } from '@/views/SearchUsers/UserListItem/UserListItem'
+import {useGetSearchUserInfiniteQuery} from '@/features/publicUserApi/publicUserApi'
+import {useInfiniteScroll} from '@/shared/lib/hooks'
+import {UserFromSearch} from '@/features/publicUserApi/types'
+import {UserListItem} from '@/views/SearchUsers/UserListItem/UserListItem'
 
 export const SearchUsers = () => {
   const messages = useAppSelector(selectCurrentMessages)

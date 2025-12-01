@@ -1,0 +1,33 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.search{
+  padding: 15px 12px 20px 12px;
+  border: 1px solid $dark-300;
+  background: $dark-500;
+  position: relative;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.chatSearchInput{
+  all: unset;
+  box-sizing: border-box;
+  border: 1px solid $dark-100;
+  border-radius: 2px;
+  padding: 6px 0 6px 40px;
+  font-weight: 400;
+  font-size: 16px;
+  color: $light-900;
+  width: 240px;
+}
+
+.iconWrapper{
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+

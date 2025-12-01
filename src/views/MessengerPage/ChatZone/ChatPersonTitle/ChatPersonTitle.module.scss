@@ -1,0 +1,11 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.chatPersonTitle {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background-color: $dark-500;
+  border: 1px solid $dark-300;
+}

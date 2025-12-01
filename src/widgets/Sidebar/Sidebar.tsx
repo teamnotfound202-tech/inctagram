@@ -71,9 +71,6 @@ export const Sidebar = () => {
       case 'Search':
         link = `/search`
         break
-      case 'Messenger':
-        link = `/messenger/${data?.userId}`
-        break
       default:
         link = ''
     }
