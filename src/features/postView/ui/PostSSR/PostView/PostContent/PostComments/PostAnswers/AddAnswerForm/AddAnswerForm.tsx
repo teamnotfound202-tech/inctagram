@@ -58,7 +58,7 @@ export const AddAnswerForm = ({postId, user, commentId}: AddCommentFormProps) =>
 
             {/* Отображение ошибок */}
             {error && (
-                <AlertToast description={'Ошибка при отправке ответа'}/>//TODO: нужно пофиксить тосты
+                <AlertToast description={'Ошибка при отправке ответа'}/>
             )}
 
             {isSuccess && (
