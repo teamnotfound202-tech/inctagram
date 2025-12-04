@@ -440,7 +440,7 @@ export const messages: Record<Language, Messages> = {
       noMessages: 'No messages yet',
       noRecentRequests: 'Oops! This place looks empty! No recent requests',
       inputSearch: 'Input search',
-      emptyChatZone: 'There is no active chats',
+      emptyChatZone: 'Choose who you would like to talk to',
     },
 
     settings: {
@@ -697,7 +697,7 @@ export const messages: Record<Language, Messages> = {
       noMessages: 'Пока нет сообщений',
       noRecentRequests: 'Упс! Похоже, здесь пусто! Нет недавних запросов.',
       inputSearch: 'Поиск',
-      emptyChatZone: 'Нет активных чатов',
+      emptyChatZone: 'Выберите, с кем хотите пообщаться',
     },
 
     settings: {

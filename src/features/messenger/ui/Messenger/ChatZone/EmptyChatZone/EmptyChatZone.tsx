@@ -6,7 +6,9 @@ export const EmptyChatZone = () => {
     const messages = useAppSelector(selectCurrentMessages)
     return (
         <div className={s.emptyChatZone}>
+            <div className={s.emptyChatZoneBlock}>
             {messages.messenger.emptyChatZone}
+            </div>
         </div>
     );
 };
