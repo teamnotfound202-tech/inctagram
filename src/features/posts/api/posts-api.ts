@@ -1,19 +1,9 @@
 import {baseApi} from '@/shared/api'
 import {CreatePostInput, ImagesResponse, PostImage} from '@/shared/lib/sсhemas/posts'
 import {publicUserApi} from '@/features/publicUserApi/publicUserApi';
-import {
-    Answer,
-    Comment,
-    CommentsResponse,
-    From,
-    InfinityAnswerRequest,
-    InfinityAnswerResponse,
-    InfinityPostRequest,
-    LikeStatus,
-    Post,
-    ResponsesPosts
-} from '@/features/publicUserApi/types'
+import {LikeStatus, Post, ResponsesPosts} from '@/features/publicUserApi/types'
 import {ISOStringFormat} from 'date-fns'
+
 type CreatePostWithUserId = CreatePostInput & { userId?: number }
 
 export const postsApi = baseApi.injectEndpoints({

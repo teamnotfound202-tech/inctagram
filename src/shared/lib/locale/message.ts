@@ -178,6 +178,7 @@ export interface Messages {
     noMessages: string
     noRecentRequests: string
     inputSearch: string,
+    emptyChatZone:string
   }
 
   // Настройки
@@ -439,6 +440,7 @@ export const messages: Record<Language, Messages> = {
       noMessages: 'No messages yet',
       noRecentRequests: 'Oops! This place looks empty! No recent requests',
       inputSearch: 'Input search',
+      emptyChatZone: 'There is no active chats',
     },
 
     settings: {
@@ -695,6 +697,7 @@ export const messages: Record<Language, Messages> = {
       noMessages: 'Пока нет сообщений',
       noRecentRequests: 'Упс! Похоже, здесь пусто! Нет недавних запросов.',
       inputSearch: 'Поиск',
+      emptyChatZone: 'Нет активных чатов',
     },
 
     settings: {
