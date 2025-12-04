@@ -1,6 +1,6 @@
-@use '@/shared/styles/variables.scss' as *;
+@use '@/shared/styles/variables' as *;
 
-.chatPersonTitle {
+.chatPersonTitleWrapper {
   display: flex;
   justify-content: start;
   align-items: center;
@@ -8,4 +8,5 @@
   padding: 12px;
   background-color: $dark-500;
   border: 1px solid $dark-300;
+  height: 74px;
 }
