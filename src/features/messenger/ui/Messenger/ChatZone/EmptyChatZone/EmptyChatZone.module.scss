@@ -1,6 +1,21 @@
-.emptyChatZone{
+@use '@/shared/styles/variables' as *;
+
+.emptyChatZone {
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.emptyChatZoneBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  width: 293px;
+  height: 48px;
+  background-color: $dark-300;
+  font-weight: 500;
+  font-size: 14px;
+  color: $light-100;
 }

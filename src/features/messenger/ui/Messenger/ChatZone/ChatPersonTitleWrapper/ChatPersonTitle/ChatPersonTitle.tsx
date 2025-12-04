@@ -10,7 +10,6 @@ export const ChatPersonTitle = ({activeUserIdChat}: Props) => {
     const {data} = useFetchInfinityChatsInfiniteQuery({})
     const chat = data?.pages.flatMap(page => page.items)
         .filter(chat => chat.receiverId === activeUserIdChat)
-    console.log('chat ', chat)
 
     return (
         activeUserIdChat && chat && <>
