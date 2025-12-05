@@ -50,3 +50,8 @@ export type MessagesFromPartnerRequest =
 
 export type MessagesFromPartnerResponse = MessagesResponse<MessageViewModal>
 export type LastMessagesResponse = MessagesResponse<LastMessageViewDTO>
+
+export type MessageSendRequest = {
+    message: string,
+    receiverId: number
+}

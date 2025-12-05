@@ -18,7 +18,7 @@ export const getSocket = () => {
     })
     socket.on('connect',()=>{console.log('Подключились!!!')})
     socket.on('connect_error',()=>{console.log('Ошибка((!!!')})
-    socket.on('disconnect',()=>{console.log('Ошибка((!!!')})
+    socket.on('disconnect',()=>{console.log('Disconnect((!!!')})
   }
   return socket
 }
