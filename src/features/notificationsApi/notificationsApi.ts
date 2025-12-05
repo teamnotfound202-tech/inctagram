@@ -33,7 +33,6 @@ export const notificationsApi = baseApi.injectEndpoints({
         subscribeToEvent(SOCKET_EVENTS.NOTIFICATIONS,(data:newNotification)=>{
           updateCachedData((state)=>{
           state.pages[0].items.unshift(data)
-
           })
         })
       },
@@ -53,6 +52,7 @@ export const notificationsApi = baseApi.injectEndpoints({
       },
       providesTags: () => ['Notifications'],
     }),
+
     markAsReadNotifications: builder.mutation<void, NotificationsMarkAsRead>({
       query: body => ({ url: '/notifications/mark-as-read', method: 'PUT', body }),
       invalidatesTags:['Notifications'],
