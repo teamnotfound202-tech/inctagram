@@ -18,7 +18,7 @@ export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
     const [content, setContent] = useState(''); // состояние для input
     const [createComment, {isLoading, error, isSuccess}] = useCreateCommentMutation();
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!content.trim()) {
