@@ -1,13 +1,14 @@
 import s from "./ChatPersonTitle.module.scss";
 import {Avatar} from "@/entities/user/ui/Avatar";
-import {useFetchInfinityChatsInfiniteQuery} from "@/features/messenger/api/messengerApi";
+import {useFetchChatsInfiniteQuery} from "@/features/messenger/api/messengerApi";
 
 type Props = {
     activeUserIdChat: number
+    searchName: string
 }
 
-export const ChatPersonTitle = ({activeUserIdChat}: Props) => {
-    const {data} = useFetchInfinityChatsInfiniteQuery({})
+export const ChatPersonTitle = ({activeUserIdChat, searchName}: Props) => {
+    const {data} = useFetchChatsInfiniteQuery({searchName})
     const chat = data?.pages.flatMap(page => page.items)
         .filter(chat => chat.receiverId === activeUserIdChat)
 

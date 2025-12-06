@@ -11,7 +11,6 @@ import {
 import {subscribeToEvent} from "@/shared/lib/socket/subscribeToEvent";
 import {SOCKET_EVENTS} from "@/shared/lib/constants/constants";
 import {emitEvent} from "@/shared/lib/socket/emitEvent";
-import {RootState} from "@/shared/lib/store/store";
 
 export const messengerApi = baseApi.injectEndpoints({
     overrideExisting: true,
@@ -47,7 +46,7 @@ export const messengerApi = baseApi.injectEndpoints({
                     return null
                 },
             },
-            onCacheEntryAdded: async (arg, {cacheDataLoaded, updateCachedData, cacheEntryRemoved, dispatch}) => {
+            onCacheEntryAdded: async (_arg, {cacheDataLoaded, updateCachedData, cacheEntryRemoved, dispatch}) => {
                 await cacheDataLoaded
 
                 subscribeToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, (data: MessageViewModal) => {   //TODO: проверить, может подписку нужно делать при загрузке приложения???
@@ -92,7 +91,7 @@ export const messengerApi = baseApi.injectEndpoints({
             invalidatesTags: ['LastMessages']
         }),
 
-        fetchInfinityChats: builder.infiniteQuery<
+        fetchChats: builder.infiniteQuery<
             LastMessagesResponse,
             MessagesRequest,
             number | undefined
@@ -119,21 +118,19 @@ export const messengerApi = baseApi.injectEndpoints({
                     ) {
                         return lastPage.items[lastPage.items.length - 1].id
                     }
-
                     return null
                 },
             },
             providesTags: ['LastMessages'],
-            serializeQueryArgs: ({endpointName, queryArgs}) => {
+           /* serializeQueryArgs: ({endpointName, queryArgs}) => {
                 return {endpointName, cursor: queryArgs.cursor};
-            },
-            //serializeQueryArgs: ({queryArgs: {dialoguePartnerId}}) => `MessagesFromPartner-${dialoguePartnerId}`,
+            },*/
         }),
     })
 })
 
 export const {
     useFetchMessagesFromPartnerInfiniteQuery,
-    useFetchInfinityChatsInfiniteQuery,
+    useFetchChatsInfiniteQuery,
     useSendMessageMutation,
 } = messengerApi

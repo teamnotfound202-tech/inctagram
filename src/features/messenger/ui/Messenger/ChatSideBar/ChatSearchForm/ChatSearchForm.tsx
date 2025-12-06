@@ -14,6 +14,7 @@ export const ChatSearchForm = ({searchName, changeSearchName}: Props) => {
     const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         changeSearchName(e.currentTarget.value)
     }
+
     return (
         <div className={s.search}>
             <div className={s.inputWrapper}>

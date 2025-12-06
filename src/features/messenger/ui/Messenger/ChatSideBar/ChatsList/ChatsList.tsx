@@ -1,6 +1,6 @@
 import s from "./ChatsList.module.scss";
 import {PersonChat} from "@/features/messenger/ui/Messenger/ChatSideBar/ChatsList/PersonChat/PersonChat";
-import {useFetchInfinityChatsInfiniteQuery} from "@/features/messenger/api/messengerApi";
+import {useFetchChatsInfiniteQuery} from "@/features/messenger/api/messengerApi";
 import {Loader} from "@/shared/ui/Loader/Loader";
 
 type Props = {
@@ -10,8 +10,7 @@ type Props = {
 }
 
 export const ChatsList = ({activeUserIdChat, setActiveUserIdChat, searchName}: Props) => {
-
-    const {data, isLoading} = useFetchInfinityChatsInfiniteQuery({searchName})
+    const {data, isLoading} = useFetchChatsInfiniteQuery({searchName})
 
     const chats = data?.pages.flatMap(page => page.items)
 
@@ -24,8 +23,8 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat, searchName}: P
                            name={chat.userName}
                            dateTime={chat.createdAt}
                            message={chat.messageText}
-                           personChatClickHandler={()=> setActiveUserIdChat(chat.receiverId)}
-                           isActive={activeUserIdChat === chat.id}
+                           personChatClickHandler={() => setActiveUserIdChat(chat.receiverId)}
+                           isActive={activeUserIdChat === chat.receiverId}
         />
     })
 
