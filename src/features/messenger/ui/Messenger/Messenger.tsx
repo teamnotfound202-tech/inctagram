@@ -5,11 +5,20 @@ import {useState} from "react";
 
 export const Messenger = () => {
     const [activeUserIdChat, setActiveUserIdChat] = useState<number | null>(null)
+    const [searchName, setSearchName] = useState("");
 
     return (
         <div className={s.messengerBox}>
-            <ChatSideBar setActiveUserIdChat={setActiveUserIdChat} activeUserIdChat={activeUserIdChat}/>
-            <ChatZone activeUserIdChat={activeUserIdChat}/>
+            <ChatSideBar
+                setActiveUserIdChat={setActiveUserIdChat}
+                activeUserIdChat={activeUserIdChat}
+                searchName={searchName}
+                setSearchName={setSearchName}
+            />
+            <ChatZone
+                activeUserIdChat={activeUserIdChat}
+                searchName={searchName}
+            />
         </div>
     );
 };

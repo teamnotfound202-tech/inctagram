@@ -8,12 +8,13 @@ import {
 
 type Props = {
     activeUserIdChat: number | null
+    searchName: string
 }
 
-export const ChatZone = ({activeUserIdChat}: Props) => {
+export const ChatZone = ({activeUserIdChat, searchName}: Props) => {
     return (
         <div className={s.chatZone}>
-            <ChatPersonTitleWrapper activeUserIdChat={activeUserIdChat}/>
+            <ChatPersonTitleWrapper activeUserIdChat={activeUserIdChat} searchName={searchName}/>
             {activeUserIdChat && <>
                 <ViewMessagesZone activeUserIdChat={activeUserIdChat}/>
             </>}
