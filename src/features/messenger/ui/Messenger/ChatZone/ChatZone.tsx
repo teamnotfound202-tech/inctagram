@@ -1,6 +1,3 @@
-import {
-    ChatPersonTitle
-} from '@/features/messenger/ui/Messenger/ChatZone/ChatPersonTitleWrapper/ChatPersonTitle/ChatPersonTitle';
 import s from './ChatZone.module.scss'
 import {ViewMessagesZone} from "@/features/messenger/ui/Messenger/ChatZone/ViewMessagesZone/ViewMessagesZone";
 import {AddMessageForm} from "@/features/messenger/ui/Messenger/ChatZone/AddMessageForm/AddMessageForm";
@@ -21,7 +18,7 @@ export const ChatZone = ({activeUserIdChat}: Props) => {
                 <ViewMessagesZone activeUserIdChat={activeUserIdChat}/>
             </>}
             {!activeUserIdChat && <EmptyChatZone/>}
-            <AddMessageForm/>
+            {activeUserIdChat &&<AddMessageForm activeUserIdChat={activeUserIdChat}/>}
         </div>
     );
 };

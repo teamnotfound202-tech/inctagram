@@ -1,7 +1,7 @@
 import s from "./ViewMessagesZone.module.scss";
 
 import {NotMyMessage} from "@/features/messenger/ui/Messenger/ChatZone/message/NotMyMessage/NotMyMessage";
-import {useFetchInfinityMessagesFromPartnerInfiniteQuery} from "@/features/messenger/api/messengerApi";
+import {useFetchMessagesFromPartnerInfiniteQuery} from "@/features/messenger/api/messengerApi";
 import {Loader} from "@/shared/ui/Loader/Loader";
 import {MyMessage} from "@/features/messenger/ui/Messenger/ChatZone/message/MyMessage/MyMessage";
 import {useMeQuery} from "@/features/auth/api/authApi";
@@ -12,14 +12,14 @@ type Props = {
 
 export const ViewMessagesZone = ({activeUserIdChat}: Props) => {
 
-    const {data, isLoading} = useFetchInfinityMessagesFromPartnerInfiniteQuery({dialoguePartnerId: activeUserIdChat})
+    const {data, isLoading} = useFetchMessagesFromPartnerInfiniteQuery({dialoguePartnerId: activeUserIdChat})
     const {data: me} = useMeQuery()
 
     const messages = data?.pages.flatMap(page => page.items)
 
     if (isLoading) return <Loader/>
 
-    const renderedMessages = messages?.reverse().map((message) => (
+    const renderedMessages = messages?.map((message) => (
         message.ownerId === me?.userId ?
 
             <MyMessage key={message.id}
