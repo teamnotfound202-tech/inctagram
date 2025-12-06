@@ -13,6 +13,7 @@ export const getSocket = () => {
       query: {
         accessToken: accessToken
       },
+      autoConnect: true,
       path:'',
       transports: ['websocket']
     })

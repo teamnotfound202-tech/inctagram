@@ -9,10 +9,3 @@ export const subscribeToEvent = <T>(event: SocketEvent, callback: (data: T) => v
     }
 }
 
-export const emitEvent = <T>(event: SocketEvent, ...args: any) => {
-    const socket = getSocket()
-    socket.emit(event, ...args)
-    return () => {
-        socket.off(event, (...args)=>{})
-    }
-}

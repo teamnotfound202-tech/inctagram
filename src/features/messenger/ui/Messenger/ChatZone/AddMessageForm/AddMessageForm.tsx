@@ -7,7 +7,11 @@ import {selectCurrentMessages} from "@/shared/api/appSlice";
 import {useState} from "react";
 import {useSendMessageMutation} from "@/features/messenger/api/messengerApi";
 
-export const AddMessageForm = () => {
+type Props = {
+    activeUserIdChat: number
+}
+
+export const AddMessageForm = ({activeUserIdChat}: Props) => {
     const currentLanguage = useAppSelector(selectCurrentMessages);
     const [content, setContent] = useState(''); // состояние для input
     const [sendMessage, {isLoading, error}] = useSendMessageMutation()
@@ -21,7 +25,7 @@ export const AddMessageForm = () => {
 
         sendMessage({
             text: content.trim(),
-            receiverId: 77      //TODO: убрать хардкод
+            receiverId: activeUserIdChat      //TODO: убрать хардкод
         })
         setContent('');
     };
@@ -37,13 +41,13 @@ export const AddMessageForm = () => {
                 placeholder={currentLanguage.messenger.typeMessage}
                 value={content}
                 onChange={handleInputChange}
-                //disabled={isLoading}
+                disabled={isLoading}
             />
 
             <Button
                 variant="text"
                 type="submit"
-                //disabled={isLoading || !content.trim()} // отключаем если загрузка или пустой input
+                disabled={isLoading || !content.trim()} // отключаем если загрузка или пустой input
             >
                 {isLoading ? currentLanguage.messenger.sendingMessage : currentLanguage.messenger.sendMessage}
             </Button>
