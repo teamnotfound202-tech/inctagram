@@ -1,0 +1,24 @@
+@use '@/shared/styles/variables' as *;
+.iconWrapper{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.data {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ownerData {
+  color: $accent-100
+}
+
+.partnerData {
+  color: $light-900
+}
+.readIcon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}

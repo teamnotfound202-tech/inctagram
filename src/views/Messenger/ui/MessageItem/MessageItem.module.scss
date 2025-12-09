@@ -1,0 +1,54 @@
+@use '@/shared/styles/variables' as *;
+
+.messageItemContainer {
+  display: flex;
+  width: 49%;
+  gap: 12px;
+
+}
+
+.alignRight {
+  justify-content: flex-end;
+  align-self: flex-end;
+}
+
+.alignLeft {
+  justify-content: flex-start;
+}
+
+.textContainer {
+  padding: 8px 12px;
+  border-radius: 8px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* Дополнительные для надежности */
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+
+  /* Ограничение ширины */
+  max-width: 100%;
+  width: fit-content;
+}
+
+.ownerMessage {
+  background-color: $accent-900;
+}
+
+.partnerMessage {
+  background-color: $dark-300;
+}
+
+.message {
+  line-height: 24px;
+  color: $light-100
+}
+
+.info {
+  display: flex;
+justify-content: flex-end;
+}
+

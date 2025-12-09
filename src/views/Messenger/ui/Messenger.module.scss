@@ -1,0 +1,84 @@
+@use '@/shared/styles/variables' as *;
+
+.messagengerPage {
+  width: 100%;
+  position: relative;
+
+}
+
+.messagengerContainer {
+  display: grid;
+
+  height: 648px;
+  grid-template-columns: 27.6% 72.4%;
+  grid-template-rows: 11.1% 89.9%;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 180%;
+  color: $light-100;
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $dark-300;
+  padding: 18px 12px;
+  background-color: $dark-500;
+}
+
+.selectedUserContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: $dark-500;
+  border: 1px solid $dark-300;
+  padding-left: 11px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.listofSpeakers {
+  overflow-y: auto;
+  border: 1px solid $dark-300;
+  background-color: $dark-500;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Скрыть scrollbar для IE, Edge и Firefox */
+  -ms-overflow-style: none; /* IE и Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.emptyMessage {
+  color: $light-100;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background-color: $dark-300;
+  width: 293px;
+  height: 48px;
+  border-radius: 8px;
+}
+
+.messengerFieldContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $dark-300;
+}

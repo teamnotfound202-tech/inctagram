@@ -1,0 +1,27 @@
+@use '@/shared/styles/variables' as *;
+
+.listContainer {
+  max-width: 100%;
+  display: flex;
+  gap: 32px;
+  padding: 12px;
+  border: 1px solid $dark-300;
+
+  &:hover, &.active {
+    background-color: $dark-100;
+    cursor: pointer;
+  }
+
+}
+
+.lastUpdate {
+  font-size: 12px;
+  color: $light-900;
+  font-weight: 400;
+}
+
+.lastUpdateBlock {
+  flex: auto;
+  display: flex;
+  justify-content: flex-end;
+}
