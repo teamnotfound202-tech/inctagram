@@ -19,8 +19,9 @@ export const baseApi = createApi({
     'Answer',
     'GetPostByFollowingUser',
     'GetUserBySearch',
-  'Messages'
-
+    'Messages',
+    'LastMessages',
+    'MessagesFromPartner',
   ],
   endpoints: () => ({}),
 })

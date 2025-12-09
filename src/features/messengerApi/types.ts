@@ -17,7 +17,10 @@ export type MessageItem = {
   avatars: Avatar[]
   notReadCount: number
 }
-
+export type MessageSendRequest = {
+  message: string,
+  receiverId: number
+}
 export type IncomingMessage=Omit<MessageItem, 'userName'|'avatars'|'notReadCount'>
 export type AllMessages = BaseResponse<MessageItem>
 export type MessagesByUserName = BaseResponse<IncomingMessage>

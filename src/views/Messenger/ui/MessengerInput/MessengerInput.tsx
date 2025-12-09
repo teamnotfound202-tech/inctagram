@@ -9,7 +9,7 @@ import {
   ContentEditableInputRef,
 } from '@/views/Messenger/ui/MessengerInput/ConteEditableDiv/ContentEditableInput'
 import { useRef, useState } from 'react'
-import { useSendMessageWithOptimisticMutation } from '@/features/messengerApi/messengerApi'
+import { useSendMessageMutation, useSendMessageWithOptimisticMutation } from '@/features/messengerApi/messengerApi'
 
 export type MessageSendingType = 'message' | 'voice' | 'none'
 type Props = {

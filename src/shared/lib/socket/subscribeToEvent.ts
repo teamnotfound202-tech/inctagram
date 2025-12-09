@@ -8,21 +8,7 @@ export const subscribeToEvent = <T>(event: SocketEvent, callback:(data:T)=>void)
     socket.off(event,callback)
   }
 }
-export const emitEvent = <T, R = any>(
-  event: string,
-  data: T,
-  callback?: (response: R) => void
-): void => {
-  const socket = getSocket() // предполагаем синхронный вызов
-
-  if (!socket || !socket.connected) {
-    console.error(`Cannot emit ${event}: socket not connected`)
-    return
-  }
-
-  if (callback) {
-    socket.emit(event, data, callback) // ⚡️ Socket.IO поддерживает колбэки!
-  } else {
-    socket.emit(event, data)
-  }
+export const emitEvent = <T, K>(event: SocketEvent, payload: T, callback: (data: K) => void) => {
+  const socket = getSocket()
+  socket.emit(event, payload, callback)
 }

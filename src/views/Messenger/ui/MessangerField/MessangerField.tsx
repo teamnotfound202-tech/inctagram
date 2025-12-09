@@ -6,7 +6,10 @@ import s from './MessangerField.module.scss'
 import { Status } from '@/features/messengerApi/types'
 import { MessengerInput } from '@/views/Messenger/ui/MessengerInput/MessengerInput'
 import { getIdFromPath } from '@/views/Messenger/model/helpers'
-import { useGetMessagesByDialogPartnerInfiniteQuery } from '@/features/messengerApi/messengerApi'
+import {
+  useFetchMessagesFromPartnerInfiniteQuery,
+  useGetMessagesByDialogPartnerInfiniteQuery,
+} from '@/features/messengerApi/messengerApi'
 import { useEffect } from 'react'
 import { useInfiniteScroll } from '@/shared/lib/hooks'
 import * as React from 'react'
