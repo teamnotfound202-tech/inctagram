@@ -13,12 +13,13 @@ export const getSocket = () => {
       query: {
         accessToken: accessToken
       },
+      autoConnect: true,
       path:'',
       transports: ['websocket']
     })
     socket.on('connect',()=>{console.log('Подключились!!!')})
     socket.on('connect_error',()=>{console.log('Ошибка((!!!')})
-    socket.on('disconnect',()=>{console.log('Ошибка((!!!')})
+    socket.on('disconnect',()=>{console.log('Disconnect((!!!')})
   }
   return socket
 }

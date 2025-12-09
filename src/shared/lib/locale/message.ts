@@ -177,6 +177,9 @@ export interface Messages {
     deleteConversation: string
     noMessages: string
     noRecentRequests: string
+    inputSearch: string,
+    emptyChatZone:string
+    sendingMessage:string
   }
 
   // Настройки
@@ -437,6 +440,9 @@ export const messages: Record<Language, Messages> = {
       deleteConversation: 'Delete Conversation',
       noMessages: 'No messages yet',
       noRecentRequests: 'Oops! This place looks empty! No recent requests',
+      inputSearch: 'Input search',
+      emptyChatZone: 'Choose who you would like to talk to',
+      sendingMessage: 'Sending a message...',
     },
 
     settings: {
@@ -692,6 +698,9 @@ export const messages: Record<Language, Messages> = {
       deleteConversation: 'Удалить беседу',
       noMessages: 'Пока нет сообщений',
       noRecentRequests: 'Упс! Похоже, здесь пусто! Нет недавних запросов.',
+      inputSearch: 'Поиск',
+      emptyChatZone: 'Выберите, с кем хотите пообщаться',
+      sendingMessage: 'Отправляем сообщение'
     },
 
     settings: {

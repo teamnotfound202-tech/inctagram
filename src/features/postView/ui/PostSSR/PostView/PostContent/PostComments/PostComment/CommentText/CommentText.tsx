@@ -33,6 +33,5 @@ export const CommentText = ({
                 setIsAnswersOpened={setIsAnswersOpened}
             />
         </div>
-
     );
 };

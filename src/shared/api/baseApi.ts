@@ -20,7 +20,8 @@ export const baseApi = createApi({
     'GetPostByFollowingUser',
     'GetUserBySearch',
   ],
-  endpoints: () => ({}),
+  
+    endpoints: () => ({}),
 })
 
 export type baseApi = typeof baseApi
