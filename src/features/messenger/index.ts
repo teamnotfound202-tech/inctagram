@@ -1,0 +1,1 @@
+export {Messenger} from '@/features/messenger/ui/Messenger/Messenger';

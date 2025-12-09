@@ -1,0 +1,17 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.messengerPageWrapper {
+  padding-left: 25px;
+  padding-top: 35px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 180%;
+  color: $light-100;
+  margin-bottom: 15px;
+}
+
+
+

@@ -1,0 +1,50 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.personChatWrapper {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid $dark-300;
+}
+
+.personChatWrapper:hover {
+  cursor: pointer;
+  background-color: $dark-100;
+}
+
+.personChatWrapper.active {
+  background-color: $dark-100;
+}
+
+.personChat {
+  flex-grow: 1;
+  margin-left: 12px;
+  word-break: break-all;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  color: $light-100;
+}
+
+.messageAuthorName {
+  font-weight: 700;
+}
+
+.chatLastMessage {
+  display: flex;
+  justify-content: start;
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-900;
+  font-weight: 400;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.lastMessageTime {
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-900;
+  font-weight: 400;
+}

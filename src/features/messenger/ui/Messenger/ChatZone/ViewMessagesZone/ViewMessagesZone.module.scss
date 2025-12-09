@@ -1,0 +1,8 @@
+.viewMessagesZone{
+  flex-grow: 1;
+  max-height: 525px;
+  overflow: auto;
+  padding: 35px 25px;
+  display: flex;
+  flex-direction: column;
+}
