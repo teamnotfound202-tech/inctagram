@@ -8,18 +8,17 @@ import {
 
 type Props = {
     activeUserIdChat: number | null
-    searchName: string
 }
 
-export const ChatZone = ({activeUserIdChat, searchName}: Props) => {
+export const ChatZone = ({activeUserIdChat}: Props) => {
     return (
         <div className={s.chatZone}>
-            <ChatPersonTitleWrapper activeUserIdChat={activeUserIdChat} searchName={searchName}/>
+            <ChatPersonTitleWrapper activeUserIdChat={activeUserIdChat}/>
             {activeUserIdChat && <>
                 <ViewMessagesZone activeUserIdChat={activeUserIdChat}/>
+                <AddMessageForm activeUserIdChat={activeUserIdChat}/>
             </>}
             {!activeUserIdChat && <EmptyChatZone/>}
-            {activeUserIdChat &&<AddMessageForm activeUserIdChat={activeUserIdChat}/>}
         </div>
     );
 };

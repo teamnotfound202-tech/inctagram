@@ -5,12 +5,14 @@ type InitialState = {
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
     language: Language,
     vacabulary: Record<Language, Messages>,
+    searchChatUserName: string
 }
 
 const initialState: InitialState = {
     status: 'idle',
     language: 'en',
     vacabulary: messages,
+    searchChatUserName:''
 }
 
 export const appSlice = createSlice({
@@ -20,6 +22,9 @@ export const appSlice = createSlice({
     changeLanguage: create.reducer<{ language: Language }>((state, action) => {
       state.language = action.payload.language
     }),
+      changeSearchChatUserName: create.reducer<{ searchChatUserName: string }>((state, action) => {
+          state.searchChatUserName = action.payload.searchChatUserName
+      }),
   }),
   extraReducers: (builder) => {
       builder
@@ -37,9 +42,10 @@ export const appSlice = createSlice({
       selectStatus: state => state.status,
       selectLanguage: state => state.language,
       selectCurrentMessages: state => state.vacabulary[state.language],
+      selectSearchChatUserName: state => state.searchChatUserName,
   },
 })
 
 export const appReducer = appSlice.reducer
-export const { changeLanguage } = appSlice.actions
-export const { selectLanguage, selectCurrentMessages, selectStatus } = appSlice.selectors
+export const { changeLanguage, changeSearchChatUserName } = appSlice.actions
+export const { selectLanguage, selectCurrentMessages, selectStatus, selectSearchChatUserName } = appSlice.selectors

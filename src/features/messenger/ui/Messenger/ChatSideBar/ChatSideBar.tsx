@@ -5,21 +5,16 @@ import {ChatsList} from "@/features/messenger/ui/Messenger/ChatSideBar/ChatsList
 type Props = {
     activeUserIdChat: number | null;
     setActiveUserIdChat: (activeChat: number) => void;
-    searchName: string
-    setSearchName: (searchName: string) => void;
 }
 
-export const ChatSideBar = ({activeUserIdChat, setActiveUserIdChat, searchName, setSearchName}: Props) => {
-
+export const ChatSideBar = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
     return (
         <div className={s.allChats}>
-            <ChatSearchForm searchName={searchName} changeSearchName={setSearchName}/>
+            <ChatSearchForm/>
             <ChatsList
                 activeUserIdChat={activeUserIdChat}
                 setActiveUserIdChat={setActiveUserIdChat}
-                searchName={searchName}
             />
         </div>
     )
-        ;
 };

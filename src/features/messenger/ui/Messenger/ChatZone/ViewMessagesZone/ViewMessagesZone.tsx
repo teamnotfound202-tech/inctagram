@@ -5,6 +5,8 @@ import {useFetchMessagesFromPartnerInfiniteQuery} from "@/features/messenger/api
 import {Loader} from "@/shared/ui/Loader/Loader";
 import {MyMessage} from "@/features/messenger/ui/Messenger/ChatZone/message/MyMessage/MyMessage";
 import {useMeQuery} from "@/features/auth/api/authApi";
+import {useRef} from "react";
+import {useInfiniteScroll} from "@/shared/lib/hooks";
 
 type Props = {
     activeUserIdChat: number
@@ -12,16 +14,31 @@ type Props = {
 
 export const ViewMessagesZone = ({activeUserIdChat}: Props) => {
 
-    const {data, isLoading} = useFetchMessagesFromPartnerInfiniteQuery({dialoguePartnerId: activeUserIdChat})
+    const {data,
+        isLoading,
+        hasNextPage,
+        isFetching,
+        fetchNextPage,
+        isFetchingNextPage
+    } = useFetchMessagesFromPartnerInfiniteQuery({dialoguePartnerId: activeUserIdChat})
     const {data: me} = useMeQuery()
 
     const messages = data?.pages.flatMap(page => page.items)
 
+    const scrollRef = useRef<HTMLDivElement | null>(null)
+    const {observerRef} = useInfiniteScroll({
+        hasNextPage,
+        isFetching,
+        fetchNextPage,
+        rootRef: scrollRef,
+        enabled: true,
+        rootMargin: '0px'
+    })
+
     if (isLoading) return <Loader/>
 
     const renderedMessages = messages?.map((message) => (
-        message.ownerId === me?.userId ?
-
+        message.ownerId === me?.userId ?                //Если мое сообщение
             <MyMessage key={message.id}
                        text={message.messageText}
                        createdAt={message.createdAt}
@@ -35,8 +52,17 @@ export const ViewMessagesZone = ({activeUserIdChat}: Props) => {
     ))
 
     return (
-        <div className={s.viewMessagesZone}>
+        <div className={s.viewMessagesZone} ref={scrollRef}>
             {renderedMessages}
+            {messages && messages.length > 0 && renderedMessages}
+            {messages && messages.length === 0 ? (
+                <p>There are no messages</p>
+            ) : hasNextPage}
+            {hasNextPage && (
+                <div ref={observerRef} className={s.loadingWrapper}>
+                    {isFetchingNextPage ? <div>Loading more ...</div> : <div style={{height: '2px'}}/>}
+                </div>
+            )}
         </div>
     );
 };

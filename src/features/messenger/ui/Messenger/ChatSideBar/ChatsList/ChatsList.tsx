@@ -1,36 +1,62 @@
 import s from "./ChatsList.module.scss";
 import {PersonChat} from "@/features/messenger/ui/Messenger/ChatSideBar/ChatsList/PersonChat/PersonChat";
 import {useFetchChatsInfiniteQuery} from "@/features/messenger/api/messengerApi";
-import {Loader} from "@/shared/ui/Loader/Loader";
+import {useAppSelector} from "@/shared/lib/hooks/hooks";
+import {selectSearchChatUserName} from "@/shared/api/appSlice";
+import {useInfiniteScroll} from "@/shared/lib/hooks";
+import {useRef} from "react";
+import {useMeQuery} from "@/features/auth/api/authApi";
 
 type Props = {
     activeUserIdChat: number | null
     setActiveUserIdChat: (activeChat: number) => void;
-    searchName: string;
 }
 
-export const ChatsList = ({activeUserIdChat, setActiveUserIdChat, searchName}: Props) => {
-    const {data, isLoading} = useFetchChatsInfiniteQuery({searchName})
+export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
+    const searchChatUserName = useAppSelector(selectSearchChatUserName)
+    const {data: me} = useMeQuery()
+    const {
+        data,
+        hasNextPage,
+        isFetching,
+        fetchNextPage,
+        isFetchingNextPage
+    } = useFetchChatsInfiniteQuery({searchName: searchChatUserName})
 
     const chats = data?.pages.flatMap(page => page.items)
 
-    if (isLoading) return <Loader/>
+    const scrollRef = useRef<HTMLDivElement | null>(null)
+    const {observerRef} = useInfiniteScroll({
+        hasNextPage,
+        isFetching,
+        fetchNextPage,
+        rootRef: scrollRef,
+        enabled: true,
+    })
 
     const renderedChats = chats?.map((chat) => {
-
-        return <PersonChat key={chat.id}
-                           avatar={chat.avatars[0]?.url}
-                           name={chat.userName}
-                           dateTime={chat.createdAt}
-                           message={chat.messageText}
-                           personChatClickHandler={() => setActiveUserIdChat(chat.receiverId)}
+        const receiverId = (chat.receiverId === me?.userId) ? chat.ownerId : chat.receiverId //TODO: проверить
+        return <PersonChat key={chat?.id}
+                           avatar={(chat?.avatars?.length > 0) ? chat?.avatars[0]?.url : ''}
+                           name={chat?.userName}
+                           dateTime={chat?.createdAt}
+                           message={chat?.messageText}
+                           personChatClickHandler={() => setActiveUserIdChat(receiverId)}
                            isActive={activeUserIdChat === chat.receiverId}
         />
     })
 
     return (
-        <div className={s.personsChatsList}>
-            {renderedChats}
+        <div className={s.personsChatsList} ref={scrollRef}>
+            {chats && chats.length > 0 && renderedChats}
+            {chats && chats.length === 0 ? (
+                <p>There are no chats</p>
+            ) : hasNextPage}
+            {hasNextPage && (
+                <div ref={observerRef} className={s.loadingWrapper}>
+                    {isFetchingNextPage ? <div>Loading more ...</div> : <div style={{height: '2px'}}/>}
+                </div>
+            )}
         </div>
     )
 };

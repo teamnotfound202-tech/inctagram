@@ -1,3 +1,9 @@
 .personsChatsList {
+  height: 500px;
+  overflow-y: scroll;
+}
 
+.loadingWrapper {
+  min-width: 100%;
+  text-align: center;
 }

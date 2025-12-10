@@ -1,18 +1,15 @@
 import s from "./ChatSearchForm.module.scss";
-import {useAppSelector} from "@/shared/lib/hooks/hooks";
-import {selectCurrentMessages} from "@/shared/api/appSlice";
+import {useAppDispatch, useAppSelector} from "@/shared/lib/hooks/hooks";
+import {changeSearchChatUserName, selectCurrentMessages, selectSearchChatUserName} from "@/shared/api/appSlice";
 import Search from './icons/search.svg'
 import {ChangeEvent} from "react";
 
-type Props = {
-    searchName: string
-    changeSearchName: (searchName: string) => void
-}
-
-export const ChatSearchForm = ({searchName, changeSearchName}: Props) => {
+export const ChatSearchForm = () => {
     const messages = useAppSelector(selectCurrentMessages)
+    const searchChatUserName = useAppSelector(selectSearchChatUserName)
+    const dispatch = useAppDispatch();
     const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        changeSearchName(e.currentTarget.value)
+        dispatch(changeSearchChatUserName({searchChatUserName: e.currentTarget.value}))
     }
 
     return (
@@ -20,7 +17,7 @@ export const ChatSearchForm = ({searchName, changeSearchName}: Props) => {
             <div className={s.inputWrapper}>
                 <input className={s.chatSearchInput}
                        type="search"
-                       value={searchName}
+                       value={searchChatUserName}
                        onChange={changeHandler}
                        placeholder={messages.messenger.inputSearch}/>
                 <div className={s.iconWrapper}><Search/></div>

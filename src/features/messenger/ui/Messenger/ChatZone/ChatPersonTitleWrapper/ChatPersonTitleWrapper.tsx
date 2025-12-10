@@ -3,13 +3,12 @@ import {ChatPersonTitle} from "@/features/messenger/ui/Messenger/ChatZone/ChatPe
 
 type Props = {
     activeUserIdChat: number | null
-    searchName: string
 }
 
-export const ChatPersonTitleWrapper = ({activeUserIdChat, searchName}: Props) => {
+export const ChatPersonTitleWrapper = ({activeUserIdChat}: Props) => {
     return (
         <div className={s.chatPersonTitleWrapper}>
-            {activeUserIdChat && <ChatPersonTitle activeUserIdChat={activeUserIdChat} searchName={searchName}/>}
+            {activeUserIdChat && <ChatPersonTitle activeUserIdChat={activeUserIdChat} />}
         </div>
     );
 };
