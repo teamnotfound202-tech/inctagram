@@ -64,10 +64,7 @@ export const messengerApi = baseApi.injectEndpoints({
                     })
                 })
             },
-            providesTags: (_result, _error, {dialoguePartnerId}) => [{
-                type: 'MessagesFromPartner',
-                id: dialoguePartnerId
-            }],
+
             serializeQueryArgs: ({queryArgs: {dialoguePartnerId}}) => `MessagesFromPartner-${dialoguePartnerId}`,
         }),
 

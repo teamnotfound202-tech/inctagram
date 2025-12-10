@@ -9,14 +9,14 @@ import {
   ContentEditableInputRef,
 } from '@/views/Messenger/ui/MessengerInput/ConteEditableDiv/ContentEditableInput'
 import { useRef, useState } from 'react'
-import { useSendMessageMutation, useSendMessageWithOptimisticMutation } from '@/features/messengerApi/messengerApi'
+import { useSendMessageWithOptimisticMutation } from '@/features/messengerApi/messengerApi'
 
 export type MessageSendingType = 'message' | 'voice' | 'none'
 type Props = {
-  dialogPartnerId:number
-  ownerId:number
+  dialogPartnerId: number
+  ownerId: number
 }
-export const MessengerInput = ({dialogPartnerId,ownerId}:Props) => {
+export const MessengerInput = ({ dialogPartnerId, ownerId }: Props) => {
   const messages = useAppSelector(selectCurrentMessages)
   const [sendingType, setSendingType] = useState<MessageSendingType>('none')
   const contentEditableRef = useRef<ContentEditableInputRef>(null)
@@ -27,21 +27,18 @@ export const MessengerInput = ({dialogPartnerId,ownerId}:Props) => {
   }
   const [sendMessage, { isLoading, error }] = useSendMessageWithOptimisticMutation()
 
-  const handleSend = async() => {
+  const handleSend = async () => {
     // Получаем контент из дочернего компонента
     const content = contentEditableRef.current?.getContent()
     // Очищаем после отправки
+
     try {
       await sendMessage({
-        message: content?.text||'',
+        message: content?.text || '',
         receiverId: dialogPartnerId,
-        ownerId
       }).unwrap()
 
-
-    } catch (error) {
-
-    }
+    } catch (error) {}
     contentEditableRef.current?.clearContent()
   }
   const setSendingTypeHandler = (type: MessageSendingType) => {

@@ -14,9 +14,13 @@ import { MessageItem } from '@/features/messengerApi/types'
 import { UserFromSearch } from '@/features/publicUserApi/types'
 import { UserInfoBlock } from '@/views/Messenger/ui/UserMessageInfo/UserInfoBlock'
 import { MessangerField } from '@/views/Messenger/ui/MessangerField/MessangerField'
+import {usePathname} from "next/navigation";
+import {getIdFromPath} from "@/views/Messenger/model/helpers";
 
 export const Messenger = () => {
   const messages = useAppSelector(selectCurrentMessages)
+  const path = usePathname()
+  const conversationId = getIdFromPath(path)
   const [search, setSearch] = useState('')
   const [debounced, setDebounced] = useState('')
   const [selectedUser, setSelectedUser] = useState<{
@@ -48,11 +52,36 @@ export const Messenger = () => {
     isLoading: isLoadingByLatest,
     fetchNextPage: fetchNextPageByLatest,
   } = useGetAllMessagesInfiniteQuery()
+
+  const dialogs = React.useMemo(() => {
+    if (!data) return []
+
+    const allMessages = data.pages.flatMap(p => p.items)
+
+    // Map<partnerId, lastMessage>
+    const map = new Map<number, MessageItem>()
+
+    for (const msg of allMessages) {
+      const partnerId = msg.ownerId === conversationId ? msg.receiverId : msg.ownerId
+
+      const existing = map.get(partnerId)
+
+      // Берём более новое сообщение
+      if (!existing || new Date(msg.createdAt) > new Date(existing.createdAt)) {
+        map.set(partnerId, msg)
+      }
+    }
+
+    return Array.from(map.values())
+  }, [data, conversationId])
+
+
+
   const users = allUsers?.pages.flatMap(item => item.items) ?? []
   const usersFromLatestMessages = data?.pages?.flatMap(item => item.items) ?? []
   const usersForRender: MessageItem[] | UserFromSearch[] = !!debounced
     ? users
-    : usersFromLatestMessages
+    : dialogs
 
   const { observerRef } = useInfiniteScroll({
     hasNextPage: !!debounced ? hasNextPage : hasNextPageByLatest,
@@ -100,25 +129,37 @@ export const Messenger = () => {
         <div className={s.listofSpeakers}>
           <ScrollBox>
             {usersForRender.map(user => {
-              const message = 'messageText' in user ? user.messageText : 'no messages now'
-              const username =
-                'firstName' in user && user.firstName
+              const isSearchUser = 'firstName' in user
+
+              const partnerId = isSearchUser
+                  ? user.id
+                  : user.ownerId === conversationId
+                      ? user.receiverId
+                      : user.ownerId
+
+              const username = isSearchUser
                   ? `${user.firstName} ${user.lastName}`
                   : user.userName
 
+              const avatarUrl = isSearchUser
+                  ? user?.avatars?.[1]?.url ?? ''
+                  : user?.avatars?.[1]?.url ?? ''
+
+              const message = isSearchUser ? 'no messages now' : user.messageText
+
               return (
-                <ListOfSpeakers
-                  key={user.id}
-                  avatarUrl={user.avatars[0]?.url ?? ''}
-                  userName={username}
-                  message={message}
-                  userId={user.id}
-                  selectUser={handleSelectActiveUser}
-                  activeClass={user.id === selectedUser?.userId}
-                />
+                  <ListOfSpeakers
+                      key={partnerId}
+                      avatarUrl={avatarUrl}
+                      userName={username}
+                      message={message}
+                      userId={partnerId}
+                      selectUser={handleSelectActiveUser}
+                      activeClass={partnerId === selectedUser?.userId}
+                  />
               )
             })}
-            {(isFetching || isLoading) && (
+            {(isFetching || isLoading || isFetchingByLatest || isLoadingByLatest) && (
               <Spinner
                 type="secondary"
                 size={16}
@@ -137,7 +178,10 @@ export const Messenger = () => {
               <span>Choose who you would like to talk to</span>
             </div>
           ) : (
-            <MessangerField  dialogPartnerId={selectedUser.userId}/>
+
+              <MessangerField  dialogPartnerId={selectedUser.userId}/>
+
+
           )}
         </div>
       </div>

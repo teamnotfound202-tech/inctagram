@@ -6,13 +6,11 @@ import s from './MessangerField.module.scss'
 import { Status } from '@/features/messengerApi/types'
 import { MessengerInput } from '@/views/Messenger/ui/MessengerInput/MessengerInput'
 import { getIdFromPath } from '@/views/Messenger/model/helpers'
-import {
-  useFetchMessagesFromPartnerInfiniteQuery,
-  useGetMessagesByDialogPartnerInfiniteQuery,
-} from '@/features/messengerApi/messengerApi'
-import { useEffect } from 'react'
-import { useInfiniteScroll } from '@/shared/lib/hooks'
+import { useGetMessagesByDialogPartnerInfiniteQuery } from '@/features/messengerApi/messengerApi'
 import * as React from 'react'
+import { useInfiniteScroll } from '@/shared/lib/hooks'
+import { useEffect } from 'react'
+import { ScrollBox } from '@/shared/ui'
 
 type Props = {
   dialogPartnerId: number
@@ -29,6 +27,7 @@ export const MessangerField = ({ dialogPartnerId }: Props) => {
   })
   return (
     <div className={s.messageFieldWrapper}>
+      <ScrollBox>
       <div className={s.messagesContainer}>
         {dataToDisplay.map(item => {
           const date = parseISO(item.updatedAt)
@@ -45,6 +44,7 @@ export const MessangerField = ({ dialogPartnerId }: Props) => {
         })}
         <div ref={observerRef} style={{ height: '1px' }}></div>
       </div>
+      </ScrollBox>
       <div>
         <MessengerInput dialogPartnerId={dialogPartnerId} ownerId={conversationId || 52} />
       </div>
