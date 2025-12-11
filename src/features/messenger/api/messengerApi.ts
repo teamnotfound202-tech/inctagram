@@ -11,7 +11,6 @@ import {
 import {subscribeToEvent} from "@/shared/lib/socket/subscribeToEvent";
 import {SOCKET_EVENTS} from "@/shared/lib/constants/constants";
 import {emitEvent} from "@/shared/lib/socket/emitEvent";
-import {RootState} from "@/shared/lib/store/store";
 
 export const messengerApi = baseApi.injectEndpoints({
     overrideExisting: true,
@@ -76,11 +75,23 @@ export const messengerApi = baseApi.injectEndpoints({
                     dispatch(baseApi.util.invalidateTags(['LastMessages']));
                 };
 
-                const unsubscribe = subscribeToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, handleMessage)
+                const unsubscribeRECEIVE_MESSAGE = subscribeToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, handleMessage)
+                const unsubscribeMESSAGE_DELETED = subscribeToEvent(SOCKET_EVENTS.MESSAGE_DELETED,
+                    (deletedId) => {
+                        updateCachedData((state) => {
+                            const casheState = state.pages.flatMap(page => page.items)
+                            const deletedIndex = casheState.findIndex(item => item.id === deletedId)
+                            if (deletedIndex !== -1) {
+                                casheState.splice(deletedIndex, 1)
+                            }
+                        });
+                        dispatch(baseApi.util.invalidateTags(['LastMessages']));
+                    })
 
                 //При удалении кэша отписываемся от SOCKET_EVENTS.RECEIVE_MESSAGE
                 await cacheEntryRemoved
-                unsubscribe?.()
+                unsubscribeRECEIVE_MESSAGE?.()
+                unsubscribeMESSAGE_DELETED?.()
             },
             providesTags: (_result, _error, {dialoguePartnerId}) => [{
                 type: 'MessagesFromPartner',
@@ -141,6 +152,39 @@ export const messengerApi = baseApi.injectEndpoints({
              },*/
             serializeQueryArgs: ({endpointName, queryArgs: {searchName}}) => `${endpointName}-${searchName}`
         }),
+        deleteMessage: builder.mutation<void, { deletedMessageId: number, activeUserIdChat: number }>({
+            query: ({deletedMessageId, activeUserIdChat}) => ({
+                method: "DELETE",
+                url: `/messenger/${deletedMessageId}`
+            }),
+            onQueryStarted: async ({deletedMessageId, activeUserIdChat}, {dispatch, queryFulfilled}) => {
+                // ← queryArgs для fetchMessagesFromPartner
+                const queryArgs = { dialoguePartnerId: activeUserIdChat };
+
+                const patchResult = dispatch(
+                    messengerApi.util.updateQueryData(
+                        'fetchMessagesFromPartner',
+                        queryArgs,  // ✅ Объект queryArgs
+                        draft => {
+                            draft.pages.forEach(page => {
+                                const idx = page.items.findIndex(item => item.id === deletedMessageId);
+                                if (idx !== -1) {
+                                    page.items.splice(idx, 1);
+                                }
+                            });
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    patchResult.undo();
+                }
+            },
+            invalidatesTags: ['MessagesFromPartner', 'LastMessages']
+        }),
+
     })
 })
 
@@ -148,4 +192,5 @@ export const {
     useFetchMessagesFromPartnerInfiniteQuery,
     useFetchChatsInfiniteQuery,
     useSendMessageMutation,
+    useDeleteMessageMutation,
 } = messengerApi

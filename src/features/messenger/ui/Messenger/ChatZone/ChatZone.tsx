@@ -13,8 +13,8 @@ type Props = {
 export const ChatZone = ({activeUserIdChat}: Props) => {
     return (
         <div className={s.chatZone}>
-            <ChatPersonTitleWrapper activeUserIdChat={activeUserIdChat}/>
             {activeUserIdChat && <>
+                <ChatPersonTitleWrapper activeUserIdChat={activeUserIdChat}/>
                 <ViewMessagesZone activeUserIdChat={activeUserIdChat}/>
                 <AddMessageForm activeUserIdChat={activeUserIdChat}/>
             </>}

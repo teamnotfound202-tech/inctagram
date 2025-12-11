@@ -14,7 +14,8 @@ type Props = {
 
 export const ViewMessagesZone = ({activeUserIdChat}: Props) => {
 
-    const {data,
+    const {
+        data,
         isLoading,
         hasNextPage,
         isFetching,
@@ -40,10 +41,12 @@ export const ViewMessagesZone = ({activeUserIdChat}: Props) => {
     const renderedMessages = messages?.map((message) => (
         message.ownerId === me?.userId ?                //Если мое сообщение
             <MyMessage key={message.id}
+                       id={message.id}
                        text={message.messageText}
                        createdAt={message.createdAt}
                        updatedAt={message.updatedAt}
                        status={message.status}
+                       activeUserIdChat={activeUserIdChat}
             /> :
             <NotMyMessage key={message.id}
                           text={message.messageText}
