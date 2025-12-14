@@ -88,7 +88,7 @@ export const messengerApi = baseApi.injectEndpoints({
                         dispatch(baseApi.util.invalidateTags(['LastMessages']));
                     })
 
-                //При удалении кэша отписываемся от SOCKET_EVENTS.RECEIVE_MESSAGE
+                //При удалении кэша отписываемся от SOCKET_EVENTS.RECEIVE_MESSAGE, SOCKET_EVENTS.MESSAGE_DELETED
                 await cacheEntryRemoved
                 unsubscribeRECEIVE_MESSAGE?.()
                 unsubscribeMESSAGE_DELETED?.()
@@ -159,7 +159,7 @@ export const messengerApi = baseApi.injectEndpoints({
             }),
             onQueryStarted: async ({deletedMessageId, activeUserIdChat}, {dispatch, queryFulfilled}) => {
                 // ← queryArgs для fetchMessagesFromPartner
-                const queryArgs = { dialoguePartnerId: activeUserIdChat };
+                const queryArgs = {dialoguePartnerId: activeUserIdChat};
 
                 const patchResult = dispatch(
                     messengerApi.util.updateQueryData(
@@ -172,9 +172,7 @@ export const messengerApi = baseApi.injectEndpoints({
                                     page.items.splice(idx, 1);
                                 }
                             });
-                        }
-                    )
-                );
+                        }));
 
                 try {
                     await queryFulfilled;
@@ -182,10 +180,12 @@ export const messengerApi = baseApi.injectEndpoints({
                     patchResult.undo();
                 }
             },
-            invalidatesTags: ['MessagesFromPartner', 'LastMessages']
-        }),
-
-    })
+            invalidatesTags: (result, error, {activeUserIdChat}) => [
+                {type: 'MessagesFromPartner', id: activeUserIdChat},
+                'LastMessages'
+            ]
+        })
+    }),
 })
 
 export const {
