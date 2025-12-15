@@ -1,31 +1,41 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 
-// Хук для умного скролла
+// Хук для умного скролла (!!!!работает только с flex-direction: column-reverse)
 export const useMessagesScroll = () => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const [isAtBottom, setIsAtBottom] = useState(true);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const messagesContainerRef = useRef<HTMLDivElement>(null);
+    const [isAtBottom, setIsAtBottom] = useState(true);
 
-  const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+    // При column-reverse scrollTop = 0 означает визуально низ контейнера
+    const scrollToBottom = useCallback(() => {
+        const container = messagesContainerRef.current;
+        if (container) {
+            container.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    }, []);
 
-  const checkScrollPosition = useCallback(() => {
-    const container = messagesContainerRef.current;
-    if (!container) return;
+    // При column-reverse scrollTop близко к 0 = мы внизу (визуально)
+    const checkScrollPosition = useCallback(() => {
+        const container = messagesContainerRef.current;
 
-    const { scrollTop, scrollHeight, clientHeight } = container;
-    const isCloseToBottom = scrollHeight - scrollTop - clientHeight < 150;
-    setIsAtBottom(isCloseToBottom);
-  }, []);
+        if (!container) return;
 
-  useEffect(() => {
-    const container = messagesContainerRef.current;
-    if (!container) return;
+        const {scrollTop} = container;
+        // При column-reverse: scrollTop = 0 это визуально низ, поэтому проверяем близость к 0
+        const isCloseToBottom = scrollTop > -150;
+        setIsAtBottom(isCloseToBottom);
+    }, []);
 
-    container.addEventListener('scroll', checkScrollPosition, { passive: true });
-    return () => container.removeEventListener('scroll', checkScrollPosition);
-  }, [checkScrollPosition]);
+    useEffect(() => {
+        const container = messagesContainerRef.current;
+        if (!container) return;
 
-  return { messagesEndRef, messagesContainerRef, isAtBottom, scrollToBottom };
+        container.addEventListener('scroll', checkScrollPosition, {passive: true});
+        return () => container.removeEventListener('scroll', checkScrollPosition);
+    }, [checkScrollPosition]);
+
+    return {messagesEndRef, messagesContainerRef, isAtBottom, scrollToBottom};
 };

@@ -5,8 +5,9 @@ import {useFetchMessagesFromPartnerInfiniteQuery} from "@/features/messenger/api
 import {Loader} from "@/shared/ui/Loader/Loader";
 import {MyMessage} from "@/features/messenger/ui/Messenger/ChatZone/message/MyMessage/MyMessage";
 import {useMeQuery} from "@/features/auth/api/authApi";
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import {useInfiniteScroll} from "@/shared/lib/hooks";
+import {useMessagesScroll} from "@/shared/lib/hooks/useMessagesScroll";
 
 type Props = {
     activeUserIdChat: number
@@ -36,7 +37,17 @@ export const ViewMessagesZone = ({activeUserIdChat}: Props) => {
         rootMargin: '0px'
     })
 
-    if (isLoading) return <Loader/>
+    const {messagesEndRef, messagesContainerRef, isAtBottom, scrollToBottom} = useMessagesScroll()
+
+    // Автоматический скролл вниз при добавлении новых сообщений 
+    useEffect(() => {
+        if (messages && messages.length > 0) {
+            // Используем setTimeout чтобы дать React время отрендерить новые сообщения
+            setTimeout(() => {
+                scrollToBottom();
+            }, 0);
+        }
+    }, [messages?.length, scrollToBottom]);
 
     const renderedMessages = messages?.map((message) => (
         message.ownerId === me?.userId ?                //Если мое сообщение
@@ -54,18 +65,23 @@ export const ViewMessagesZone = ({activeUserIdChat}: Props) => {
             />
     ))
 
-    return (
-        <div className={s.viewMessagesZone} ref={scrollRef}>
-            {renderedMessages}
-            {messages && messages.length > 0 && renderedMessages}
-            {messages && messages.length === 0 ? (
-                <p>There are no messages</p>
-            ) : hasNextPage}
-            {hasNextPage && (
-                <div ref={observerRef} className={s.loadingWrapper}>
-                    {isFetchingNextPage ? <div>Loading more ...</div> : <div style={{height: '2px'}}/>}
-                </div>
-            )}
+    if (isLoading) return <Loader/>
+
+    return (<div className={s.viewMessagesZoneWrapper}>
+            {!isAtBottom && <button onClick={scrollToBottom} className={s.scrollToBottomButton}>Down</button>}
+            <div className={s.viewMessagesZone} ref={messagesContainerRef}>
+                {/*ссылка для скролла вниз*/}
+                <div ref={messagesEndRef} style={{height: '2px'}}/>
+                {messages && messages.length > 0 && renderedMessages}
+                {messages && messages.length === 0 ? (
+                    <p>There are no messages</p>
+                ) : hasNextPage}
+                {hasNextPage && (
+                    <div ref={observerRef} className={s.loadingWrapper}>
+                        {isFetchingNextPage ? <div>Loading more ...</div> : <div style={{height: '2px'}}/>}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
