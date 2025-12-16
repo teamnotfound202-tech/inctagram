@@ -13,9 +13,10 @@ type Props = {
 }
 
 export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
+    //первое значение searchChatUserName берется из appSlice
     const searchChatUserName = useAppSelector(selectSearchChatUserName)
 
-    // 1. Debounced версия search
+    // 1. Debounced версия search. В запросах useFetchChatsInfiniteQuery используем уже debouncedSearch
     const [debouncedSearch, setDebouncedSearch] = useState(searchChatUserName)
 
     useEffect(() => {
