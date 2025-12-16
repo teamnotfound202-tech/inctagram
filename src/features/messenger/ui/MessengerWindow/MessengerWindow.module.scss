@@ -1,0 +1,7 @@
+@use '@/shared/styles/variables' as *;
+
+.messengerWindow {
+  height: 678px;
+  border: 1px solid $dark-500;
+  display: flex;
+}

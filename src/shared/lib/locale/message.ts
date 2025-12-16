@@ -140,7 +140,7 @@ export interface Messages {
     answer: string
     addComment: string
     addAnswer: string
-    hideAnswersCount:string
+    hideAnswersCount: string
     viewAllComments: string
     dropdownMenu: {
       editPost: string
@@ -177,6 +177,7 @@ export interface Messages {
     deleteConversation: string
     noMessages: string
     noRecentRequests: string
+    talkToUser: string
   }
 
   // Настройки
@@ -437,6 +438,7 @@ export const messages: Record<Language, Messages> = {
       deleteConversation: 'Delete Conversation',
       noMessages: 'No messages yet',
       noRecentRequests: 'Oops! This place looks empty! No recent requests',
+      talkToUser: 'Choose who you would like to talk to',
     },
 
     settings: {
@@ -692,6 +694,7 @@ export const messages: Record<Language, Messages> = {
       deleteConversation: 'Удалить беседу',
       noMessages: 'Пока нет сообщений',
       noRecentRequests: 'Упс! Похоже, здесь пусто! Нет недавних запросов.',
+      talkToUser: 'Выберите, с кем вы хотели бы поговорить.',
     },
 
     settings: {

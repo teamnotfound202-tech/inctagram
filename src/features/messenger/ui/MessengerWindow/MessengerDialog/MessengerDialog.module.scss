@@ -1,0 +1,70 @@
+@use '@/shared/styles/variables' as *;
+
+.dialogWindow {
+  width: 100%;
+}
+
+.dialogWindowTop {
+  height: 72px;
+  background-color: $dark-500;
+  border: 1px solid $dark-300;
+  border-left: none;
+  padding: 12px;
+}
+
+.dialogWindowUser {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.bannerMessengerWrapper {
+  height: 574px
+}
+
+.bannerMessengerInner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.bannerMessenger {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.71429;
+  color: $light-100;
+  padding: 12px 24px;
+  background-color: $dark-300;
+  max-width: 294px;
+  border-radius: 8px;
+}
+
+.dialog {
+  padding: 0 23px 0 11px;
+  max-width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  max-height: 576px;
+}
+
+.dialogItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.dialogItem:not(:last-child) {
+  margin-bottom: 24px;
+}
+
+.dialogContent {
+  background-color: $dark-300;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.date {
+  text-align: end;
+}

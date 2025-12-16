@@ -71,7 +71,7 @@ export const SearchUsers = () => {
           <Spinner type="secondary" size={16} label={messages.common.loading} fullWidth center />
         )}
       </div>
-      <div ref={observerRef} style={{ height: '1px' }}></div>
+      <div ref={observerRef} style={{ height: '1px' }}/>
     </div>
   )
 }

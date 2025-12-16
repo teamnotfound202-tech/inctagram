@@ -71,6 +71,9 @@ export const Sidebar = () => {
       case 'Search':
         link = `/search`
         break
+      case 'Messenger':
+        link = `/messenger`
+        break
       default:
         link = ''
     }
