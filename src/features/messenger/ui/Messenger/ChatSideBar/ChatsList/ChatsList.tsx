@@ -4,10 +4,12 @@ import {useFetchChatsInfiniteQuery} from "@/features/messenger/api/messengerApi"
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectSearchChatUserName} from "@/shared/api/appSlice";
 import {useInfiniteScroll} from "@/shared/lib/hooks";
-import {useEffect, useRef, useState} from "react";
+import {useRef} from "react";
 import {useMeQuery} from "@/features/auth/api/authApi";
-import {useGetSearchUserInfiniteQuery} from "@/features/publicUserApi/publicUserApi";
 import {useDebouncedValue} from "@/shared/lib/hooks/useDebounce";
+import {
+    UniqOtherUsersWithoutChats
+} from "@/features/messenger/ui/Messenger/ChatSideBar/ChatsList/UniqOtherUsersWithoutChats/UniqOtherUsersWithoutChats";
 
 type Props = {
     activeUserIdChat: number | null
@@ -42,7 +44,7 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
     })
 
     //Id юзеров с которыми у меня переписка
-    const idsFromRenderedMyChats = new Set()
+    const idsFromRenderedMyChats = new Set<number>()
 
     //Мои чаты-переписки для отрисовки
     const renderedMyChats = chats?.map((chat) => {
@@ -61,36 +63,9 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
         />
     })
 
-    //Пользователи, с которыми нет переписок, но нужно отобразить в списке, чтоб можно было им написать
-
-    const {data: otherUsers/*, hasNextPage, isFetching, isLoading, fetchNextPage*/} = useGetSearchUserInfiniteQuery(
-        {search: debouncedSearch},
-        {skip: hasNextPage, refetchOnMountOrArgChange: true}    )
-
-    //отфильтруем, чтобы не показывать себя в списке
-    const searchOtherUsers = otherUsers?.pages.flatMap(page => page.items).filter(user => user.id !== me?.userId)
-
-    // Убираем дублирующиеся чаты
-
-    const otherUsersWithoutDoubles = searchOtherUsers?.filter(user => !idsFromRenderedMyChats.has(user.id))
-
-    //Users, с которыми еще не было переписки, но которым можно написать
-    const renderedOtherUsers = otherUsersWithoutDoubles?.map((user) => {
-        return <PersonChat key={user?.id}
-                           avatar={(user?.avatars?.length > 0) ? user?.avatars[0]?.url : ''}
-                           name={user?.userName}
-                           personChatClickHandler={() => setActiveUserIdChat(user?.id)}
-                           isActive={activeUserIdChat === user?.id}
-        />
-    })
-
     return (
         <div className={s.personsChatsList} ref={scrollRef}>
             {chats && chats.length > 0 && renderedMyChats}
-
-            {/*{chats && chats.length === 0 ? (
-                <p>There are no chats</p>
-            ) : hasNextPage} //TODO: удалить, оставила для теста, чтобы не поломалось*/}
 
             {hasNextPage && (
                 <div ref={observerRef} className={s.loadingWrapper}>
@@ -98,10 +73,12 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
                 </div>
             )}
 
-            {renderedOtherUsers && renderedOtherUsers?.length > 0 && <>
-                <div>Other users to chat</div>
-                {renderedOtherUsers}
-            </>}
+            <UniqOtherUsersWithoutChats
+                activeUserIdChat={activeUserIdChat}
+                setActiveUserIdChat={setActiveUserIdChat}
+                userIdsFromMyChats={idsFromRenderedMyChats}
+                isNeededToSkipRequest={hasNextPage}
+                searchValue={debouncedSearch}/>
         </div>
     )
 };

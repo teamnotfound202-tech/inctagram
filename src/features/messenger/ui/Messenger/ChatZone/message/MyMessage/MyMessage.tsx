@@ -55,7 +55,7 @@ export const MyMessage = ({id, text, createdAt, updatedAt, status, activeUserIdC
                     <span className={s.lastMessageTime}>{createdTime}</span>
                     {isMessageUpdated && <span className={s.lastMessageTime}>Изменено {updateMessageTime}</span>}
                     <span className={s.lastMessageTime}>{renderedMessageStatus}</span>
-                    <Button onClick={deleteMessageHandler}>Удалить</Button>
+                    <button onClick={deleteMessageHandler} className={s.closeBtn}>x</button>
                 </div>
             </div>
         );
