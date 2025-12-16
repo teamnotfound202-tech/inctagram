@@ -25,7 +25,7 @@ export const AddMessageForm = ({activeUserIdChat}: Props) => {
 
         sendMessage({
             text: content.trim(),
-            receiverId: activeUserIdChat      //TODO: убрать хардкод
+            receiverId: activeUserIdChat
         })
         setContent('');
     };

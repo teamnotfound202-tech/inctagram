@@ -72,7 +72,11 @@ export const messengerApi = baseApi.injectEndpoints({
                     updateCachedData((state) => {
                         state.pages[0].items.unshift(data);
                     });
-                    dispatch(baseApi.util.invalidateTags(['LastMessages']));
+
+                    //TODO: подумать!!! тут можно инвалидировать так {type: 'MessagesFromPartner', id: dialoguePartnerId},
+                    //но если пишешь человеку, с которым еще не было чата, то его еще нет в кэше,
+                    //поэтому он не инвалидируется
+                    dispatch(baseApi.util.invalidateTags(['MessagesFromPartner', 'LastMessages'],));
                 };
 
                 const unsubscribeRECEIVE_MESSAGE = subscribeToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, handleMessage)
@@ -85,7 +89,12 @@ export const messengerApi = baseApi.injectEndpoints({
                                 casheState.splice(deletedIndex, 1)
                             }
                         });
-                        dispatch(baseApi.util.invalidateTags(['LastMessages', 'GetUserBySearch']));
+                        //dispatch(baseApi.util.invalidateTags(['LastMessages', 'GetUserBySearch']));
+                        dispatch(baseApi.util.invalidateTags([
+                                {type: 'MessagesFromPartner', id: dialoguePartnerId},
+                                'LastMessages'],
+                            //['LastMessages', 'GetUserBySearch']
+                        ));
                     })
 
                 //При удалении кэша отписываемся от SOCKET_EVENTS.RECEIVE_MESSAGE, SOCKET_EVENTS.MESSAGE_DELETED

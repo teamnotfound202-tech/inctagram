@@ -21,14 +21,14 @@ export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!content.trim()) {
+        if (!content?.trim()) {
             return;
         }
 
         createComment({
             postId,
             user,
-            content: content.trim()
+            content: content?.trim()
         })
         setContent('');
     };
@@ -49,7 +49,7 @@ export const AddCommentForm = ({postId, user}: AddCommentFormProps) => {
             <Button
                 variant="text"
                 type="submit"
-                disabled={isLoading || !content.trim()} // отключаем если загрузка или пустой input
+                disabled={isLoading || !content?.trim()} // отключаем если загрузка или пустой input
             >
                 {isLoading ? currentLanguage.posts.publishing : currentLanguage.posts.publish}
             </Button>

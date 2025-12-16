@@ -7,6 +7,7 @@ import {useInfiniteScroll} from "@/shared/lib/hooks";
 import {useEffect, useRef, useState} from "react";
 import {useMeQuery} from "@/features/auth/api/authApi";
 import {useGetSearchUserInfiniteQuery} from "@/features/publicUserApi/publicUserApi";
+import {useDebouncedValue} from "@/shared/lib/hooks/useDebounce";
 
 type Props = {
     activeUserIdChat: number | null
@@ -17,16 +18,7 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
     //первое значение searchChatUserName берется из appSlice
     const searchChatUserName = useAppSelector(selectSearchChatUserName)
 
-    // Debounced версия search. В запросах useFetchChatsInfiniteQuery используем уже debouncedSearch
-    const [debouncedSearch, setDebouncedSearch] = useState(searchChatUserName)
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setDebouncedSearch(searchChatUserName)
-        }, 400) // 400ms задержка
-
-        return () => clearTimeout(timer)
-    }, [searchChatUserName])
+    const debouncedSearch = useDebouncedValue(searchChatUserName)
 
     //Мои чаты, в которых была переписка
     const {data: me} = useMeQuery()
@@ -59,7 +51,7 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
         //кладем id юзера, с которым есть переписка, в idsFromRenderedMyChats
         idsFromRenderedMyChats.add(receiverId)
 
-        return <PersonChat key={receiverId}
+        return <PersonChat key={chat.id}
                            avatar={(chat?.avatars?.length > 0) ? chat?.avatars[0]?.url : ''}
                            name={chat?.userName}
                            dateTime={chat?.createdAt}
@@ -79,12 +71,6 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
     const searchOtherUsers = otherUsers?.pages.flatMap(page => page.items).filter(user => user.id !== me?.userId)
 
     // Убираем дублирующиеся чаты
-
-    /*  const idsFromRenderedMyChats = new Set(chats?.map((chat) => {
-              const receiverId = (chat.receiverId === me?.userId) ? chat.ownerId : chat.receiverId //TODO: проверить
-              return receiverId
-          })
-      )*/
 
     const otherUsersWithoutDoubles = searchOtherUsers?.filter(user => !idsFromRenderedMyChats.has(user.id))
 
@@ -112,7 +98,7 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
                 </div>
             )}
 
-            {renderedOtherUsers?.length > 0 && <>
+            {renderedOtherUsers && renderedOtherUsers?.length > 0 && <>
                 <div>Other users to chat</div>
                 {renderedOtherUsers}
             </>}
