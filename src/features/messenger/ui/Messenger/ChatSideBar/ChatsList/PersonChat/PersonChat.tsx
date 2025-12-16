@@ -1,23 +1,23 @@
 import s from "./PersonChat.module.scss";
 import {Avatar} from "@/entities/user/ui/Avatar";
 import {formatRelativeDate} from "@/shared/lib/utils/formatRelativeDate";
-import {selectLanguage} from "@/shared/api/appSlice";
+import {selectCurrentMessages, selectLanguage} from "@/shared/api/appSlice";
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
-import {useState} from "react";
 
 type Props = {
     avatar: string
     name: string
-    dateTime: string
-    message: string
+    dateTime?: string
+    message?: string
     personChatClickHandler: () => void;
     isActive: boolean;
 }
 
 export const PersonChat = ({avatar, name, dateTime, message, personChatClickHandler, isActive}: Props) => {
     const language = useAppSelector(selectLanguage)
+    const messages = useAppSelector(selectCurrentMessages)
 
-    const date = formatRelativeDate(dateTime, language);
+    const date = dateTime ? formatRelativeDate(dateTime, language) : null
 
     return (
         <div className={s.personChatWrapper + ' ' + (isActive ? s.active : '')}
@@ -25,9 +25,10 @@ export const PersonChat = ({avatar, name, dateTime, message, personChatClickHand
             <Avatar src={avatar} alt="avatar"/>
             <div className={s.personChat}>
                 <span className={s.messageAuthorName}>{name}</span>
-                <p className={s.chatLastMessage}>{message}</p>
+                <p className={s.chatLastMessage}>{message ? message : messages.messenger.noMessages}</p>
             </div>
-            <div className={s.lastMessageTime}>{date}</div>
+            {date && <div className={s.lastMessageTime}>{date}</div>}
         </div>
-    );
+    )
+        ;
 };

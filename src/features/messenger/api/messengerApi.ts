@@ -85,7 +85,7 @@ export const messengerApi = baseApi.injectEndpoints({
                                 casheState.splice(deletedIndex, 1)
                             }
                         });
-                        dispatch(baseApi.util.invalidateTags(['LastMessages']));
+                        dispatch(baseApi.util.invalidateTags(['LastMessages', 'GetUserBySearch']));
                     })
 
                 //При удалении кэша отписываемся от SOCKET_EVENTS.RECEIVE_MESSAGE, SOCKET_EVENTS.MESSAGE_DELETED
