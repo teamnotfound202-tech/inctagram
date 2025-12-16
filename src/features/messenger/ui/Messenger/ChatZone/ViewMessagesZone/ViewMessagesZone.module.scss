@@ -1,12 +1,11 @@
 .viewMessagesZoneWrapper{
   position: relative;
-  overflow-y: hidden;
+  flex-grow: 1;
+  max-height: 525px;
 }
 
 .viewMessagesZone{
-  flex-grow: 1;
   max-height: 525px;
-  height: 100%;
   overflow-y: auto;
   padding: 35px 25px;
   display: flex;

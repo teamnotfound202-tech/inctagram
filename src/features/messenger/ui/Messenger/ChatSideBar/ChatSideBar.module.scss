@@ -3,4 +3,6 @@
 .allChats {
   width: 270px;
   background-color: $dark-500;
+  display: flex;
+  flex-direction: column;
 }

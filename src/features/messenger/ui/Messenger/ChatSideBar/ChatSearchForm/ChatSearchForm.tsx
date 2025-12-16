@@ -8,6 +8,7 @@ export const ChatSearchForm = () => {
     const messages = useAppSelector(selectCurrentMessages)
     const searchChatUserName = useAppSelector(selectSearchChatUserName)
     const dispatch = useAppDispatch();
+
     const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(changeSearchChatUserName({searchChatUserName: e.currentTarget.value}))
     }

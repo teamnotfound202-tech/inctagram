@@ -4,7 +4,7 @@ import {useFetchChatsInfiniteQuery} from "@/features/messenger/api/messengerApi"
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectSearchChatUserName} from "@/shared/api/appSlice";
 import {useInfiniteScroll} from "@/shared/lib/hooks";
-import {useRef} from "react";
+import {useRef, useState, useEffect} from "react";
 import {useMeQuery} from "@/features/auth/api/authApi";
 
 type Props = {
@@ -14,6 +14,19 @@ type Props = {
 
 export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
     const searchChatUserName = useAppSelector(selectSearchChatUserName)
+
+    // 1. Debounced версия search
+    const [debouncedSearch, setDebouncedSearch] = useState(searchChatUserName)
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchChatUserName)
+        }, 400) // 400ms задержка
+
+        return () => clearTimeout(timer)
+    }, [searchChatUserName])
+
+
     const {data: me} = useMeQuery()
     const {
         data,
@@ -21,7 +34,7 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
         isFetching,
         fetchNextPage,
         isFetchingNextPage
-    } = useFetchChatsInfiniteQuery({searchName: searchChatUserName})
+    } = useFetchChatsInfiniteQuery({searchName: debouncedSearch})
 
     const chats = data?.pages.flatMap(page => page.items)
 
