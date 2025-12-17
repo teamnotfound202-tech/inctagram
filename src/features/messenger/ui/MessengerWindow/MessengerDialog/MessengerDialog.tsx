@@ -7,14 +7,17 @@ import { useGetMessagesInfiniteQuery } from '@/features/messenger/api/messenger-
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useInfiniteScroll } from '@/shared/lib/hooks'
 import Spinner from '@/shared/ui/Spinner/Spinner'
-import { current } from 'immer'
+import { Button, Input} from "@/shared/ui";
+import MicroIcon from './icons/micro.svg'
+import ImageIcon from './icons/image.svg'
 
 type Props = {
   user: User | null
 }
 export const MessengerDialog = ({ user }: Props) => {
+  const[value, setValue] = useState('')
   const messages = useAppSelector(selectCurrentMessages)
-  const { data, hasNextPage, isFetching, fetchNextPage, isLoading, isFetchingNextPage } = useGetMessagesInfiniteQuery({
+  const { data, hasNextPage, isFetching, fetchNextPage, isLoading} = useGetMessagesInfiniteQuery({
     dialoguePartnerId: user?.ownerId ?? 0,
   })
   const listRef = useRef<HTMLUListElement>(null)
@@ -27,13 +30,7 @@ export const MessengerDialog = ({ user }: Props) => {
     setEnabled(true)
   }, [])
 
-  // useLayoutEffect(() => {
-  //   const list = listRef.current;
-  //   console.log('list 0', list)
-  //   if (!enabled) return
-  //   console.log('list',list)
-  //   list?.scrollTo({ top: list.scrollHeight, behavior: 'auto' })
-  // }, [enabled])
+
 
   const messagesArr = data?.pages.flatMap(page=> page.items) ?? []
   return (
@@ -46,12 +43,13 @@ export const MessengerDialog = ({ user }: Props) => {
           </div>
         )}
       </div>
-      <div className={s.bannerMessengerWrapper}>
-        {!user ? (
-          <div className={s.bannerMessengerInner}>
-            <p className={s.bannerMessenger}>{messages.messenger.talkToUser}</p>
-          </div>
-        ) : (
+
+      {!user ? (
+        <div className={s.bannerMessengerInner}>
+          <p className={s.bannerMessenger}>{messages.messenger.talkToUser}</p>
+        </div>
+      ) : (
+        <div className={s.bannerMessengerWrapper}>
           <ul className={s.dialog} ref={listRef}>
             {messagesArr.map(message => (
               <li key={message.id} className={s.dialogItem}>
@@ -79,12 +77,34 @@ export const MessengerDialog = ({ user }: Props) => {
             )}
             {hasNextPage && (
               <div ref={observerRef}>
-                  <div style={{ height: '20px' }} />
+                <div style={{ height: '20px' }} />
               </div>
             )}
           </ul>
-        )}
-      </div>
+          <div className={s.dialogInputWrapper}>
+            <Input
+              className={s.dialogInput}
+              type={'text'}
+              id={'userMessage'}
+              placeholder={'Type Message...'}
+              value={value}
+              onChange={e => setValue(e.target.value)}
+            />
+            {!value ? (
+              <div className={s.btnWrapper}>
+                <button className={s.btnIcon}>
+                  <MicroIcon />
+                </button>
+                <button className={s.btnIcon}>
+                  <ImageIcon />
+                </button>
+              </div>
+            ) : (
+              <Button variant={'text'}>Send message</Button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
