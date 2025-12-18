@@ -72,21 +72,22 @@ export const messengerApi = baseApi.injectEndpoints({
 
                     updateCachedData((state) => {
                         const casheState = state.pages.flatMap(page => page.items)
-                        const messageIdIndex =  casheState.findIndex(item => item.id === data.id)
+                        const messageIdIndex = casheState.findIndex(item => item.id === data.id)
 
                         //Если сообщения с таким id есть в чате, значит мы его обновляем
-                        if (messageIdIndex!== -1) {
+                        if (messageIdIndex !== -1) {
                             casheState[messageIdIndex] = data
-                        }
-                        else {      //Если сообщения с таким id еще в чате не было? то просто добавляем сообщение
+                            dispatch(baseApi.util.invalidateTags(['MessagesFromPartner']));
+
+                            if (messageIdIndex === 0) {         ////если это последнее сообщение, то инвалидировать еще и 'LastMessages'
+                                dispatch(baseApi.util.invalidateTags(['LastMessages']));
+                            }
+
+                        } else {      //Если сообщения с таким id еще в чате не было? то просто добавляем сообщение
                             state.pages[0].items.unshift(data);
+                            dispatch(baseApi.util.invalidateTags(['MessagesFromPartner', 'LastMessages'],));
                         }
                     });
-
-                    //TODO: подумать!!! тут можно инвалидировать так {type: 'MessagesFromPartner', id: dialoguePartnerId},
-                    //но если пишешь человеку, с которым еще не было чата, то его еще нет в кэше,
-                    //поэтому он не инвалидируется
-                    dispatch(baseApi.util.invalidateTags(['MessagesFromPartner', 'LastMessages'],));
                 };
 
                 const unsubscribeRECEIVE_MESSAGE = subscribeToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, handleMessage)
@@ -100,8 +101,8 @@ export const messengerApi = baseApi.injectEndpoints({
                                 casheState.splice(deletedIndex, 1)
                             }
                         });
-                        dispatch(baseApi.util.invalidateTags([
-                            {type: 'MessagesFromPartner', id: dialoguePartnerId},
+                        dispatch(baseApi.util.invalidateTags([  //TODO: Потестить, if  if (deletedIndex !== 0), т.е. не последнее сообщение
+                            'MessagesFromPartner',              //TODO: инвалидировать только 'MessagesFromPartner'
                             'LastMessages'],
                         ));
                     })
@@ -155,7 +156,7 @@ export const messengerApi = baseApi.injectEndpoints({
                     resolve({data: updatedMessageConstruction})
                 })
             },
-            invalidatesTags: ['LastMessages']  //TODO: Можно делать инвалидацию, только если это сообщение последнее
+
         }),
 
         fetchChats: builder.infiniteQuery<LastMessagesResponse, MessagesRequest, number | undefined>({
@@ -185,9 +186,6 @@ export const messengerApi = baseApi.injectEndpoints({
                 },
             },
             providesTags: ['LastMessages'],
-            /* serializeQueryArgs: ({endpointName, queryArgs}) => {
-                 return {endpointName, cursor: queryArgs.cursor};
-             },*/
             serializeQueryArgs: ({endpointName, queryArgs: {searchName}}) => `${endpointName}-${searchName}`
         }),
         deleteMessage: builder.mutation<void, { deletedMessageId: number, activeUserIdChat: number }>({
@@ -218,10 +216,7 @@ export const messengerApi = baseApi.injectEndpoints({
                     patchResult.undo();
                 }
             },
-            invalidatesTags: (result, error, {activeUserIdChat}) => [
-                {type: 'MessagesFromPartner', id: activeUserIdChat},
-                'LastMessages'
-            ]
+            invalidatesTags: ['MessagesFromPartner', 'LastMessages']
         })
     }),
 })

@@ -5,6 +5,7 @@ import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectLanguage} from "@/shared/api/appSlice";
 import {formatRelativeDate} from "@/shared/lib/utils/formatRelativeDate";
 import {useDeleteMessageMutation, useUpdateMessageMutation} from "@/features/messenger/api/messengerApi";
+import {EditableSpan} from "@/shared/ui/EditableSpan/EditableSpan";
 
 type Props = {
     id: number
@@ -16,6 +17,7 @@ type Props = {
 }
 export const MyMessage = ({id, text, createdAt, updatedAt, status, activeUserIdChat}: Props) => {
         const language = useAppSelector(selectLanguage)
+
         const [deleteMessage] = useDeleteMessageMutation()
         const [updateMessage] = useUpdateMessageMutation()
 
@@ -42,25 +44,28 @@ export const MyMessage = ({id, text, createdAt, updatedAt, status, activeUserIdC
         const isMessageUpdated = createdAt !== updatedAt
 
         const deleteMessageHandler = () => {
-            deleteMessage({deletedMessageId:id, activeUserIdChat})
+            deleteMessage({deletedMessageId: id, activeUserIdChat})
         }
 
-        const updateMessageHandler = () => {
-            updateMessage({updatedMessageId: id, message: 'Updated text - mock data' })
+        const updateMessageHandler = (text: string) => {
+            updateMessage({updatedMessageId: id, message: text})
         }
 
         return (
             <div className={s.messageWrapper}>
-                <div className={s.messageText}>
-                    {text}
-                </div>
+
+                <EditableSpan
+                    value={text}
+                    onChange={updateMessageHandler}
+                    spanClassName={s.messageText}
+                ></EditableSpan>
+
                 <div className={s.messageMetaInf}>
                     <span className={s.lastMessageTime}>{sendMessageTime}</span>
                     <span className={s.lastMessageTime}>{createdTime}</span>
                     {isMessageUpdated && <span className={s.lastMessageTime}>Изменено {updateMessageTime}</span>}
                     <span className={s.lastMessageTime}>{renderedMessageStatus}</span>
                     <button onClick={deleteMessageHandler} className={s.closeBtn}>x</button>
-                    <button onClick={updateMessageHandler} className={s.updateBtn}>Update</button>
                 </div>
             </div>
         );
