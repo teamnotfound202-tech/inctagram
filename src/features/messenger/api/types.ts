@@ -55,3 +55,8 @@ export type MessageSendRequest = {
     message: string,
     receiverId: number
 }
+
+export type MessageUpdateRequest = {
+    id: number,
+    message: string
+}

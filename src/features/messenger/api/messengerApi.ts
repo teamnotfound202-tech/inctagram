@@ -5,12 +5,13 @@ import {
     MessageSendRequest,
     MessagesFromPartnerRequest,
     MessagesFromPartnerResponse,
-    MessagesRequest,
+    MessagesRequest, MessageUpdateRequest,
     MessageViewModal
 } from "@/features/messenger/api/types";
 import {subscribeToEvent} from "@/shared/lib/socket/subscribeToEvent";
 import {SOCKET_EVENTS} from "@/shared/lib/constants/constants";
 import {emitEvent} from "@/shared/lib/socket/emitEvent";
+import {getSocket} from "@/shared/lib/socket/getSocket";
 
 export const messengerApi = baseApi.injectEndpoints({
     overrideExisting: true,
@@ -70,7 +71,16 @@ export const messengerApi = baseApi.injectEndpoints({
                     if (partnerId !== dialoguePartnerId) return;
 
                     updateCachedData((state) => {
-                        state.pages[0].items.unshift(data);
+                        const casheState = state.pages.flatMap(page => page.items)
+                        const messageIdIndex =  casheState.findIndex(item => item.id === data.id)
+
+                        //Если сообщения с таким id есть в чате, значит мы его обновляем
+                        if (messageIdIndex!== -1) {
+                            casheState[messageIdIndex] = data
+                        }
+                        else {      //Если сообщения с таким id еще в чате не было? то просто добавляем сообщение
+                            state.pages[0].items.unshift(data);
+                        }
                     });
 
                     //TODO: подумать!!! тут можно инвалидировать так {type: 'MessagesFromPartner', id: dialoguePartnerId},
@@ -80,6 +90,7 @@ export const messengerApi = baseApi.injectEndpoints({
                 };
 
                 const unsubscribeRECEIVE_MESSAGE = subscribeToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, handleMessage)
+                const unsubscribeMESSAGE_SEND = subscribeToEvent(SOCKET_EVENTS.MESSAGE_SEND, handleMessage)
                 const unsubscribeMESSAGE_DELETED = subscribeToEvent(SOCKET_EVENTS.MESSAGE_DELETED,
                     (deletedId) => {
                         updateCachedData((state) => {
@@ -89,17 +100,16 @@ export const messengerApi = baseApi.injectEndpoints({
                                 casheState.splice(deletedIndex, 1)
                             }
                         });
-                        //dispatch(baseApi.util.invalidateTags(['LastMessages', 'GetUserBySearch']));
                         dispatch(baseApi.util.invalidateTags([
-                                {type: 'MessagesFromPartner', id: dialoguePartnerId},
-                                'LastMessages'],
-                            //['LastMessages', 'GetUserBySearch']
+                            {type: 'MessagesFromPartner', id: dialoguePartnerId},
+                            'LastMessages'],
                         ));
                     })
 
                 //При удалении кэша отписываемся от SOCKET_EVENTS.RECEIVE_MESSAGE, SOCKET_EVENTS.MESSAGE_DELETED
                 await cacheEntryRemoved
                 unsubscribeRECEIVE_MESSAGE?.()
+                unsubscribeMESSAGE_SEND?.()
                 unsubscribeMESSAGE_DELETED?.()
             },
             providesTags: (_result, _error, {dialoguePartnerId}) => [{
@@ -119,6 +129,7 @@ export const messengerApi = baseApi.injectEndpoints({
                     }
 
                     emitEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, newMessageConstruction, (response) => {
+                        console.log('response', response)   //TODO: Не работает
                         resolve({data: response});                  //TODO: Не понимаю, нужен ли callback здесь, тк он не отрабатывает
                     });
 
@@ -127,6 +138,24 @@ export const messengerApi = baseApi.injectEndpoints({
                 })
             },
             invalidatesTags: ['LastMessages']
+        }),
+
+        updateMessage: builder.mutation({
+            queryFn: ({updatedMessageId, message}) => {
+                return new Promise((resolve, reject) => {
+
+                    const updatedMessageConstruction: MessageUpdateRequest = {id: updatedMessageId, message}
+
+                    emitEvent(SOCKET_EVENTS.UPDATE_MESSAGE, updatedMessageConstruction, (response) => {
+                        console.log('response', response)   //TODO: Не работает
+                        resolve({data: response});                  //TODO: Не понимаю, нужен ли callback здесь, тк он не отрабатывает
+                    });
+
+                    //Оптимистичное обновление
+                    resolve({data: updatedMessageConstruction})
+                })
+            },
+            invalidatesTags: ['LastMessages']  //TODO: Можно делать инвалидацию, только если это сообщение последнее
         }),
 
         fetchChats: builder.infiniteQuery<LastMessagesResponse, MessagesRequest, number | undefined>({
@@ -202,4 +231,5 @@ export const {
     useFetchChatsInfiniteQuery,
     useSendMessageMutation,
     useDeleteMessageMutation,
+    useUpdateMessageMutation
 } = messengerApi

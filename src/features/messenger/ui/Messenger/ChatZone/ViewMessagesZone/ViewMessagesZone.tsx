@@ -41,13 +41,13 @@ export const ViewMessagesZone = ({activeUserIdChat}: Props) => {
 
     // Автоматический скролл вниз при добавлении новых сообщений 
     useEffect(() => {
-        if (messages && messages.length > 0) {
+        if (messages && messages.length > 0 && isAtBottom) {        //TODO: пофиксить баг: при инфинити скролл - скроллится вниз
             // Используем setTimeout чтобы дать React время отрендерить новые сообщения
             setTimeout(() => {
                 scrollToBottom();
             }, 0);
         }
-    }, [messages?.length, scrollToBottom]);
+    }, [messages?.length, scrollToBottom, isAtBottom]);
 
     const renderedMessages = messages?.map((message) => (
         message.ownerId === me?.userId ?                //Если мое сообщение

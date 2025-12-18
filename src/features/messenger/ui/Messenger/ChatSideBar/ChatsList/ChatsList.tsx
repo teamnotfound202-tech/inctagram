@@ -4,7 +4,7 @@ import {useFetchChatsInfiniteQuery} from "@/features/messenger/api/messengerApi"
 import {useAppSelector} from "@/shared/lib/hooks/hooks";
 import {selectSearchChatUserName} from "@/shared/api/appSlice";
 import {useInfiniteScroll} from "@/shared/lib/hooks";
-import {useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useMeQuery} from "@/features/auth/api/authApi";
 import {useDebouncedValue} from "@/shared/lib/hooks/useDebounce";
 import {
@@ -19,6 +19,9 @@ type Props = {
 export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
     //первое значение searchChatUserName берется из appSlice
     const searchChatUserName = useAppSelector(selectSearchChatUserName)
+
+    //Флаг, чтобы отрисовка otherUsers была только после получения данных о моих имеющихся чатах
+    const [isChatsRendered, setIsChatsRendered] = useState(false)
 
     const debouncedSearch = useDebouncedValue(searchChatUserName)
 
@@ -42,6 +45,10 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
         rootRef: scrollRef,
         enabled: true,
     })
+
+    useEffect(() => {
+        if (data !== undefined) setIsChatsRendered(true)
+    }, [data]);
 
     //Id юзеров с которыми у меня переписка
     const idsFromRenderedMyChats = new Set<number>()
@@ -73,12 +80,12 @@ export const ChatsList = ({activeUserIdChat, setActiveUserIdChat}: Props) => {
                 </div>
             )}
 
-            <UniqOtherUsersWithoutChats
+            {isChatsRendered && <UniqOtherUsersWithoutChats
                 activeUserIdChat={activeUserIdChat}
                 setActiveUserIdChat={setActiveUserIdChat}
                 userIdsFromMyChats={idsFromRenderedMyChats}
                 isNeededToSkipRequest={hasNextPage}
-                searchValue={debouncedSearch}/>
+                searchValue={debouncedSearch}/>}
         </div>
     )
 };
