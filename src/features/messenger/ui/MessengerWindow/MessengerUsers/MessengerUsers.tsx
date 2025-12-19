@@ -18,7 +18,7 @@ export const MessengerUsers = () => {
   const messages = useAppSelector(selectCurrentMessages)
   const [search, setSearch] = useState('')
   const [debounceSearch, setDebounceSearch] = useState('')
-  const { data, refetch, hasNextPage, isFetching, fetchNextPage, isLoading } =
+  const { data, refetch, hasNextPage, isFetching, fetchNextPage, isLoading, error } =
     useGetUsersMessengerInfiniteQuery({ search: debounceSearch })
   const [enabled, setEnabled] = useState(false)
   const { observerRef } = useInfiniteScroll({ hasNextPage, enabled, isFetching, fetchNextPage })
@@ -36,6 +36,8 @@ export const MessengerUsers = () => {
   useEffect(() => {
     refetch()
   }, [refetch])
+
+  if(error) return <p>failed to data</p>
 
   const messengersUsersItems = data?.pages.flatMap(item => item.items) || []
 

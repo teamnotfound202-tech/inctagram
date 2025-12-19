@@ -1,6 +1,6 @@
 import s from './MessengerWindow.module.scss'
 import { MessengerUsers } from '@/features/messenger/ui/MessengerWindow/MessengerUsers/MessengerUsers'
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 
 export type User = {
   url: string,

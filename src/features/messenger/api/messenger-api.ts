@@ -1,9 +1,7 @@
 import { baseApi } from '@/shared/api'
-import { GetMessages, GetMessengerData, MessageItemType, SendMessageType } from '@/features/messenger/api/type'
+import { GetMessages, GetMessengerData, MessageItemType } from '@/features/messenger/api/type'
 import { subscribeToEvent } from '@/shared/lib/socket/subscribeToEvent'
 import { SOCKET_EVENTS } from '@/shared/lib/constants/constants'
-import { newNotification } from '@/features/notificationsApi/notificationsTypes'
-import { emitToEvent } from '@/shared/lib/socket/emitToEvent'
 import { RootState } from '@/shared/lib/store/store'
 import { authApi } from '@/features'
 
@@ -40,7 +38,6 @@ export const messengerApi = baseApi.injectEndpoints({
       ) => {
         await cacheDataLoaded
         const { dialoguePartnerId } = arg
-
         // функция которая определяет наше ли это сообщение и если нвше то берем id отправившего если не наше то
         const resolvePeerId = (m: MessageItemType, meId: number) =>
           m.ownerId === meId ? m.receiverId : m.ownerId
@@ -54,7 +51,7 @@ export const messengerApi = baseApi.injectEndpoints({
         // фунция которая закидывет пришедшее сообщение либо в текущий кеш либо в кеш конкретного пользователя если прищло сообщение не в текущще диалоговое окрно
         const handle = (msg: MessageItemType) => {
           const peerId = resolvePeerId(msg, meId)
-          debugger
+
           if (peerId === dialoguePartnerId) {
             // 1) Обновляем ТЕКУЩУЮ переписку — updateCachedData уже scoped по этому ключу
             updateCachedData(draft => {
@@ -114,7 +111,21 @@ export const messengerApi = baseApi.injectEndpoints({
       serializeQueryArgs: ({ queryArgs: { dialoguePartnerId } }) =>
         `userMessages-${dialoguePartnerId}`,
     }),
+    changeStatusMessage: builder.mutation<void, number[]>({
+      query: ids => {
+        return {
+          url: 'messenger',
+          method: 'PUT',
+          body: {ids},
+        }
+      },
+      invalidatesTags: ['GetUsersMessenger'],
+    }),
   }),
 })
 
-export const {useGetUsersMessengerInfiniteQuery, useGetMessagesInfiniteQuery} =messengerApi
+export const {
+  useGetUsersMessengerInfiniteQuery,
+  useGetMessagesInfiniteQuery,
+  useChangeStatusMessageMutation
+} =messengerApi

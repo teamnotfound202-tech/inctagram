@@ -13,6 +13,13 @@
   padding: 12px;
 }
 
+.dialogWrapperLoader {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .dialogWindowUser {
   display: flex;
   gap: 12px;
@@ -73,6 +80,13 @@
   background-color: $dark-300;
   padding: 8px 12px;
   border-radius: 8px;
+}
+
+.dateWrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .date {

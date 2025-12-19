@@ -3,14 +3,16 @@ import s from './MessengerDialog.module.scss'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
 import { Avatar } from '@/entities/user/ui/Avatar'
-import { useGetMessagesInfiniteQuery } from '@/features/messenger/api/messenger-api'
+import {
+  useChangeStatusMessageMutation,
+  useGetMessagesInfiniteQuery,
+} from '@/features/messenger/api/messenger-api'
 import { useEffect, useRef, useState } from 'react'
 import { useInfiniteScroll } from '@/shared/lib/hooks'
 import Spinner from '@/shared/ui/Spinner/Spinner'
 import { Button, Input } from '@/shared/ui'
 import MicroIcon from './icons/micro.svg'
 import ImageIcon from './icons/image.svg'
-import { MessageItemType} from '@/features/messenger/api/type'
 import { emitToEvent } from '@/shared/lib/socket/emitToEvent'
 import { SOCKET_EVENTS } from '@/shared/lib/constants/constants'
 import { useFetchMyProfileQuery, useFetchUserQuery } from '@/features/publicUserApi/publicUserApi'
@@ -18,22 +20,30 @@ import { clsx } from 'clsx'
 import * as React from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import StatusReadIcon from './icons/statusRead.svg'
+import StatusNoReadIcon from './icons/statusNoRead.svg'
 
 export const MessengerDialog = () => {
   const params = useParams<{ userId: string }>()
   const {userId} = params
-  const { data: user } = useFetchUserQuery(userId ? +userId : 0, {
-    skip: !userId,
-  })
-  const [value, setValue] = useState('')
-  const { data: myUserData } = useFetchMyProfileQuery()
-  const messages = useAppSelector(selectCurrentMessages)
-  const { data, hasNextPage, isFetching, fetchNextPage, isLoading } = useGetMessagesInfiniteQuery({
-    dialoguePartnerId: user?.id ?? 0,
-  })
-  const listRef = useRef<HTMLUListElement>(null)
 
+  const messages = useAppSelector(selectCurrentMessages)
+
+  const [value, setValue] = useState('')
   const [enabled, setEnabled] = useState(false)
+
+  const { data: user, error, isLoading: isLoadingGetUser } = useFetchUserQuery(userId ? +userId : 0, {skip: !userId})
+  const { data: myUserData } = useFetchMyProfileQuery()
+  const {
+    data,
+    hasNextPage,
+    isFetching,
+    fetchNextPage,
+    isLoading
+  } = useGetMessagesInfiniteQuery({dialoguePartnerId: user?.id ?? 0})
+  const [changeStatusMessages] = useChangeStatusMessageMutation()
+
+  const listRef = useRef<HTMLUListElement>(null)
 
   const { observerRef } = useInfiniteScroll({ hasNextPage, enabled, isFetching, fetchNextPage })
 
@@ -41,18 +51,38 @@ export const MessengerDialog = () => {
     setEnabled(true)
   }, [])
 
+  useEffect(() => {
+    if (data) {
+      const messagesItems = data.pages.flatMap(item => item.items)
+      const receiverItems = messagesItems.filter(item => item.ownerId !== myUserData?.id)
+      const receiverIds = receiverItems.map(item => item.id)
+      if (!receiverIds || !receiverIds.length) return
+      changeStatusMessages(receiverIds)
+    }
+  }, [data, changeStatusMessages, myUserData?.id])
+
+  if (error) return <p>Error loading user</p>
+
   const handleSendMessage = (message: string) => {
     emitToEvent(
       SOCKET_EVENTS.RECEIVE_MESSAGE,
       { receiverId: user?.id, message },
-      (data: MessageItemType) => {
-        console.log(data)
-      }
-    )
+      () => {})
     setValue('')
   }
 
   const messagesArr = data?.pages.flatMap(page => page.items) ?? []
+
+  if (isLoading || isLoadingGetUser) {
+    return (
+      <div className={s.dialogWindow}>
+        <div className={s.dialogWindowTop}></div>
+        <div className={s.dialogWrapperLoader}>
+          <Spinner type="secondary" size={24} label={messages.common.loading} fullWidth center />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={s.dialogWindow}>
@@ -83,17 +113,25 @@ export const MessengerDialog = () => {
                   />
                   <div className={s.dialogContent}>
                     <p className={s.dialogText}>{message.messageText}</p>
-                    <p className={s.date}>
-                      {new Intl.DateTimeFormat('ru-Ru', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      }).format(new Date(message.createdAt))}
-                    </p>
+                    <div className={s.dateWrapper}>
+                      <p className={s.date}>
+                        {new Intl.DateTimeFormat('ru-Ru', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        }).format(new Date(message.createdAt))}
+                      </p>
+                      {message.ownerId === myUserData?.id && message.status === 'READ' && (
+                        <StatusReadIcon />
+                      )}
+                      {message.ownerId === myUserData?.id && message.status !== 'READ' && (
+                        <StatusNoReadIcon />
+                      )}
+                    </div>
                   </div>
                 </li>
               ))}
 
-              {(isFetching || isLoading) && (
+              {isFetching && (
                 <Spinner
                   type="secondary"
                   size={16}
