@@ -17,6 +17,7 @@
   display: flex;
   gap: 12px;
   align-items: center;
+  cursor: pointer;
 }
 
 .bannerMessengerWrapper {
@@ -56,8 +57,16 @@
   align-items: flex-end;
 }
 
-.dialogItem:not(:last-child) {
+.dialogItem {
   margin-bottom: 24px;
+}
+
+
+.dialogItemMyProfile {
+  flex-direction: row-reverse;
+  & .dialogContent {
+    background-color: $accent-900;
+  }
 }
 
 .dialogContent {

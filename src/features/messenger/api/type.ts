@@ -32,7 +32,12 @@ export type GetMessengerData = {
   ]
 }
 
-type MessageItemType = {
+export type SendMessageType = {
+  receiverId: number
+  message: string
+}
+
+export type MessageItemType = {
   id: number
   ownerId: number
   receiverId: number

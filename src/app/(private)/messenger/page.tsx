@@ -1,3 +1,5 @@
-'use client'
+import { NoCurrentUser } from '@/shared/ui/NoCurrentUser/NoCurrentUser'
 
-export {Messenger as default} from '@/views/messenger/Messenger'
+export default async function Page() {
+  return <NoCurrentUser/>
+}

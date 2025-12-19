@@ -14,11 +14,12 @@ export const getSocket = () => {
         accessToken: accessToken
       },
       path:'',
+      autoConnect: true,
       transports: ['websocket']
     })
     socket.on('connect',()=>{console.log('Подключились!!!')})
     socket.on('connect_error',()=>{console.log('Ошибка((!!!')})
-    socket.on('disconnect',()=>{console.log('Ошибка((!!!')})
+    socket.on('disconnect',()=>{console.log('Разъединение((!!!')})
   }
   return socket
 }

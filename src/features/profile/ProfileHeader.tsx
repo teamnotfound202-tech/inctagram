@@ -84,7 +84,9 @@ export const ProfileHeader = ({ user, userStats }: Props) => {
                         {showLoading ? messages.common.loading : messages.profile.follow}
                       </Button>
                     )}
-                    <Button variant={'secondary'}>{messages.profile.sendMessage}</Button>
+                    <Button variant={'secondary'} asChild>
+                      <Link href={'/messenger/' + user.id}>{messages.profile.sendMessage}</Link>
+                    </Button>
                   </div>
                 ))}
             </div>
