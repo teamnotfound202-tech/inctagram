@@ -9,20 +9,32 @@ import { isUserFromSearch, isUserMessage } from '@/shared/lib/utils/isUser'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectLanguage } from '@/shared/api/appSlice'
 import { UserFromSearch } from '@/features/publicUserApi/types'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   user: UserFromSearch | GetMessengerUser
   type: 'messages' | 'user'
+  handleClearSearch: () => void
 }
 
-export const MessengerUserItem = ({user, type}: Props) => {
+export const MessengerUserItem = ({ user, type, handleClearSearch }: Props) => {
   const { data: meData } = useMeQuery()
   const lang = useAppSelector(selectLanguage)
+  const router = useRouter()
+
+
   if (type === 'messages' && isUserMessage(user)) {
     return (
       <li>
-        <Link
-          href={`/messenger/${meData?.userId === user.ownerId ? user.receiverId : user.ownerId}`}
+        <div
+          onClick={() => {
+            router.push(
+              `/messenger/${meData?.userId === user.ownerId ? user.receiverId : user.ownerId}`
+            )
+            handleClearSearch()
+          }
+          }
+          // href={`/messenger/${meData?.userId === user.ownerId ? user.receiverId : user.ownerId}`}
           className={clsx(s.usersWindowItem, {
             [s.messageNotRead]: user.status !== 'READ',
           })}
@@ -41,15 +53,22 @@ export const MessengerUserItem = ({user, type}: Props) => {
                 : user.messageText}
             </div>
           </div>
-        </Link>
-      </li>)
+        </div>
+      </li>
+    )
   }
 
   if (type === 'user' && isUserFromSearch(user)) {
-    console.log(isUserFromSearch(user))
     return (
       <li key={user.id}>
-        <Link href={`/messenger/${user.id}`} className={s.usersWindowItem}>
+        <div
+          onClick={() => {
+            router.push(`/messenger/${user.id}`)
+            handleClearSearch()
+          }}
+          // href={`/messenger/${user.id}`}
+          className={s.usersWindowItem}
+        >
           <Avatar src={user.avatars[1]?.url} alt={user.userName} />
           <div className={s.usersWindowItemContent}>
             <div className={s.usersWindowItemTop}>
@@ -59,7 +78,7 @@ export const MessengerUserItem = ({user, type}: Props) => {
               </span>
             </div>
           </div>
-        </Link>
+        </div>
       </li>
     )
   }

@@ -64,6 +64,8 @@ export const MessengerUsers = () => {
     )
   }
 
+  const handleClearSearch = () => setSearch('')
+
   return (
     <div className={s.usersWindow}>
       <div className={s.userWindowTop}>
@@ -72,13 +74,21 @@ export const MessengerUsers = () => {
           id={'messages-users'}
           placeholder={'Input search'}
           onChange={e => setSearch(e.target.value)}
+          value={search}
         />
       </div>
       {messengersUsersItems.length > 0 && (
         <>
           <ul className={s.usersWindowList}>
             {messengersUsersItems.map(user => {
-              return <MessengerUserItem key={user.id} user={user} type={'messages'} />
+              return (
+                <MessengerUserItem
+                  key={user.id}
+                  user={user}
+                  type={'messages'}
+                  handleClearSearch={handleClearSearch}
+                />
+              )
             })}
             {(isFetching || isLoading) && (
               <Spinner
@@ -97,7 +107,12 @@ export const MessengerUsers = () => {
       {usersItems.length > 0 && (
         <ul className={s.usersWindowList}>
           {usersItems.map(user => (
-            <MessengerUserItem key={user.id} user={user} type={'user'} />
+            <MessengerUserItem
+              key={user.id}
+              user={user}
+              type={'user'}
+              handleClearSearch={handleClearSearch}
+            />
           ))}
           {(userIsFetching || userIsLoading) && (
             <Spinner type="secondary" size={16} label={messages.common.loading} fullWidth center />
