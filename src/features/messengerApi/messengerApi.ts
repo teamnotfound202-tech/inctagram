@@ -108,7 +108,7 @@ export const messengerApi = baseApi.injectEndpoints({
 })
 
 export const {
-  useGetAllMessagesInfiniteQuery,
+    useGetAllMessagesInfiniteQuery,
   useGetMessagesByDialogPartnerInfiniteQuery,
   useSendMessageWithOptimisticMutation,
 } = messengerApi
