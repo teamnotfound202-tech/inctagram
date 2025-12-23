@@ -58,40 +58,6 @@
   height: 526px;
 }
 
-.dialogItem {
-  display: flex;
-  gap: 12px;
-  align-items: flex-end;
-}
-
-.dialogItem {
-  margin-bottom: 24px;
-}
-
-
-.dialogItemMyProfile {
-  flex-direction: row-reverse;
-  & .dialogContent {
-    background-color: $accent-900;
-  }
-}
-
-.dialogContent {
-  background-color: $dark-300;
-  padding: 8px 12px;
-  border-radius: 8px;
-}
-
-.dateWrapper {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.date {
-  text-align: end;
-}
 
 .dialogInputWrapper {
   height: 48px;
@@ -124,3 +90,10 @@
   cursor: pointer;
 }
 
+.error {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

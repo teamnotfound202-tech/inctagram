@@ -2,15 +2,17 @@ import { createSlice, isPending, isFulfilled, isRejected } from '@reduxjs/toolki
 import { Language, Messages, messages } from '@/shared/lib/locale/message'
 
 type InitialState = {
-    status: 'idle' | 'loading' | 'succeeded' | 'failed',
-    language: Language,
-    vacabulary: Record<Language, Messages>,
+  status: 'idle' | 'loading' | 'succeeded' | 'failed'
+  language: Language
+  vacabulary: Record<Language, Messages>
+  currentDialogId: number | undefined
 }
 
 const initialState: InitialState = {
     status: 'idle',
     language: 'en',
     vacabulary: messages,
+    currentDialogId: undefined
 }
 
 export const appSlice = createSlice({
@@ -20,26 +22,35 @@ export const appSlice = createSlice({
     changeLanguage: create.reducer<{ language: Language }>((state, action) => {
       state.language = action.payload.language
     }),
+    changeCurrentDialogId: create.reducer<{dialogId: number}>((state, action) => {
+      state.currentDialogId = action.payload.dialogId
+    })
   }),
   extraReducers: (builder) => {
       builder
           .addMatcher(isPending, (state) => {
-          state.status = 'loading'
+            state.status = 'loading'
           })
           .addMatcher(isFulfilled, (state) => {
-              state.status = 'succeeded'
+            state.status = 'succeeded'
           })
           .addMatcher(isRejected, (state) => {
-              state.status = 'failed'
+            state.status = 'failed'
           })
   },
   selectors: {
       selectStatus: state => state.status,
       selectLanguage: state => state.language,
       selectCurrentMessages: state => state.vacabulary[state.language],
+      selectCurrentDialogId: state => state.currentDialogId
   },
 })
 
 export const appReducer = appSlice.reducer
-export const { changeLanguage } = appSlice.actions
-export const { selectLanguage, selectCurrentMessages, selectStatus } = appSlice.selectors
+export const { changeLanguage, changeCurrentDialogId } = appSlice.actions
+export const {
+  selectLanguage,
+  selectCurrentMessages,
+  selectStatus,
+  selectCurrentDialogId
+} = appSlice.selectors

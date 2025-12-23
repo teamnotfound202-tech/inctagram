@@ -1,0 +1,61 @@
+@use '@/shared/styles/variables' as *;
+
+
+.dialogItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.dialogItem {
+  margin-bottom: 24px;
+}
+
+
+.dialogItemMyProfile {
+  flex-direction: row-reverse;
+  & .dialogContent {
+    background-color: $accent-900;
+  }
+}
+
+.dialogTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px
+}
+
+.dialogContent {
+  background-color: $dark-300;
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 350px;
+  word-wrap: anywhere;
+}
+
+.dateWrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.date {
+  text-align: end;
+}
+
+.deleteIcon {
+  width: 16px;
+  height: 16px;
+  color: $danger-500;
+}
+
+.dialogBtnDelete {
+  cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+

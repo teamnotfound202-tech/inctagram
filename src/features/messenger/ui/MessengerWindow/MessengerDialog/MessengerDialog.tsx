@@ -1,47 +1,47 @@
 'use client'
 import s from './MessengerDialog.module.scss'
-import { useAppSelector } from '@/shared/lib/hooks/hooks'
-import { selectCurrentMessages } from '@/shared/api/appSlice'
+import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
+import { changeCurrentDialogId, selectCurrentMessages } from '@/shared/api/appSlice'
 import { Avatar } from '@/entities/user/ui/Avatar'
 import {
   useChangeStatusMessageMutation,
   useGetMessagesInfiniteQuery,
 } from '@/features/messenger/api/messenger-api'
+import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useInfiniteScroll } from '@/shared/lib/hooks'
 import Spinner from '@/shared/ui/Spinner/Spinner'
 import { Button, Input } from '@/shared/ui'
 import MicroIcon from './icons/micro.svg'
 import ImageIcon from './icons/image.svg'
-import { emitToEvent } from '@/shared/lib/socket/emitToEvent'
-import { SOCKET_EVENTS } from '@/shared/lib/constants/constants'
 import { useFetchMyProfileQuery, useFetchUserQuery } from '@/features/publicUserApi/publicUserApi'
-import { clsx } from 'clsx'
-import * as React from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import StatusReadIcon from './icons/statusRead.svg'
-import StatusNoReadIcon from './icons/statusNoRead.svg'
+import { emitWithAuth } from '@/shared/lib/socket/getSocket'
+import { MessengerListItem } from '@/features/messenger/ui/MessengerWindow/MessengerDialog/MessengerListItem/MessengerListItem'
 
 export const MessengerDialog = () => {
   const params = useParams<{ userId: string }>()
-  const {userId} = params
+  const { userId } = params
 
   const messages = useAppSelector(selectCurrentMessages)
+  const dispatch = useAppDispatch()
+  const [isLoadingSend, setIsLoadingSend] = useState(false)
 
   const [value, setValue] = useState('')
   const [enabled, setEnabled] = useState(false)
 
-  const { data: user, error, isLoading: isLoadingGetUser } = useFetchUserQuery(userId ? +userId : 0, {skip: !userId})
-  const { data: myUserData } = useFetchMyProfileQuery()
   const {
-    data,
-    hasNextPage,
-    isFetching,
-    fetchNextPage,
-    isLoading
-  } = useGetMessagesInfiniteQuery({dialoguePartnerId: user?.id ?? 0})
-  const [changeStatusMessages] = useChangeStatusMessageMutation()
+    data: user,
+    error,
+    isLoading: isLoadingGetUser,
+  } = useFetchUserQuery(userId ? +userId : 0, { skip: !userId })
+  const { data: myUserData} = useFetchMyProfileQuery()
+  const { data, hasNextPage, isFetching, fetchNextPage, isLoading } = useGetMessagesInfiniteQuery({
+    dialoguePartnerId: user?.id ?? 0,
+  })
+  const [changeStatusMessages] =
+    useChangeStatusMessageMutation()
 
   const listRef = useRef<HTMLUListElement>(null)
 
@@ -52,23 +52,39 @@ export const MessengerDialog = () => {
   }, [])
 
   useEffect(() => {
+    if (user && user.id) {
+      dispatch(changeCurrentDialogId({ dialogId: user.id }))
+    }
+  }, [user, user?.id, dispatch])
+
+  useEffect(() => {
     if (data) {
       const messagesItems = data.pages.flatMap(item => item.items)
       const receiverItems = messagesItems.filter(item => item.ownerId !== myUserData?.id)
       const receiverIds = receiverItems.map(item => item.id)
       if (!receiverIds || !receiverIds.length) return
-      changeStatusMessages(receiverIds)
+      if (user && user.id) {
+        changeStatusMessages({ ids: receiverIds, dialoguePartnerId: user.id })
+      }
     }
-  }, [data, changeStatusMessages, myUserData?.id])
+  }, [data, changeStatusMessages, myUserData?.id, user])
 
-  if (error) return <p>Error loading user</p>
+  if (error)
+    return (
+      <div className={s.error}>
+        <h2>Error</h2>
+        <p>Error loading user</p>
+      </div>
+    )
 
-  const handleSendMessage = (message: string) => {
-    emitToEvent(
-      SOCKET_EVENTS.RECEIVE_MESSAGE,
-      { receiverId: user?.id, message },
-      () => {})
-    setValue('')
+  const handleSendMessage =  async (message: string) => {
+    if (user && user.id) {
+      setIsLoadingSend(true)
+      // emitToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, { receiverId: user.id, message }, () => {})
+      setValue('')
+      setIsLoadingSend(false)
+      await emitWithAuth('receive-message', { receiverId: user.id, message })
+    }
   }
 
   const messagesArr = data?.pages.flatMap(page => page.items) ?? []
@@ -97,38 +113,7 @@ export const MessengerDialog = () => {
           <div className={s.bannerMessengerWrapper}>
             <ul className={s.dialog} ref={listRef}>
               {messagesArr.map(message => (
-                <li
-                  key={message.id}
-                  className={clsx(s.dialogItem, {
-                    [s.dialogItemMyProfile]: myUserData?.id === message.ownerId,
-                  })}
-                >
-                  <Avatar
-                    src={
-                      myUserData?.id === message.ownerId
-                        ? myUserData.avatars[0]?.url
-                        : user.avatars[0]?.url
-                    }
-                    alt={myUserData?.id === message.ownerId ? myUserData.userName : user.userName}
-                  />
-                  <div className={s.dialogContent}>
-                    <p className={s.dialogText}>{message.messageText}</p>
-                    <div className={s.dateWrapper}>
-                      <p className={s.date}>
-                        {new Intl.DateTimeFormat('ru-Ru', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        }).format(new Date(message.createdAt))}
-                      </p>
-                      {message.ownerId === myUserData?.id && message.status === 'READ' && (
-                        <StatusReadIcon />
-                      )}
-                      {message.ownerId === myUserData?.id && message.status !== 'READ' && (
-                        <StatusNoReadIcon />
-                      )}
-                    </div>
-                  </div>
-                </li>
+                <MessengerListItem key={message.id} message={message} user={user} isLoading={isFetching}/>
               ))}
 
               {isFetching && (
@@ -165,7 +150,13 @@ export const MessengerDialog = () => {
                   </button>
                 </div>
               ) : (
-                <Button variant={'text'} onClick={() => handleSendMessage(value)}>
+                <Button
+                  variant={'text'}
+                  onClick={async () => {
+                    await handleSendMessage(value)
+                  }}
+                  disabled={isLoadingSend}
+                >
                   Send message
                 </Button>
               )}
