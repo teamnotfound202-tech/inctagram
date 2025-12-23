@@ -50,6 +50,22 @@ export const messengerApi = baseApi.injectEndpoints({
           return null
         },
       },
+      onCacheEntryAdded: async (
+        arg,
+        { cacheDataLoaded, updateCachedData, cacheEntryRemoved, dispatch, getState }
+      ) => {
+        await cacheDataLoaded
+        const handle = () => {
+          dispatch(baseApi.util.invalidateTags(['GetUsersMessenger']))
+        }
+        const unsub1 = subscribeToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, handle)
+        const unsub2 = subscribeToEvent(SOCKET_EVENTS.MESSAGE_SEND, handle)
+        // корректная отписка
+
+        await cacheEntryRemoved
+        unsub1?.()
+        unsub2?.()
+      },
       providesTags: ['GetUsersMessenger'],
     }),
     getMessages: builder.infiniteQuery<GetMessages, { dialoguePartnerId: number }, number>({

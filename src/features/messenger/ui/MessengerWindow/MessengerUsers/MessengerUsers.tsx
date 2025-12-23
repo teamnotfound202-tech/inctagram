@@ -8,11 +8,14 @@ import { useInfiniteScroll } from '@/shared/lib/hooks'
 import Spinner from '@/shared/ui/Spinner/Spinner'
 import { useGetSearchUserInfiniteQuery } from '@/features/publicUserApi/publicUserApi'
 import { MessengerUserItem } from '@/features/messenger/ui/MessengerWindow/MessengerUsers/MessengerUserItem/MessengerUserItem'
+import { getSocket } from '@/shared/lib/socket/getSocket'
+import { useMeQuery } from '@/features/auth/api/authApi'
 
 export const MessengerUsers = () => {
   const messages = useAppSelector(selectCurrentMessages)
   const [search, setSearch] = useState('')
   const [debounceSearch, setDebounceSearch] = useState('')
+  const { data: meData } = useMeQuery()
   const { data, refetch, hasNextPage, isFetching, fetchNextPage, isLoading, error } =
     useGetUsersMessengerInfiniteQuery({ search: debounceSearch })
   const messengersUsersItems = data?.pages.flatMap(item => item.items) || []
@@ -30,7 +33,8 @@ export const MessengerUsers = () => {
     }
   )
 
-  const usersItems = userData?.pages.flatMap(item => item.items) || []
+  const usersItems =
+    userData?.pages.flatMap(item => item.items).filter(item => item.id !== meData?.userId) || []
 
   const [enabled, setEnabled] = useState(false)
   const { observerRef } = useInfiniteScroll({ hasNextPage, enabled, isFetching, fetchNextPage })

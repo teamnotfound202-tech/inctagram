@@ -60,7 +60,7 @@ export const MessengerDialog = () => {
   useEffect(() => {
     if (data) {
       const messagesItems = data.pages.flatMap(item => item.items)
-      const receiverItems = messagesItems.filter(item => item.ownerId !== myUserData?.id)
+      const receiverItems = messagesItems.filter(item => item.ownerId !== myUserData?.id && item.status !== 'READ')
       const receiverIds = receiverItems.map(item => item.id)
       if (!receiverIds || !receiverIds.length) return
       if (user && user.id) {
