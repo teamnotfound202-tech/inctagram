@@ -34,9 +34,8 @@ export const MessengerUserItem = ({ user, type, handleClearSearch }: Props) => {
             handleClearSearch()
           }
           }
-          // href={`/messenger/${meData?.userId === user.ownerId ? user.receiverId : user.ownerId}`}
           className={clsx(s.usersWindowItem, {
-            [s.messageNotRead]: user.status !== 'READ',
+            [s.messageNotRead]: user.status !== 'READ' && user.ownerId!== meData?.userId,
           })}
         >
           <Avatar src={user.avatars[1]?.url} alt={user.userName} />
@@ -66,7 +65,6 @@ export const MessengerUserItem = ({ user, type, handleClearSearch }: Props) => {
             router.push(`/messenger/${user.id}`)
             handleClearSearch()
           }}
-          // href={`/messenger/${user.id}`}
           className={s.usersWindowItem}
         >
           <Avatar src={user.avatars[1]?.url} alt={user.userName} />
