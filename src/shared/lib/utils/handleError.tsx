@@ -6,7 +6,7 @@ import type {
 } from '@reduxjs/toolkit/query'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
-import {ACCESS_TOKEN} from "@/shared/lib";
+import { ACCESS_TOKEN } from '@/shared/lib'
 import { responseCodes } from '@/shared/config'
 
 export const handleError = (
@@ -28,7 +28,7 @@ export const handleError = (
         const oldToken = localStorage.getItem(ACCESS_TOKEN)
         if (oldToken) {
           toast.custom(() => (
-              <AlertToast variant="error" title={'Ошибка авторизации. Войдите в систему.'} />
+            <AlertToast variant="error" title={'Ошибка авторизации. Войдите в систему.'} />
           ))
         }
         break

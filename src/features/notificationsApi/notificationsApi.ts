@@ -30,12 +30,17 @@ export const notificationsApi = baseApi.injectEndpoints({
       keepUnusedDataFor:0,
       onCacheEntryAdded: async (_arg,{cacheDataLoaded,updateCachedData,cacheEntryRemoved})=>{
         await cacheDataLoaded
-        subscribeToEvent(SOCKET_EVENTS.NOTIFICATIONS,(data:newNotification)=>{
-          updateCachedData((state)=>{
-          state.pages[0].items.unshift(data)
 
+        const saveNewNotification = (data: newNotification) => {
+          updateCachedData(state => {
+            state.pages[0].items.unshift(data)
           })
-        })
+        }
+
+        const func1 = subscribeToEvent(SOCKET_EVENTS.NOTIFICATIONS, saveNewNotification)
+
+        await cacheEntryRemoved
+        func1?.()
       },
       infiniteQueryOptions: {
         initialPageParam: undefined,

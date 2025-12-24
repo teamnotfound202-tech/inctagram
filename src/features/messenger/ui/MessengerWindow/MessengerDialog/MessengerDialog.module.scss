@@ -1,0 +1,99 @@
+@use '@/shared/styles/variables' as *;
+
+.dialogWindow {
+  width: 100%;
+  max-height: 648px;
+}
+
+.dialogWindowTop {
+  height: 72px;
+  background-color: $dark-500;
+  border: 1px solid $dark-300;
+  border-left: none;
+  padding: 12px;
+}
+
+.dialogWrapperLoader {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialogWindowUser {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bannerMessengerWrapper {
+  height: 100%
+}
+
+.bannerMessengerInner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 575px;
+}
+
+.bannerMessenger {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.71429;
+  color: $light-100;
+  padding: 12px 24px;
+  background-color: $dark-300;
+  max-width: 294px;
+  border-radius: 8px;
+}
+
+.dialog {
+  padding: 0 23px 0 11px;
+  max-width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  height: 526px;
+}
+
+
+.dialogInputWrapper {
+  height: 48px;
+  border: 1px solid $dark-300;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  align-items: center;
+  & div:first-child {
+    min-height: 48px !important;
+    border: none !important;
+    width: 100% !important;
+  }
+}
+
+.btnWrapper {
+  width: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 24px 5px 0;
+}
+
+.btnIcon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.error {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

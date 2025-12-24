@@ -1,6 +1,6 @@
 'use client'
 import { Input } from '@/shared/ui'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
 import s from './SearchUsers.module.scss'
@@ -17,7 +17,6 @@ export const SearchUsers = () => {
   const [debounced, setDebounced] = useState('')
   const [usersFromSearch, setUsersFromSearch] = useState<UserFromSearch[]>([])
 
-
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage } = useGetSearchUserInfiniteQuery(
     { search: debounced },
     { skip: debounced === '', refetchOnMountOrArgChange: true }
@@ -33,11 +32,16 @@ export const SearchUsers = () => {
     return () => clearTimeout(id)
   }, [search])
 
-  const handleUsersFromSearch = (filteredUsers: UserFromSearch[]) =>{
+  const handleUsersFromSearch = (filteredUsers: UserFromSearch[]) => {
     setUsersFromSearch(filteredUsers)
   }
 
-  const { observerRef } = useInfiniteScroll({ hasNextPage, isFetching, enabled: true, fetchNextPage})
+  const { observerRef } = useInfiniteScroll({
+    hasNextPage,
+    isFetching,
+    enabled: true,
+    fetchNextPage,
+  })
 
   const users = data?.pages.flatMap(item => item.items) ?? []
   const usersForRender = debounced ? users : usersFromSearch
@@ -65,13 +69,18 @@ export const SearchUsers = () => {
         )}
 
         {usersForRender.map(user => (
-          <UserListItem key={user.id} user={user} handleUsersFromSearch={handleUsersFromSearch} debounced={debounced}/>
+          <UserListItem
+            key={user.id}
+            user={user}
+            handleUsersFromSearch={handleUsersFromSearch}
+            debounced={debounced}
+          />
         ))}
         {(isFetching || isLoading) && (
           <Spinner type="secondary" size={16} label={messages.common.loading} fullWidth center />
         )}
       </div>
-      <div ref={observerRef} style={{ height: '1px' }}></div>
+      <div ref={observerRef} style={{ height: '1px' }} />
     </div>
   )
 }

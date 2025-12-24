@@ -1,0 +1,14 @@
+@use '@/shared/styles/variables' as *;
+
+.messenger {
+  width: 100%;
+  padding: 35px 24px 0 0;
+}
+
+.messengerTitle {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.8;
+  color: $light-100;
+  margin-bottom: 13px;
+}
