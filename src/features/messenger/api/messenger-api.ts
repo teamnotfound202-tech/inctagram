@@ -5,6 +5,7 @@ import { SOCKET_EVENTS } from '@/shared/lib/constants/constants'
 import { RootState } from '@/shared/lib/store/store'
 import { authApi } from '@/features'
 import { appSlice, selectCurrentDialogId } from '@/shared/api/appSlice'
+import { useAppSelector } from '@/shared/lib/hooks/hooks'
 
 
 export function isMessageType(msg: unknown): msg is MessageItemType {
@@ -95,7 +96,6 @@ export const messengerApi = baseApi.injectEndpoints({
           if (Array.isArray(msg)) {
             return dispatch(baseApi.util.invalidateTags(['GetUsersMessenger', 'UserMessages']))
           }
-
           const peerId = resolvePeerId(msg, meId)
           if (peerId === dialoguePartnerId) {
             // 1) Обновляем ТЕКУЩУЮ переписку — updateCachedData уже scoped по этому ключу
@@ -106,25 +106,30 @@ export const messengerApi = baseApi.injectEndpoints({
               if (!firstPage.items.some(i => i.id === msg.id)) {
                 firstPage.items.unshift(msg)
                 if (typeof firstPage.totalCount === 'number') firstPage.totalCount += 1
+              } else {
+                const pageIndex = draft.pages?.findIndex(item => item.items.some(m => m.id === msg.id))
+                if (pageIndex === -1) return
+                const itemIndex = draft.pages?.[pageIndex].items.findIndex(item => item.id === msg.id)
+                draft.pages[pageIndex].items[itemIndex] = msg
               }
             })
           } else {
-            // 2) Обновляем ДРУГУЮ переписку — по её args
-            dispatch(
-              messengerApi.util.updateQueryData(
-                'getMessages',
-                { dialoguePartnerId: peerId }, // важен тот же shape, что в serializeQueryArgs
-                draft => {
-                  const firstPage = draft.pages?.[0]
-                  if (!firstPage) return
-                  const isIdMessageHasPage = firstPage.items.some(i => i.id === msg.id)
-                  if (!isIdMessageHasPage) {
-                    firstPage.items.unshift(msg)
-                    if (typeof firstPage.totalCount === 'number') firstPage.totalCount += 1
+              // 2) Обновляем ДРУГУЮ переписку — по её args
+              dispatch(
+                messengerApi.util.updateQueryData(
+                  'getMessages',
+                  { dialoguePartnerId: peerId }, // важен тот же shape, что в serializeQueryArgs
+                  draft => {
+                    const firstPage = draft.pages?.[0]
+                    if (!firstPage) return
+                    const isIdMessageHasPage = firstPage.items.some(i => i.id === msg.id)
+                    if (!isIdMessageHasPage) {
+                      firstPage.items.unshift(msg)
+                      if (typeof firstPage.totalCount === 'number') firstPage.totalCount += 1
+                    }
                   }
-                }
+                )
               )
-            )
           }
 
           dispatch(baseApi.util.invalidateTags(['GetUsersMessenger']))

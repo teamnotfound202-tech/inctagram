@@ -19,6 +19,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { emitWithAuth } from '@/shared/lib/socket/getSocket'
 import { MessengerListItem } from '@/features/messenger/ui/MessengerWindow/MessengerDialog/MessengerListItem/MessengerListItem'
+import { SOCKET_EVENTS } from '@/shared/lib/constants/constants'
 
 export const MessengerDialog = () => {
   const params = useParams<{ userId: string }>()
@@ -83,7 +84,7 @@ export const MessengerDialog = () => {
       // emitToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, { receiverId: user.id, message }, () => {})
       setValue('')
       setIsLoadingSend(false)
-      await emitWithAuth('receive-message', { receiverId: user.id, message })
+      await emitWithAuth(SOCKET_EVENTS.RECEIVE_MESSAGE, { receiverId: user.id, message })
     }
   }
 

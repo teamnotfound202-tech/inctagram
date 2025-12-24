@@ -32,10 +32,9 @@ export const MessengerUserItem = ({ user, type, handleClearSearch }: Props) => {
               `/messenger/${meData?.userId === user.ownerId ? user.receiverId : user.ownerId}`
             )
             handleClearSearch()
-          }
-          }
+          }}
           className={clsx(s.usersWindowItem, {
-            [s.messageNotRead]: user.status !== 'READ' && user.ownerId!== meData?.userId,
+            [s.messageNotRead]: user.status !== 'READ' && user.ownerId !== meData?.userId,
           })}
         >
           <Avatar src={user.avatars[1]?.url} alt={user.userName} />

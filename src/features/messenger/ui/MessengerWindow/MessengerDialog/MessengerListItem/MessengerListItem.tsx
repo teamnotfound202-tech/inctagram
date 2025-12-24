@@ -14,6 +14,10 @@ import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentDialogId } from '@/shared/api/appSlice'
+import { currentTime } from '@/shared/lib/utils/currentTime'
+import { EditableSpan } from '@/shared/ui/EditableSpan/EditableSpan'
+import { emitWithAuth } from '@/shared/lib/socket/getSocket'
+import { SOCKET_EVENTS } from '@/shared/lib/constants/constants'
 
 
 
@@ -49,6 +53,10 @@ export const MessengerListItem = ({ message, user, isLoading }: Props) => {
     }
   }
 
+  const handelChangeMessage = async (title: string) => {
+    await emitWithAuth(SOCKET_EVENTS.UPDATE_MESSAGE, { id: message.id, message: title })
+  }
+
   useEffect(() => {
     setIsLoading(isLoading)
   }, [isLoading])
@@ -65,7 +73,9 @@ export const MessengerListItem = ({ message, user, isLoading }: Props) => {
       />
       <div className={s.dialogContent}>
         <div className={s.dialogTop}>
-          <p className={s.dialogText}>{message.messageText}</p>
+          <p className={s.dialogText}>
+            <EditableSpan value={message.messageText} onChange={handelChangeMessage} />
+          </p>
           {message.ownerId === myUserData?.id && (
             <button
               className={s.dialogBtnDelete}
@@ -77,12 +87,7 @@ export const MessengerListItem = ({ message, user, isLoading }: Props) => {
           )}
         </div>
         <div className={s.dateWrapper}>
-          <p className={s.date}>
-            {new Intl.DateTimeFormat('ru-Ru', {
-              hour: '2-digit',
-              minute: '2-digit',
-            }).format(new Date(message.createdAt))}
-          </p>
+          <p className={s.date}>{currentTime(message.createdAt)}</p>
           {message.ownerId === myUserData?.id && message.status === 'READ' && <StatusReadIcon />}
           {message.ownerId === myUserData?.id && message.status !== 'READ' && <StatusNoReadIcon />}
         </div>
