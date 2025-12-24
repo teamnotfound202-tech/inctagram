@@ -4,34 +4,11 @@ import { subscribeToEvent } from '@/shared/lib/socket/subscribeToEvent'
 import { SOCKET_EVENTS } from '@/shared/lib/constants/constants'
 import { RootState } from '@/shared/lib/store/store'
 import { authApi } from '@/features'
-import { appSlice, selectCurrentDialogId } from '@/shared/api/appSlice'
-import { useAppSelector } from '@/shared/lib/hooks/hooks'
+import { getSocket } from '@/shared/lib/socket/getSocket'
 
-
-export function isMessageType(msg: unknown): msg is MessageItemType {
-  return (
-      typeof msg === "object" &&
-      msg !== null &&
-     'id' in msg &&
-     typeof msg.id === "number" &&
-      'ownerId' in msg &&
-      typeof msg.ownerId === "number" &&
-      'receiverId' in msg &&
-      typeof msg.receiverId === "number" &&
-      'messageText' in msg &&
-      typeof msg.messageText === "string" &&
-      'createAt' in msg &&
-      typeof msg.createAt === "string" &&
-      'updatedAt' in msg &&
-      typeof msg.updatedAt === "string" &&
-      'messageType' in msg &&
-      typeof msg.messageType === 'string' &&
-      'status' in msg &&
-      typeof msg.status === 'string'
-  )
-}
 const PAGE_SIZE = 12
 const PAGE_SIZE_MESSAGES = 8
+
 export const messengerApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getUsersMessenger: builder.infiniteQuery<GetMessengerData, { search: string }, number>({
@@ -53,9 +30,12 @@ export const messengerApi = baseApi.injectEndpoints({
       },
       onCacheEntryAdded: async (
         arg,
-        { cacheDataLoaded, updateCachedData, cacheEntryRemoved, dispatch, getState }
+        { cacheDataLoaded, cacheEntryRemoved, dispatch }
       ) => {
         await cacheDataLoaded
+        const socket = getSocket()
+        socket.connect()
+
         const handle = () => {
           dispatch(baseApi.util.invalidateTags(['GetUsersMessenger']))
         }
