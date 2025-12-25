@@ -21,6 +21,7 @@ type InputProps = {
   name?: string
   className?: string
   autoComplete?: string
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -38,6 +39,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       name,
       className,
       autoComplete,
+      onKeyDown
     },
     ref
   ) => {
@@ -63,6 +65,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               onChange={onChange}
               onBlur={onBlur}
               name={name}
+              onKeyDown={onKeyDown}
             />
             <PasswordToggleField.Toggle className={s.Toggle} disabled={isDisabled}>
               <PasswordToggleField.Icon
@@ -95,6 +98,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           onChange={onChange}
           onBlur={onBlur}
           name={name}
+          onKeyDown={onKeyDown}
         >
           {type === 'search' && <SearchIcon />}
         </TextField.Root>
