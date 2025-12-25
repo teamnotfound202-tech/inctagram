@@ -40,6 +40,8 @@ export function formatCreatedAt(
   if (diffMs < MS.week) {
     return new Intl.DateTimeFormat(locale, {
       ...tzOpt,
+      hour: '2-digit',
+      minute: '2-digit',
       weekday: 'short',
     }).format(date)
   }
@@ -47,6 +49,8 @@ export function formatCreatedAt(
   // >= 7d -> day month year
   return new Intl.DateTimeFormat(locale, {
     ...tzOpt,
+    hour: '2-digit',
+    minute: '2-digit',
     day: '2-digit',
     month: 'short',
     year: 'numeric',

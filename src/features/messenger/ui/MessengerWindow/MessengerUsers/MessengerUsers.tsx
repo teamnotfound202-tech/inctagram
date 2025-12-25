@@ -8,7 +8,6 @@ import { useInfiniteScroll } from '@/shared/lib/hooks'
 import Spinner from '@/shared/ui/Spinner/Spinner'
 import { useGetSearchUserInfiniteQuery } from '@/features/publicUserApi/publicUserApi'
 import { MessengerUserItem } from '@/features/messenger/ui/MessengerWindow/MessengerUsers/MessengerUserItem/MessengerUserItem'
-import { getSocket } from '@/shared/lib/socket/getSocket'
 import { useMeQuery } from '@/features/auth/api/authApi'
 
 export const MessengerUsers = () => {
