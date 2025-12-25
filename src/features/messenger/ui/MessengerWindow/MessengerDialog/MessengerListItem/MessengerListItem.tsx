@@ -13,11 +13,11 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { AlertToast } from '@/shared/ui/Alerts/Alerts'
 import { useAppSelector } from '@/shared/lib/hooks/hooks'
-import { selectCurrentDialogId } from '@/shared/api/appSlice'
-import { currentTime } from '@/shared/lib/utils/currentTime'
+import { selectCurrentDialogId, selectLanguage } from '@/shared/api/appSlice'
 import { EditableSpan } from '@/shared/ui/EditableSpan/EditableSpan'
 import { emitWithAuth } from '@/shared/lib/socket/getSocket'
 import { SOCKET_EVENTS } from '@/shared/lib/constants/constants'
+import { formatCreatedAt } from '@/shared/lib/utils/formatCreatAt'
 
 
 
@@ -29,6 +29,7 @@ type Props = {
 
 export const MessengerListItem = ({ message, user, isLoading }: Props) => {
   const { data: myUserData} = useFetchMyProfileQuery()
+  const lang = useAppSelector(selectLanguage)
   const [deleteMessage, { isLoading: deleteMessageLoading }] = useDeleteMessageMutation()
   const [loading, setIsLoading] = useState(false)
   const dialogId = useAppSelector(selectCurrentDialogId)
@@ -87,7 +88,9 @@ export const MessengerListItem = ({ message, user, isLoading }: Props) => {
           )}
         </div>
         <div className={s.dateWrapper}>
-          <p className={s.date}>{currentTime(message.createdAt)}</p>
+          <p className={s.date}>
+            {formatCreatedAt(message.createdAt, { locale: lang })}
+          </p>
           {message.ownerId === myUserData?.id && message.status === 'READ' && <StatusReadIcon />}
           {message.ownerId === myUserData?.id && message.status !== 'READ' && <StatusNoReadIcon />}
         </div>

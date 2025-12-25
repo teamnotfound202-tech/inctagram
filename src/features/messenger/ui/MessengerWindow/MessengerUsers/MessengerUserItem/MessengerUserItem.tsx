@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { clsx } from 'clsx'
 import s from '@/features/messenger/ui/MessengerWindow/MessengerUsers/MessengerUsers.module.scss'
 import { Avatar } from '@/entities/user/ui/Avatar'
