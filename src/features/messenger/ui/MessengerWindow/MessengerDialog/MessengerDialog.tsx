@@ -79,7 +79,7 @@ export const MessengerDialog = () => {
     )
 
   const handleSendMessage =  async (message: string) => {
-    if (user && user.id) {
+    if (user && user.id && message.trim().length > 0) {
       setIsLoadingSend(true)
       // emitToEvent(SOCKET_EVENTS.RECEIVE_MESSAGE, { receiverId: user.id, message }, () => {})
       setValue('')
@@ -114,7 +114,12 @@ export const MessengerDialog = () => {
           <div className={s.bannerMessengerWrapper}>
             <ul className={s.dialog} ref={listRef}>
               {messagesArr.map(message => (
-                <MessengerListItem key={message.id} message={message} user={user} isLoading={isFetching}/>
+                <MessengerListItem
+                  key={message.id}
+                  message={message}
+                  user={user}
+                  isLoading={isFetching}
+                />
               ))}
 
               {isFetching && (
@@ -140,6 +145,11 @@ export const MessengerDialog = () => {
                 placeholder={'Type Message...'}
                 value={value}
                 onChange={e => setValue(e.target.value)}
+                onKeyDown={async event => {
+                  if (event.code === 'Enter') {
+                      await handleSendMessage(value)
+                  }
+                }}
               />
               {!value ? (
                 <div className={s.btnWrapper}>
@@ -156,7 +166,12 @@ export const MessengerDialog = () => {
                   onClick={async () => {
                     await handleSendMessage(value)
                   }}
-                  disabled={isLoadingSend}
+                  onKeyDown={async event => {
+                    if (event.code === 'Enter') {
+                        await handleSendMessage(value)
+                    }
+                  }}
+                  disabled={isLoadingSend || !value.trim().length}
                 >
                   Send message
                 </Button>
