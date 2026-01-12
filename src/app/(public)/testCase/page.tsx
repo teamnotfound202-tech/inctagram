@@ -1,0 +1,1 @@
+export {TestCase as default} from "@/views/TestCase/TestCase";

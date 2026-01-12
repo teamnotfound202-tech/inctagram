@@ -1,0 +1,165 @@
+.sliderContainer {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+
+  &.loading {
+    opacity: 0.6;
+    pointer-events: none;
+
+    .sliderTrack {
+     display: flex!important;
+      gap: 40px;
+    }
+
+    .controlButton,
+    .dot {
+      opacity: 0.5;
+    }
+  }
+}
+
+.loadingState,
+.emptyState,
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loadingState {
+  color: #666;
+
+  p {
+    margin-top: 16px;
+    font-size: 16px;
+  }
+}
+
+.emptyState,
+.errorState {
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+
+  .emptyIcon,
+  .errorIcon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+  }
+
+  .emptyIcon {
+    fill: #6c757d;
+  }
+
+  .errorIcon {
+    fill: #dc3545;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    color: #343a40;
+    font-size: 20px;
+  }
+
+  p {
+    margin: 0 0 20px 0;
+    color: #6c757d;
+    max-width: 400px;
+    line-height: 1.5;
+  }
+}
+
+.reloadButton {
+  padding: 10px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ProductsPage.module.scss
+.productsPage {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .title {
+    margin: 0;
+    color: #212529;
+    font-size: 32px;
+    font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
+  }
+
+  .productsCount {
+    color: #6c757d;
+    font-size: 14px;
+    background: #f8f9fa;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .sliderWrapper {
+    margin: 0 -16px;
+    padding: 0 16px;
+
+    @media (max-width: 768px) {
+      margin: 0 -8px;
+      padding: 0 8px;
+    }
+  }
+
+  .productsSlider {
+    min-height: 400px;
+  }
+
+  .productCard {
+    height: 100%;
+  }
+
+  .loadingInfo {
+    text-align: center;
+    margin-top: 20px;
+    color: #6c757d;
+    font-size: 14px;
+    font-style: italic;
+  }
+}

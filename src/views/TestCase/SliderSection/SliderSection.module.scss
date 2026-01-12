@@ -1,0 +1,42 @@
+.sliderSectionWrapper {
+  background-color: #F1F1F1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  border: 1px solid red;
+  overflow: hidden;
+  padding: 70px 0;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 46px;
+  line-height: 48px;
+  letter-spacing: 0;
+  text-align: center;
+  vertical-align: middle;
+  color: #C5C5C5
+}
+.sliderContainer{
+  display: flex;
+  gap: 40px;
+}
+.divider{
+  width:2px;
+  height:24px;
+  border-radius: 2.16px;
+  color:#E6E8EC;
+}
+.directionBtn{
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  width: 166px;
+  border-radius: 17.25px;
+  background-color: rgba(252, 252, 253, 1);
+  padding: 20px;
+  box-shadow:0 43.12px 34.49px -25.87px rgba(15, 15, 15, 0.12);
+  gap: 35px;
+}

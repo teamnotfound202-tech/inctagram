@@ -11,6 +11,7 @@ import '@radix-ui/themes/styles.css';
 import './globals.css';
 import '../styles/radix-overrides.css';
 import ErrorBoundary from "@/shared/components/ErrorBoundary/ErrorBoundary";
+import { TestCase } from '@/views/TestCase/TestCase'
 
 const inter = Inter({
     variable: "--font-inter",
@@ -41,7 +42,8 @@ export default function RootLayout({children, modal}: Readonly<{
             <Theme appearance={'dark'}>
                 <StoreWrapper>
                     <AlertsProvider>
-                        <Header notification={0}/>
+                      {/*  <Header notification={0}/>*/}
+                      <TestCase/>
                         <main className={'main'}>
                             <AppWrapper>
                                 <ErrorBoundary>

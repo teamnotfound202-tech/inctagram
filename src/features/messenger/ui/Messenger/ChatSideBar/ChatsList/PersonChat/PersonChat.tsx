@@ -1,9 +1,8 @@
-import s from "./PersonChat.module.scss";
-import {Avatar} from "@/entities/user/ui/Avatar";
-import {formatRelativeDate} from "@/shared/lib/utils/formatRelativeDate";
-import {selectLanguage} from "@/shared/api/appSlice";
-import {useAppSelector} from "@/shared/lib/hooks/hooks";
-import {useState} from "react";
+import s from './PersonChat.module.scss'
+import { Avatar } from '@/entities/user/ui/Avatar'
+import { formatRelativeDate } from '@/shared/lib/utils/formatRelativeDate'
+import { selectLanguage } from '@/shared/api/appSlice'
+import { useAppSelector } from '@/shared/lib/hooks/hooks'
 
 type Props = {
     avatar: string
