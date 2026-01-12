@@ -1,0 +1,20 @@
+
+.avatarsWhoLikesWrapper {
+  display: flex;
+}
+
+.avatars{
+  margin-left: -10px;
+}
+
+.avatars:first-child {
+  margin-left: 0;
+}
+
+.avatars:hover {
+  z-index: 10; /* Поднимает аватар при наведении */
+}
+
+.likesCount {
+  margin-left: 15px;
+}

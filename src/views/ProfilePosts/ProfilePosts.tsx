@@ -27,11 +27,11 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
   }, shallowEqual);
 
   const dispatch = useAppDispatch()
-  const needHydrateStateRef = useRef(!!postsData?.items.length && !dataFromCache?.items?.length)
+  const needHydrateStateRef = useRef(!!postsData?.items?.length && !dataFromCache?.items?.length)
   const {data, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage} = useGetPostsForUserInfiniteQuery({userId}, {
     skip: needHydrateStateRef.current,
   })
-  const {observerRef} = useInfiniteScroll({hasNextPage, isFetching, fetchNextPage})
+  const {observerRef} = useInfiniteScroll({hasNextPage, isFetching, fetchNextPage, enabled: true})
 
   useEffect(() => {
       if (postsData && needHydrateStateRef.current) {
@@ -61,7 +61,7 @@ export const ProfilePosts =  ({postsData, userId}: Props) => {
         ) : hasNextPage
       }
       {hasNextPage && (
-          <div ref={observerRef}>
+          <div ref={observerRef} className={s.loadingWrapper}>
             {isFetchingNextPage ? <div>Loading more posts...</div> : <div style={{ height: '20px' }}/>}
           </div>
         )

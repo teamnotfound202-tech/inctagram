@@ -5,11 +5,12 @@ import {
     PostText
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostText/PostText";
 import {useFetchUserQuery} from "@/features/publicUserApi/publicUserApi";
+import Link from 'next/link'
 
 type Props = {
     authorName: string | null
     postContent: string
-    descriptionCreationTime: string
+    descriptionCreationTime?: string
     ownerId: number
     postUserName: string
 };
@@ -25,11 +26,15 @@ export const PostDescriptionAsComment = ({
     const {data: user} = useFetchUserQuery(ownerId)
     return (
         <article className={s.comment}>
+          <Link className={s.commentLink} href={`/profile/${ownerId}`}>
             <Avatar src={user?.avatars[0]?.url} alt={'avatar'} size={"small"}/>
+          </Link>
             <PostText authorName={authorName}
                       postUserName={postUserName}
                       postContent={postContent}
-                      descriptionCreationTime={descriptionCreationTime}/>
+                      descriptionCreationTime={descriptionCreationTime}
+                      ownerId={ownerId}
+            />
         </article>
     );
 };

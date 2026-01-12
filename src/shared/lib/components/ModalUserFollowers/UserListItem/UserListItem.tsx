@@ -4,6 +4,7 @@ import s from './UserListItem.module.scss'
 import Skeleton from 'react-loading-skeleton'
 import { Button } from '@/shared/ui'
 import {
+  publicUserApi,
   useFollowingUserMutation,
   useUnFollowingUserMutation,
 } from '@/features/publicUserApi/publicUserApi'
@@ -12,7 +13,7 @@ import Link from 'next/link'
 import { useMeQuery } from '@/features/auth/api/authApi'
 import { UserItem } from '@/features/publicUserApi/types'
 import { ConfirmModal } from '@/shared/lib/components/ModalUserFollowers/ConfirmModal/ConfirmModal'
-import { useAppSelector } from '@/shared/lib/hooks/hooks'
+import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/hooks'
 import { selectCurrentMessages } from '@/shared/api/appSlice'
 
 type Props = {
@@ -24,6 +25,7 @@ type Props = {
 type ModalKind = 'unfollow' | 'delete-following' | null
 
 export const UserListItem = ({ user, isLoading, type }: Props) => {
+  const dispatch = useAppDispatch()
   const { data: currentUser } = useMeQuery()
   const [followUser, { isLoading: isFollowMutLoading }] = useFollowingUserMutation()
   const [unfollowUser, { isLoading: isUnfollowMutLoading }] = useUnFollowingUserMutation()
@@ -44,15 +46,23 @@ export const UserListItem = ({ user, isLoading, type }: Props) => {
   const closeModal = useCallback(() => setModalKind(null), [])
 
   const handleFollow = useCallback(async () => {
-    await followUser({ selectedUserId: user.userId, userName: user.userName }).unwrap()
+    await followUser({ selectedUserId: user.userId, userName: user.userName })
+      .unwrap()
+      .then(() => {
+        dispatch(publicUserApi.util.invalidateTags(['GetPostByFollowingUser']))
+      })
     setIsFollowing(true)
-  }, [followUser, user.userId, user.userName])
+  }, [followUser, user.userId, user.userName, dispatch])
 
   const handleUnfollowConfirmed = useCallback(async () => {
-    await unfollowUser({ userId: user.userId, userName: user.userName }).unwrap()
+    await unfollowUser({ userId: user.userId, userName: user.userName })
+      .unwrap()
+      .then(() => {
+        dispatch(publicUserApi.util.invalidateTags(['GetPostByFollowingUser']))
+      })
     setIsFollowing(false)
     closeModal()
-  }, [unfollowUser, user.userId, user.userName, closeModal])
+  }, [unfollowUser, user.userId, user.userName, closeModal,dispatch])
 
   const followDisabled = Boolean(pendingAction)
   const unfollowDisabled = Boolean(pendingAction)

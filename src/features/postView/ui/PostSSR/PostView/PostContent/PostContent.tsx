@@ -51,10 +51,9 @@ export const PostContent = ({
   const handleCloseCancelModal = () => {
     setShowCancelModal(false)
   }
-
   return (
     <div className={s.postContentWrapper}>
-      {!isEditing && (
+      {!isEditing && post.id &&(
         <PostTitle
           postUserName={post.userName}
           ownerId={post.ownerId}
@@ -67,13 +66,13 @@ export const PostContent = ({
           isDeleteModalOpen={isDeleteModalOpen}
         />
       )}
-      {isEditing ? (
+      {isEditing ? post.id && (
         <PostEditForm
           postId={post.id}
           ownerId={post.ownerId}
           initialDescription={post.description}
           authorName={post.owner.firstName + ' ' + post.owner.lastName}
-          avatarUrl={post?.avatarOwner}
+          avatarUrl={post.avatarOwner}
           onCancel={handleCancelEdit}
           onSave={handleSaveEdit}
         />

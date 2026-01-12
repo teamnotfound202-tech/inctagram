@@ -1,3 +1,5 @@
+import { ISOStringFormat } from 'date-fns'
+
 export type ResponsesTypeError = {
   statusCode: number
   messages: [
@@ -54,4 +56,11 @@ export type GeneralInformaitionValues = {
   country: string
   city: string
   aboutMe: string
+}
+
+export type NotificationType = {
+  id: number,
+  message: string,
+  isRead: boolean,
+  createdAt: ISOStringFormat
 }

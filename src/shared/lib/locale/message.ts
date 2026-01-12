@@ -134,14 +134,19 @@ export interface Messages {
     postDeleted: string
     noPostsYet: string
     addAComment: string
+    addAnAnswer: string
     publish: string
     publishing: string
     answer: string
     addComment: string
+    addAnswer: string
+    hideAnswersCount: string
+    viewAllComments: string
     dropdownMenu: {
       editPost: string
       deletePost: string
       unfollow: string
+      follow: string
       copyLink: string
     }
   }
@@ -171,6 +176,8 @@ export interface Messages {
     lastSeen: string
     deleteConversation: string
     noMessages: string
+    noRecentRequests: string
+    talkToUser: string
   }
 
   // Настройки
@@ -390,14 +397,19 @@ export const messages: Record<Language, Messages> = {
       postDeleted: 'Post deleted',
       noPostsYet: 'No posts yet',
       addAComment: 'Add a comment',
+      addAnAnswer: 'Add aa answer',
       publish: 'Publish',
       publishing: 'Publishing',
       answer: 'Answer',
       addComment: 'Add a Comment...',
+      addAnswer: 'Add an Answer...',
+      hideAnswersCount: 'Hide Answers',
+      viewAllComments: 'View All Comments',
       dropdownMenu: {
         editPost: 'Edit Post',
         deletePost: 'Delete Post',
         unfollow: 'Unfollow',
+        follow: 'Follow',
         copyLink: 'Copy Link',
       },
     },
@@ -425,6 +437,8 @@ export const messages: Record<Language, Messages> = {
       lastSeen: 'Last seen',
       deleteConversation: 'Delete Conversation',
       noMessages: 'No messages yet',
+      noRecentRequests: 'Oops! This place looks empty! No recent requests',
+      talkToUser: 'Choose who you would like to talk to',
     },
 
     settings: {
@@ -639,14 +653,19 @@ export const messages: Record<Language, Messages> = {
       postDeleted: 'Публикация удалена',
       noPostsYet: 'Пока нет публикаций',
       addAComment: 'Добавить комментарий',
+      addAnAnswer: 'Добавить ответ',
       publish: 'Опубликовать',
       publishing: 'Публикуется',
       answer: 'Ответить',
       addComment: 'Добавить комментарий...',
+      addAnswer: 'Добавить ответ...',
+      hideAnswersCount: 'Скрыть ответы ',
+      viewAllComments: 'Показать больше комментариев',
       dropdownMenu: {
         editPost: 'Редактировать пост',
         deletePost: 'Удалить пост',
         unfollow: 'Отписаться',
+        follow: 'Подписаться',
         copyLink: 'Копировать ссылку',
       },
     },
@@ -674,6 +693,8 @@ export const messages: Record<Language, Messages> = {
       lastSeen: 'Был в сети',
       deleteConversation: 'Удалить беседу',
       noMessages: 'Пока нет сообщений',
+      noRecentRequests: 'Упс! Похоже, здесь пусто! Нет недавних запросов.',
+      talkToUser: 'Выберите, с кем вы хотели бы поговорить.',
     },
 
     settings: {

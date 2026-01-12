@@ -1,0 +1,24 @@
+@use '@/shared/styles/variables' as *;
+.textWrapper{
+  position: relative;
+}
+
+.text {
+  font-size: 12px;
+  line-height: 133%;
+  color: $light-900;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 35px;
+  cursor: pointer;
+}
+
+.text:before{
+  content:'';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 24px;
+  height: 1px;
+  background-color: $light-900;
+}

@@ -5,7 +5,7 @@ import {selectCurrentMessages} from "@/shared/api/appSlice";
 import s from "./AddCommentForm.module.scss";
 import {Button} from "@/shared/ui";
 import {AlertToast} from "@/shared/ui/Alerts/Alerts";
-import {useCreateCommentMutation} from "@/features/posts/api/posts-api";
+import {useCreateCommentMutation} from "@/features/comments/api/comments-api";
 import {From} from "@/features/publicUserApi/types";
 
 type AddCommentFormProps = {

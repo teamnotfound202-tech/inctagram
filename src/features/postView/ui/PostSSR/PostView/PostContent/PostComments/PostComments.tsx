@@ -3,29 +3,69 @@ import {PostComment} from "@/features/postView/ui/PostSSR/PostView/PostContent/P
 import {
     PostDescriptionAsComment
 } from "@/features/postView/ui/PostSSR/PostView/PostContent/PostComments/PostDescriptionAsComment/PostDescriptionAsComment";
-import {Loader} from "@/shared/ui/Loader/Loader";
-import {useFetchPostCommentsQuery} from "@/features/posts/api/posts-api";
+import {useFetchInfinityPostCommentsInfiniteQuery} from "@/features/comments/api/comments-api";
 import {Post} from "@/features/publicUserApi/types";
+import {useMemo, useRef} from "react";
+import {PAGINATION} from "@/features/notificationsApi/notificationsConstants";
+import {useInfiniteScroll} from "@/shared/lib/hooks";
+import Spinner from "@/shared/ui/Spinner/Spinner";
+import {useAppSelector} from "@/shared/lib/hooks/hooks";
+import {selectCurrentMessages} from "@/shared/api/appSlice";
 
 type Props = {
     post: Post
 };
 export const PostComments = ({post}: Props) => {
-    const {data, isLoading} = useFetchPostCommentsQuery(post.id)
+    const messages = useAppSelector(selectCurrentMessages)
 
-    if (isLoading) return <Loader/>;
+    const {data, hasNextPage, fetchNextPage, isFetching} = useFetchInfinityPostCommentsInfiniteQuery({
+        postId: post.id,
+        pageSize: PAGINATION.DEFAULT_PAGE_SIZE,
+        sortDirection: 'desc'
+    })
+
+    const commentsDataRaw = useMemo(() => data?.pages.flatMap(p => p.items) ?? [], [data?.pages])
+
+    //ref на элемент обертку, относительно которого происходит infinity scroll
+    const scrollRef = useRef<HTMLDivElement | null>(null)
+
+    const {observerRef} = useInfiniteScroll({
+        hasNextPage,
+        isFetching,
+        fetchNextPage,
+        rootRef: scrollRef,
+        enabled: true,
+        rootMargin: '0px',
+        threshold: 0.01,
+    })
 
     return (
-        <div className={s.commentsWrapper}>
-            <PostDescriptionAsComment authorName={post.owner.firstName && post.owner.lastName ?  post.owner.firstName + ' ' + post.owner.lastName : null}
-                                      postContent={post.description}
-                                      descriptionCreationTime={post.createdAt}
-                                      ownerId={post.ownerId}
-                                      postUserName={post.userName}
+        <div className={s.commentsWrapper} ref={scrollRef}>
+            <PostDescriptionAsComment
+                authorName={post.owner.firstName && post.owner.lastName ? post.owner.firstName + ' ' + post.owner.lastName : null}
+                postContent={post.description}
+                descriptionCreationTime={post.createdAt}
+                ownerId={post.ownerId}
+                postUserName={post.userName}
             />
-            {data?.items.map(comment => (
+
+            {!!commentsDataRaw.length && commentsDataRaw.map(comment => (
                 <PostComment key={comment.id} comment={comment} postId={post.id}/>
             ))}
+
+            {hasNextPage && (
+                <div ref={observerRef} className={s.sentinel}>
+                    {isFetching && (
+                        <Spinner
+                            type="secondary"
+                            size={10}
+                            label={messages.common.loading}
+                            fullWidth
+                            center
+                        />
+                    )}
+                </div>
+            )}
         </div>
     )
 };

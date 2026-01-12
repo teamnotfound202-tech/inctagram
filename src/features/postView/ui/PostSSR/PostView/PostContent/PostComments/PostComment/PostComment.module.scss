@@ -2,6 +2,7 @@
 
 .likeButton {
   cursor: pointer;
+  color: $danger-500;
   /*margin-right: 8px;*/
 }
 
@@ -14,8 +15,11 @@
 }
 
 .comment {
+  margin-top: 15px;
   margin-bottom: 15px;
   display: flex;
-  align-items: start;
 }
+
+
+
 

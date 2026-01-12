@@ -1,6 +1,8 @@
 import {
   CursorPage,
   GetPublicUsers,
+  ResponsePostsFollowersByUser,
+  ResponseSearchUser,
   ResponsesPosts,
   UserItem,
   UserProfileResponse,
@@ -30,7 +32,7 @@ export const publicUserApi = baseApi.injectEndpoints({
 
     unFollowingUser: builder.mutation<void, { userId: number; userName: string }>({
       query: ({ userId }) => ({ url: `/users/follower/${userId}`, method: 'DELETE' }),
-      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName }],
+      invalidatesTags: (result, error, { userName }) => [{ type: 'UserProfile', id: userName}],
     }),
     followersUser: builder.query<
       CursorPage<UserItem>,
@@ -78,12 +80,48 @@ export const publicUserApi = baseApi.injectEndpoints({
 
       serializeQueryArgs: ({ queryArgs: { userId } }) => `userPosts-${userId}`,
     }),
+    getPostsByFollowers: builder.infiniteQuery<ResponsePostsFollowersByUser, void, number | undefined>({
+      query: ({ pageParam }) => {
+        return {
+          url: `/home/publications-followers?endCursorPostId=${pageParam}`,
+        }
+      },
+      infiniteQueryOptions: {
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => {
+          if (lastPage.nextCursor) {
+            return lastPage.nextCursor
+          }
+          return null
+        },
+      },
+      serializeQueryArgs: () => 'getPostsByFollowers',
+      providesTags: ['GetPostByFollowingUser']
+    }),
+    getSearchUser: builder.infiniteQuery<ResponseSearchUser, {search:string}, number | undefined>({
+      query: ({ pageParam, queryArg }) => {
+        return {
+          url: `users?search=${queryArg.search}&cursor=${pageParam}`,
+        }
+      },
+      infiniteQueryOptions: {
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => {
+          if (lastPage.nextCursor) {
+            return lastPage.nextCursor
+          }
+          return null
+        },
+      },
+      serializeQueryArgs: () => 'getSearchByUser',
+      providesTags: ['GetUserBySearch']
+    }),
     fetchUser: builder.query<User, number>({
       query: profileId => `public-user/profile/${profileId}`,
     }),
     fetchMyProfile: builder.query<User, void>({
       query: () => `users/profile`,
-      providesTags: ['Profile']
+      providesTags: ['Profile'],
     }),
     updateAvatar: builder.mutation<{ avatars: { url: string }[] }, File>({
       query: file => {
@@ -96,20 +134,19 @@ export const publicUserApi = baseApi.injectEndpoints({
           body: formData,
         }
       },
-      invalidatesTags:['Profile']
+      invalidatesTags: ['Profile'],
     }),
     deleteAvatar: builder.mutation<void, void>({
-      query: () => ({url: '/users/profile/avatar', method: 'DELETE'}),
-      invalidatesTags: ['Profile']
+      query: () => ({ url: '/users/profile/avatar', method: 'DELETE' }),
+      invalidatesTags: ['Profile'],
     }),
     updateMyProfile: builder.mutation<void, GeneralInformaitionValues>({
       query: body => ({ url: `/users/profile`, method: 'PUT', body }),
-    })
+    }),
   }),
 })
 
 export const {
-  useGetTotalRegisteredUsersQuery,
   useGetUserFollowingAndFollowersQuery,
   useFollowingUserMutation,
   useUnFollowingUserMutation,
@@ -121,4 +158,8 @@ export const {
   useUpdateAvatarMutation,
   useUpdateMyProfileMutation,
   useDeleteAvatarMutation,
+  useGetPostsByFollowersInfiniteQuery,
+  useFollowersUserQuery,
+  useFollowingsUserQuery,
+  useGetSearchUserInfiniteQuery
 } = publicUserApi

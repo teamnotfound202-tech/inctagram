@@ -17,17 +17,17 @@ type SpinnerProps = {
 }
 
 export const Spinner: React.FC<SpinnerProps> = ({
-                                                  size = 20,
-                                                  thickness = 3,
-                                                  speed = '0.8s',
-                                                  label,
-                                                  fullWidth = false,
-                                                  center = false,
-                                                  className,
-                                                  style,
-                                                  ariaLabel = 'Loading…',
-                                                  type = 'primary',
-                                                }) => {
+  size = 20,
+  thickness = 3,
+  speed = '0.8s',
+  label,
+  fullWidth = false,
+  center = false,
+  className,
+  style,
+  ariaLabel = 'Loading…',
+  type = 'primary',
+}) => {
   const sizeCss = `${size}px`
   const classes = [
     s.root,

@@ -30,7 +30,7 @@
     "async-mutex": "^0.5.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.15",
-    "next": "15.5.0",
+    "next": "16.1.0-canary.19",
     "normalize.css": "^8.0.1",
     "radix-ui": "^1.4.3",
     "react": "19.1.0",
@@ -41,6 +41,7 @@
     "react-image-crop": "^11.0.10",
     "react-loading-skeleton": "^3.5.0",
     "react-redux": "^9.2.0",
+    "socket.io-client": "^4.8.1",
     "sonner": "^2.0.7",
     "swiper": "^12.0.2",
     "zod": "^4.1.5"

@@ -1,0 +1,78 @@
+@use '@/shared/styles/variables' as *;
+.feedPost {
+  margin-bottom: 36px;
+  max-width: 491px;
+}
+
+.userFeedPostTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.userLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.userAvatarWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px
+}
+
+.userNameDot {
+  width: 4px;
+  height: 4px;
+  background-color: $light-100;
+  border-radius: 50%;
+  box-sizing: border-box;
+  overflow:hidden
+}
+
+.feedImage {
+  margin-bottom: 12px;
+  width: 491px;
+  height: 504px;
+  display: inline-block;
+}
+
+.feedBtn,
+.btn {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.71429;
+  color: $light-900;
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 17px;
+}
+
+.btnWrapperGroup {
+  display: flex;
+  gap: 20px;
+}
+
+.counterLikesWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
+
+  & article {
+    margin-bottom: 0;
+  }
+}
+
+.btnPopUpActive {
+  color: $accent-700;
+}
